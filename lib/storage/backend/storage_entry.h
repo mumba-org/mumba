@@ -1,0 +1,345 @@
+// Copyright (c) 2012 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#ifndef STORAGE_STORAGE_BACKEND_STORAGE_ENTRY_H_
+#define STORAGE_STORAGE_BACKEND_STORAGE_ENTRY_H_
+
+#include <stdint.h>
+
+#include <memory>
+#include <string>
+
+#include "base/macros.h"
+#include "base/bind.h"
+#include "base/callback.h"
+#include "storage/storage_export.h"
+#include "storage/backend/storage_format.h"
+#include "storage/backend/storage_block-inl.h"
+#include "storage/backend/storage_block.h"
+#include "net/disk_cache/disk_cache.h"
+#include "net/log/net_log_with_source.h"
+
+namespace net {
+class NetLog;
+}
+
+namespace storage {
+class StorageBackend;
+class InFlightBackendIO;
+class SparseControl;
+typedef StorageBlock<EntryStore> CacheEntryBlock;
+typedef StorageBlock<RankingsNode> CacheRankingsBlock;
+
+using CompletionCallback = base::Callback<void(int64_t)>;
+
+// This class implements the Entry interface. An object of this
+// class represents a single entry on the cache.
+class STORAGE_EXPORT_PRIVATE StorageEntry
+    : //public Entry,
+      public base::RefCounted<StorageEntry> {
+  friend class base::RefCounted<StorageEntry>;
+  friend class SparseControl;
+ public:
+  enum Operation {
+    kRead,
+    kWrite,
+    kSparseRead,
+    kSparseWrite,
+    kAsyncIO,
+    kReadAsync1,
+    kWriteAsync1
+  };
+
+  StorageEntry(StorageBackend* backend, Addr address, bool read_only);
+
+  // Background implementation of the Entry interface.
+  void DoomImpl();
+  int ReadDataImpl(int index, int64_t offset, net::IOBuffer* buf, int64_t buf_len,
+                   const CompletionCallback& callback);
+  int WriteDataImpl(int index, int64_t offset, net::IOBuffer* buf, int64_t buf_len,
+                    const CompletionCallback& callback, bool truncate);
+  int ReadSparseDataImpl(int64_t offset,
+                         net::IOBuffer* buf,
+                         int64_t buf_len,
+                         const CompletionCallback& callback);
+  int WriteSparseDataImpl(int64_t offset,
+                          net::IOBuffer* buf,
+                          int64_t buf_len,
+                          const CompletionCallback& callback);
+  int GetAvailableRangeImpl(int64_t offset, int64_t len, int64_t* start);
+  void CancelSparseIOImpl();
+  int ReadyForSparseIOImpl(const CompletionCallback& callback);
+
+  inline CacheEntryBlock* entry() {
+    return &entry_;
+  }
+
+  inline CacheRankingsBlock* rankings() {
+    return &node_;
+  }
+
+  uint32_t GetHash();
+
+  // Performs the initialization of a StorageEntry that will be added to the
+  // cache.
+  bool CreateEntry(Addr node_address, const std::string& key, uint32_t hash);
+
+  // Returns true if this entry matches the lookup arguments.
+  bool IsSameEntry(const std::string& key, uint32_t hash);
+
+  // Permamently destroys this entry.
+  void InternalDoom();
+
+  // Deletes this entry from disk. If |everything| is false, only the user data
+  // will be removed, leaving the key and control data intact.
+  void DeleteEntryData(bool everything);
+
+  // Returns the address of the next entry on the list of entries with the same
+  // hash.
+  StorageAddr GetNextAddress();
+
+  // Sets the address of the next entry on the list of entries with the same
+  // hash.
+  void SetNextAddress(Addr address);
+
+  // Reloads the rankings node information.
+  bool LoadNodeAddress();
+
+  // Updates the stored data to reflect the run-time information for this entry.
+  // Returns false if the data could not be updated. The purpose of this method
+  // is to be able to detect entries that are currently in use.
+  bool Update();
+
+  bool dirty() {
+    return dirty_;
+  }
+
+  bool doomed() {
+    return doomed_;
+  }
+
+  bool is_new() const {
+    return is_new_;
+  }
+
+  void set_is_new(bool is_new) {
+    is_new_ = is_new;
+  }
+
+  bool is_modified() const {
+    return is_modified_;
+  }
+
+  void set_modified(bool modified) {
+    is_modified_ = modified;
+  }
+
+  // Marks this entry as dirty (in memory) if needed. This is intended only for
+  // entries that are being read from disk, to be called during loading.
+  void SetDirtyFlag(int32_t current_id);
+
+  // Fixes this entry so it can be treated as valid (to delete it).
+  void SetPointerForInvalidEntry(int32_t new_id);
+
+  // Returns true if this entry is so meesed up that not everything is going to
+  // be removed.
+  bool LeaveRankingsBehind();
+
+  // Returns false if the entry is clearly invalid.
+  bool SanityCheck();
+  bool DataSanityCheck();
+
+  // Attempts to make this entry reachable though the key.
+  void FixForDelete();
+
+  // Handle the pending asynchronous IO count.
+  void IncrementIoCount();
+  void DecrementIoCount();
+
+  // This entry is being returned to the user. It is always called from the
+  // primary thread (not the dedicated cache thread).
+  void OnEntryCreated(StorageBackend* backend);
+
+  // Set the access times for this entry. This method provides support for
+  // the upgrade tool.
+  void SetTimes(base::Time last_used, base::Time last_modified);
+
+  // Generates a histogram for the time spent working on this operation.
+  void ReportIOTime(Operation op, const base::TimeTicks& start);
+
+  // Logs a begin event and enables logging for the StorageEntry.  Will also cause
+  // an end event to be logged on destruction.  The StorageEntry must have its key
+  // initialized before this is called.  |created| is true if the Entry was
+  // created rather than opened.
+  void BeginLogging(net::NetLog* net_log, bool created);
+
+  const net::NetLogWithSource& net_log() const;
+
+  // Returns the number of blocks needed to store an EntryStore.
+  static int NumBlocksForEntry(int key_size);
+
+  // Entry interface.
+  void Doom();// override;
+  void Close(CompletionCallback callback = CompletionCallback());// override;
+  std::string GetKey() const;// override;
+  base::Time GetLastUsed() const;// override;
+  base::Time GetLastModified() const;// override;
+  int64_t GetDataSize(int index) const;// override;
+  int ReadData(int index,
+               int64_t offset,
+               net::IOBuffer* buf,
+               int64_t buf_len,
+               const CompletionCallback& callback);// override;
+  int WriteData(int index,
+                int64_t offset,
+                net::IOBuffer* buf,
+                int64_t buf_len,
+                const CompletionCallback& callback,
+                bool truncate);// override;
+  int ReadSparseData(int64_t offset,
+                     net::IOBuffer* buf,
+                     int64_t buf_len,
+                     const CompletionCallback& callback);// override;
+  int WriteSparseData(int64_t offset,
+                      net::IOBuffer* buf,
+                      int64_t buf_len,
+                      const CompletionCallback& callback);// override;
+  int GetAvailableRange(int64_t offset,
+                        int64_t len,
+                        int64_t* start,
+                        const CompletionCallback& callback);// override;
+  bool CouldBeSparse() const;// override;
+  void CancelSparseIO();// override;
+  int ReadyForSparseIO(const CompletionCallback& callback);// override;
+  void SetLastUsedTimeForTest(base::Time time);// override;
+
+  // NOTE: mumba impl.. this is experimental (and i dont if it will work as intended)
+  // the idea is to flush back the data to the filesystem
+  // when the user ask for it.
+  // the problem im trying to solve: when we create a entry
+  // if the owning process go away, and there is no close
+  // the data is lost, and when we try to get the data back
+  // in a open, its not there..
+  // so a way to solve this is to implement a 'Sync' operation
+  // that can happen before 'Close'
+  // The original cache was not created with the scenarios we are dealing here
+  // in mind.. eg. we are using this as a backend for a db.. and sometimes it needs
+  // to keep open
+  int Sync(const CompletionCallback& callback);
+  int SyncImpl(const CompletionCallback& callback);
+  
+ private:
+  friend class StorageBackend;
+  enum {
+     //kNumStreams = 4
+     kNumStreams = 3
+  };
+  class UserBuffer;
+
+  ~StorageEntry();// override;
+
+  // Do all the work for ReadDataImpl and WriteDataImpl.  Implemented as
+  // separate functions to make logging of results simpler.
+  int InternalReadData(int index, int64_t offset, net::IOBuffer* buf,
+                       int64_t buf_len, const CompletionCallback& callback);
+  int InternalWriteData(int index, int64_t offset, net::IOBuffer* buf, int64_t buf_len,
+                        const CompletionCallback& callback, bool truncate);
+
+  // Initializes the storage for an internal or external data block.
+  bool CreateDataBlock(int index, int64_t size);
+
+  // Initializes the storage for an internal or external generic block.
+  bool CreateBlock(int64_t size, Addr* address);
+
+  // Deletes the data pointed by address, maybe backed by files_[index].
+  // Note that most likely the caller should delete (and store) the reference to
+  // |address| *before* calling this method because we don't want to have an
+  // entry using an address that is already free.
+  void DeleteData(Addr address, int index);
+
+  // Updates ranking information.
+  void UpdateRank(bool modified);
+
+  // Returns a pointer to the file that stores the given address.
+  File* GetBackingFile(Addr address, int index);
+
+  // Returns a pointer to the file that stores external data.
+  File* GetExternalFile(Addr address, int index);
+
+  // Prepares the target file or buffer for a write of buf_len bytes at the
+  // given offset.
+  bool PrepareTarget(int index, int64_t offset, int64_t buf_len, bool truncate);
+
+  // Adjusts the internal buffer and file handle for a write that truncates this
+  // stream.
+  bool HandleTruncation(int index, int64_t offset, int64_t buf_len);
+
+  // Copies data from disk to the internal buffer.
+  bool CopyToLocalBuffer(int index);
+
+  // Reads from a block data file to this object's memory buffer.
+  bool MoveToLocalBuffer(int index);
+
+  // Loads the external file to this object's memory buffer.
+  bool ImportSeparateFile(int index, int64_t new_size);
+
+  // Makes sure that the internal buffer can handle the a write of |buf_len|
+  // bytes to |offset|.
+  bool PrepareBuffer(int index, int64_t offset, int64_t buf_len);
+
+  // Flushes the in-memory data to the backing storage. The data destination
+  // is determined based on the current data length and |min_len|.
+  bool Flush(int index, int64_t min_len);
+
+  // Updates the size of a given data stream.
+  void UpdateSize(int index, int64_t old_size, int64_t new_size);
+
+  // Initializes the sparse control object. Returns a net error code.
+  int InitSparseData();
+
+  // Adds the provided |flags| to the current EntryFlags for this entry.
+  void SetEntryFlags(uint32_t flags);
+
+  // Returns the current EntryFlags for this entry.
+  uint32_t GetEntryFlags();
+
+  // Gets the data stored at the given index. If the information is in memory,
+  // a buffer will be allocated and the data will be copied to it (the caller
+  // can find out the size of the buffer before making this call). Otherwise,
+  // the cache address of the data will be returned, and that address will be
+  // removed from the regular book keeping of this entry so the caller is
+  // responsible for deleting the block (or file) from the backing store at some
+  // point; there is no need to report any storage-size change, only to do the
+  // actual cleanup.
+  void GetData(int index, char** buffer, Addr* address);
+
+  // Logs this entry to the internal trace buffer.
+  void Log(const char* msg);
+
+  CacheEntryBlock entry_;     // Key related information for this entry.
+  CacheRankingsBlock node_;   // Rankings related information for this entry.
+  base::WeakPtr<StorageBackend> backend_;  // Back pointer to the cache.
+  base::WeakPtr<InFlightBackendIO> background_queue_;  // In-progress queue.
+  std::unique_ptr<UserBuffer> user_buffers_[kNumStreams];  // Stores user data.
+  // Files to store external user data and key.
+  scoped_refptr<File> files_[kNumStreams + 1];
+  mutable std::string key_;           // Copy of the key.
+  int unreported_size_[kNumStreams];  // Bytes not reported yet to the backend.
+  bool doomed_;               // True if this entry was removed from the cache.
+  bool read_only_;            // True if not yet writing.
+  bool dirty_;                // True if we detected that this is a dirty entry.
+  bool is_new_;               // when first created vs. opened a existent entry
+  bool is_modified_;               // was modified
+  base::Lock file_rlock_;
+  base::Lock file_wrlock_; 
+  std::unique_ptr<SparseControl> sparse_;  // Support for sparse entries.
+
+  net::NetLogWithSource net_log_;
+
+  DISALLOW_COPY_AND_ASSIGN(StorageEntry);
+};
+
+}  // namespace storage
+
+#endif  // STORAGE_STORAGE_BACKEND_BLOCKFILE_ENTRY_IMPL_H_

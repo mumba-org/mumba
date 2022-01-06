@@ -1,0 +1,11 @@
+{
+  "name": "host",
+  "display_name": "Host Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "host" : [ "automation.Host" ]
+      }
+    }
+  }
+}

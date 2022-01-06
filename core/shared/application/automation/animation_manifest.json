@@ -1,0 +1,11 @@
+{
+  "name": "animation",
+  "display_name": "Animation Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "animation" : [ "automation.AnimationInterface" ]
+      }
+    }
+  }
+}

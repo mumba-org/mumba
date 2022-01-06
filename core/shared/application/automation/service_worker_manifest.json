@@ -1,0 +1,11 @@
+{
+  "name": "service_worker",
+  "display_name": "Service Worker Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "service_worker" : [ "automation.ServiceWorker" ]
+      }
+    }
+  }
+}

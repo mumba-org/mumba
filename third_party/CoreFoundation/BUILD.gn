@@ -1,0 +1,452 @@
+import("//build_overrides/build.gni")
+
+config("core_foundation_config") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+  ]
+  configs = []
+  configs = default_compiler_configs
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  cflags = [
+    "-fblocks",
+    "-fpic",
+    "-pipe",
+    "-std=gnu99",
+    "-Wno-trigraphs",
+    "-fexceptions"
+  ]
+  if (is_clang) {
+     cflags += [ "-Wno-sign-compare" ]
+     cflags += [ "-Wno-writable-strings" ]
+     cflags += [ "-Wno-sometimes-uninitialized" ]
+     cflags += [ "-Wno-unused-function" ]
+     cflags += [ "-Wno-deprecated-register" ]
+     cflags += [ "-Wno-unused-value" ]
+     cflags += [ "-Wno-implicit-function-declaration" ]
+     cflags += [ "-Wno-int-conversion" ]
+     cflags += [ "-Wno-string-conversion" ]
+     cflags += [ "-Wno-uninitialized" ]
+     cflags += [ "-Wno-switch" ]
+     cflags += [ "-Wno-deprecated-declarations" ]
+     cflags += [ "-Wno-incompatible-pointer-types" ]
+  }
+
+  defines = [
+    "CF_BUILDING_CF=1",
+    "DEPLOYMENT_TARGET_LINUX=1",
+    "MAC_OS_X_VERSION_MAX_ALLOWED=MAC_OS_X_VERSION_10_9",
+    "U_SHOW_DRAFT_API=1",
+    "U_SHOW_CPLUSPLUS_API=0",
+    "_GNU_SOURCE",
+    "DEPLOYMENT_ENABLE_LIBDISPATCH",
+    "DEPLOYMENT_RUNTIME_C"
+  ]
+  include_dirs = [
+    "//third_party",
+    "//third_party/CoreFoundation",
+    "//third_party/CoreFoundation/closure",
+    "//third_party/CoreFoundation/SwiftRuntime",
+    "/usr/local/include",
+    "/workspace/source/swift/swift-corelibs-libdispatch",
+    "/usr/include/libxml2",
+    "//third_party/icu/source/common",
+    "//third_party/icu/source/i18n"
+  ]
+}
+
+source_set("CFPlugin") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+  sources = [
+    "CFBundlePriv.h",
+    "CFBundle_BinaryTypes.h",
+    "CFBundle_Internal.h",
+    "CFPlugIn_Factory.h",
+    "CFBundle.h",
+    "CFPlugIn.h",
+    "CFPlugInCOM.h",
+    "CFBundle_Binary.c",
+    "CFBundle.c",
+    "CFBundle_DebugStrings.c",
+    "CFBundle_Executable.c",
+    "CFBundle_Grok.c",
+    "CFBundle_InfoPlist.c",
+    "CFBundle_Locale.c",
+    "CFBundle_Main.c",
+    "CFBundle_ResourceFork.c",
+    "CFBundle_Resources.c",
+    "CFBundle_Strings.c",
+    "CFPlugIn.c",
+    "CFPlugIn_Factory.c",
+    "CFPlugIn_Instance.c",
+    "CFPlugIn_PlugIn.c"
+  ]
+}
+
+source_set("CFStream") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+  sources = [
+    "CFStreamAbstract.h",
+    "CFStreamInternal.h",
+    "CFStreamPriv.h",
+    "CFStream.h",
+    "CFConcreteStreams.c",
+    "CFSocketStream.c",
+    "CFStream.c"
+  ]
+}
+
+source_set("CFString") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]  
+  sources = [
+    "CFBurstTrie.h",
+    "CFCharacterSetPriv.h",
+    "CFRegularExpression.h",
+    "CFRunArray.h",
+    "CFStringDefaultEncoding.h",
+    "CFStringLocalizedFormattingInternal.h",
+    "CFICUConverters.h",
+    "CFStringEncodingConverter.h",
+    "CFStringEncodingConverterExt.h",
+    "CFStringEncodingConverterPriv.h",
+    "CFStringEncodingDatabase.h",
+    "CFUniChar.h",
+    "CFUniCharPriv.h",
+    "CFUnicodeDecomposition.h",
+    "CFUnicodePrecomposition.h",
+    "CFBuiltinConverters.c",
+    "CFICUConverters.c",
+    "CFPlatformConverters.c",
+    "CFStringEncodingConverter.c",
+    "CFStringEncodingDatabase.c",
+    "CFUniChar.c",
+    "CFUnicodeDecomposition.c",
+    "CFUnicodePrecomposition.c",
+    "CFAttributedString.h",
+    "CFCharacterSet.h",
+    "CFString.h",
+    "CFStringEncodingExt.h",
+    "CFAttributedString.c",
+    "CFBurstTrie.c",
+    "CFCharacterSet.c",
+    #"CFCharacterSetData.S",
+    "CFRegularExpression.c",
+    "CFRunArray.c",
+    "CFString.c",
+    "CFStringEncodings.c",
+    "CFStringScanner.c",
+    "CFStringTransform.c",
+    "CFStringUtilities.c",
+    #"CFUniCharPropertyDatabase.S",
+    #"CFUnicodeData.S"
+    ]
+    deps = [
+        "//third_party/icu",
+    ]
+}
+
+
+source_set("CFURL") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        "CFURL.h",
+        "CFURLAccess.h",
+        "CFURLComponents.h",
+        "CFURL.inc.h",
+        "CFURLPriv.h",
+        "CFURLSessionInterface.h",
+        "CFURL.c",
+        "CFURLAccess.c",
+        "CFURLComponents.c",
+        "CFURLComponents_URIParser.c",
+        "CFURLSessionInterface.c"
+    ]
+}
+
+
+source_set("CFAppServices") {
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        # AppServices
+        "CFNotificationCenter.h",
+        "CFUserNotification.h",
+    ]
+}
+
+source_set("CFBase") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        "CFAvailability.h",
+        "CFBase.h",
+        "CFByteOrder.h",
+        "CFUUID.h",
+        "CFUtilities.h",
+        "SwiftRuntime/CoreFoundation.h",
+        "SwiftRuntime/TargetConditionals.h",
+        "CFBase.c",
+        "CFFileUtilities.c",
+        "CFKnownLocations.c",
+        "CFPlatform.c",
+        "CFRuntime.c",
+        "CFSortFunctions.c",
+        "CFSystemDirectories.c",
+        "CFUtilities.c",
+        "CFUUID.c"
+    ]
+}
+
+source_set("CFCollections") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        "CFArray.h",
+        "CFBag.h",
+        "CFBinaryHeap.h",
+        "CFBitVector.h",
+        "CFData.h",
+        "CFDictionary.h",
+        "CFSet.h",
+        "CFTree.h",
+        "CFBasicHash.h",
+        "CFStorage.h",
+        "CFArray.c",
+        "CFBag.c",
+        "CFBasicHash.c",
+        "CFBinaryHeap.c",
+        "CFBitVector.c",
+        "CFData.c",
+        "CFDictionary.c",
+        "CFSet.c",
+        "CFStorage.c",
+        "CFTree.c"
+    ]
+}
+
+source_set("CFError") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        "CFError_Private.h",
+        "CFError.h",
+        "CFError.c"
+    ]
+}
+
+# Locale
+source_set("CFLocale") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]    
+    sources = [
+        "CFCalendar.h",
+        "CFDateFormatter.h",
+        "CFLocale.h",
+        "CFNumberFormatter.h",
+        "CFDateFormatter_Private.h",
+        "CFICULogging.h",
+        "CFLocaleInternal.h",
+        "CFLocale_Private.h",
+        "CFCalendar.c",
+        "CFDateFormatter.c",
+        "CFLocale.c",
+        "CFLocaleIdentifier.c",
+        "CFLocaleKeys.c",
+        "CFNumberFormatter.c"
+    ]
+    deps = [
+        "//third_party/icu",
+    ]
+}
+
+
+# NumberDate
+source_set("CFNumberDate") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]    
+    sources = [
+        "CFBigNumber.h",
+        "CFDate.h",
+        "CFNumber.h",
+        "CFTimeZone.h",
+        "CFBigNumber.c",
+        "CFDate.c",
+        "CFNumber.c",
+        "CFTimeZone.c"
+    ]
+    deps = [
+        "//third_party/icu",
+    ]
+}
+
+# Parsing
+source_set("CFParsing") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        "CFPropertyList_Private.h",
+        "CFXMLInputStream.h",
+        "CFXMLInterface.h",
+        "CFPropertyList.h",
+        "CFXMLNode.h",
+        "CFXMLParser.h",
+        "CFBinaryPList.c",
+        "CFOldStylePList.c",
+        "CFPropertyList.c",
+        "CFXMLInputStream.c",
+        "CFXMLNode.c",
+        "CFXMLParser.c",
+        "CFXMLTree.c",
+        "CFXMLInterface.c"
+    ]
+    deps = [
+        "//third_party/libxml"
+    ]
+}
+
+
+# RunLoop
+source_set("CFRunLoop") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]   
+    sources = [
+        "CFMachPort.h",
+        "CFMessagePort.h",
+        "CFRunLoop.h",
+        "CFSocket.h",
+        "CFRunLoop.c",
+        #"CFSocket.c",
+    ]
+}
+# Preferences
+source_set("CFPreferences") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        "CFPreferences.h",
+        "CFApplicationPreferences.c",
+        "CFPreferences.c",
+        "CFXMLPreferencesDomain.c"
+    ]
+}
+
+source_set("uuid") {
+    configs = []
+    configs += [
+        ":core_foundation_config"
+    ]
+    sources = [
+        "uuid/uuid.c",
+        "uuid/uuid.h"
+    ]
+}
+
+config("core_foundation_public_config") {
+    include_dirs = [
+        "//third_party",
+        "//third_party/CoreFoundation",
+        "//third_party/CoreFoundation/closure",
+        "//third_party/CoreFoundation/SwiftRuntime",
+    ]
+}
+
+component("CoreFoundation") {
+  deps = [
+    ":CFPlugin",
+    ":uuid",
+    ":CFStream",
+    ":CFString",
+    ":CFURL",
+    ":CFAppServices",
+    ":CFBase",
+    ":CFCollections",
+    ":CFError",
+    ":CFLocale",
+    ":CFNumberDate",
+    ":CFParsing",
+    ":CFRunLoop",
+    ":CFPreferences",
+    "//third_party/libdispatch"
+  ]
+  #configs += [
+  #  ":core_foundation_config"
+  #]
+  sources = [
+    #"closure/data.c",
+    #"closure/runtime.c",
+    "CFAsmMacros.h",
+    "CFInternal.h",
+    "CFKnownLocations.h",
+    "CFLogUtilities.h",
+    "CFPriv.h",
+    "CFRuntime.h",
+    "ForFoundationOnly.h",
+    "ForSwiftFoundationOnly.h",
+    "CFLocaleInternal.h",
+    "CFXMLInterface.h",
+    "CFBundlePriv.h",
+    "CFStreamPriv.h",
+    "CFRegularExpression.h",
+    "CFRunArray.h"
+  ]
+  if (is_clang) {
+     cflags = [ "-Wno-sign-compare" ]
+     cflags += [ "-Wno-writable-strings" ]
+     cflags += [ "-Wno-sometimes-uninitialized" ]
+     cflags += [ "-Wno-unused-function" ]
+     cflags += [ "-Wno-deprecated-register" ]
+     cflags += [ "-Wno-unused-value" ]
+     cflags += [ "-Wno-implicit-function-declaration" ]
+     cflags += [ "-Wno-int-conversion" ]
+     cflags += [ "-Wno-string-conversion" ]
+     cflags += [ "-Wno-uninitialized" ]
+  }
+
+  ldflags = [
+    "-lc",
+    "-lpthread",
+    "-lm",
+    "-lrt",
+    "-licuuc",
+    "-licudata",
+    "-licui18n",
+    #"-lBlocksRuntime",
+    #"-ldispatch",
+    #"-lcurl",
+    #"-lxml2"
+  ]
+
+  public_configs = [
+    ":core_foundation_public_config"
+  ]
+}

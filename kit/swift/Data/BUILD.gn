@@ -1,0 +1,22 @@
+swift_static("Data") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/ThirdParty/ProtocolBuffers",
+  ]
+  if (is_linux) {
+    deps += [
+      "//kit/swift/PosixShim",
+    ]
+  }
+  sources = [
+    "Sources/Database.swift",
+    "Sources/DatabaseCursor.swift",
+    "Sources/Filebase.swift",
+    "Sources/FilebaseCursor.swift",
+    "Sources/SharedMemory.swift",
+    "Sources/Storage.swift",
+    "Sources/Share.swift"
+  ]
+}

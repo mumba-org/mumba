@@ -1,0 +1,358 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Chrome elf targets (excepting tests) should only link in kernel32.
+# Please don't add dependencies on any other system libraries.
+
+import("//build/config/compiler/compiler.gni")
+import("//build/config/win/manifest.gni")
+import("//mumba/process_version_rc_template.gni")
+import("//lib/testing/test.gni")
+
+##------------------------------------------------------------------------------
+## mumba_elf
+##------------------------------------------------------------------------------
+
+process_version_rc_template("mumba_elf_resources") {
+  sources = [
+    "mumba_elf.ver",
+  ]
+  output = "$target_gen_dir/mumba_elf_version.rc"
+}
+
+# This manifest matches what GYP produces. It may not even be necessary.
+windows_manifest("mumba_elf_manifest") {
+  sources = [
+    as_invoker_manifest,
+  ]
+}
+
+# Users of mumba_elf exports can depend on this target, which doesn't
+# pin them to linking either mumba_elf.dll or test_stubs.
+source_set("mumba_elf_main_include") {
+  sources = [
+    "mumba_elf_main.h",
+  ]
+}
+
+# We should move chrome_result_codes.h to another target which does not bring
+# in the world.
+shared_library("mumba_elf") {
+  sources = [
+    "mumba_elf_main.cc",
+    "mumba_elf_main.h",
+  ]
+  if (target_cpu == "x86") {
+    sources += [ "mumba_elf_x86.def" ]
+  } else {
+    sources += [ "mumba_elf_x64.def" ]
+  }
+
+  deps = [
+    ":blacklist",
+    ":mumba_elf_manifest",
+    #":mumba_elf_resources",
+    ":constants",
+    ":crash",
+    ":hook_util",
+    ":nt_registry",
+    ":security",
+    ":third_party_dlls",
+    "//build/config:exe_and_shlib_deps",
+    "//mumba/install_static:install_static_util",
+    "//mumba/install_static:primary_module",
+    "//lib/components/crash/content/app:crash_export_thunks",
+  ]
+
+  configs += [ "//build/config/win:windowed" ]
+  configs -= [ "//build/config/win:console" ]
+
+  # Delay loads in this list will prevent user32.dll
+  # from loading too early.
+  ldflags = [
+    "/DELAYLOAD:advapi32.dll",
+    "/DELAYLOAD:dbghelp.dll",
+    "/DELAYLOAD:rpcrt4.dll",
+    "/DELAYLOAD:winmm.dll",
+  ]
+  if (current_cpu == "x86") {
+    # Don"t set an x64 base address (to avoid breaking HE-ASLR).
+    ldflags += [ "/BASE:0x01c20000" ]
+  }
+}
+
+# For code that isn't Chrome-the browser, like test binaries, these stubs stand
+# in for mumba_elf.;
+static_library("test_stubs") {
+  # testonly = true
+
+  sources = [
+    "mumba_elf_main.h",
+    "mumba_elf_test_stubs.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//core/common:constants",
+  ]
+}
+
+##------------------------------------------------------------------------------
+## source sets
+##------------------------------------------------------------------------------
+
+source_set("constants") {
+  sources = [
+    "mumba_elf_constants.cc",
+    "mumba_elf_constants.h",
+  ]
+}
+
+source_set("dll_hash") {
+  deps = [
+    "//lib/base",
+  ]
+  sources = [
+    "dll_hash/dll_hash.cc",
+    "dll_hash/dll_hash.h",
+  ]
+}
+
+source_set("pe_image_safe") {
+  sources = [
+    "pe_image_safe/pe_image_safe.cc",
+    "pe_image_safe/pe_image_safe.h",
+  ]
+}
+
+source_set("security") {
+  sources = [
+    "mumba_elf_security.cc",
+    "mumba_elf_security.h",
+  ]
+  deps = [
+    ":constants",
+    ":nt_registry",
+    "//mumba/install_static:install_static_util",
+  ]
+}
+
+source_set("sha1") {
+  sources = [
+    "sha1/sha1.cc",
+    "sha1/sha1.h",
+  ]
+}
+
+# This source_set defines third-party-related structures and APIs used from
+# outside mumba_elf.dll.  The APIs are exported from mumba_elf (add a
+# data_dep on //mumba_elf:mumba_elf), which will always be loaded before
+# chrome.dll.
+source_set("third_party_shared_defines") {
+  sources = [
+    "sha1/sha1.h",
+    "third_party_dlls/logging_api.cc",
+    "third_party_dlls/logging_api.h",
+    "third_party_dlls/packed_list_format.cc",
+    "third_party_dlls/packed_list_format.h",
+  ]
+}
+
+##------------------------------------------------------------------------------
+## mumba_elf sub targets
+##------------------------------------------------------------------------------
+
+executable("dll_hash_main") {
+  sources = [
+    "dll_hash/dll_hash_main.cc",
+  ]
+  deps = [
+    ":dll_hash",
+    "//build/config:exe_and_shlib_deps",
+    "//build/win:default_exe_manifest",
+  ]
+}
+
+static_library("blacklist") {
+  sources = [
+    "blacklist/blacklist.cc",
+    "blacklist/blacklist.h",
+    "blacklist/blacklist_interceptions.cc",
+    "blacklist/blacklist_interceptions.h",
+  ]
+  public_deps = [
+    "//lib/sandbox",
+  ]
+  deps = [
+    ":constants",
+    ":crash",
+    ":hook_util",
+    ":nt_registry",
+    "//lib/base:base_static",  # pe_image
+    "//mumba/install_static:install_static_util",
+  ]
+}
+
+static_library("crash") {
+  sources = [
+    "../../mumba/app/mumba_crash_reporter_client_win.cc",
+    "../../mumba/app/mumba_crash_reporter_client_win.h",
+    "../../core/common/result_codes.h",
+    "crash/crash_helper.cc",
+    "crash/crash_helper.h",
+  ]
+  deps = [
+    ":hook_util",
+    "//lib/base",  # This needs to go.  DEP of app, crash_keys, client.
+    "//lib/base:base_static",  # pe_image
+    "//mumba/install_static:install_static_util",
+    "//lib/components/crash/content/app",
+    "//lib/components/crash/core/common",  # crash_keys
+    "//lib/components/version_info:channel",
+    "//core/common:result_codes",
+    "//third_party/crashpad/crashpad/client",  # DumpWithoutCrash
+  ]
+}
+
+static_library("hook_util") {
+  sources = [
+    "../base/macros.h",
+    "hook_util/hook_util.cc",
+    "hook_util/hook_util.h",
+  ]
+  deps = [
+    ":nt_registry",  # utils
+    "//lib/base:base_static",  # pe_image
+    "//lib/sandbox",
+  ]
+}
+
+# This target contains utility functions which must only depend on
+# kernel32. Please don't add dependencies on other system libraries.
+static_library("nt_registry") {
+  sources = [
+    "../sandbox/win/src/nt_internals.h",
+    "nt_registry/nt_registry.cc",
+    "nt_registry/nt_registry.h",
+  ]
+  if (is_official_build && full_wpo_on_official == true) {
+    # This library doen't build with WPO enabled due to a MSVC compiler bug.
+    # TODO(pennymac|sebmarchand): Remove this once MS has fixed this compiler
+    # bug: https://connect.microsoft.com/VisualStudio/feedback/details/3104499
+    configs -= [ "//build/config/compiler:default_optimization" ]
+    configs += [ "//build/config/compiler:optimize_no_wpo" ]
+  }
+
+  libs = [ "kernel32.lib" ]
+}
+
+static_library("third_party_dlls") {
+  visibility = [ ":*" ]  # Only targets in this file can depend on this.
+  sources = [
+    "third_party_dlls/hook.cc",
+    "third_party_dlls/hook.h",
+    "third_party_dlls/imes.cc",
+    "third_party_dlls/imes.h",
+    "third_party_dlls/logs.cc",
+    "third_party_dlls/logs.h",
+    "third_party_dlls/main.cc",
+    "third_party_dlls/main.h",
+    "third_party_dlls/packed_list_file.cc",
+    "third_party_dlls/packed_list_file.h",
+  ]
+  public_deps = [
+    ":blacklist",
+    ":crash",
+    ":hook_util",
+    ":nt_registry",
+    ":pe_image_safe",
+    ":sha1",
+    ":third_party_shared_defines",
+    "//mumba/install_static:install_static_util",
+  ]
+}
+
+##------------------------------------------------------------------------------
+## tests
+##------------------------------------------------------------------------------
+
+
+executable("third_party_dlls_test_exe") {
+  # testonly = true
+  sources = [
+    "third_party_dlls/main_unittest_exe.cc",
+  ]
+  deps = [
+    ":third_party_dlls",
+    "//build/config:exe_and_shlib_deps",
+    "//build/win:default_exe_manifest",
+    "//mumba/install_static:install_static_util",
+    "//lib/components/crash/content/app:crash_export_stubs",
+  ]
+}
+
+shared_library("blacklist_test_main_dll") {
+  # testonly = true
+  sources = [
+    "blacklist/test/blacklist_test_main_dll.cc",
+    "blacklist/test/blacklist_test_main_dll.def",
+    "blacklist/test/blacklist_test_main_dll.h",
+  ]
+  deps = [
+    ":blacklist",
+    ":nt_registry",
+    "//lib/base",
+    "//build/config:exe_and_shlib_deps",
+    "//mumba/install_static:install_static_util",
+    #"//lib/components/crash/content/app:test_support",
+  ]
+}
+
+loadable_module("blacklist_test_dll_1") {
+  # testonly = true
+  sources = [
+    "blacklist/test/blacklist_test_dll_1.cc",
+    "blacklist/test/blacklist_test_dll_1.def",
+  ]
+  deps = [
+    "//build/config:exe_and_shlib_deps",
+  ]
+}
+
+loadable_module("blacklist_test_dll_2") {
+  # testonly = true
+  sources = [
+    "blacklist/test/blacklist_test_dll_2.cc",
+    "blacklist/test/blacklist_test_dll_2.def",
+  ]
+  deps = [
+    "//build/config:exe_and_shlib_deps",
+  ]
+}
+
+# As-is, this does not generate a .lib file because there are no exports and no
+# .def file. The current definition of loadable_module does not declare a .lib
+# file as an output, so this is OK. If it did (or if this used shared_library
+# which does), Ninja would get confused and always rebuild this target because
+# it sees a declared output file but that file doesn't exist on disk.
+loadable_module("blacklist_test_dll_3") {
+  # testonly = true
+  sources = [
+    "blacklist/test/blacklist_test_dll_3.cc",
+  ]
+  deps = [
+    "//build/config:exe_and_shlib_deps",
+  ]
+}
+
+shared_library("hook_util_test_dll") {
+  # testonly = true
+  sources = [
+    "hook_util/test/hook_util_test_dll.cc",
+    "hook_util/test/hook_util_test_dll.h",
+  ]
+  deps = [
+    "//build/config:exe_and_shlib_deps",
+  ]
+}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit latest_public_release="0" current_release="1" output_all_resource_defines="false">
+  <outputs>
+    <output filename="grit/content_resources.h" type="rc_header" context="default_100_percent">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="content_resources_100_percent.pak" type="data_package" context="default_100_percent" />
+    <output filename="content_resources_200_percent.pak" type="data_package" context="default_200_percent" />
+  </outputs>
+  <release seq="1">
+    <structures fallback_to_low_resolution="true">
+      <if expr="is_macosx">
+        <structure type="chrome_scaled_image" name="IDR_ALIAS_CURSOR" file="alias_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_CELL_CURSOR" file="cell_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_EAST_RESIZE_CURSOR" file="east_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_EASTWEST_RESIZE_CURSOR" file="east_west_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_HELP_CURSOR" file="help_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_LINK_CURSOR" file="link_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_MOVE_CURSOR" file="move_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_NONE_CURSOR" file="none_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_NORTHEAST_RESIZE_CURSOR" file="north_east_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_NORTHEASTSOUTHWEST_RESIZE_CURSOR" file="north_east_south_west_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_NORTH_RESIZE_CURSOR" file="north_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_NORTHSOUTH_RESIZE_CURSOR" file="north_south_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_NORTHWEST_RESIZE_CURSOR" file="north_west_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_NORTHWESTSOUTHEAST_RESIZE_CURSOR" file="north_west_south_east_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROGRESS_CURSOR" file="progress_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_SOUTHEAST_RESIZE_CURSOR" file="south_east_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_SOUTH_RESIZE_CURSOR" file="south_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_SOUTHWEST_RESIZE_CURSOR" file="south_west_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_VERTICALTEXT_CURSOR" file="vertical_text_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_WAIT_CURSOR" file="wait_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_WEST_RESIZE_CURSOR" file="west_resize_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_ZOOMIN_CURSOR" file="zoom_in_cursor.png" />
+        <structure type="chrome_scaled_image" name="IDR_ZOOMOUT_CURSOR" file="zoom_out_cursor.png" />
+      </if>
+      <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_128" file="product_logo_128.png" />
+    </structures>
+    <includes>
+      <include name="IDR_MOJO_CATALOG_MANIFEST" file="../../../lib/services/catalog/manifest.json" type="BINDATA" />
+      <include name="IDR_MOJO_DOMAIN_MANIFEST" file="${root_gen_dir}/mumba/app/domain_manifest.json" use_base_dir="false" type="BINDATA" />
+      <include name="IDR_MOJO_GPU_MANIFEST" file="${root_gen_dir}/mumba/app/gpu_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_MOJO_PACKAGED_SERVICES_MANIFEST" file="${root_gen_dir}/mumba/app/packaged_services_manifest.json" use_base_dir="false" type="BINDATA" />
+      <include name="IDR_MOJO_HOST_MANIFEST" file="${root_gen_dir}/mumba/app/host_manifest.json" use_base_dir="false" type="BINDATA" />
+      <include name="IDR_MOJO_APPLICATION_MANIFEST" file="${root_gen_dir}/mumba/app/application_manifest.json" use_base_dir="false" type="BINDATA" />
+      <include name="IDR_MOJO_UTILITY_MANIFEST" file="${root_gen_dir}/mumba/app/utility_manifest.json" use_base_dir="false" type="BINDATA" />
+
+
+      <include name="IDR_AUTOMATION_ACCESSIBILITY_MANIFEST" file="${root_gen_dir}/core/shared/application/accessibility_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_ANIMATION_MANIFEST" file="${root_gen_dir}/core/shared/application/animation_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_APPLICATION_CACHE_MANIFEST" file="${root_gen_dir}/core/shared/application/application_cache_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_CACHE_STORAGE_MANIFEST" file="${root_gen_dir}/core/shared/application/cache_storage_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_CSS_MANIFEST" file="${root_gen_dir}/core/shared/application/css_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_DATABASE_MANIFEST" file="${root_gen_dir}/core/shared/application/database_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_DEVICE_ORIENTATION_MANIFEST" file="${root_gen_dir}/core/shared/application/device_orientation_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_DOM_MANIFEST" file="${root_gen_dir}/core/shared/application/dom_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_DOM_SNAPSHOT_MANIFEST" file="${root_gen_dir}/core/shared/application/dom_snapshot_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_DOM_STORAGE_MANIFEST" file="${root_gen_dir}/core/shared/application/dom_storage_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_EMULATION_MANIFEST" file="${root_gen_dir}/core/shared/application/emulation_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_HEADLESS_MANIFEST" file="${root_gen_dir}/core/shared/application/headless_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_HOST_MANIFEST" file="${root_gen_dir}/core/shared/application/host_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_INDEXED_DB_MANIFEST" file="${root_gen_dir}/core/shared/application/indexed_db_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_INPUT_MANIFEST" file="${root_gen_dir}/core/shared/application/input_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_IO_MANIFEST" file="${root_gen_dir}/core/shared/application/io_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_LAYER_TREE_MANIFEST" file="${root_gen_dir}/core/shared/application/layer_tree_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_NETWORK_MANIFEST" file="${root_gen_dir}/core/shared/application/network_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_OVERLAY_MANIFEST" file="${root_gen_dir}/core/shared/application/overlay_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_PAGE_MANIFEST" file="${root_gen_dir}/core/shared/application/page_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_SERVICE_WORKER_MANIFEST" file="${root_gen_dir}/core/shared/application/service_worker_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_STORAGE_MANIFEST" file="${root_gen_dir}/core/shared/application/storage_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_SYSTEM_INFO_MANIFEST" file="${root_gen_dir}/core/shared/application/system_info_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_TARGET_MANIFEST" file="${root_gen_dir}/core/shared/application/target_manifest.json" use_base_dir="false" type="BINDATA"/>
+      <include name="IDR_AUTOMATION_TETHERING_MANIFEST" file="${root_gen_dir}/core/shared/application/tethering_manifest.json" use_base_dir="false" type="BINDATA"/>
+
+      <include name="IDR_MUMBA_PROTO" file="mumba.proto" use_base_dir="true" type="BINDATA" />
+      <include name="IDR_WORLD_APP" file="/home/fabiok/world.drop" use_base_dir="true" type="BINDATA" />
+      <include name="IDR_OBJECTS_PROTO" file="../../../core/common/proto/objects.proto" use_base_dir="true" type="BINDATA" />
+   </includes>    
+  </release>
+</grit>

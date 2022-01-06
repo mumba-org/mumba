@@ -1,0 +1,6 @@
+gen/lib/ui/resources/grit/ui_resources.h
+gen/lib/ui/resources/grit/ui_resources_map.cc
+gen/lib/ui/resources/grit/ui_resources_map.h
+gen/lib/ui/resources/ui_resources_100_percent.pak
+gen/lib/ui/resources/ui_resources_200_percent.pak
+gen/lib/ui/resources/ui_resources_300_percent.pak

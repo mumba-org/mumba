@@ -1,0 +1,44 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = gpr
+target_out_dir = obj/lib/rpc
+target_output_name = libgpr
+
+build obj/lib/rpc/gpr/basic_timers.o: cxx ../../../lib/rpc/profiling/basic_timers.cc
+build obj/lib/rpc/gpr/stap_timers.o: cxx ../../../lib/rpc/profiling/stap_timers.cc
+build obj/lib/rpc/gpr/alloc.o: cxx ../../../lib/rpc/support/alloc.cc
+build obj/lib/rpc/gpr/arena.o: cxx ../../../lib/rpc/support/arena.cc
+build obj/lib/rpc/gpr/atm.o: cxx ../../../lib/rpc/support/atm.cc
+build obj/lib/rpc/gpr/avl.o: cxx ../../../lib/rpc/support/avl.cc
+build obj/lib/rpc/gpr/cmdline.o: cxx ../../../lib/rpc/support/cmdline.cc
+build obj/lib/rpc/gpr/cpu_linux.o: cxx ../../../lib/rpc/support/cpu_linux.cc
+build obj/lib/rpc/gpr/cpu_posix.o: cxx ../../../lib/rpc/support/cpu_posix.cc
+build obj/lib/rpc/gpr/env_linux.o: cxx ../../../lib/rpc/support/env_linux.cc
+build obj/lib/rpc/gpr/env_posix.o: cxx ../../../lib/rpc/support/env_posix.cc
+build obj/lib/rpc/gpr/fork.o: cxx ../../../lib/rpc/support/fork.cc
+build obj/lib/rpc/gpr/host_port.o: cxx ../../../lib/rpc/support/host_port.cc
+build obj/lib/rpc/gpr/log.o: cxx ../../../lib/rpc/support/log.cc
+build obj/lib/rpc/gpr/log_linux.o: cxx ../../../lib/rpc/support/log_linux.cc
+build obj/lib/rpc/gpr/log_posix.o: cxx ../../../lib/rpc/support/log_posix.cc
+build obj/lib/rpc/gpr/mpscq.o: cxx ../../../lib/rpc/support/mpscq.cc
+build obj/lib/rpc/gpr/murmur_hash.o: cxx ../../../lib/rpc/support/murmur_hash.cc
+build obj/lib/rpc/gpr/string.o: cxx ../../../lib/rpc/support/string.cc
+build obj/lib/rpc/gpr/string_posix.o: cxx ../../../lib/rpc/support/string_posix.cc
+build obj/lib/rpc/gpr/subprocess_posix.o: cxx ../../../lib/rpc/support/subprocess_posix.cc
+build obj/lib/rpc/gpr/sync.o: cxx ../../../lib/rpc/support/sync.cc
+build obj/lib/rpc/gpr/sync_posix.o: cxx ../../../lib/rpc/support/sync_posix.cc
+build obj/lib/rpc/gpr/thd.o: cxx ../../../lib/rpc/support/thd.cc
+build obj/lib/rpc/gpr/thd_posix.o: cxx ../../../lib/rpc/support/thd_posix.cc
+build obj/lib/rpc/gpr/time.o: cxx ../../../lib/rpc/support/time.cc
+build obj/lib/rpc/gpr/time_posix.o: cxx ../../../lib/rpc/support/time_posix.cc
+build obj/lib/rpc/gpr/time_precise.o: cxx ../../../lib/rpc/support/time_precise.cc
+build obj/lib/rpc/gpr/tls_pthread.o: cxx ../../../lib/rpc/support/tls_pthread.cc
+build obj/lib/rpc/gpr/tmpfile_posix.o: cxx ../../../lib/rpc/support/tmpfile_posix.cc
+build obj/lib/rpc/gpr/wrap_memcpy.o: cxx ../../../lib/rpc/support/wrap_memcpy.cc
+
+build obj/lib/rpc/libgpr.a: alink obj/lib/rpc/gpr/basic_timers.o obj/lib/rpc/gpr/stap_timers.o obj/lib/rpc/gpr/alloc.o obj/lib/rpc/gpr/arena.o obj/lib/rpc/gpr/atm.o obj/lib/rpc/gpr/avl.o obj/lib/rpc/gpr/cmdline.o obj/lib/rpc/gpr/cpu_linux.o obj/lib/rpc/gpr/cpu_posix.o obj/lib/rpc/gpr/env_linux.o obj/lib/rpc/gpr/env_posix.o obj/lib/rpc/gpr/fork.o obj/lib/rpc/gpr/host_port.o obj/lib/rpc/gpr/log.o obj/lib/rpc/gpr/log_linux.o obj/lib/rpc/gpr/log_posix.o obj/lib/rpc/gpr/mpscq.o obj/lib/rpc/gpr/murmur_hash.o obj/lib/rpc/gpr/string.o obj/lib/rpc/gpr/string_posix.o obj/lib/rpc/gpr/subprocess_posix.o obj/lib/rpc/gpr/sync.o obj/lib/rpc/gpr/sync_posix.o obj/lib/rpc/gpr/thd.o obj/lib/rpc/gpr/thd_posix.o obj/lib/rpc/gpr/time.o obj/lib/rpc/gpr/time_posix.o obj/lib/rpc/gpr/time_precise.o obj/lib/rpc/gpr/tls_pthread.o obj/lib/rpc/gpr/tmpfile_posix.o obj/lib/rpc/gpr/wrap_memcpy.o
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/lib/rpc

@@ -1,0 +1,359 @@
+# Copyright 2018 Mumba. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build_overrides/build.gni")
+import("//build/config/jumbo.gni")
+import("//build/config/allocator.gni")
+
+#declare_args() {
+#    use_blink = false
+#}
+
+shared_library("MumbaShims") {
+#jumbo_component("MumbaShims") {
+  #testonly = true
+  output_name = "mumba_kit"
+
+  #module_map = "module.modulemap"
+
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+  ]
+
+  configs = []
+  configs = default_compiler_configs
+
+  if (is_clang) {
+    cflags = []
+    #cflags -= [
+    # "-Wunused-variable"
+    #]
+    cflags += [
+      # Lots of third-party libraries have unused variables. Instead of
+      # suppressing them individually, we just blanket suppress them here.
+      "-Wno-unused-variable",
+      "-Wno-implicit-fallthrough",
+      "-Wno-macro-redefined"
+    ]
+  }
+  if (is_linux) {
+    ldflags = [
+      "-lXext",
+      "-lXrender",
+      "-lX11",
+      "-lXi",
+      "-lXrandr",
+      #"-lglib-2.0",
+    ]
+  }
+
+  if (is_win) {
+    libs = [
+      "advapi32.lib",
+      "comdlg32.lib",
+      "dbghelp.lib",
+      "dnsapi.lib",
+      "gdi32.lib",
+      "msimg32.lib",
+      "odbc32.lib",
+      "odbccp32.lib",
+      "oleaut32.lib",
+      "psapi.lib",
+      "shell32.lib",
+      "shlwapi.lib",
+      "user32.lib",
+      "usp10.lib",
+      "uuid.lib",
+      "version.lib",
+      "wininet.lib",
+      "winmm.lib",
+      "winspool.lib",
+      "ws2_32.lib",
+      "delayimp.lib",
+      "kernel32.lib",
+      "ole32.lib",
+    ]
+  }
+  
+  defines = [
+    "BLINK_IMPLEMENTATION",
+    #"V8_USE_EXTERNAL_STARTUP_DATA"
+  ]
+
+  include_dirs = [
+    "//third_party/blink/renderer",
+    "$root_gen_dir/third_party/blink/renderer/core",
+    "//v8",
+    "//v8/include",
+    "$root_gen_dir/v8",
+    #"/usr/include/glib-2.0/",
+    #"//build/linux/debian_sid_amd64-sysroot/usr/include",
+    "//kit/cpp",
+  ]
+
+  sources = [
+    "v8/v8_context.cc",
+    "v8/v8_context.h",
+    "v8/v8_exception.cc",
+    "v8/v8_exception.h",
+    "v8/v8_engine.cc",
+    "v8/v8_engine.h",
+    "v8/v8_script.cc",
+    "v8/v8_script.h",
+    "v8/v8_value.cc",
+    "v8/v8_value.h",
+    "grpc/byte_buffer_shim.cc",
+    "grpc/call_shim.cc",
+    "grpc/cgrpc.h",
+    "grpc/channel_shim.cc",
+    "grpc/completion_queue_shim.cc",
+    "grpc/event_shim.cc",
+    "grpc/handler_shim.cc",
+    "grpc/internal_shim.cc",
+    "grpc/internal.h",
+    "grpc/metadata_shim.cc",
+    "grpc/mutex_shim.cc",
+    "grpc/observers_shim.cc",
+    "grpc/operations_shim.cc",
+    "grpc/server_shim.cc",
+    "BundleShims.cc",
+    "BundleShims.h",
+    "ApplicationHandler.h",
+    "ApplicationShims.cc",
+    "ApplicationShims.h",
+    "CompositorCallbacks.h",
+    "CompositorFrameSinkCallbacks.h",
+    "CompositorHelper.cc",
+    "CompositorHelper.h",
+    "CompositorStructsPrivate.cc",
+    "CompositorStructsPrivate.h",
+    "CompositorShims.cc",
+    "CompositorShims.h",
+    "EngineCallbacks.h",
+    "EngineHelper.cc",
+    "EngineHelper.h",
+    "EngineShims.cc",
+    "EngineShims.h",
+    "CoreShims.cc",
+    "CoreShims.h",
+    "Globals.h",
+    "GpuShims.cc",
+    "GpuShims.h",
+    "HarfBuzzShims.cc",
+    "HarfBuzzShims.h",
+    "ICUShims.cc",
+    "ICUShims.h",
+    "IPCClientThread.cc",
+    "IPCClientThread.h",
+    "IPCShims.cc",
+    "IPCShims.h",
+    "IPCThreadSafeSender.cc",
+    "IPCThreadSafeSender.h",
+    "JavascriptShims.cc",
+    "JavascriptShims.h",
+    "PDFShims.cc",
+    "PDFShims.h",
+    "PNGCodec.cc",
+    "PNGCodec.h",
+    "Runtime.cc",
+    "Runtime.h",
+    "NetHelper.cc",
+    "NetHelper.h",
+    "NetCallbacks.h",
+    "NetShims.cc",
+    "NetShims.h",
+    "SkiaShims.cc",
+    "SkiaShims.h",
+    "StorageHelper.cc",
+    "StorageHelper.h",
+    "StorageShims.cc",
+    "StorageShims.h",
+    "WebShims.cc",
+    "WebShims.h",
+    "WebStructsPrivate.cc",
+    "WebStructsPrivate.h",
+    "Sandbox.h",
+    "SandboxImpl.cc",
+    "SandboxImpl.h",
+    "ChannelRegistryShims.h",
+    "ChannelRegistryShims.cc",
+    "RouteRegistryShims.h",
+    "RouteRegistryShims.cc",
+    "ServiceRegistryShims.h",
+    "ServiceRegistryShims.cc",
+    "WebDefinitions.h",
+    "modp_b64_data.h",
+    "modp_b64.cc",
+    "modp_b64.h",
+    "module.modulemap"
+  ]
+  
+  deps = [
+    #"//core/common",
+    "//core/shared/application:application_shared",
+    "//core/shared/common:common_shared",
+    "//core/shared/domain:domain_shared",
+    "//lib/base",
+    "//lib/base:base_static",
+    "//lib/base/third_party/dynamic_annotations",
+    "//lib/cc",
+    "//lib/cc/animation",
+    "//lib/cc/paint",
+    #"//lib/cc:test_support",
+    "//lib/components/viz/common",
+    "//lib/components/viz/client",
+    "//lib/ipc",
+    "//lib/rpc:gpr",
+    "//lib/rpc:grpc",
+    "//lib/gpu",
+    "//lib/gin",
+    "//lib/gpu:gles2",
+    "//lib/gpu:raster",
+    "//lib/gpu:gpu_util",
+    "//lib/gpu:command_buffer_gles2",
+    "//lib/gpu/config",
+    "//lib/gpu/command_buffer/common",
+    "//lib/gpu/command_buffer/service",
+    "//lib/gpu/command_buffer/client",
+    "//lib/gpu/command_buffer/client:gles2_implementation",
+    "//lib/gpu/command_buffer/client:gles2_cmd_helper",
+    "//lib/gpu/command_buffer/client:gles2_interface",
+    "//lib/gpu/command_buffer/client:raster_interface",
+    "//lib/gpu/ipc/common:gpu_preferences_util",
+    "//lib/gpu/ipc/host",
+    "//lib/gpu/vulkan:buildflags",
+    "//lib/media",
+    "//lib/media:media_buildflags",
+    "//lib/media/capture",
+    "//lib/media/midi",
+    "//lib/media/midi:mojo",
+    "//lib/media/mojo:buildflags",
+    "//lib/media/mojo/clients:jpeg_decode_accelerator",
+    "//lib/media/mojo/interfaces",
+    "//lib/media/mojo/interfaces:constants",
+    "//lib/media/mojo/services",
+    "//lib/mojo/common",
+    #"//lib/mojo/common:values_struct_traits",
+    "//lib/mojo/edk",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/services/service_manager",
+    "//lib/services/service_manager/embedder",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/service_manager/runner/common",
+    "//lib/services/service_manager/runner/host:lib",
+    "//lib/services/service_manager/sandbox",
+    "//lib/services/viz/privileged/interfaces",
+    "//lib/services/viz/public/interfaces",
+    "//lib/services/tracing:lib",
+    "//lib/services/tracing/public/cpp",
+    "//lib/services/ui/public/cpp/gpu",
+    "//lib/storage/common",
+    "//lib/net",
+    "//lib/crypto",
+    "//lib/rpc",
+    "//lib/skia",
+    "//lib/ui/base",
+    "//lib/ui/base:ui_features",
+    "//lib/ui/base/ime",
+    "//lib/ui/display",
+    "//lib/ui/display/types",
+    "//lib/ui/events",
+    "//lib/ui/events:gesture_detection",
+    "//lib/ui/events/blink",
+    "//lib/ui/events/devices",
+    "//lib/ui/events/gestures/blink",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/animation",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/gfx/geometry/mojo",
+    "//lib/ui/gl",
+    "//lib/ui/gl:gl_features",
+    "//lib/ui/gl/init",
+    "//lib/ui/surface",
+    "//lib/ui/latency",
+    "//lib/ui/native_theme",
+    "//lib/ui/resources",
+    "//lib/jingle:jingle_glue",
+    "//third_party/angle:angle_common",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public:buildflags",
+    "//third_party/blink/public:mojo_bindings",
+    "//third_party/blink/public:resources",
+    "//third_party/blink/public:scaled_resources",
+    "//third_party/blink/public:image_resources",
+    "//third_party/blink/public/common",
+    "//third_party/blink/renderer/core",
+    #"//third_party/blink/renderer/modules/media_capabilities",
+    #"//third_party/blink/renderer/modules/media_controls",
+    #"//third_party/blink/renderer/modules/mediacapturefromelement",
+    #"//third_party/blink/renderer/modules/mediarecorder",
+    #"//third_party/blink/renderer/modules/mediasession",
+    #"//third_party/blink/renderer/modules/mediasource",
+    "//third_party/blink/renderer/modules",
+    "//third_party/blink/renderer/modules/webgl",
+    #"//third_party/blink/renderer/bindings/modules/v8",
+    #"//third_party/blink/renderer/modules/mediastream",
+    "//third_party/boringssl",
+    "//third_party/brotli:enc",
+    "//third_party/brotli:dec",
+    "//third_party/libyuv",
+    "//third_party/libpng",
+    "//third_party/re2",
+    "//third_party/zlib",
+    "//third_party/zlib/google:compression_utils",
+    "//third_party/zlib/google:zip",
+    "//third_party/libxml:libxml",
+    "//third_party/jsoncpp:jsoncpp",
+    "//third_party/ced",
+    "//third_party/icu",
+    "//third_party/protobuf:protobuf_lite",
+    "//third_party/zstd:zstd",
+    "//third_party/widevine/cdm",
+    "//third_party/pdfium",
+    #"//third_party/python",
+    "//v8",
+    "//v8:v8_libplatform",
+    "//v8:v8_libbase",
+    #"//v8:v8_base",
+    "//v8:v8_maybe_snapshot",
+  ]
+
+  public_deps = [
+    "//lib/components/cronet",
+    "//lib/storage",
+  ]
+
+  if (is_win) {
+    #configs += [
+    #  "//third_party/khronos:khronos_headers",
+    #  "//third_party/wtl:wtl_includes",
+    #]
+    libs += [ "setupapi.lib" ]
+    deps += [ "//lib/sandbox" ]
+  }
+
+  if (use_allocator == "tcmalloc") {
+    deps += [ "//lib/base/allocator:tcmalloc" ]
+  }
+
+  if (is_linux || is_mac) {
+    deps += [ "//lib/sandbox" ]
+  }
+
+  if (is_linux) {
+    deps += [
+      "//lib/ui/gfx/x",
+    ]
+    sources += [
+      "X11Shims.cc",
+      "X11Shims.h",
+    ]
+   if (defined(use_glib)) {
+     use_glib = false
+   }
+   #configs -= ["//build/config/linux:glib"]
+  }
+}

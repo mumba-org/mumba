@@ -1,0 +1,12 @@
+static_library("Libevent") {
+  include_dirs = [
+    "include"
+  ]
+  sources = [
+   "module.modulemap",
+   "c_libevent.cc",
+  ]
+  deps = [
+    "//lib/base/third_party/libevent"
+  ]
+}

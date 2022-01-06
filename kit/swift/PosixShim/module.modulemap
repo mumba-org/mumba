@@ -1,0 +1,10 @@
+module PosixShim [extern_c] [system] {
+  textual header "include/globals.h"
+  
+  header "include/posix.h"
+  header "include/CNIOLinux.h"
+  header "include/CNIOAtomics.h"
+  header "include/cpp_magic.h"
+ 
+  export *
+}

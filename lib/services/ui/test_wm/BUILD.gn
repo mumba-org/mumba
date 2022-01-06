@@ -1,0 +1,35 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+
+service("test_wm") {
+  # testonly = true
+
+  sources = [
+    "test_wm.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/ui/public/cpp",
+    "//lib/services/ui/public/interfaces",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/aura:test_support",
+    "//lib/ui/display",
+    "//lib/ui/gfx/geometry/mojo",
+    "//kit/cpp/ui/wm",
+  ]
+
+  data_deps = [
+    "//lib/services/ui",
+  ]
+}
+
+service_manifest("manifest") {
+  name = "test_wm"
+  source = "manifest.json"
+}

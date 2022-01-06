@@ -1,0 +1,91 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+import("//lib/testing/test.gni")
+
+mojom("interfaces") {
+  # The window service runs in the browser process for mus and in the
+  # ash_and_ui process for mash. Allow IPC serialization to be skipped for
+  # the common case of in-process mojo calls. This causes a ~130KB size
+  # increase on 64-bit Intel builds.
+  if (is_chromeos) {
+    support_lazy_serialization = true
+  }
+
+  sources = [
+    "accessibility_manager.mojom",
+    "clipboard.mojom",
+    "display_manager.mojom",
+    "event_injector.mojom",
+    "event_matcher.mojom",
+    "gpu.mojom",
+    "mus_constants.mojom",
+    "user_activity_monitor.mojom",
+    "video_detector.mojom",
+    "window_manager.mojom",
+    "window_manager_constants.mojom",
+    "window_manager_window_tree_factory.mojom",
+    "window_server_test.mojom",
+    "window_tree.mojom",
+    "window_tree_constants.mojom",
+    "window_tree_host.mojom",
+    "window_tree_host_factory.mojom",
+  ]
+
+  import_dirs = [
+    get_path_info("../../../..", "abspath"),
+    "//mojo/services",
+  ]
+
+  public_deps = [
+    ":constants",
+    "//lib/gpu/ipc/common:interfaces",
+    "//lib/media/mojo/interfaces",
+    "//lib/mojo/public/mojom/base",
+    "//lib/services/ui/public/interfaces/cursor",
+    "//lib/services/ui/public/interfaces/display",
+    "//lib/services/ui/public/interfaces/ime",
+    "//lib/services/viz/public/interfaces",
+    "//lib/skia/public/interfaces",
+    "//lib/ui/base/mojo:mojo_bindings",
+    "//lib/ui/display/mojo:interfaces",
+    "//lib/ui/events/mojo:interfaces",
+    "//lib/ui/gfx/geometry/mojo",
+    "//lib/ui/gfx/mojo",
+    "//lib/ui/platform_window/mojo:interfaces",
+  ]
+
+  if (is_chromeos) {
+    sources += [ "arc.mojom" ]
+    public_deps += [ "//lib/components/arc/common:media" ]
+  }
+}
+
+mojom("constants") {
+  sources = [
+    "constants.mojom",
+  ]
+}
+
+source_set("tests") {
+  # testonly = true
+
+  sources = [
+    "cursor/cursor_struct_traits_unittest.cc",
+    "ime/ime_struct_traits_unittest.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/services/ui/public/interfaces/cursor",
+    "//lib/services/ui/public/interfaces/ime:test_interfaces",
+    "//lib/skia/public/interfaces",
+    "//lib/testing/gtest",
+    "//lib/ui/display/types",
+    "//lib/ui/gfx:test_support",
+    "//lib/ui/gfx/range/mojo:struct_traits",
+  ]
+}

@@ -1,0 +1,8 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_32 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_26 -DLEVELDB_PLATFORM_CHROMIUM=1 -DGOOGLE_PROTOBUF_NO_RTTI -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER -DHAVE_PTHREAD -DPROTOBUF_USE_DLLS
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/leveldatabase -I../../../third_party/leveldatabase/src -I../../../third_party/leveldatabase/src/include -I../../../third_party/protobuf/src -Igen/protoc_out -I../../../third_party/protobuf/src
+label_name = test_support
+target_out_dir = obj/lib/components/leveldb_proto
+target_output_name = test_support
+
+
+build obj/lib/components/leveldb_proto/test_support.stamp: stamp || obj/lib/components/leveldb_proto/libleveldb_proto.a ./libbase.so.TOC obj/lib/components/leveldb_proto/testing/proto/libproto.a ./libleveldatabase.so.TOC ./libprotobuf_lite.so.TOC

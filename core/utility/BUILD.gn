@@ -1,0 +1,132 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/jumbo.gni")
+import("//lib/media/media_options.gni")
+
+jumbo_source_set("utility") {
+
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    #"//build/config/compiler:rtti"
+  ]
+  # Only the public target should depend on this. All other targets (even
+  # internal content ones other than test) should depend on the public one.
+  visibility = [
+    ":for_content_tests",
+    "//core:*",
+    "//mumba/app:*",
+    "//mumba:shell_dependencies",
+    "//core/utility:utility_sources",
+    "//runtime/HostShims:*"
+  ]
+
+  cflags = [
+    "-Wno-shadow"
+  ]
+
+  sources = [
+    "content_utility_client.cc",
+    "content_utility_client.h",
+    "chrome_content_utility_client.cc",
+    "chrome_content_utility_client.h",
+    "in_process_utility_thread.cc",
+    "in_process_utility_thread.h",
+    "blink_platform_impl.cc",
+    "blink_platform_impl.h",
+    "utility_blink_platform_impl.cc",
+    "utility_blink_platform_impl.h",
+    "utility_blink_platform_with_sandbox_support_impl.cc",
+    "utility_blink_platform_with_sandbox_support_impl.h",
+    "utility_main.cc",
+    "utility_service_factory.cc",
+    "utility_service_factory.h",
+    "utility_thread.cc",
+    "utility_thread.h",
+    "utility_thread_impl.cc",
+    "utility_thread_impl.h",
+  ]
+
+  configs += [ "//core:core_implementation" ]
+
+  defines = [
+    "CONTENT_IMPLEMENTATION=1"
+  ]
+
+  deps = [
+    "//lib/base",
+    #"//core/common",
+    "//core/shared/common:export",
+    "//core/shared/common:common_shared",
+    "//lib/media:media_buildflags",
+    "//lib/media/blink",
+    "//lib/mojo/common",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/net:net_with_v8",
+    "//lib/ipc",
+    "//lib/sandbox",
+    "//lib/url",
+    "//lib/skia",
+    "//lib/sql",
+    "//lib/ui/base:ui_features",
+    "//lib/components/services/heap_profiling",
+    "//lib/components/services/heap_profiling/public/cpp",
+    "//lib/components/services/patch:lib",
+    "//lib/components/services/unzip:lib",
+    "//lib/components/url_formatter",
+    "//lib/services/audio:lib",
+    "//lib/services/audio/public/mojom:constants",
+    "//lib/services/data_decoder:lib",
+    "//lib/services/data_decoder/public/cpp",
+    "//lib/services/network:network_service",
+    "//lib/services/service_manager",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/shape_detection:lib",
+    "//lib/services/shape_detection/public/mojom",
+    "//lib/services/video_capture:lib",
+    "//lib/services/video_capture/public/mojom:constants",
+    "//lib/services/viz:lib",
+    "//lib/services/proxy_resolver:lib",
+    "//lib/components/webcrypto",
+    "//lib/ui/events",
+    "//lib/ui/events/mojo:interfaces",
+    "//lib/ui/events/blink",
+    "//lib/ui/events/gestures/blink",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public:mojo_bindings",
+    "//third_party/blink/public:scaled_resources",
+    "//third_party/blink/public:resources",
+    "//third_party/blink/public:web_feature_mojo_bindings",
+    "//third_party/blink/public/mojom:mojom_core",
+    "//third_party/blink/public:buildflags",
+    "//third_party/blink/public:blink",
+    "//third_party/libxml",
+    "//third_party/zlib",
+    "//third_party/zlib/google:zip",
+    "//third_party/zlib/google:compression_utils",
+  ]
+
+  # When pepper CDMs are supported, we also support running the CDM in the
+  # utility process using mojo MediaService.
+  if (enable_library_cdms) {
+    deps += [
+      "//lib/media",
+      "//lib/media/mojo:buildflags",
+      "//lib/media/mojo/interfaces:constants",
+      "//lib/media/mojo/services",
+    ]
+  }
+}
+
+# See comment at the top of //content/BUILD.gn for how this works.
+group("for_content_tests") {
+  visibility = [ "//core/test/*" ]
+  if (!is_component_build) {
+    public_deps = [
+      ":utility",
+    ]
+  }
+}

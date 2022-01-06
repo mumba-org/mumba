@@ -1,0 +1,5 @@
+module Libevent [extern_c] [system] {
+  textual header "include/globals.h"
+  header "include/libevent.h"
+  export *
+}

@@ -1,0 +1,93 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/mumba_build.gni")
+import("//mumba/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+#assert(!is_ios, "Chromium/iOS shouldn't use anything in //chrome")
+
+grit("locale_settings") {
+  source = "locale_settings.grd"
+  defines = mumba_grit_defines
+  output_dir = "$root_gen_dir/mumba"
+  outputs = [
+    "grit/locale_settings.h",
+    "locale_settings_en-US.pak",
+  ]
+}
+
+grit("platform_locale_settings") {
+  if (is_win) {
+    source = "locale_settings_win.grd"
+  } else if (is_mac) {
+    source = "locale_settings_mac.grd"
+  } else if (is_chromeos) {
+    if (is_chrome_branded) {
+      source = "locale_settings_google_chromeos.grd"
+    } else {
+      source = "locale_settings_chromiumos.grd"
+    }
+  } else if (is_posix || is_fuchsia) {
+    # All other posix systems just use the Linux one.
+    source = "locale_settings_linux.grd"
+  }
+
+  defines = mumba_grit_defines
+  outputs = [
+    "grit/platform_locale_settings.h",
+    "platform_locale_settings_en-US.pak",
+    ]
+
+  output_dir = "$root_gen_dir/mumba"
+}
+
+grit("resources") {
+  source = "content_resources.grd"
+  source_is_generated = true
+  outputs = [
+    "grit/content_resources.h",
+    "content_resources_100_percent.pak",
+    "content_resources_200_percent.pak",
+  ]
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+  deps = [
+    #"//mumba/app:mumba_app",
+    "//mumba/app:domain_manifest",
+    "//mumba/app:application_manifest",
+    "//mumba/app:gpu_manifest",
+    "//mumba/app:packaged_services_manifest",
+    "//mumba/app:host_manifest",
+    "//mumba/app:utility_manifest",
+    "//lib/services/catalog:manifest",
+    "//core/shared/application:accessibility_manifest",
+    "//core/shared/application:animation_manifest",
+    "//core/shared/application:application_cache_manifest",
+    "//core/shared/application:cache_storage_manifest",
+    "//core/shared/application:css_manifest",
+    "//core/shared/application:database_manifest",
+    "//core/shared/application:device_orientation_manifest",
+    "//core/shared/application:dom_manifest",
+    "//core/shared/application:dom_snapshot_manifest",
+    "//core/shared/application:dom_storage_manifest",
+    "//core/shared/application:emulation_manifest",
+    "//core/shared/application:headless_manifest",
+    "//core/shared/application:host_manifest",
+    "//core/shared/application:indexed_db_manifest",
+    "//core/shared/application:input_manifest",
+    "//core/shared/application:io_manifest",
+    "//core/shared/application:layer_tree_manifest",
+    "//core/shared/application:network_manifest",
+    "//core/shared/application:overlay_manifest",
+    "//core/shared/application:page_manifest",
+    "//core/shared/application:service_worker_manifest",
+    "//core/shared/application:storage_manifest",
+    "//core/shared/application:system_info_manifest",
+    "//core/shared/application:target_manifest",
+    "//core/shared/application:tethering_manifest",     
+  ]
+}

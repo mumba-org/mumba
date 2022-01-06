@@ -1,0 +1,86 @@
+// Copyright 2020 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/ref_counted_memory.mojom";
+import "lib/mojo/public/mojom/base/big_buffer.mojom";
+import "lib/url/mojom/url.mojom";
+
+enum RepoStatusCode {
+  kREPO_STATUS_OK = 0,
+  kREPO_STATUS_ERR_FAILED,
+  kREPO_STATUS_ERR_PATH_EMPTY,
+  kREPO_STATUS_ERR_ENTRY_NOT_FOUND,
+};
+
+enum RepoType {
+  kREPO_TYPE_TORRENT = 0,
+  kREPO_TYPE_IPFS = 1,
+  kREPO_TYPE_FILESYSTEM = 2,
+  kREPO_TYPE_GIT = 3,
+  kREPO_TYPE_HTTP = 4,
+  kREPO_TYPE_RPC = 5,
+};
+
+enum RepoAddressFormat {
+  kREPO_ADDRESS_CLASSIC = 0,
+  kREPO_ADDRESS_BASE32 = 1,
+  kREPO_ADDRESS_BASE36 = 2,
+  kREPO_ADDRESS_BASE58 = 3,
+  kREPO_ADDRESS_BASE64 = 4,
+  kREPO_ADDRESS_IPFS_DHT_CID = 5,
+  kREPO_ADDRESS_TORRENT_MAGNET = 6,
+  kREPO_ADDRESS_TORRENT_ED25519 = 7,
+};
+
+enum PKCryptoFormat {
+  kPK_ED25519 = 0,
+};
+
+struct RepoEntry {
+  string uuid;
+  RepoType type;
+  string name;
+  string address;
+  RepoAddressFormat address_format;
+  string address_format_version;
+  string public_key; // raw_bytes
+  PKCryptoFormat pk_crypto_format;
+  string root_tree; // raw_bytes
+  string creator;
+};
+
+// this is 'before' the actual RepoEntry
+// this is mostly a address reference to a possible Repo
+struct RepoDescriptor {
+  string address;
+  RepoAddressFormat address_format;
+  string address_format_version;
+};
+
+interface RepoWatcher {
+  OnEntryAdded(RepoEntry entry);
+  OnEntryRemoved(RepoEntry entry);
+};
+
+interface RepoRegistry {
+  
+  AddRepo(RepoEntry entry) => (RepoStatusCode reply);
+  AddRepoByAddress(RepoDescriptor descriptor) => (RepoStatusCode reply);
+  RemoveRepo(string address) => (RepoStatusCode reply);
+  RemoveRepoByUUID(string uuid) => (RepoStatusCode reply);
+  LookupRepo(string address) => (RepoStatusCode code, RepoEntry? entry);
+  LookupRepoByName(string name) => (RepoStatusCode code, RepoEntry? entry);
+  LookupRepoByUUID(string uuid) => (RepoStatusCode code, RepoEntry? entry);
+  HaveRepo(string address) => (bool have);
+  HaveRepoByName(string name) => (bool have);
+  HaveRepoByUUID(string uuid) => (bool have);
+  ListRepos() => (array<RepoEntry> entries);
+  GetRepoCount() => (uint32 count);
+
+  AddWatcher(RepoWatcher watcher) => (int32 id);
+  RemoveWatcher(int32 watcher);
+};

@@ -1,0 +1,40 @@
+swift_executable("Test") {
+  public_deps = [
+    "//kit/swift/Base",
+    "//runtime/MumbaShims",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/ThirdParty/icu4c:icuuc",
+    "//kit/swift/ThirdParty/icu4c:icui18n"
+    #"//kit/swift/ThirdParty/Dispatch",
+  ]
+  #deps = [
+  #  ":ctest"
+  #]
+  if (is_linux){
+    public_deps += [
+      "//kit/swift/PosixShim",
+     # "//kit/swift/ThirdParty/NIO:CNIOLinux",
+    ]
+  }
+  sources = [
+    "Source/main.swift"
+  ]
+}
+
+executable("ctest") {
+  #testonly = true
+  deps = [
+    "//lib/base",
+    "//lib/remoting/host",
+    "//lib/remoting/client", 
+    "//lib/remoting/protocol",
+    #"//lib/remoting/protocol:test_support",
+    "//lib/net",
+    "//lib/jingle:jingle_glue",
+    "//third_party/libjingle_xmpp"
+  ]
+
+  sources = [
+    "Source/main.cc"
+  ]
+}

@@ -1,0 +1,40 @@
+swift_shared("world_service") {
+  deps = [
+    "//apps/world/resources/proto:WorldApi",
+    "//kit/swift/Base",
+    "//kit/swift/Graphics",
+    "//kit/swift/App",
+    "//kit/swift/Net",
+    "//kit/swift/Data",
+    "//kit/swift/Engine",
+    "//kit/swift/Channel",
+    "//kit/swift/Javascript",
+    "//kit/swift/Python",
+    "//kit/swift/Service",
+    "//kit/swift/Route",
+    "//kit/swift/PosixShim",
+    "//kit/swift/Compositor",
+    "//kit/swift/Web",
+    "//kit/swift/PDF",
+    "//kit/swift/Gpu",
+    "//kit/swift/GL",
+    "//kit/swift/_C",
+    "//kit/swift/ThirdParty/ProtocolBuffers",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/ThirdParty/icu4c:icuuc",
+    "//kit/swift/ThirdParty/icu4c:icui18n",
+    "//kit/swift/ThirdParty/CGRPCZlib",
+    "//third_party/zlib",
+    "//third_party/python"
+  ]
+  sources = [
+    "Sources/Handlers.swift",
+    "Sources/WorldContext.swift",
+    "Sources/WorldProvider.swift"
+  ]
+  ldflags = [
+    #"-lpython3_vm",
+    "-lffi",
+    #"-lz"
+  ]
+}

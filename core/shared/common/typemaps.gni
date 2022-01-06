@@ -1,0 +1,37 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+typemaps = [
+  "//core/shared/common/background_fetch/background_fetch_types.typemap",
+  "//core/shared/common/cache_storage/cache_storage.typemap",
+  #"//content/common/frame.typemap",
+  #"//content/common/frame_messages.typemap",
+  "//core/shared/common/input/synchronous_compositor.typemap",
+  "//core/shared/common/media/media_devices.typemap",
+  "//core/shared/common/media/media_stream.typemap",
+  "//core/shared/common/native_types.typemap",
+  "//core/shared/common/native_types_mac.typemap",
+  #"//core/common/application.typemap",
+  #"//content/common/navigation_params.typemap",
+  "//core/shared/common/notifications/notification_types.typemap",
+  #"//content/common/push_messaging.typemap",
+  "//core/shared/common/render_frame_metadata.typemap", 
+  "//core/shared/common/service_worker/service_worker_event_dispatcher.typemap",
+  "//core/shared/common/service_worker/service_worker_fetch_request.typemap",
+  "//core/shared/common/service_worker/service_worker_fetch_response.typemap",
+  "//core/shared/common/service_worker/service_worker_provider.typemap",
+  "//core/shared/common/url_loader_factory_bundle.typemap",
+  "//core/shared/common/web_preferences.typemap",
+  "//core/shared/common/media/media_session.typemap",
+  "//core/shared/common/load_timing_info.typemap",
+  "//core/shared/common/manifest.typemap",
+  "//core/shared/common/referrer.typemap",
+  "//core/shared/common/resource_type.typemap",
+  #"//core/common/webplugininfo.typemap",
+  "//core/shared/common/web_application_info_provider.typemap",
+  "//core/shared/common/blink_cloneable_message.typemap",
+  "//core/shared/common/cloneable_message.typemap",
+  "//core/shared/common/values.typemap",
+  "//third_party/blink/renderer/platform/mojo/string.typemap",
+]

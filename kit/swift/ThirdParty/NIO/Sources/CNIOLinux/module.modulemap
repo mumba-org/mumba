@@ -1,0 +1,4 @@
+module CNIOLinux [extern_c] [system] {
+  header "include/CNIOLinux.h"
+  export *
+}

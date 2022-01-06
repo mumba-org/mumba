@@ -1,0 +1,8 @@
+// Copyright (c) 2015 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+public enum GpuPreference : Int32 {
+  case PreferIntegratedGpu = 0
+  case PreferDiscreteGpu = 1
+}

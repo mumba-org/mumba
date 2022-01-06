@@ -1,0 +1,14 @@
+swift_static("Service") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+  ]
+  if (is_linux) {
+    deps += [
+      "//kit/swift/PosixShim",
+    ]
+  }
+  sources = [
+    "Sources/ServiceRegistry.swift"
+  ]
+}

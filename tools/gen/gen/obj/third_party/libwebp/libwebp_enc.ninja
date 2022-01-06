@@ -1,0 +1,36 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DWEBP_NEAR_LOSSLESS=0 -DWEBP_DISABLE_STATS -DWEBP_REDUCE_SIZE -DWEBP_REDUCE_CSP -DWEBP_EXTERN=extern
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/libwebp -I../../../third_party/libwebp/src
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -Wno-incompatible-pointer-types
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = libwebp_enc
+target_out_dir = obj/third_party/libwebp
+target_output_name = libwebp_enc
+
+build obj/third_party/libwebp/libwebp_enc/alpha_enc.o: cc ../../../third_party/libwebp/src/enc/alpha_enc.c
+build obj/third_party/libwebp/libwebp_enc/analysis_enc.o: cc ../../../third_party/libwebp/src/enc/analysis_enc.c
+build obj/third_party/libwebp/libwebp_enc/backward_references_cost_enc.o: cc ../../../third_party/libwebp/src/enc/backward_references_cost_enc.c
+build obj/third_party/libwebp/libwebp_enc/backward_references_enc.o: cc ../../../third_party/libwebp/src/enc/backward_references_enc.c
+build obj/third_party/libwebp/libwebp_enc/config_enc.o: cc ../../../third_party/libwebp/src/enc/config_enc.c
+build obj/third_party/libwebp/libwebp_enc/cost_enc.o: cc ../../../third_party/libwebp/src/enc/cost_enc.c
+build obj/third_party/libwebp/libwebp_enc/filter_enc.o: cc ../../../third_party/libwebp/src/enc/filter_enc.c
+build obj/third_party/libwebp/libwebp_enc/frame_enc.o: cc ../../../third_party/libwebp/src/enc/frame_enc.c
+build obj/third_party/libwebp/libwebp_enc/histogram_enc.o: cc ../../../third_party/libwebp/src/enc/histogram_enc.c
+build obj/third_party/libwebp/libwebp_enc/iterator_enc.o: cc ../../../third_party/libwebp/src/enc/iterator_enc.c
+build obj/third_party/libwebp/libwebp_enc/near_lossless_enc.o: cc ../../../third_party/libwebp/src/enc/near_lossless_enc.c
+build obj/third_party/libwebp/libwebp_enc/picture_csp_enc.o: cc ../../../third_party/libwebp/src/enc/picture_csp_enc.c
+build obj/third_party/libwebp/libwebp_enc/picture_enc.o: cc ../../../third_party/libwebp/src/enc/picture_enc.c
+build obj/third_party/libwebp/libwebp_enc/picture_psnr_enc.o: cc ../../../third_party/libwebp/src/enc/picture_psnr_enc.c
+build obj/third_party/libwebp/libwebp_enc/picture_rescale_enc.o: cc ../../../third_party/libwebp/src/enc/picture_rescale_enc.c
+build obj/third_party/libwebp/libwebp_enc/picture_tools_enc.o: cc ../../../third_party/libwebp/src/enc/picture_tools_enc.c
+build obj/third_party/libwebp/libwebp_enc/predictor_enc.o: cc ../../../third_party/libwebp/src/enc/predictor_enc.c
+build obj/third_party/libwebp/libwebp_enc/quant_enc.o: cc ../../../third_party/libwebp/src/enc/quant_enc.c
+build obj/third_party/libwebp/libwebp_enc/syntax_enc.o: cc ../../../third_party/libwebp/src/enc/syntax_enc.c
+build obj/third_party/libwebp/libwebp_enc/token_enc.o: cc ../../../third_party/libwebp/src/enc/token_enc.c
+build obj/third_party/libwebp/libwebp_enc/tree_enc.o: cc ../../../third_party/libwebp/src/enc/tree_enc.c
+build obj/third_party/libwebp/libwebp_enc/vp8l_enc.o: cc ../../../third_party/libwebp/src/enc/vp8l_enc.c
+build obj/third_party/libwebp/libwebp_enc/webp_enc.o: cc ../../../third_party/libwebp/src/enc/webp_enc.c
+
+build obj/third_party/libwebp/libwebp_enc.a: alink obj/third_party/libwebp/libwebp_enc/alpha_enc.o obj/third_party/libwebp/libwebp_enc/analysis_enc.o obj/third_party/libwebp/libwebp_enc/backward_references_cost_enc.o obj/third_party/libwebp/libwebp_enc/backward_references_enc.o obj/third_party/libwebp/libwebp_enc/config_enc.o obj/third_party/libwebp/libwebp_enc/cost_enc.o obj/third_party/libwebp/libwebp_enc/filter_enc.o obj/third_party/libwebp/libwebp_enc/frame_enc.o obj/third_party/libwebp/libwebp_enc/histogram_enc.o obj/third_party/libwebp/libwebp_enc/iterator_enc.o obj/third_party/libwebp/libwebp_enc/near_lossless_enc.o obj/third_party/libwebp/libwebp_enc/picture_csp_enc.o obj/third_party/libwebp/libwebp_enc/picture_enc.o obj/third_party/libwebp/libwebp_enc/picture_psnr_enc.o obj/third_party/libwebp/libwebp_enc/picture_rescale_enc.o obj/third_party/libwebp/libwebp_enc/picture_tools_enc.o obj/third_party/libwebp/libwebp_enc/predictor_enc.o obj/third_party/libwebp/libwebp_enc/quant_enc.o obj/third_party/libwebp/libwebp_enc/syntax_enc.o obj/third_party/libwebp/libwebp_enc/token_enc.o obj/third_party/libwebp/libwebp_enc/tree_enc.o obj/third_party/libwebp/libwebp_enc/vp8l_enc.o obj/third_party/libwebp/libwebp_enc/webp_enc.o || obj/third_party/libwebp/libwebp_utils.a obj/third_party/libwebp/libwebp_webp.stamp
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/libwebp

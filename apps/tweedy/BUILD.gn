@@ -1,0 +1,19 @@
+action("tweedy_bundle") {
+    script = "//mumba/app/mumba_bundle.py"
+    deps = [
+      "//mumba:mumba_bundle",
+      "//apps/tweedy/app:tweedy_app", 
+      "//apps/tweedy/service:tweedy_service"
+    ]
+    out_dir = rebase_path("//apps")
+    args = [
+      "tweedy",
+      "$out_dir",
+    ]
+    outputs = [
+      "$out_dir/tweedy/tweedy.bundle",
+      "$out_dir/tweedy/tweedy_app-linux-x64.appx",
+      "$out_dir/tweedy/tweedy_resources.appx",
+      "$out_dir/tweedy/tweedy_service-linux-x64.appx"
+    ]
+}

@@ -1,0 +1,16 @@
+
+swift_protobuf("TweedyApi") {
+  deps = [
+    "//kit/swift/Base",
+    "//kit/swift/Net",
+    "//kit/swift/Engine",
+    "//kit/swift/Web",
+    "//kit/swift/Compositor",
+    "//kit/swift/Gpu",
+    "//kit/swift/GL",
+    "//kit/swift/_C",
+  ]
+  sources = [
+    "Sources/Api/Tweedy.proto"
+  ] 
+}

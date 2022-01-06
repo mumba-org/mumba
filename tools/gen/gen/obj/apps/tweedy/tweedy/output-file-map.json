@@ -1,0 +1,11 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy/tweedy/master.swiftdeps"
+   },
+   "/workspace/jabberwock/apps/tweedy/Sources/TweedyMain.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy/tweedy/TweedyMain.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy/tweedy/TweedyMain.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy/tweedy/TweedyMain.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy/tweedy/TweedyMain~partial.swiftmodule"
+   }
+}

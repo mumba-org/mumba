@@ -1,0 +1,23 @@
+// Copyright 2018 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/mojom/objects.mojom";
+
+interface DomainManagementService {
+  CreateDomain(string name);
+  DropDomain(string name);
+  StartDomain(string name);
+  StopDomain(string name);
+  GetDomainState(string name) => (DomainState state);
+  GetDomainList() => (array<DomainHandle> hosts);
+};
+
+interface DomainManagementServiceClient {
+  OnCreateDomain(DomainStatus status, DomainHandle info);
+  OnDropDomain(DomainStatus status, DomainHandle info);
+  OnStartDomain(DomainStatus status, DomainHandle info);
+  OnStopDomain(DomainStatus status, DomainHandle info);
+};

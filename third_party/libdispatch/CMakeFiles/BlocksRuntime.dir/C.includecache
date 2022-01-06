@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/workspace/source/swift/swift-corelibs-libdispatch/src/BlocksRuntime/Block.h
+
+/workspace/source/swift/swift-corelibs-libdispatch/src/BlocksRuntime/Block_private.h
+stdbool.h
+-
+stdint.h
+-
+stdio.h
+-
+Block.h
+/workspace/source/swift/swift-corelibs-libdispatch/src/BlocksRuntime/Block.h
+
+/workspace/source/swift/swift-corelibs-libdispatch/src/BlocksRuntime/data.c
+
+/workspace/source/swift/swift-corelibs-libdispatch/src/BlocksRuntime/runtime.c
+Block_private.h
+/workspace/source/swift/swift-corelibs-libdispatch/src/BlocksRuntime/Block_private.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+stdint.h
+-
+dlfcn.h
+-
+os/assumes.h
+-
+assert.h
+-
+Windows.h
+-
+

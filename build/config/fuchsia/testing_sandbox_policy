@@ -1,0 +1,5 @@
+{
+  "features": [ "persistent-storage", "shell", "system-temp" ],
+  "dev": ["null", "zero"]
+}
+

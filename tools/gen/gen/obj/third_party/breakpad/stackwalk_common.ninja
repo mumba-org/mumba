@@ -1,0 +1,55 @@
+defines = -DBPLOG_MINIMUM_SEVERITY=SEVERITY_ERROR -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/breakpad/breakpad/src -I../../../third_party/breakpad/breakpad/src/third_party
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -Wno-tautological-constant-out-of-range-compare
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = stackwalk_common
+target_out_dir = obj/third_party/breakpad
+target_output_name = libstackwalk_common
+
+build obj/third_party/breakpad/stackwalk_common/path_helper.o: cxx ../../../third_party/breakpad/breakpad/src/common/path_helper.cc
+build obj/third_party/breakpad/stackwalk_common/basic_code_modules.o: cxx ../../../third_party/breakpad/breakpad/src/processor/basic_code_modules.cc
+build obj/third_party/breakpad/stackwalk_common/basic_source_line_resolver.o: cxx ../../../third_party/breakpad/breakpad/src/processor/basic_source_line_resolver.cc
+build obj/third_party/breakpad/stackwalk_common/call_stack.o: cxx ../../../third_party/breakpad/breakpad/src/processor/call_stack.cc
+build obj/third_party/breakpad/stackwalk_common/cfi_frame_info.o: cxx ../../../third_party/breakpad/breakpad/src/processor/cfi_frame_info.cc
+build obj/third_party/breakpad/stackwalk_common/disassembler_x86.o: cxx ../../../third_party/breakpad/breakpad/src/processor/disassembler_x86.cc
+build obj/third_party/breakpad/stackwalk_common/dump_context.o: cxx ../../../third_party/breakpad/breakpad/src/processor/dump_context.cc
+build obj/third_party/breakpad/stackwalk_common/dump_object.o: cxx ../../../third_party/breakpad/breakpad/src/processor/dump_object.cc
+build obj/third_party/breakpad/stackwalk_common/logging.o: cxx ../../../third_party/breakpad/breakpad/src/processor/logging.cc
+build obj/third_party/breakpad/stackwalk_common/pathname_stripper.o: cxx ../../../third_party/breakpad/breakpad/src/processor/pathname_stripper.cc
+build obj/third_party/breakpad/stackwalk_common/proc_maps_linux.o: cxx ../../../third_party/breakpad/breakpad/src/processor/proc_maps_linux.cc
+build obj/third_party/breakpad/stackwalk_common/process_state.o: cxx ../../../third_party/breakpad/breakpad/src/processor/process_state.cc
+build obj/third_party/breakpad/stackwalk_common/simple_symbol_supplier.o: cxx ../../../third_party/breakpad/breakpad/src/processor/simple_symbol_supplier.cc
+build obj/third_party/breakpad/stackwalk_common/source_line_resolver_base.o: cxx ../../../third_party/breakpad/breakpad/src/processor/source_line_resolver_base.cc
+build obj/third_party/breakpad/stackwalk_common/stack_frame_cpu.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stack_frame_cpu.cc
+build obj/third_party/breakpad/stackwalk_common/stack_frame_symbolizer.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stack_frame_symbolizer.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalk_common.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalk_common.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_amd64.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_amd64.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_arm.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_arm.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_arm64.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_arm64.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_mips.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_mips.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_ppc.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_ppc.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_ppc64.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_ppc64.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_sparc.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_sparc.cc
+build obj/third_party/breakpad/stackwalk_common/stackwalker_x86.o: cxx ../../../third_party/breakpad/breakpad/src/processor/stackwalker_x86.cc
+build obj/third_party/breakpad/stackwalk_common/tokenize.o: cxx ../../../third_party/breakpad/breakpad/src/processor/tokenize.cc
+build obj/third_party/breakpad/stackwalk_common/ia32_implicit.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_implicit.c
+build obj/third_party/breakpad/stackwalk_common/ia32_insn.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_insn.c
+build obj/third_party/breakpad/stackwalk_common/ia32_invariant.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_invariant.c
+build obj/third_party/breakpad/stackwalk_common/ia32_modrm.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_modrm.c
+build obj/third_party/breakpad/stackwalk_common/ia32_opcode_tables.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_opcode_tables.c
+build obj/third_party/breakpad/stackwalk_common/ia32_operand.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_operand.c
+build obj/third_party/breakpad/stackwalk_common/ia32_reg.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_reg.c
+build obj/third_party/breakpad/stackwalk_common/ia32_settings.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/ia32_settings.c
+build obj/third_party/breakpad/stackwalk_common/x86_disasm.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/x86_disasm.c
+build obj/third_party/breakpad/stackwalk_common/x86_format.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/x86_format.c
+build obj/third_party/breakpad/stackwalk_common/x86_imm.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/x86_imm.c
+build obj/third_party/breakpad/stackwalk_common/x86_insn.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/x86_insn.c
+build obj/third_party/breakpad/stackwalk_common/x86_misc.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/x86_misc.c
+build obj/third_party/breakpad/stackwalk_common/x86_operand_list.o: cc ../../../third_party/breakpad/breakpad/src/third_party/libdisasm/x86_operand_list.c
+
+build obj/third_party/breakpad/libstackwalk_common.a: alink obj/third_party/breakpad/stackwalk_common/path_helper.o obj/third_party/breakpad/stackwalk_common/basic_code_modules.o obj/third_party/breakpad/stackwalk_common/basic_source_line_resolver.o obj/third_party/breakpad/stackwalk_common/call_stack.o obj/third_party/breakpad/stackwalk_common/cfi_frame_info.o obj/third_party/breakpad/stackwalk_common/disassembler_x86.o obj/third_party/breakpad/stackwalk_common/dump_context.o obj/third_party/breakpad/stackwalk_common/dump_object.o obj/third_party/breakpad/stackwalk_common/logging.o obj/third_party/breakpad/stackwalk_common/pathname_stripper.o obj/third_party/breakpad/stackwalk_common/proc_maps_linux.o obj/third_party/breakpad/stackwalk_common/process_state.o obj/third_party/breakpad/stackwalk_common/simple_symbol_supplier.o obj/third_party/breakpad/stackwalk_common/source_line_resolver_base.o obj/third_party/breakpad/stackwalk_common/stack_frame_cpu.o obj/third_party/breakpad/stackwalk_common/stack_frame_symbolizer.o obj/third_party/breakpad/stackwalk_common/stackwalk_common.o obj/third_party/breakpad/stackwalk_common/stackwalker.o obj/third_party/breakpad/stackwalk_common/stackwalker_amd64.o obj/third_party/breakpad/stackwalk_common/stackwalker_arm.o obj/third_party/breakpad/stackwalk_common/stackwalker_arm64.o obj/third_party/breakpad/stackwalk_common/stackwalker_mips.o obj/third_party/breakpad/stackwalk_common/stackwalker_ppc.o obj/third_party/breakpad/stackwalk_common/stackwalker_ppc64.o obj/third_party/breakpad/stackwalk_common/stackwalker_sparc.o obj/third_party/breakpad/stackwalk_common/stackwalker_x86.o obj/third_party/breakpad/stackwalk_common/tokenize.o obj/third_party/breakpad/stackwalk_common/ia32_implicit.o obj/third_party/breakpad/stackwalk_common/ia32_insn.o obj/third_party/breakpad/stackwalk_common/ia32_invariant.o obj/third_party/breakpad/stackwalk_common/ia32_modrm.o obj/third_party/breakpad/stackwalk_common/ia32_opcode_tables.o obj/third_party/breakpad/stackwalk_common/ia32_operand.o obj/third_party/breakpad/stackwalk_common/ia32_reg.o obj/third_party/breakpad/stackwalk_common/ia32_settings.o obj/third_party/breakpad/stackwalk_common/x86_disasm.o obj/third_party/breakpad/stackwalk_common/x86_format.o obj/third_party/breakpad/stackwalk_common/x86_imm.o obj/third_party/breakpad/stackwalk_common/x86_insn.o obj/third_party/breakpad/stackwalk_common/x86_misc.o obj/third_party/breakpad/stackwalk_common/x86_operand_list.o
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/breakpad

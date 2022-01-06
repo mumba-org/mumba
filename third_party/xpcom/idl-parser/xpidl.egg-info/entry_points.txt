@@ -1,0 +1,3 @@
+[console_scripts]
+header.py = xpidl.header:main
+

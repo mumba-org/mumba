@@ -1,0 +1,11 @@
+{
+  "name": "dom_storage",
+  "display_name": "DOM Storage Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "dom_storage" : [ "automation.DOMStorage" ]
+      }
+    }
+  }
+}

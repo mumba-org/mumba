@@ -1,0 +1,23 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+mojom = "//core/shared/common/service_worker/service_worker_event_dispatcher.mojom"
+public_headers = [
+  "//core/shared/common/background_fetch/background_fetch_types.h",
+  "//core/shared/common/service_worker/service_worker_status_code.h",
+  "//core/shared/common/service_worker/service_worker_types.h",
+  "//core/shared/common/platform_notification_data.h",
+  "//core/shared/common/push_event_payload.h",
+]
+traits_headers = [
+  "//core/shared/common/platform_notification_messages.h",
+  "//core/shared/common/service_worker/service_worker_messages.h",
+]
+type_mappings = [
+  "common.mojom.ExtendableMessageEventSource=::common::ExtendableMessageEventSource",
+  "common.mojom.PlatformNotificationData=::common::PlatformNotificationData",
+  "common.mojom.PushEventPayload=::common::PushEventPayload",
+  "common.mojom.ServiceWorkerFetchRequest=::common::ServiceWorkerFetchRequest",
+  "common.mojom.ServiceWorkerResponse=::common::ServiceWorkerResponse",
+]

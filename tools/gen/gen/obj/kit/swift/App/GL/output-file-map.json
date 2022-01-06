@@ -1,0 +1,11 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/GL/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/GL/GL2.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/GL/GL2.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/GL/GL2.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/GL/GL2.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/GL/GL2~partial.swiftmodule"
+   }
+}

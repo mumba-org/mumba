@@ -1,0 +1,11 @@
+swift_static("_C") {
+  deps = [
+    "//runtime/MumbaShims",
+  ]
+  sources = [
+    "Sources/Compositor.swift",
+    "Sources/Pdf.swift",
+    "Sources/Skia.swift",
+    "Sources/X11.swift",
+  ]
+}

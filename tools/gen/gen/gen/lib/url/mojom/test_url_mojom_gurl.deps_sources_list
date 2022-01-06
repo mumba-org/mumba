@@ -1,0 +1,3 @@
+gen/lib/url/mojom/test_url_mojom_gurl.sources_list
+gen/lib/url/mojom/url_mojom_gurl.sources_list
+gen/lib/url/mojom/url_mojom_origin.sources_list

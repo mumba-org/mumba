@@ -1,0 +1,43 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DU_USING_ICU_NAMESPACE=0 -DU_ENABLE_DYLOAD=0 -DUSE_CHROMIUM_ICU=1 -DICU_UTIL_DATA_IMPL=ICU_UTIL_DATA_FILE -DUCHAR_TYPE=uint16_t
+include_dirs = -I../../../third_party/libxml/linux -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/libxml/src/include -I../../../third_party/libxml/linux/include -I../../../third_party/icu/source/common -I../../../third_party/icu/source/i18n -I../../../third_party/zlib
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -Wno-pointer-sign -Wno-empty-body -Wno-tautological-pointer-compare -Wno-ignored-attributes -Wno-int-to-void-pointer-cast -Wno-incompatible-pointer-types -Wno-unused-function -Wno-enum-compare -DLIBXML_STATIC=
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = libxml
+target_out_dir = obj/third_party/libxml
+target_output_name = libxml2
+
+build obj/third_party/libxml/libxml/libxml_utils.o: cxx ../../../third_party/libxml/chromium/libxml_utils.cc || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/HTMLparser.o: cc ../../../third_party/libxml/src/HTMLparser.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/HTMLtree.o: cc ../../../third_party/libxml/src/HTMLtree.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/SAX2.o: cc ../../../third_party/libxml/src/SAX2.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/buf.o: cc ../../../third_party/libxml/src/buf.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/chvalid.o: cc ../../../third_party/libxml/src/chvalid.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/dict.o: cc ../../../third_party/libxml/src/dict.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/encoding.o: cc ../../../third_party/libxml/src/encoding.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/entities.o: cc ../../../third_party/libxml/src/entities.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/error.o: cc ../../../third_party/libxml/src/error.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/globals.o: cc ../../../third_party/libxml/src/globals.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/hash.o: cc ../../../third_party/libxml/src/hash.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/list.o: cc ../../../third_party/libxml/src/list.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/parser.o: cc ../../../third_party/libxml/src/parser.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/parserInternals.o: cc ../../../third_party/libxml/src/parserInternals.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/pattern.o: cc ../../../third_party/libxml/src/pattern.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/threads.o: cc ../../../third_party/libxml/src/threads.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/tree.o: cc ../../../third_party/libxml/src/tree.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/uri.o: cc ../../../third_party/libxml/src/uri.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/valid.o: cc ../../../third_party/libxml/src/valid.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlIO.o: cc ../../../third_party/libxml/src/xmlIO.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlmemory.o: cc ../../../third_party/libxml/src/xmlmemory.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlreader.o: cc ../../../third_party/libxml/src/xmlreader.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlregexp.o: cc ../../../third_party/libxml/src/xmlregexp.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlsave.o: cc ../../../third_party/libxml/src/xmlsave.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlstring.o: cc ../../../third_party/libxml/src/xmlstring.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlunicode.o: cc ../../../third_party/libxml/src/xmlunicode.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xmlwriter.o: cc ../../../third_party/libxml/src/xmlwriter.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxml/libxml/xpath.o: cc ../../../third_party/libxml/src/xpath.c || obj/third_party/icu/icudata.stamp
+
+build obj/third_party/libxml/libxml2.a: alink obj/third_party/libxml/libxml/libxml_utils.o obj/third_party/libxml/libxml/HTMLparser.o obj/third_party/libxml/libxml/HTMLtree.o obj/third_party/libxml/libxml/SAX2.o obj/third_party/libxml/libxml/buf.o obj/third_party/libxml/libxml/chvalid.o obj/third_party/libxml/libxml/dict.o obj/third_party/libxml/libxml/encoding.o obj/third_party/libxml/libxml/entities.o obj/third_party/libxml/libxml/error.o obj/third_party/libxml/libxml/globals.o obj/third_party/libxml/libxml/hash.o obj/third_party/libxml/libxml/list.o obj/third_party/libxml/libxml/parser.o obj/third_party/libxml/libxml/parserInternals.o obj/third_party/libxml/libxml/pattern.o obj/third_party/libxml/libxml/threads.o obj/third_party/libxml/libxml/tree.o obj/third_party/libxml/libxml/uri.o obj/third_party/libxml/libxml/valid.o obj/third_party/libxml/libxml/xmlIO.o obj/third_party/libxml/libxml/xmlmemory.o obj/third_party/libxml/libxml/xmlreader.o obj/third_party/libxml/libxml/xmlregexp.o obj/third_party/libxml/libxml/xmlsave.o obj/third_party/libxml/libxml/xmlstring.o obj/third_party/libxml/libxml/xmlunicode.o obj/third_party/libxml/libxml/xmlwriter.o obj/third_party/libxml/libxml/xpath.o || ./libicuuc.so.TOC obj/third_party/zlib/libchrome_zlib.a obj/third_party/zlib/zlib_crc32_simd.stamp obj/third_party/zlib/zlib_adler32_simd.stamp obj/third_party/zlib/zlib_inflate_chunk_simd.stamp obj/third_party/zlib/libzlib_x86_simd.a
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/libxml

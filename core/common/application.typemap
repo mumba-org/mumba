@@ -1,0 +1,19 @@
+# Copyright 2019 The Mumba. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+mojom = "//core/common/application.mojom"
+public_headers = [ 
+  "//core/common/screen_info.h", 
+  "//core/common/screen_orientation_values.h" 
+]
+traits_headers = [ 
+  "//core/common/application_struct_traits.h" 
+]
+deps = [
+  "//core/common:application_traits",
+]
+type_mappings = [ 
+  "common.mojom.ScreenInfo=common::ScreenInfo",
+  "common.mojom.ScreenOrientationValues=common::ScreenOrientationValues"
+]

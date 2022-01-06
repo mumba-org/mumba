@@ -1,0 +1,5 @@
+module CNIOAtomics [extern_c] [system] {
+  header "include/CNIOAtomics.h"
+  header "include/cpp_magic.h"
+  export *
+}

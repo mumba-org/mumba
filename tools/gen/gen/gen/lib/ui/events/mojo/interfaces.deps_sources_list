@@ -1,0 +1,4 @@
+gen/lib/ui/events/mojo/interfaces.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list
+gen/lib/ui/gfx/mojo/mojo.sources_list
+gen/lib/ui/latency/mojo/interfaces.sources_list

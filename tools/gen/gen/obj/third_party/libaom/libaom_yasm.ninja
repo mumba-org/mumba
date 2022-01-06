@@ -1,0 +1,12 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+label_name = libaom_yasm
+target_out_dir = obj/third_party/libaom
+target_output_name = libaom_yasm
+
+build obj/third_party/libaom/libaom_yasm.inputdeps.stamp: stamp obj/third_party/libaom/libaom_yasm_action.stamp obj/third_party/yasm/compile_gperf.stamp obj/third_party/yasm/compile_gperf_for_include.stamp obj/third_party/yasm/compile_nasm_macros.stamp obj/third_party/yasm/compile_nasm_version.stamp obj/third_party/yasm/compile_re2c.stamp obj/third_party/yasm/compile_re2c_lc3b.stamp obj/third_party/yasm/compile_win64_gas.stamp obj/third_party/yasm/compile_win64_nasm.stamp obj/third_party/yasm/generate_license.stamp obj/third_party/yasm/generate_module.stamp obj/third_party/yasm/generate_version.stamp
+
+build obj/third_party/libaom/libaom_yasm.a: alink obj/third_party/libaom/libaom_yasm/aom_convolve_copy_sse2.o obj/third_party/libaom/libaom_yasm/aom_subpixel_8t_sse2.o obj/third_party/libaom/libaom_yasm/aom_subpixel_8t_ssse3.o obj/third_party/libaom/libaom_yasm/aom_subpixel_bilinear_sse2.o obj/third_party/libaom/libaom_yasm/aom_subpixel_bilinear_ssse3.o obj/third_party/libaom/libaom_yasm/intrapred_sse2.o obj/third_party/libaom/libaom_yasm/intrapred_ssse3.o obj/third_party/libaom/libaom_yasm/inv_wht_sse2.o obj/third_party/libaom/libaom_yasm/emms.o || obj/third_party/libaom/libaom_yasm_action.stamp
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/libaom

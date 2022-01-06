@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf8" ?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="Tweedy.Mumba.Tweedy" 
+     Version="0.0.0.1" 
+     Publisher="CN=Tweedy, O=Tweedy, L=SanFrancisco, S=California, C=US"/>
+  <Properties>
+    <DisplayName>Tweedy Resources</DisplayName>
+    <PublisherDisplayName>Tweedy</PublisherDisplayName>
+    <Logo>images\apple-icon-180x180.png</Logo>
+    <ResourcePackage>true</ResourcePackage>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion></OSMinVersion>
+    <OSMaxVersionTested></OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Platform.All" MinVersion="0.0.0.0" MaxVersionTested="0.0.0.0"/>
+  </Dependencies>
+  <Applications>
+  </Applications>
+</Package>

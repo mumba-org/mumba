@@ -1,0 +1,9 @@
+gen/lib/services/viz/privileged/interfaces/compositing/compositing.sources_list
+gen/lib/gpu/ipc/common/interfaces.sources_list
+gen/lib/media/capture/mojom/video_capture.sources_list
+gen/lib/media/mojo/interfaces/interfaces.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list
+gen/lib/services/viz/public/interfaces/interfaces.sources_list
+gen/lib/ui/gfx/geometry/mojo/mojo.sources_list
+gen/lib/ui/gfx/mojo/mojo.sources_list
+gen/lib/ui/latency/mojo/interfaces.sources_list

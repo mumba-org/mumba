@@ -1,0 +1,450 @@
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package protocol;
+
+message Domain {
+  bytes uuid = 1;
+  string name = 2;
+  bytes container_uuid = 3;
+}
+
+enum WindowMode {
+  UNDEFINED = 0;
+  TABBED = 1;
+  WINDOW = 2;
+}
+
+enum WindowOpenDisposition {
+  UNKNOWN = 0;
+  CURRENT_TAB = 1;
+  // Indicates that only one tab with the url should exist in the same window.
+  SINGLETON_TAB = 2;
+  NEW_FOREGROUND_TAB = 3;
+  NEW_BACKGROUND_TAB = 4;
+  NEW_POPUP = 5;
+  NEW_WINDOW = 6;
+  SAVE_TO_DISK = 7;
+  OFF_THE_RECORD = 8;
+  IGNORE_ACTION = 9;
+  // Activates an existing tab containing the url, rather than navigating.
+  // This is similar to SINGLETON_TAB, but searches across all windows from
+  // the current profile and anonymity (instead of just the current one);
+  // closes the current tab on switching if the current tab was the NTP with
+  // no session history; and behaves like CURRENT_TAB instead of
+  // NEW_FOREGROUND_TAB when no existing tab is found.
+  SWITCH_TO_TAB = 10;
+}
+
+message Application {
+  int32 id = 1;
+  bytes uuid = 2;
+  bytes domain_uuid = 3;
+  string name = 4;
+  string url = 5;
+  int32 initial_bounds_x = 6;
+  int32 initial_bounds_y = 7;
+  int32 initial_bounds_width = 8;
+  int32 initial_bounds_height = 9;
+  WindowMode window_mode = 10;
+  WindowOpenDisposition window_open_disposition = 11;
+  bool fullscreen = 12;
+  bool headless = 13;
+}
+
+message Device {
+  bytes uuid = 1;
+  string type = 2;
+  string name = 3;
+}
+
+message Volume {
+  bytes uuid = 1;
+  string name = 2;
+  bytes pubkey = 3;
+  bytes root_hash = 4;
+  string path = 5;
+  string creator = 6;
+  bytes root_tree = 7;
+  int64 size = 8;
+}
+
+message VolumeSource {
+  bytes uuid = 1;
+  string name = 2;
+}
+
+message Peer {
+  bytes uuid = 1;
+}
+
+message Protocol {
+  bytes uuid = 1;
+  string name = 2;
+  bytes root_hash = 3;
+  string content = 4;
+}
+
+message Service {
+  bytes uuid = 1;
+}
+
+message Workspace {
+  bytes uuid = 1;
+  string name = 2;
+}
+
+message PageTree {
+  bytes uuid = 1;
+  Page root = 2;
+  repeated Page pages = 3;
+}
+
+// a page can point to a
+// bundle, blobs, UI 
+message Page {
+  bytes uuid = 1;
+  string address = 2;
+  bool is_root = 3;
+  PageContent content = 4;
+}
+
+message PageContent {
+  ApplicationContent app = 1;
+  WebContent web = 2;
+}
+
+message ApplicationContent {
+  bytes uuid = 1; 
+}
+
+message WebContent {
+  bytes uuid = 1; 
+}
+
+message BlobDatabase {
+  enum Kind {
+    RESOURCE = 0;
+    CACHE = 1;
+  }
+  bytes uuid = 1;
+  Kind kind = 2;
+  // resource is readonly while a cache might not be
+  bool readonly = 3;
+  repeated Blob blobs = 4;
+}
+
+message Blob {
+  bytes uuid = 1;
+  string name = 2;
+  bytes sha256_hash = 3;
+}
+
+message CredentialKey {
+  bytes uuid = 1;
+  string public_key = 2;
+  // eg. ed25519
+  string public_key_type = 3;
+  // eg. base64
+  string public_key_encoding = 4;
+  // sha256 hash of the private key
+  string private_key = 5;
+};
+
+enum CredentialType {
+  PASSWORD = 0;
+  FEDERATED = 1;
+  PUBLIC_KEY = 2;
+}
+
+message Credential {
+  bytes uuid = 1;
+  CredentialType type = 2;
+  string identifier = 3;
+  string user = 4;
+  string login = 5;
+  string password = 6;
+  string provider = 7;
+  string description = 8;
+  // if this is a PUBLIC_KEY type of credential
+  // the public/private key signature goes here
+  CredentialKey key = 9;
+}
+
+message Identity {
+  bytes uuid = 1;
+  string name = 2;
+  string login = 3;
+  string description = 4;
+  repeated Credential credentials = 8;
+}
+
+enum SessionType {
+  SESSION_USER = 0;
+  SESSION_APPLICATION = 1;
+}
+
+message Session {
+  bytes uuid = 1;
+  Credential credential = 2;
+  SessionType type = 3;
+  int64 started_time = 4;
+  int64 finished_time = 5;
+}
+
+enum AddressFormat {
+  CLASSIC = 0;
+  BASE32 = 1;
+  BASE36 = 2;
+  BASE58 = 3;
+  BASE64 = 4;
+  IPFS_DHT_CID = 5;
+  TORRENT_MAGNET = 6;
+  TORRENT_ED25519 = 7;
+}
+
+enum RepoType {
+  LOCAL = 0;
+  REMOTE = 1;
+}
+
+enum PKCryptoFormat {
+  ED25519 = 0;
+}
+
+message Repo {
+  bytes uuid = 1;
+  RepoType type = 2;
+  string name = 3;
+  string address = 4;
+  AddressFormat address_format = 5;
+  string address_format_version = 6;
+  bytes public_key = 7;
+  PKCryptoFormat pk_crypto_format = 8;
+  bytes root_tree = 9;
+  string creator = 10;
+  int64 share_count = 11;
+}
+
+enum ShareTransportType {
+  RPC = 0;
+  HTTP = 1;
+  HTTP2 = 2;
+  WEBSOCKET = 3;
+  WEBRTC = 4;
+  QUIC = 5;
+  TORRENT = 6;
+  IPFS = 7;
+}
+
+message ShareTransport {
+  ShareTransportType type = 1;
+  string name = 2;
+  string vendor = 3;
+  string version = 4;
+  string options = 5;
+}
+
+enum IPAddressType {
+  IPV4 = 0;
+  IPV6 = 1;
+};
+
+enum IPAddressFormat {
+  BYTES = 0;
+  STRING = 1;
+};
+
+enum ShareRemoteStatus {
+  STATUS_UNKNOWN = 0;
+  STATUS_UP = 1;
+  STATUS_DOWN = 2;
+  STATUS_ERROR = 3;
+};
+
+message ShareService {
+  bytes uuid = 1;
+  string name = 2;
+  string full_name = 3;
+  string vendor = 4;
+  string description = 5;
+  string mime_type = 6;
+  string version = 7;
+  ShareTransport transport = 8;
+  // parent peer
+  bytes peer_uuid = 9;
+  bytes ip_address = 10;
+  IPAddressType ip_address_type = 11;
+  IPAddressFormat ip_address_format = 12;
+  int32 port = 13;
+  string options = 14;
+  ShareRemoteStatus status = 15;
+}
+
+message SharePeer {
+  bytes uuid = 1;
+  bytes ip_address = 2;
+  IPAddressType ip_address_type = 3;
+  IPAddressFormat ip_address_format = 4;
+  int32 port = 5;
+  repeated ShareService services = 6;
+  ShareRemoteStatus status = 7;
+}
+
+enum SharePieceState {
+  kPIECE_STATE_NONE = 0;
+  kPIECE_STATE_READ = 1;
+  kPIECE_STATE_WRITE = 2;
+  kPIECE_STATE_PASS = 3;
+  kPIECE_STATE_FINISHED = 4;
+  kPIECE_STATE_READ_ERROR = 5;
+  kPIECE_STATE_HASH_FAILED = 6;
+  kPIECE_STATE_FAILED = 7;
+}
+
+message SharePiece {
+  int32 piece_index = 1;
+  int64 piece_size = 2;
+  SharePieceState state = 3;
+}
+
+message ShareFile {
+  string name = 1;
+  int64 size = 2;
+  int64 piece_count = 3;
+}
+
+enum ShareState {
+  kNONE = 0;
+  kCHECKING_FILES = 1;
+  kDOWNLOADING_METADATA = 2;
+  kDOWNLOADING = 3;
+  kFINISHED = 4;
+  kSEEDING = 5;
+  kALLOCATING = 6;
+  kCHECKING_RESUME_DATA = 7;
+  kPAUSED = 8;
+  kRESUMED = 9;
+  kCHECKED = 10;
+  kERROR = 11;
+}
+
+message Share {
+  enum Kind {
+    RAW = 0;
+    DATA = 1;
+    FILE = 2;
+    APPLICATION = 3;
+  }
+  bytes uuid = 1;
+  Kind kind = 2;
+  ShareState state = 3;
+  ShareTransport transport = 4;
+  string name = 5;
+  string manifest = 6;
+  string creator = 7;
+  string domain = 8;
+  string address = 9;
+  AddressFormat address_format = 10;
+  string address_format_version = 11;
+  bytes root_hash = 12;
+  bytes pk_signature = 13;
+  PKCryptoFormat pk_crypto_format = 14;
+  int64 piece_count = 15;
+  int64 piece_length = 16;
+  int64 size = 17;
+  Repo source = 18;
+  repeated SharePeer peers = 19;
+}
+
+message Channel {
+  bytes uuid = 1;
+  string scheme = 2;
+  string name = 3;
+}
+
+message Graph {
+  bytes uuid = 1;
+  string name = 2;
+  bool memory = 3;
+}
+
+enum GraphKind {
+  GRAPH_DELETION = 0;
+  GRAPH_NODE = 1;
+  GRAPH_EDGE = 2;
+  GRAPH_PROPERTY = 3;
+}
+
+message GraphEntry {
+  GraphKind kind = 1;
+  uint64 next = 2;
+  uint64 id = 3;
+}
+
+message GraphNode {
+  GraphKind kind = 1;
+  uint64 next = 2;
+  uint64 type = 3;
+  uint64 value = 4;
+  uint64 id = 5;
+}
+
+message GraphEdge {
+  GraphKind kind = 1;
+  uint64 next = 2;
+  uint64 type = 3;
+  uint64 value = 4;
+  uint64 source = 5;
+  uint64 target = 6;
+  uint64 id = 7;
+}
+
+message GraphProperty {
+  GraphKind kind = 1;
+  uint64 next = 2;
+  uint64 pid = 3;
+  uint64 key = 4;
+  uint64 value = 5;
+  uint64 id = 6;
+}
+
+message Bundle {
+  bytes uuid = 1;
+  string name = 2;
+  string path = 3;
+  string executable_path = 4;
+  string resources_path = 5;
+}
+
+enum BundlePlatform {
+  PLATFORM_WINDOWS = 0;
+  PLATFORM_MACOS = 1;
+  PLATFORM_IOS = 2;
+  PLATFORM_ANDROID = 3;
+  PLATFORM_LINUX = 4;
+  PLATFORM_WEB = 5;
+}
+
+enum BundleArchitecture {
+  ARCH_X86 = 0;
+  ARCH_ARM = 5;
+  ARCH_X64 = 9;
+  ARCH_NEUTRAL = 11;
+  ARCH_ARM64 = 12;
+}
+
+enum BundlePackageType {
+  PACKAGE_APPLICATION = 0;
+  PACKAGE_RESOURCE = 1;
+}
+
+message BundlePackage {
+  bytes uuid = 1;
+  string name = 2;
+  string path = 3;
+  BundlePlatform platform = 4;
+  BundleArchitecture arch = 5;
+  BundlePackageType type = 6;
+}

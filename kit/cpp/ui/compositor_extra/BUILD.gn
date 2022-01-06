@@ -1,0 +1,23 @@
+# Copyright 2018 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("compositor_extra") {
+  sources = [
+    "shadow.cc",
+    "shadow.h",
+  ]
+
+  include_dirs = [
+    "//kit/cpp",
+    "$root_gen_dir/kit/cpp/"
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/ui/base",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/geometry",
+    "//kit/cpp/ui/compositor",
+  ]
+}

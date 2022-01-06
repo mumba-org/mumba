@@ -1,0 +1,26 @@
+// Copyright (c) 2021 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include "launcher/tab_close_command.h"
+
+std::unique_ptr<TabCloseCommand> TabCloseCommand::Create() {
+  return std::make_unique<TabCloseCommand>();
+}
+
+TabCloseCommand::TabCloseCommand() {
+
+}
+
+TabCloseCommand::~TabCloseCommand() {
+
+}
+
+std::string TabCloseCommand::GetCommandMethod() const {
+  return "/mumba.Mumba/TabClose";
+}
+
+
+int TabCloseCommand::Run(CommandExecutor* executor, const base::CommandLine::StringVector& args) {
+  
+}

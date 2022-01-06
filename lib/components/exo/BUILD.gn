@@ -1,0 +1,222 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//mumba/common/features.gni")
+import("//build/config/ui.gni")
+import("//lib/testing/test.gni")
+
+source_set("exo") {
+  sources = [
+    "buffer.cc",
+    "buffer.h",
+    "client_controlled_shell_surface.cc",
+    "client_controlled_shell_surface.h",
+    "data_device.cc",
+    "data_device.h",
+    "data_device_delegate.h",
+    "data_offer.cc",
+    "data_offer.h",
+    "data_offer_delegate.h",
+    "data_offer_observer.h",
+    "data_source.cc",
+    "data_source.h",
+    "data_source_delegate.h",
+    "data_source_observer.h",
+    "display.cc",
+    "display.h",
+    "gaming_seat.cc",
+    "gaming_seat.h",
+    "keyboard.cc",
+    "keyboard.h",
+    "keyboard_delegate.h",
+    "keyboard_device_configuration_delegate.h",
+    "keyboard_observer.h",
+    "layer_tree_frame_sink_holder.cc",
+    "layer_tree_frame_sink_holder.h",
+    "notification_surface.cc",
+    "notification_surface.h",
+    "notification_surface_manager.h",
+    "pointer.cc",
+    "pointer.h",
+    "pointer_delegate.h",
+    "seat.cc",
+    "seat.h",
+    "seat_observer.h",
+    "shared_memory.cc",
+    "shared_memory.h",
+    "shell_surface.cc",
+    "shell_surface.h",
+    "shell_surface_base.cc",
+    "shell_surface_base.h",
+    "sub_surface.cc",
+    "sub_surface.h",
+    "surface.cc",
+    "surface.h",
+    "surface_delegate.h",
+    "surface_observer.h",
+    "surface_tree_host.cc",
+    "surface_tree_host.h",
+    "touch.cc",
+    "touch.h",
+    "touch_delegate.h",
+    "wm_helper.cc",
+    "wm_helper.h",
+    "xdg_shell_surface.cc",
+    "xdg_shell_surface.h",
+  ]
+
+  deps = [
+    "//lib/ash/public/cpp",
+    "//lib/base",
+    "//lib/cc",
+    "//lib/components/viz/service",
+    "//lib/device/gamepad",
+    "//lib/device/gamepad/public/cpp:shared_with_blink",
+    "//lib/gpu",
+    "//lib/gpu/command_buffer/client:gles2_interface",
+    "//lib/services/ui/public/interfaces",
+    "//lib/skia",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/compositor",
+    "//kit/cpp/ui/compositor_extra",
+    "//lib/ui/display/manager",
+    "//lib/ui/events/devices:devices",
+    "//lib/ui/events/ozone:events_ozone_evdev",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/gl",
+    "//lib/ui/ozone",
+    "//lib/ui/views",
+    "//lib/ui/views/mus",
+    "//lib/ui/wm",
+    "//lib/ui/wm/public",
+  ]
+
+  if (is_chromeos) {
+    deps += [ "//chromeos" ]
+  }
+}
+
+source_set("test_support") {
+  # testonly = true
+
+  sources = [
+    "test/exo_test_base.cc",
+    "test/exo_test_base.h",
+    "test/exo_test_helper.cc",
+    "test/exo_test_helper.h",
+    "test/test_client_controlled_state_delegate.cc",
+    "test/test_client_controlled_state_delegate.h",
+  ]
+
+  deps = [
+    ":exo",
+    "//lib/ash:test_support_without_content",
+    "//lib/ash/public/cpp",
+    "//lib/base",
+    "//lib/gpu",
+    "//lib/skia",
+    "//lib/testing/gtest",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/compositor",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/views",
+    "//lib/ui/wm",
+  ]
+}
+
+source_set("unit_tests") {
+  # testonly = true
+
+  sources = [
+    "../../ui/events/ozone/gamepad/gamepad_event.cc",
+    "buffer_unittest.cc",
+    "client_controlled_shell_surface_unittest.cc",
+    "data_device_unittest.cc",
+    "data_offer_unittest.cc",
+    "data_source_unittest.cc",
+    "display_unittest.cc",
+    "gaming_seat_unittest.cc",
+    "keyboard_unittest.cc",
+    "pointer_unittest.cc",
+    "seat_unittest.cc",
+    "shared_memory_unittest.cc",
+    "shell_surface_unittest.cc",
+    "sub_surface_unittest.cc",
+    "surface_unittest.cc",
+    "touch_unittest.cc",
+  ]
+
+  deps = [
+    ":exo",
+    ":test_support",
+    "//lib/ash",
+    "//lib/ash:test_support_without_content",
+    "//lib/ash/public/cpp",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/cc",
+    "//lib/cc:test_support",
+    "//lib/components/user_manager",
+    "//lib/components/viz/service",
+    "//lib/components/viz/test:test_support",
+    "//lib/device/gamepad:test_helpers",
+    "//lib/gpu/command_buffer/client:gles2_interface",
+    "//lib/skia",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/compositor:test_support",
+    "//kit/cpp/ui/compositor_extra",
+    "//lib/ui/events:dom_keycode_converter",
+    "//lib/ui/events:test_support",
+    "//lib/ui/events/ozone:events_ozone_evdev",
+    "//lib/ui/gfx",
+    "//lib/ui/keyboard",
+    "//lib/ui/message_center",
+    "//lib/ui/views",
+    "//lib/ui/wm",
+  ]
+
+  if (use_ozone) {
+    deps += [ "//lib/ui/ozone" ]
+  }
+}
+
+test("exo_unittests") {
+  sources = [
+    "../../ash/test/ash_test_suite.cc",
+    "../../ash/test/ash_test_suite.h",
+    "test/run_all_unittests.cc",
+  ]
+
+  deps = [
+    ":unit_tests",
+    "//lib/ash:test_support_without_content",
+    "//lib/ash/public/cpp",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/cc:test_support",
+    "//lib/components/viz/test:test_support",
+    "//lib/device/gamepad:test_helpers",
+    "//lib/mojo/edk",
+    "//lib/testing/gtest",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/aura:test_support",
+    "//lib/ui/base",
+    "//kit/cpp/ui/compositor:test_support",
+    "//lib/ui/display:display_manager_test_api",
+    "//lib/ui/gl:test_support",
+  ]
+
+  data_deps = [
+    "//lib/ash/strings:ash_test_strings",
+    "//lib/ash/resources:ash_test_resources_100_percent",
+    "//lib/ash/resources:ash_test_resources_200_percent",
+  ]
+
+  if (is_linux) {
+    deps += [ "//lib/components/exo/wayland:unit_tests" ]
+  }
+}

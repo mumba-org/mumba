@@ -1,0 +1,587 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/CSSStyleRule.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleRule.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleRule.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleRule.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleRule~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/CSSStyleSheet.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleSheet.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleSheet.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleSheet.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/CSSStyleSheet~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/HTMLCanvasElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLCanvasElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLCanvasElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLCanvasElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLCanvasElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/HTMLElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/HTMLFrameElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLFrameElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLFrameElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLFrameElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLFrameElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/HTMLTemplateElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLTemplateElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLTemplateElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLTemplateElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/HTMLTemplateElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/SelectorQuery.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/SelectorQuery.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/SelectorQuery.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/SelectorQuery.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/SelectorQuery~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/Web.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/Web.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/Web.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/Web.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/Web~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebAccessibility.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAccessibility.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAccessibility.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAccessibility.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAccessibility~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebActiveWheelFling.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebActiveWheelFling.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebActiveWheelFling.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebActiveWheelFling.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebActiveWheelFling~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebAnimation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAnimation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAnimation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAnimation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAnimation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebAppBanner.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAppBanner.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAppBanner.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAppBanner.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAppBanner~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebApplicationCache.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebApplicationCache.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebApplicationCache.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebApplicationCache.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebApplicationCache~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebAutofillClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAutofillClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAutofillClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAutofillClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebAutofillClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebBlobInfo.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBlobInfo.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBlobInfo.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBlobInfo.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBlobInfo~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebBluetooth.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBluetooth.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBluetooth.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBluetooth.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebBluetooth~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebCanvas.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCanvas.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCanvas.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCanvas.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCanvas~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebColor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebColor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebColor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebColor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebColor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebConsoleMessage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebConsoleMessage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebConsoleMessage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebConsoleMessage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebConsoleMessage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebContainerNode.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContainerNode.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContainerNode.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContainerNode.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContainerNode~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebContentDecryptionModule.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDecryptionModule.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDecryptionModule.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDecryptionModule.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDecryptionModule~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebContentDetectionResult.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDetectionResult.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDetectionResult.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDetectionResult.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentDetectionResult~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebContentSecurityPolicy.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSecurityPolicy.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSecurityPolicy.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSecurityPolicy.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSecurityPolicy~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebContentSettingsClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSettingsClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSettingsClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSettingsClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContentSettingsClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebContextMenu.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContextMenu.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContextMenu.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContextMenu.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebContextMenu~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebCookieJar.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCookieJar.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCookieJar.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCookieJar.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCookieJar~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebCursor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCursor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCursor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCursor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebCursor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebData.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebData.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebData.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebData.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebData~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebDate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebDevToolsAgent.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevToolsAgent.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevToolsAgent.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevToolsAgent.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevToolsAgent~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebDevice.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevice.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevice.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevice.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDevice~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebDisplay.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDisplay.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDisplay.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDisplay.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDisplay~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebDocument.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocument.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocument.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocument.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocument~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebDocumentFragment.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocumentFragment.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocumentFragment.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocumentFragment.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDocumentFragment~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebDrag.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDrag.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDrag.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDrag.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebDrag~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebEncryptedMediaClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEncryptedMediaClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEncryptedMediaClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEncryptedMediaClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEncryptedMediaClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebErrors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebErrors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebErrors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebErrors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebErrors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebEvent.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEvent.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEvent.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEvent.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebEvent~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebFile.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFile.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFile.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFile.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFile~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebFind.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFind.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFind.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFind.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFind~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebFocusType.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFocusType.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFocusType.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFocusType.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFocusType~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebFrame.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrame.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrame.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrame.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrame~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebFrameClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebFrameWidget.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameWidget.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameWidget.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameWidget.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebFrameWidget~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebGeolocationClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebGeolocationClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebGeolocationClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebGeolocationClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebGeolocationClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebHTTPBody.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPBody.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPBody.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPBody.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPBody~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebHTTPLoadInfo.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPLoadInfo.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPLoadInfo.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPLoadInfo.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHTTPLoadInfo~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebHistory.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHistory.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHistory.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHistory.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebHistory~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebIconUrl.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebIconUrl.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebIconUrl.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebIconUrl.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebIconUrl~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebImage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebImage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebImage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebImage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebImage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebInterfaceRegistry.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebInterfaceRegistry.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebInterfaceRegistry.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebInterfaceRegistry.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebInterfaceRegistry~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebLayer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLayer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLayer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLayer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLayer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebLocalFrame.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrame.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrame.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrame.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrame~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebLocalFrameClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrameClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrameClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrameClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebLocalFrameClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebMIDI.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMIDI.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMIDI.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMIDI.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMIDI~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebMediaPlayer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMediaPlayer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMediaPlayer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMediaPlayer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMediaPlayer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebMenu.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMenu.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMenu.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMenu.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebMenu~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebNavigation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNavigation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNavigation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNavigation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNavigation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebNode.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNode.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNode.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNode.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNode~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebNotification.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNotification.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNotification.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNotification.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebNotification~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebPermissionClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPermissionClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPermissionClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPermissionClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPermissionClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebPlugin.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPlugin.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPlugin.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPlugin.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPlugin~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebPopup.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPopup.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPopup.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPopup.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPopup~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebPrint.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPrint.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPrint.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPrint.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPrint~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebPushClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPushClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPushClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPushClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebPushClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebRTC.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRTC.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRTC.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRTC.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRTC~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebRange.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRange.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRange.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRange.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRange~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebRemoteFrame.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrame.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrame.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrame.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrame~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebRemoteFrameClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrameClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrameClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrameClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebRemoteFrameClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebSandbox.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSandbox.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSandbox.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSandbox.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSandbox~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebScreen.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScreen.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScreen.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScreen.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScreen~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebScript.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScript.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScript.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScript.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebScript~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebSecurity.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSecurity.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSecurity.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSecurity.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSecurity~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebServiceWorker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebServiceWorker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebServiceWorker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebServiceWorker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebServiceWorker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebShadowRoot.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebShadowRoot.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebShadowRoot.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebShadowRoot.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebShadowRoot~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebSharedWorkerRepositoryClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSharedWorkerRepositoryClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSharedWorkerRepositoryClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSharedWorkerRepositoryClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSharedWorkerRepositoryClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebSocket.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSocket.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSocket.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSocket.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSocket~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebSpeech.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSpeech.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSpeech.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSpeech.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSpeech~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebStorage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebStorage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebStorage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebStorage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebStorage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebSurroundingText.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSurroundingText.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSurroundingText.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSurroundingText.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSurroundingText~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebSuspendableTask.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSuspendableTask.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSuspendableTask.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSuspendableTask.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebSuspendableTask~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebText.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebText.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebText.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebText.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebText~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebTopControls.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebTopControls.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebTopControls.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebTopControls.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebTopControls~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebURLError.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLError.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLError.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLError.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLError~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebURLLoader.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoader.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoader.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoader.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoader~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebURLLoaderImpl.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoaderImpl.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoaderImpl.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoaderImpl.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLLoaderImpl~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebURLRequest.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLRequest.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLRequest.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLRequest.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLRequest~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebURLResponse.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLResponse.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLResponse.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLResponse.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebURLResponse~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebUSBClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUSBClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUSBClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUSBClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUSBClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebUserMediaClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUserMediaClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUserMediaClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUserMediaClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebUserMediaClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebVRClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebVRClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebVRClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebVRClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebVRClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebViewClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebViewClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebViewClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebViewClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebViewClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebWakeLockClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWakeLockClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWakeLockClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWakeLockClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWakeLockClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebWidget.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidget.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidget.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidget.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidget~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Web/WebWidgetClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidgetClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidgetClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidgetClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Web/WebWidgetClient~partial.swiftmodule"
+   }
+}

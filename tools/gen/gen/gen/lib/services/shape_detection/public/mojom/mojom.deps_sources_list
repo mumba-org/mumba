@@ -1,0 +1,3 @@
+gen/lib/services/shape_detection/public/mojom/mojom.sources_list
+gen/lib/skia/public/interfaces/interfaces.sources_list
+gen/lib/ui/gfx/geometry/mojo/mojo.sources_list

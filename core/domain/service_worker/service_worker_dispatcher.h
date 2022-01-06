@@ -1,0 +1,80 @@
+// Copyright 2013 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#ifndef CORE_DOMAIN_SERVICE_WORKER_SERVICE_WORKER_DISPATCHER_H_
+#define CORE_DOMAIN_SERVICE_WORKER_SERVICE_WORKER_DISPATCHER_H_
+
+#include <stdint.h>
+
+#include <map>
+#include <memory>
+#include <set>
+#include <vector>
+
+#include "base/containers/id_map.h"
+#include "base/macros.h"
+#include "base/memory/ref_counted.h"
+#include "base/strings/string16.h"
+#include "core/shared/common/service_worker/service_worker_types.h"
+#include "core/domain/worker_thread.h"
+#include "mojo/public/cpp/system/message_pipe.h"
+#include "third_party/blink/public/mojom/service_worker/service_worker_object.mojom.h"
+#include "third_party/blink/public/mojom/service_worker/service_worker_registration.mojom.h"
+#include "third_party/blink/public/platform/modules/serviceworker/web_service_worker_error.h"
+#include "third_party/blink/public/platform/modules/serviceworker/web_service_worker_provider.h"
+#include "third_party/blink/public/platform/modules/serviceworker/web_service_worker_registration.h"
+
+namespace domain {
+
+class WebServiceWorkerImpl;
+
+// TODO(leonhsl): Later once we changed to manage WebServiceWorkerImpl instances
+// per provider, this class will become totally useless and we can eliminate it
+// finally.
+class CONTENT_EXPORT ServiceWorkerDispatcher : public WorkerThread::Observer {
+ public:
+  explicit ServiceWorkerDispatcher();
+  ~ServiceWorkerDispatcher() override;
+
+  // Returns the existing service worker or a newly created one with the given
+  // object info.
+  scoped_refptr<WebServiceWorkerImpl> GetOrCreateServiceWorker(
+      blink::mojom::ServiceWorkerObjectInfoPtr info);
+
+  scoped_refptr<WebServiceWorkerImpl> GetServiceWorker(int handle_id);
+
+  static ServiceWorkerDispatcher* GetOrCreateThreadSpecificInstance();
+
+  // Unlike GetOrCreateThreadSpecificInstance() this doesn't create a new
+  // instance if thread-local instance doesn't exist.
+  static ServiceWorkerDispatcher* GetThreadSpecificInstance();
+
+ private:
+  using WorkerObjectMap = std::map<int, WebServiceWorkerImpl*>;
+
+  friend class ServiceWorkerContextClientTest;
+  friend class ServiceWorkerDispatcherTest;
+  friend class WebServiceWorkerImpl;
+
+  void AllowReinstantiationForTesting();
+
+  // WorkerThread::Observer implementation.
+  void WillStopCurrentWorkerThread() override;
+
+  // Keeps map from handle_id to ServiceWorker object.
+  void AddServiceWorker(int handle_id, WebServiceWorkerImpl* worker);
+  void RemoveServiceWorker(int handle_id);
+
+  // True if another dispatcher is allowed to be created on the same thread
+  // after this instance is destructed.
+  bool allow_reinstantiation_ = false;
+
+  WorkerObjectMap service_workers_;
+
+  DISALLOW_COPY_AND_ASSIGN(ServiceWorkerDispatcher);
+};
+
+}  // namespace domain
+
+#endif  // CORE_DOMAIN_SERVICE_WORKER_SERVICE_WORKER_DISPATCHER_H_

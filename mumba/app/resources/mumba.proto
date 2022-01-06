@@ -1,0 +1,606 @@
+syntax = "proto3";
+
+option optimize_for = SPEED;
+
+//import "third_party/zetasql/proto/datetime.proto";
+//import "third_party/zetasql/proto/type.proto";
+//import "third_party/zetasql/proto/value.proto";
+
+package mumba;
+
+//message DataRequest {
+//  zetasql.TypeProto type = 1;
+//  zetasql.ValueProto value = 2;
+//}
+
+//message DataResponse {
+//  int64 status = 1;
+  // metadata is a struct so here we define
+  // which fields, field names and field types
+  // are described in 'metadata
+//  StructTypeProto metadata_type = 2;
+//  ValueProto.Struct metadata = 3;
+  // data can be anything, so here we
+  // define what data is expected to be
+//  zetasql.TypeProto data_type = 4;
+//  zetasql.ValueProto data = 5;
+//}
+
+// generic response
+message Response {
+  int32 status_code = 1;
+  string message = 2;
+}
+
+message ApplicationLaunchRequest {
+  string url = 1;
+}
+
+message ApplicationLaunchResponse {
+  int32 status_code = 1;
+  int32 application_id = 2;
+  string err_message = 3;
+}
+
+message ApplicationCloseRequest {
+  int32 id = 1;
+  bool close_now = 2;
+}
+message ApplicationInstanceListRequest {}
+message ApplicationScheduleRequest {}
+message ApplicationListRequest {}
+message ApplicationManifestRequest {}
+message ApplicationPinRequest {}
+message ApplicationUnpinRequest {}
+message ApplicationStartRequest {}
+message ApplicationStopRequest {}
+message ApplicationStatusRequest {}
+message FinanceCreateAccountRequest {}
+message BatteryInfoRequest {}
+message BlobCreateRequest {}
+message BlobDeleteRequest {}
+message BlobListRequest {}
+message BlobReadRequest {}
+message BlobWriteRequest {}
+message CacheCreateRequest {}
+message CacheDropRequest {}
+message CacheItemAddRequest {}
+message CacheItemReadRequest {}
+message CacheItemRemoveRequest {}
+message CacheItemWriteRequest {}
+message CaptureTakePhotoRequest {}
+message DropBuildRequest {}
+message DropInitRequest {}
+message DropInstallRequest {
+  string url = 1; 
+}
+message DropSignRequest {}
+message DropUninstallRequest {}
+message DropUpdateRequest {}
+message FetchStartRequest {}
+message FetchCloseRequest {}
+message FilesystemDirectoryGetDirectoryRequest {}
+message FilesystemDirectoryGetFileRequest {}
+message FilesystemDirectoryListRequest {}
+message FilesystemDirectoryRemoveRequest {}
+message FilesystemEntryCopyRequest {}
+message FilesystemEntryGetParentRequest {}
+message FilesystemEntryInfoRequest {}
+message FilesystemEntryMetadataRequest {}
+message FilesystemEntryMoveRequest {}
+message FilesystemEntryRemoveRequest {}
+message FilesystemInfoRequest {}
+message GeolocationClearWatchRequest {}
+message GeolocationGetCurrentPositionRequest {}
+message GeolocationWatchPositionRequest {}
+message IdentityCreateRequest {}
+message IdentityCredentialCreateRequest {}
+message IdentityCredentialDropRequest {}
+message IdentityCredentialListRequest {}
+message IdentityDropRequest {}
+message IdentityGetRequest {}
+message IdentityUpdateRequest {}
+message IndexAddRequest {}
+message IndexCreateRequest {}
+message IndexDropRequest {}
+message IndexQueryRequest {}
+message IndexRemoveRequest {}
+message IndexedDbClearObjectStoreRequest {}
+message IndexedDbCountRequest {}
+message IndexedDbDeleteDbRequest {}
+message IndexedDbGetAllRequest {}
+message IndexedDbGetKeyRequest {}
+message IndexedDbRequestDataRequest {}
+message InputKeyboardRequest {}
+message InputMouseRequest {}
+message InputTouchRequest {}
+message KeyboardLockRequest {}
+message KeyboardUnlockRequest {}
+message MediaGetAudioConfigurationRequest {}
+message MediaGetVideoConfigurationRequest {}
+message MidiCloseRequest {}
+message MidiOpenRequest {}
+message MidiSendRequest {}
+message MLDatasetAddRequest {}
+message MLDatasetDropRequest {}
+message MLDatasetListRequest {}
+message MLModelAddRequest {}
+message MLModelDropRequest {}
+message MLModelListRequest {}
+message MLPredictorInstallRequest {}
+message MLPredictorListRequest {}
+message MLPredictorRemoveRequest {}
+message NetworkInfoRequest {}
+message OSCpuInfoRequest {}
+message OSGpuInfoRequest {}
+message OSMemoryInfoRequest {}
+message OSStorageInfoRequest {}
+message PageAddScriptRequest {}
+message PageBringToFrontRequest {}
+message PageCloseRequest {}
+message PageGetContentRequest {}
+message PageNavigateRequest {}
+message PageReloadRequest {}
+message PageRemoveScriptRequest {}
+message PageSaveToPdfRequest {}
+message PageScreenshotRequest {}
+message PageSetContentRequest {}
+message PageStopLoadingRequest {}
+message PaymentClearRequest {}
+message PaymentDeleteRequest {}
+message PaymentGetRequest {}
+message PaymentKeysRequest {}
+message PaymentListRequest {}
+message PaymentSetRequest {}
+message PresentationCloseRequest {}
+message PresentationReconnectRequest {}
+message PresentationStartRequest {}
+message PushMessageSendRequest {}
+message PushMessageSubscribeRequest {}
+message PushMessageUnsubscribeRequest {}
+message RemotePlaybackCancelWatchAvailabilityRequest {}
+message RemotePlaybackPromptRequest {}
+message RemotePlaybackWatchAvailabilityRequest {}
+message RepoInstallRequest {}
+message RepoListRequest {}
+message RepoRemoveRequest {}
+message RouteCopyRequest {}
+message RouteCreateCollectionRequest {}
+message RouteCreateEntryRequest {}
+message RouteCreatePropertyRequest {}
+message RouteGetEntryRequest {}
+message RouteGetMetadataRequest {}
+message RouteListCollectionsRequest {}
+message RouteListEntriesRequest {}
+message RouteListPropertiesRequest {}
+message RouteQueryRequest {}
+message RouteRemoveCollectionRequest {}
+message RouteRemoveEntryRequest {}
+message RouteRemovePropertyRequest {}
+message RouteResolveRequest {}
+message RouteSetEntryRequest {}
+message RouteSetPropertyRequest {}
+message RpcCallRequest {}
+message SchemaCreateRequest {}
+message SchemaGetRequest {}
+message SchemaListRequest {}
+message SchemaRemoveRequest {}
+message ScreenGetKeepAwaitRequest {}
+message ScreenSetKeepAwaitRequest {}
+message ScreenOrientationGetRequest {}
+message ScreenOrientationLockRequest {}
+message ScreenOrientationUnlockRequest {}
+message ScriptAddRequest {}
+message ScriptListRequest {}
+message ScriptModuleListRequest {}
+message ScriptReadRequest {}
+message ScriptRemoveRequest {}
+message ScriptRunRequest {}
+message ScriptScheduleRequest {}
+message ScriptWriteRequest {}
+message SensorAccelerometerInfoRequest {}
+message SensorAccelerometerStartRequest {}
+message SensorAccelerometerStopRequest {}
+message SensorAmbientLightInfoRequest {}
+message SensorAmbientLightStartRequest {}
+message SensorAmbientLightStopRequest {}
+message SensorGyroscopeInfoRequest {}
+message SensorGyroscopeStartRequest {}
+message SensorGyroscopeStopRequest {}
+message SensorMagnetometerInfoRequest {}
+message SensorMagnetometerStartRequest {}
+message SensorMagnetometerStopRequest {}
+message SensorOrientationInfoRequest {}
+message SensorOrientationStartRequest {}
+message SensorOrientationStopRequest {}
+message ServiceStartRequest {}
+message ServiceStopRequest {}
+message ServiceListRequest {}
+message SessionInfoRequest {}
+message SessionListRequest {}
+message ShareAddFilesetRequest {}
+message ShareAddSqlDbRequest {}
+message ShareCopyRequest {}
+message ShareCreateFilesetRequest {}
+message ShareCreateKvDbRequest {}
+message ShareCreateSqlDbRequest {}
+message ShareDhtGetRequest {}
+message ShareKvDbGetAllRequest {}
+message ShareKvDbGetRequest {}
+message ShareKvDbGetKeysRequest {}
+message ShareKvDbGetValuesRequest {}
+message ShareKvDbSetRequest {}
+message ShareListRequest {}
+message SharePauseRequest {}
+message SharePeerListRequest {}
+message SharePeerServiceListRequest {}
+message SharePeerStatusRequest {}
+message ShareReadRequest {}
+message ShareRemoveRequest {}
+message ShareResumeRequest {}
+message ShareStatusRequest {}
+message ShareWriteRequest {}
+message SqlDbCreateRequest {}
+message SqlDbDropRequest {}
+message SqlDbDumpRequest {}
+message SqlDbListRequest {}
+message SqlDbListTablesRequest {}
+message SqlDbQueryRequest {}
+message StreamListRequest {}
+message StreamReadRequest {}
+message StreamWriteRequest {}
+message SystemShutdownRequest {}
+message SystemStatusRequest {}
+message SystemUpdateRequest {}
+message SystemVersionRequest {}
+message TabActivateRequest {}
+message TabCloseRequest {}
+message TabListRequest {}
+message UsbRequestCloseRequest {}
+message UsbRequestStartRequest {}
+message UsbDeviceInfoRequest {}
+message UsbGetDevicesRequest {}
+message UsbRequestDeviceRequest {}
+message VibrationVibrateRequest {}
+message WebshareShareRequest {}
+message WebsocketCloseRequest {}
+message WebsocketSendRequest {}
+message WebsocketStartRequest {}
+message WindowActivateRequest {}  
+message WindowCloseRequest {}  
+message WindowInfoRequest {}  
+message WindowListRequest {}  
+message WorkerListRequest {}
+message WorkerTerminateRequest {}
+
+service Mumba {
+  
+  // Applications
+  rpc ApplicationInstanceLaunch(ApplicationLaunchRequest) returns (ApplicationLaunchResponse) {}
+  rpc ApplicationInstanceClose(ApplicationCloseRequest) returns (Response) {}
+  rpc ApplicationInstanceList(ApplicationInstanceListRequest) returns (Response) {}
+  rpc ApplicationInstanceSchedule(ApplicationScheduleRequest) returns (Response) {}
+  rpc ApplicationList(ApplicationListRequest) returns (Response) {}
+  rpc ApplicationManifest(ApplicationManifestRequest) returns (Response) {}
+  rpc ApplicationPin(ApplicationPinRequest) returns (Response) {}
+  rpc ApplicationStart(ApplicationStartRequest) returns (Response) {}
+  rpc ApplicationStatus(ApplicationStatusRequest) returns (Response) {}
+  rpc ApplicationStop(ApplicationStopRequest) returns (Response) {}
+  rpc ApplicationUnpin(ApplicationUnpinRequest) returns (Response) {}
+
+  // Finance
+  rpc FinanceCreateAccount(FinanceCreateAccountRequest) returns (Response) {}
+  
+  // Battery
+  rpc BatteryInfo(BatteryInfoRequest) returns (Response) {}
+
+  // Blob
+  rpc BlobCreate(BlobCreateRequest) returns (Response) {}  
+  rpc BlobDelete(BlobDeleteRequest) returns (Response) {}  
+  rpc BlobList(BlobListRequest) returns (Response) {}  
+  rpc BlobRead(BlobReadRequest) returns (Response) {}  
+  rpc BlobWrite(BlobWriteRequest) returns (Response) {}  
+
+  // Cache
+  rpc CacheCreate(CacheCreateRequest) returns (Response) {}  
+  rpc CacheDrop(CacheDropRequest) returns (Response) {}  
+  rpc CacheItemAdd(CacheItemAddRequest) returns (Response) {}  
+  rpc CacheItemRead(CacheItemReadRequest) returns (Response) {}  
+  rpc CacheItemRemove(CacheItemRemoveRequest) returns (Response) {}
+  rpc CacheItemWrite(CacheItemWriteRequest) returns (Response) {}
+
+  // Capture
+  rpc CaptureTakePhoto(CaptureTakePhotoRequest) returns (Response) {}  
+
+  // Drop
+  rpc DropBuild(DropBuildRequest) returns (Response) {}
+  rpc DropInit(DropInitRequest) returns (Response) {}
+  rpc DropInstall(DropInstallRequest) returns (Response) {}
+  rpc DropSign(DropSignRequest) returns (Response) {}
+  rpc DropUninstall(DropUninstallRequest) returns (Response) {}
+  rpc DropUpdate(DropUpdateRequest) returns (Response) {}
+
+  // Fetch
+  rpc FetchStart(FetchStartRequest) returns (Response) {}
+  rpc FetchClose(FetchCloseRequest) returns (Response) {}
+
+  // Filesystem
+  rpc FilesystemDirectoryGetDirectory(FilesystemDirectoryGetDirectoryRequest) returns (Response) {}
+  rpc FilesystemDirectoryGetFile(FilesystemDirectoryGetFileRequest) returns (Response) {}
+  rpc FilesystemDirectoryList(FilesystemDirectoryListRequest) returns (Response) {}
+  rpc FilesystemDirectoryRemove(FilesystemDirectoryRemoveRequest) returns (Response) {}
+  rpc FilesystemEntryCopy(FilesystemEntryCopyRequest) returns (Response) {}
+  rpc FilesystemEntryGetParent(FilesystemEntryGetParentRequest) returns (Response) {}
+  rpc FilesystemEntryInfo(FilesystemEntryInfoRequest) returns (Response) {}
+  rpc FilesystemEntryMetadata(FilesystemEntryMetadataRequest) returns (Response) {}
+  rpc FilesystemEntryMove(FilesystemEntryMoveRequest) returns (Response) {}
+  rpc FilesystemEntryRemove(FilesystemEntryRemoveRequest) returns (Response) {}
+  rpc FilesystemInfo(FilesystemInfoRequest) returns (Response) {}
+
+  // Geolocation
+  rpc GeolocationClearWatch(GeolocationClearWatchRequest) returns (Response) {}
+  rpc GeolocationGetCurrentPosition(GeolocationGetCurrentPositionRequest) returns (Response) {}
+  rpc GeolocationWatchPosition(GeolocationWatchPositionRequest) returns (Response) {}
+
+  // Identity
+
+  rpc IdentityCreate(IdentityCreateRequest) returns (Response) {}
+  rpc IdentityCredentialCreate(IdentityCredentialCreateRequest) returns (Response) {}
+  rpc IdentityCredentialDrop(IdentityCredentialDropRequest) returns (Response) {}
+  rpc IdentityCredentialList(IdentityCredentialListRequest) returns (Response) {}
+  rpc IdentityDrop(IdentityDropRequest) returns (Response) {}
+  rpc IdentityGet(IdentityGetRequest) returns (Response) {}
+  rpc IdentityUpdate(IdentityUpdateRequest) returns (Response) {}
+
+  // Index
+
+  rpc IndexAdd(IndexAddRequest) returns (Response) {}
+  rpc IndexCreate(IndexCreateRequest) returns (Response) {}
+  rpc IndexDrop(IndexDropRequest) returns (Response) {}
+  rpc IndexQuery(IndexQueryRequest) returns (Response) {}
+  rpc IndexRemove(IndexRemoveRequest) returns (Response) {}
+
+  // IndexedDb
+
+  rpc IndexedDbClearObjectStore(IndexedDbClearObjectStoreRequest) returns (Response) {}
+  rpc IndexedDbCount(IndexedDbCountRequest) returns (Response) {}
+  rpc IndexedDbDeleteDb(IndexedDbDeleteDbRequest) returns (Response) {}
+  rpc IndexedDbGetAll(IndexedDbGetAllRequest) returns (Response) {}
+  rpc IndexedDbGetKey(IndexedDbGetKeyRequest) returns (Response) {}
+  rpc IndexedDbRequestData(IndexedDbRequestDataRequest) returns (Response) {}
+
+  // Input
+
+  rpc InputKeyboard(InputKeyboardRequest) returns (Response) {}
+  rpc InputMouse(InputMouseRequest) returns (Response) {}
+  rpc InputTouch(InputTouchRequest) returns (Response) {}
+
+  // KeyboardLock
+  rpc KeyboardLock(KeyboardLockRequest) returns (Response) {}
+  rpc KeyboardUnlock(KeyboardUnlockRequest) returns (Response) {}
+
+  // Media
+  rpc MediaGetAudioConfiguration(MediaGetAudioConfigurationRequest) returns (Response) {}
+  rpc MediaGetVideoConfiguration(MediaGetVideoConfigurationRequest) returns (Response) {}
+
+  // Midi
+  rpc MidiClose(MidiCloseRequest) returns (Response) {}
+  rpc MidiOpen(MidiOpenRequest) returns (Response) {}
+  rpc MidiSend(MidiSendRequest) returns (Response) {}
+
+  // ML
+  rpc MLDatasetAdd(MLDatasetAddRequest) returns (Response) {}
+  rpc MLDatasetDrop(MLDatasetDropRequest) returns (Response) {}
+  rpc MLDatasetList(MLDatasetListRequest) returns (Response) {}
+  rpc MLModelAdd(MLModelAddRequest) returns (Response) {}
+  rpc MLModelDrop(MLModelDropRequest) returns (Response) {}
+  rpc MLModelList(MLModelListRequest) returns (Response) {}
+  rpc MLPredictorInstall(MLPredictorInstallRequest) returns (Response) {}
+  rpc MLPredictorList(MLPredictorListRequest) returns (Response) {}
+  rpc MLPredictorRemove(MLPredictorRemoveRequest) returns (Response) {}
+
+  // Network
+  rpc NetworkInfo(NetworkInfoRequest) returns (Response) {}
+
+  // OS
+  rpc OSCpuInfo(OSCpuInfoRequest) returns (Response) {}
+  rpc OSGpuInfo(OSGpuInfoRequest) returns (Response) {}
+  rpc OSMemoryInfo(OSMemoryInfoRequest) returns (Response) {}
+  rpc OSStorageInfo(OSStorageInfoRequest) returns (Response) {}
+
+  // Page
+  rpc PageAddScript(PageAddScriptRequest) returns (Response) {}
+  rpc PageBringToFront(PageBringToFrontRequest) returns (Response) {}
+  rpc PageClose(PageCloseRequest) returns (Response) {}
+  rpc PageGetContent(PageGetContentRequest) returns (Response) {}
+  rpc PageNavigate(PageNavigateRequest) returns (Response) {}
+  rpc PageReload(PageReloadRequest) returns (Response) {}
+  rpc PageRemoveScript(PageRemoveScriptRequest) returns (Response) {}
+  rpc PageSaveToPdf(PageSaveToPdfRequest) returns (Response) {}
+  rpc PageScreenshot(PageScreenshotRequest) returns (Response) {}
+  rpc PageSetContent(PageSetContentRequest) returns (Response) {}
+  rpc PageStopLoading(PageStopLoadingRequest) returns (Response) {}
+
+  // Payment
+  rpc PaymentClear(PaymentClearRequest) returns (Response) {}
+  rpc PaymentDelete(PaymentDeleteRequest) returns (Response) {}
+  rpc PaymentGet(PaymentGetRequest) returns (Response) {}
+  rpc PaymentKeys(PaymentKeysRequest) returns (Response) {}
+  rpc PaymentList(PaymentListRequest) returns (Response) {}
+  rpc PaymentSet(PaymentSetRequest) returns (Response) {}
+
+  // Presentation
+
+  rpc PresentationClose(PresentationCloseRequest) returns (Response) {}
+  rpc PresentationReconnect(PresentationReconnectRequest) returns (Response) {}
+  rpc PresentationStart(PresentationStartRequest) returns (Response) {}
+
+  // Push
+
+  rpc PushMessageSend(PushMessageSendRequest) returns (Response) {}
+  rpc PushMessageSubscribe(PushMessageSubscribeRequest) returns (Response) {}
+  rpc PushMessageUnsubscribe(PushMessageUnsubscribeRequest) returns (Response) {}
+
+  // RemotePlayback
+  rpc RemotePlaybackCancelWatchAvailability(RemotePlaybackCancelWatchAvailabilityRequest) returns (Response) {}
+  rpc RemotePlaybackPrompt(RemotePlaybackPromptRequest) returns (Response) {}
+  rpc RemotePlaybackWatchAvailability(RemotePlaybackWatchAvailabilityRequest) returns (Response) {}
+
+  // Repo
+
+  rpc RepoInstall(RepoInstallRequest) returns (Response) {}
+  rpc RepoList(RepoListRequest) returns (Response) {}
+  rpc RepoRemove(RepoRemoveRequest) returns (Response) {}
+
+  // Route
+
+  rpc RouteCopy(RouteCopyRequest) returns (Response) {}
+  rpc RouteCreateCollection(RouteCreateCollectionRequest) returns (Response) {}
+  rpc RouteCreateEntry(RouteCreateEntryRequest) returns (Response) {}
+  rpc RouteCreateProperty(RouteCreatePropertyRequest) returns (Response) {}
+  rpc RouteGetEntry(RouteGetEntryRequest) returns (Response) {}
+  rpc RouteGetMetadata(RouteGetMetadataRequest) returns (Response) {}
+  rpc RouteListCollections(RouteListCollectionsRequest) returns (Response) {}
+  rpc RouteListEntries(RouteListEntriesRequest) returns (Response) {}
+  rpc RouteListProperties(RouteListPropertiesRequest) returns (Response) {}
+  rpc RouteQuery(RouteQueryRequest) returns (Response) {}
+  rpc RouteRemoveCollection(RouteRemoveCollectionRequest) returns (Response) {}
+  rpc RouteRemoveEntry(RouteRemoveEntryRequest) returns (Response) {}
+  rpc RouteRemoveProperty(RouteRemovePropertyRequest) returns (Response) {}
+  rpc RouteResolve(RouteResolveRequest) returns (Response) {}
+  rpc RouteSetEntry(RouteSetEntryRequest) returns (Response) {}
+  rpc RouteSetProperty(RouteSetPropertyRequest) returns (Response) {}
+
+  // Rpc
+
+  rpc RpcCall(RpcCallRequest) returns (Response) {}
+
+  // Schema
+
+  rpc SchemaCreate(SchemaCreateRequest) returns (Response) {}
+  rpc SchemaGet(SchemaGetRequest) returns (Response) {}
+  rpc SchemaList(SchemaListRequest) returns (Response) {}
+  rpc SchemaRemove(SchemaRemoveRequest) returns (Response) {}
+
+  // Screen
+  rpc ScreenGetKeepAwait(ScreenGetKeepAwaitRequest) returns (Response) {}
+  rpc ScreenSetKeepAwait(ScreenSetKeepAwaitRequest) returns (Response) {}
+
+  // Screen Orientation
+  rpc ScreenOrientationGet(ScreenOrientationGetRequest) returns (Response) {}
+  rpc ScreenOrientationLock(ScreenOrientationLockRequest) returns (Response) {}
+  rpc ScreenOrientationUnlock(ScreenOrientationUnlockRequest) returns (Response) {}
+  
+  // Script
+  rpc ScriptAdd(ScriptAddRequest) returns (Response) {}
+  rpc ScriptList(ScriptListRequest) returns (Response) {}
+  rpc ScriptModuleList(ScriptModuleListRequest) returns (Response) {}
+  rpc ScriptRead(ScriptReadRequest) returns (Response) {}
+  rpc ScriptRemove(ScriptRemoveRequest) returns (Response) {}
+  rpc ScriptRun(ScriptRunRequest) returns (Response) {}
+  rpc ScriptSchedule(ScriptScheduleRequest) returns (Response) {}
+  rpc ScriptWrite(ScriptWriteRequest) returns (Response) {}
+
+  // Sensor
+  rpc SensorAccelerometerInfo(SensorAccelerometerInfoRequest) returns (Response) {}
+  rpc SensorAccelerometerStart(SensorAccelerometerStartRequest) returns (Response) {}
+  rpc SensorAccelerometerStop(SensorAccelerometerStopRequest) returns (Response) {}
+  rpc SensorAmbientLightInfo(SensorAmbientLightInfoRequest) returns (Response) {}
+  rpc SensorAmbientLightStart(SensorAmbientLightStartRequest) returns (Response) {}
+  rpc SensorAmbientLightStop(SensorAmbientLightStopRequest) returns (Response) {}
+  rpc SensorGyroscopeInfo(SensorGyroscopeInfoRequest) returns (Response) {}
+  rpc SensorGyroscopeStart(SensorGyroscopeStartRequest) returns (Response) {}
+  rpc SensorGyroscopeStop(SensorGyroscopeStopRequest) returns (Response) {}
+  rpc SensorMagnetometerInfo(SensorMagnetometerInfoRequest) returns (Response) {}
+  rpc SensorMagnetometerStart(SensorMagnetometerStartRequest) returns (Response) {}
+  rpc SensorMagnetometerStop(SensorMagnetometerStopRequest) returns (Response) {}
+  rpc SensorOrientationInfo(SensorOrientationInfoRequest) returns (Response) {}
+  rpc SensorOrientationStart(SensorOrientationStartRequest) returns (Response) {}
+  rpc SensorOrientationStop(SensorOrientationStopRequest) returns (Response) {}
+  
+  // Services
+  rpc ServiceStart(ServiceStartRequest) returns (Response) {}
+  rpc ServiceStop(ServiceStopRequest) returns (Response) {}
+  rpc ServiceList(ServiceListRequest) returns (Response) {}
+
+  // Session
+  rpc SessionInfo(SessionInfoRequest) returns (Response) {}
+  rpc SessionList(SessionListRequest) returns (Response) {}
+
+  // Share
+  rpc ShareAddFileset(ShareAddFilesetRequest) returns (Response) {}
+  rpc ShareAddSqlDb(ShareAddSqlDbRequest) returns (Response) {}
+  rpc ShareCopy(ShareCopyRequest) returns (Response) {}
+  rpc ShareCreateFileset(ShareCreateFilesetRequest) returns (Response) {}
+  rpc ShareCreateKvDb(ShareCreateKvDbRequest) returns (Response) {}
+  rpc ShareCreateSqlDb(ShareCreateSqlDbRequest) returns (Response) {}
+  rpc ShareDhtGet(ShareDhtGetRequest) returns (Response) {}
+  rpc ShareKvDbGetAll(ShareKvDbGetAllRequest) returns (Response) {}
+  rpc ShareKvDbGet(ShareKvDbGetRequest) returns (Response) {}
+  rpc ShareKvDbGetKeys(ShareKvDbGetKeysRequest) returns (Response) {}
+  rpc ShareKvDbGetValues(ShareKvDbGetValuesRequest) returns (Response) {}
+  rpc ShareKvDbSet(ShareKvDbSetRequest) returns (Response) {}
+  rpc ShareList(ShareListRequest) returns (Response) {}
+  rpc SharePause(SharePauseRequest) returns (Response) {}
+  rpc SharePeerList(SharePeerListRequest) returns (Response) {}
+  rpc SharePeerServiceList(SharePeerServiceListRequest) returns (Response) {}
+  rpc SharePeerStatus(SharePeerStatusRequest) returns (Response) {}
+  rpc ShareRead(ShareReadRequest) returns (Response) {}
+  rpc ShareRemove(ShareRemoveRequest) returns (Response) {}
+  rpc ShareResume(ShareResumeRequest) returns (Response) {}
+  rpc ShareStatus(ShareStatusRequest) returns (Response) {}
+  rpc ShareWrite(ShareWriteRequest) returns (Response) {}
+
+  // Sql
+  rpc SqlDbCreate(SqlDbCreateRequest) returns (Response) {}
+  rpc SqlDbDrop(SqlDbDropRequest) returns (Response) {}
+  rpc SqlDbDump(SqlDbDumpRequest) returns (Response) {}
+  rpc SqlDbList(SqlDbListRequest) returns (Response) {}
+  rpc SqlDbListTables(SqlDbListTablesRequest) returns (Response) {}
+  rpc SqlDbQuery(SqlDbQueryRequest) returns (Response) {}
+
+  // Stream
+  rpc StreamList(StreamListRequest) returns (Response) {}
+  rpc StreamRead(StreamReadRequest) returns (Response) {}
+  rpc StreamWrite(StreamWriteRequest) returns (Response) {}
+
+  // System
+  rpc SystemShutdown(SystemShutdownRequest) returns (Response) {}
+  rpc SystemStatus(SystemStatusRequest) returns (Response) {}
+  rpc SystemUpdate(SystemUpdateRequest) returns (Response) {}
+  rpc SystemVersion(SystemVersionRequest) returns (Response) {}
+
+  // Tab
+  rpc TabActivate(TabActivateRequest) returns (Response) {}
+  rpc TabClose(TabCloseRequest) returns (Response) {}
+  rpc TabList(TabListRequest) returns (Response) {}
+
+  // Usb
+  rpc UsbRequestClose(UsbRequestCloseRequest) returns (Response) {}
+  rpc UsbRequestStart(UsbRequestStartRequest) returns (Response) {}
+  rpc UsbDeviceInfo(UsbDeviceInfoRequest) returns (Response) {}
+  rpc UsbGetDevices(UsbGetDevicesRequest) returns (Response) {}
+  rpc UsbRequestDevice(UsbRequestDeviceRequest) returns (Response) {}
+
+  // Vibration
+  rpc VibrationVibrate(VibrationVibrateRequest) returns (Response) {}
+
+  // Webshare
+  rpc WebshareShare(WebshareShareRequest) returns (Response) {}
+
+  // WebSocket
+  rpc WebsocketClose(WebsocketCloseRequest) returns (Response) {}
+  rpc WebsocketSend(WebsocketSendRequest) returns (Response) {}
+  rpc WebsocketStart(WebsocketStartRequest) returns (Response) {}
+
+  // Window
+  rpc WindowActivate(WindowActivateRequest) returns (Response) {}  
+  rpc WindowClose(WindowCloseRequest) returns (Response) {}  
+  rpc WindowInfo(WindowInfoRequest) returns (Response) {}  
+  rpc WindowList(WindowListRequest) returns (Response) {}  
+
+  // Worker
+
+  rpc WorkerList(WorkerListRequest) returns (Response) {}
+  rpc WorkerTerminate(WorkerTerminateRequest) returns (Response) {}
+}

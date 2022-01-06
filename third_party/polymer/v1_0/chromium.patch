@@ -1,0 +1,88 @@
+diff --git a/components-chromium/font-roboto/roboto.html b/components-chromium/font-roboto/roboto.html
+index 7a24999..4eefcba 100644
+--- a/components-chromium/font-roboto/roboto.html
++++ b/components-chromium/font-roboto/roboto.html
+@@ -7,5 +7,4 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
+ Code distributed by Google as part of the polymer project is also
+ subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ -->
+-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic">
+-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700">
++<link rel="stylesheet" href="chrome://resources/css/roboto.css">
+diff --git a/components-chromium/paper-input/paper-textarea-extracted.js b/components-chromium/paper-input/paper-textarea-extracted.js
+index 11bc05a37471..8d425e02c30b 100644
+--- a/components-chromium/paper-input/paper-textarea-extracted.js
++++ b/components-chromium/paper-input/paper-textarea-extracted.js
+@@ -57,8 +57,8 @@ Polymer({
+       this.$.input.textarea.selectionEnd = end;
+     },
+
+-    _ariaLabelledByChanged: function(ariaLabelledBy) {
+-      this._focusableElement.setAttribute('aria-labelledby', ariaLabelledBy);
++    _ariaLabelledByChanged: function() {
++      this._focusableElement.setAttribute('aria-label', this.label);
+     },
+
+     _ariaDescribedByChanged: function(ariaDescribedBy) {
+diff --git a/components-chromium/iron-list/iron-list-extracted.js b/components-chromium/iron-list/iron-list-extracted.js
+index 43c59653a39b..26652936735c 100644
+--- a/components-chromium/iron-list/iron-list-extracted.js
++++ b/components-chromium/iron-list/iron-list-extracted.js
+@@ -128,6 +128,14 @@
+       scrollOffset: {
+         type: Number,
+         value: 0
++      },
++
++      /**
++       * If set to true, focus on an element will be preserved after rerender.
++       */
++      preserveFocus: {
++        type: Boolean,
++        value: false
+       }
+     },
+
+@@ -791,6 +799,15 @@
+      * to `items`, splices or updates to a single item.
+      */
+     _itemsChanged: function(change) {
++      var rendering = /^items(\.splices){0,1}$/.test(change.path);
++      var lastFocusedIndex, focusedElement;
++      if (rendering && this.preserveFocus) {
++        lastFocusedIndex = this._focusedVirtualIndex;
++        focusedElement = this.querySelector('* /deep/ *:focus');
++      }
++
++      var preservingFocus = rendering && this.preserveFocus && focusedElement;
++
+       if (change.path === 'items') {
+         this._virtualStart = 0;
+         this._physicalTop = 0;
+@@ -804,7 +821,7 @@
+         this._physicalItems = this._physicalItems || [];
+         this._physicalSizes = this._physicalSizes || [];
+         this._physicalStart = 0;
+-        if (this._scrollTop > this._scrollOffset) {
++        if (this._scrollTop > this._scrollOffset && !preservingFocus) {
+           this._resetScrollPosition(0);
+         }
+         this._removeFocusedItem();
+@@ -826,6 +843,17 @@
+       } else if (change.path !== 'items.length') {
+         this._forwardItemPath(change.path, change.value);
+       }
++
++      // If the list was in focus when updated, preserve the focus on item.
++      if (preservingFocus) {
++        Polymer.dom.flush();
++        focusedElement.blur(); // paper- elements breaks when focused twice.
++        this._focusPhysicalItem(
++            Math.min(this.items.length - 1, lastFocusedIndex));
++        if (!this._isIndexVisible(this._focusedVirtualIndex)) {
++          this.scrollToIndex(this._focusedVirtualIndex);
++        }
++      }
+     },
+
+     _forwardItemPath: function(path, value) {

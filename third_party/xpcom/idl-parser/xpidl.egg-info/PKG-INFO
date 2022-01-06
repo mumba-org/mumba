@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: xpidl
+Version: 1.0
+Summary: Parser and header generator for xpidl files.
+Home-page: https://github.com/pelmers/xpidl
+Author: Mozilla Foundation
+Author-email: UNKNOWN
+License: MPL 2.0
+Description: UNKNOWN
+Keywords: xpidl,parser
+Platform: UNKNOWN

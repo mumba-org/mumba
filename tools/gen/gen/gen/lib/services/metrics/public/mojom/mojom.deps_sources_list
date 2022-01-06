@@ -1,0 +1,2 @@
+gen/lib/services/metrics/public/mojom/mojom.sources_list
+gen/lib/url/mojom/url_mojom_gurl.sources_list

@@ -1,0 +1,449 @@
+// Copyright 2019 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/window_container_type.mojom";
+import "core/shared/common/native_types.mojom";
+import "core/shared/common/page_state.mojom";
+import "core/shared/common/media/renderer_audio_output_stream_factory.mojom";
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/text_direction.mojom";
+import "lib/mojo/public/mojom/base/time.mojom";
+import "lib/skia/public/interfaces/bitmap.mojom";
+import "lib/ui/gfx/geometry/mojo/geometry.mojom";
+import "lib/ui/gfx/mojo/color_space.mojom";
+import "lib/ui/base/mojo/window_open_disposition.mojom";
+import "lib/url/mojom/url.mojom";
+import "lib/services/service_manager/public/mojom/service.mojom";
+import "lib/services/service_manager/public/mojom/interface_provider.mojom";
+import "third_party/blink/public/platform/referrer.mojom";
+import "third_party/blink/public/web/window_features.mojom";
+
+enum ApplicationStatus {
+  kOk = 0,
+  kError
+};
+
+enum ApplicationState {
+  kUndefined = 0,
+  kInitializing,
+  kRunning,
+  kIdle,
+  kExiting,
+  kError
+};
+
+enum WindowMode {
+  kUndefined = 0,
+  kTabbed = 1,
+  kWindow = 2
+};
+
+struct ApplicationInfo {
+  string uuid;
+  string name;
+  string url;
+};
+
+struct ApplicationInstance {
+  int32 id;
+  string name;
+  string url;
+  string uuid;
+  ApplicationState state;
+  gfx.mojom.Rect initial_bounds;
+  WindowMode window_mode;
+  ui.mojom.WindowOpenDisposition window_open_disposition;
+  bool fullscreen;
+  bool headless;
+};
+
+enum MenuSourceType {
+  NONE = 0,
+  MOUSE = 1,
+  KEYBOARD = 2,
+  TOUCH = 3,
+  EDIT_MENU = 4,
+  LONG_PRESS = 5,
+  LONG_TAP = 6,
+  TOUCH_HANDLE = 7,
+  STYLUS = 8,
+  ADJUST_SELECTION = 9,
+  ADJUST_SELECTION_RESET = 10,
+};
+
+enum ScreenOrientationValues {
+  DEFAULT = 0,
+  PORTRAIT_PRIMARY = 1,
+  PORTRAIT_SECONDARY = 2,
+  LANDSCAPE_PRIMARY = 3,
+  LANDSCAPE_SECONDARY = 4,
+  ANY = 5,
+  LANDSCAPE = 6,
+  PORTRAIT = 7,
+  NATURAL = 8,
+};
+
+//struct ScreenInfo {
+//  float device_scale_factor;
+//  gfx.mojom.ColorSpace color_space;
+//  uint32 depth;
+//  uint32 depth_per_component;
+//  bool is_monochrome;
+//  gfx.mojom.Rect rect;
+//  gfx.mojom.Rect available_rect;
+//  ScreenOrientationValues orientation_type;
+//  uint16 orientation_angle;
+//};
+
+enum DragEventSource {
+  MOUSE = 0,
+  TOUCH = 1,
+};
+
+
+//struct DragEventSourceInfo {
+//  gfx.mojom.Point event_location;
+//  DragEventSource event_source;
+//};
+
+struct DragDrop {
+  int32 view_id;
+  bool did_originate_from_renderer;
+  url.mojom.Url url;
+  mojo_base.mojom.String16 url_title;
+  mojo_base.mojom.String16 download_metadata;
+  array<FileInfo> filenames;
+  array<mojo_base.mojom.String16> file_mime_types;
+  mojo_base.mojom.String16 filesystem_id;
+  array<FileSystemFileInfo> file_system_files;
+  mojo_base.mojom.String16 text;
+  mojo_base.mojom.String16 html;
+  url.mojom.Url html_base_url;
+  url.mojom.Url file_contents_source_url;
+  string file_contents_filename_extension;
+  string file_contents_content_disposition;
+  map<mojo_base.mojom.String16, mojo_base.mojom.String16> custom_data;
+  int32 key_modifiers;
+};
+
+enum TextInputType {
+  NONE = 0,
+  TEXT = 1,
+  PASSWORD = 2,
+  SEARCH = 3,
+  EMAIL = 4,
+  NUMBER = 5,
+  ELEPHONE = 6,
+  URL = 7,
+  DATE = 8,
+  DATE_TIME = 9,
+  DATE_TIME_LOCAL = 10,
+  MONTH = 11,
+  TIME = 12,
+  WEEK = 13,
+  TEXT_AREA = 14,
+  CONTENT_EDITABLE = 15,
+  DATE_TIME_FIELD = 16,
+};
+
+enum TextInputMode {
+  DEFAULT = 0,
+  NONE = 1,
+  TEXT = 2,
+  TEL = 3,
+  URL = 4,
+  EMAIL = 5,
+  NUMERIC = 6,
+  DECIMAL = 7,
+  SEARCH = 8,
+};
+
+//struct TextInputState {  
+  // Type of the input field.
+//  TextInputType type;
+//
+  // The mode of input field.
+//  TextInputMode mode;
+//
+  // The flags of input field (autocorrect, autocomplete, etc.)
+//  int32 flags;
+//
+  // The value of input field.
+//  string value;
+//
+  // The cursor position of the current selection start, or the caret position
+  // if nothing is selected.
+//  int32 selection_start;
+//
+  // The cursor position of the current selection end, or the caret position if
+  // nothing is selected.
+//  int32 selection_end;
+//
+  // The start position of the current composition, or -1 if there is none.
+//  int32 composition_start;
+//
+  // The end position of the current composition, or -1 if there is none.
+//  int32 composition_end;
+//
+  // Whether or not inline composition can be performed for the current input.
+//  bool can_compose_inline;
+//
+  // Whether or not the IME should be shown as a result of this update. Even if
+  // true, the IME will only be shown if the input is appropriate (e.g. not
+  // TEXT_INPUT_TYPE_NONE).
+//  bool show_ime_if_needed;
+//
+  // Whether or not this is a reply to a request from IME.
+//  bool reply_to_request;
+//};
+
+//enum DragOperation {
+//  None = 0,
+//  Copy = 1,
+//  Link = 2,
+//  Generic = 4,
+//  Private = 8,
+//  Move = 16,
+//  Delete = 32,
+  // taken from UINT_MAX
+//  Every = 4294967295
+//};
+
+//enum DragOperationMask {
+//  None = 0,
+//  Copy = 1,
+//  Link = 2,
+//  Generic = 4,
+//  Private = 8,
+//  Move = 16,
+//  Delete = 32,
+  // taken from UINT_MAX
+//  Every = 4294967295
+//};
+
+//struct Cursor {
+//  int32 type;
+//  int32 x;
+//  int32 y;
+//  int32 width;
+//  int32 height;
+//  float scale;
+//  const char* data;
+//  array<uint8> data;
+//};
+
+struct FileInfo {
+  string path;
+  string display_name;
+};
+
+struct FileSystemFileInfo {
+  url.mojom.Url url;
+  int64 size = 0;
+  string filesystem_id;
+};
+
+//enum DropDataKind {
+//  STRING = 0,
+//  FILENAME = 1,
+//  FILESYSTEMFILE = 2,
+//};
+
+//struct DropDataMetadata {
+//  DropDataKind kind;
+//  mojo_base.mojom.String16 mime_type;
+//  string filename;
+//  url.mojom.Url file_system_url;
+//};
+
+//struct DropData {
+//  int32 view_id;
+//  bool did_originate_from_renderer;
+//  url.mojom.Url url;
+//  mojo_base.mojom.String16 url_title;
+//  mojo_base.mojom.String16 download_metadata;
+//  array<FileInfo> filenames;
+//  array<mojo_base.mojom.String16> file_mime_types;
+//  mojo_base.mojom.String16 filesystem_id;
+//  array<FileSystemFileInfo> file_system_files;
+//  mojo_base.mojom.String16 text;
+//  mojo_base.mojom.String16 html;
+//  url.mojom.Url html_base_url;
+//  url.mojom.Url file_contents_source_url;
+//  string file_contents_filename_extension;
+//  string file_contents_content_disposition;
+//  map<mojo_base.mojom.String16, mojo_base.mojom.String16> custom_data;
+//  int32 key_modifiers;
+//};
+
+struct SelectionBoundsParams {
+  gfx.mojom.Rect anchor_rect;
+  mojo_base.mojom.TextDirection anchor_dir;
+  gfx.mojom.Rect focus_rect;
+  mojo_base.mojom.TextDirection focus_dir;
+  bool is_anchor_first;
+};
+
+// Note: we are reusing 'CreateNewWindowParams'
+// also in place of CreateViewParams that is instatiated on "ApplicationWindowHost"
+
+struct CreateNewWindowParams {
+  // True if this open request came in the context of a user gesture.
+  bool user_gesture;
+
+  // Type of window requested.
+  WindowContainerType window_container_type;
+
+  // The session storage namespace ID this window should use.
+  //string session_storage_namespace_id;
+
+  // The session storage namespace ID this window should clone from.
+  // TODO(dmurph): Remove this once session storage is fully mojo'd, as the
+  // clone call happens on a different interface. https://crbug.com/716490
+  //string clone_from_session_storage_namespace_id;
+
+  // The name of the resulting frame that should be created (empty if none
+  // has been specified). UTF8 encoded string.
+  //string frame_name;
+  string window_name;
+
+  // Whether the opener will be suppressed in the new window, in which case
+  // scripting the new window is not allowed.
+  bool opener_suppressed;
+
+  // Whether the window should be opened in the foreground, background, etc.
+  ui.mojom.WindowOpenDisposition disposition;
+
+  // The URL that will be loaded in the new window (empty if none has been
+  // specified).
+  url.mojom.Url target_url;
+
+  // The referrer that will be used to load |target_url| (empty if none has
+  // been specified).
+  blink.mojom.Referrer referrer;
+
+  // The window features to use for the new window.
+  blink.mojom.WindowFeatures features;
+
+  RendererPreferences renderer_preferences;
+
+  WebPreferences web_preferences;
+
+  int32 window_id;
+
+  bool swapped_out;
+
+  bool hidden;
+
+  bool never_visible;
+
+  bool enable_auto_resize;
+
+  gfx.mojom.Size min_size;
+  gfx.mojom.Size max_size;
+  VisualProperties initial_size;
+  float page_zoom_level;
+
+  service_manager.mojom.InterfaceProvider interface_provider;
+  // RendererAudioOutputStreamFactory audio_output_stream_factory;
+};
+
+// Operation result when the renderer asks the browser to create a new window.
+enum CreateNewWindowStatus {
+  // Ignore creation of the new window. This can happen because creation is
+  // blocked or because the new window should have no opener relationship.
+  kIgnore,
+  // Reuse the current window rather than creating a new window.
+  kReuse,
+  // Create a new window using the corresponding params in |reply|.
+  kSuccess,
+};
+
+// All routing IDs in this struct must be set to a valid routing ID.
+struct CreateNewWindowReply {
+  // The ID of the view to be created.
+  int32 route_id;
+
+  // The ID of the main frame hosted in the view.
+  //int32 main_frame_route_id;
+
+  // The ID of the widget for the main frame.
+  int32 window_route_id;
+
+  // The InterfaceProvider through which the main RenderFrame can access
+  // services exposed by its RenderFrameHost.
+  //service_manager.mojom.InterfaceProvider main_frame_interface_provider;
+
+  // to ApplicationWindow now
+  service_manager.mojom.InterfaceProvider window_interface_provider;
+
+};
+
+enum FocusType {
+  // Element::focus(), etc.
+  None = 0,
+  Forward = 1,
+  Backward = 2,
+  Up = 3,
+  Down = 4,
+  Left = 5,
+  Right = 6,
+  Mouse = 7,
+  Page = 8
+};
+
+enum StopFindAction {
+  ClearSelection = 0,
+  KeepSelection = 1,
+  ActivateSelection = 2
+};
+
+struct FindOptions {
+  bool forward;
+  bool match_case;
+  bool find_next;
+  bool word_start;
+  bool medial_capital_as_word_start;
+  bool force;
+};
+
+struct CommitNavigationParams {
+  string url;
+  bool keep_alive;
+  int32 route_id;
+  int32 provider_id;
+};
+
+struct DidCommitProvisionalLoadParams {
+  int32 nav_entry_id;
+  int64 item_sequence_number;
+  int64 document_sequence_number;
+  url.mojom.Url url;
+  url.mojom.Url base_url;
+  blink.mojom.Referrer referrer;
+  //ui.mojom.PageTransition transition;
+  array<url.mojom.Url> redirects;
+  bool should_update_history;
+  string contents_mime_type;
+  //net.HostPortPair socket_address
+  string socket_address;
+  bool did_create_new_entry;
+  bool should_replace_current_entry;
+  //NavigationGesture gesture;
+  string method;
+  int64 post_id;
+  int32 http_status_code;
+  bool url_is_unreachable;
+  PageState page_state;
+  url.mojom.Url original_request_url;
+  bool is_overriding_user_agent;
+  bool history_list_was_cleared;
+  //url::Origin origin;
+  url.mojom.Url origin;
+  mojo_base.mojom.TimeTicks ui_timestamp;
+  bool has_potentially_trustworthy_unique_origin;
+  uint32 content_source_id;
+};

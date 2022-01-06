@@ -1,0 +1,72 @@
+// Copyright 2019 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/mojom/objects.mojom";
+
+interface WindowManagerClient {
+  ClientWindowLaunch(string url) => (DomainStatus status, WindowHandle info);
+  ClientWindowClose(WindowHandle info) => (DomainStatus status);
+  ClientWindowSetParent(WindowHandle info, WindowHandle parent) => (DomainStatus status);
+  ClientWindowCanMaximize(WindowHandle info) => (bool can_maximize);
+  ClientWindowMaximize(WindowHandle info) => (DomainStatus status);
+  ClientWindowCanMinimize(WindowHandle info) => (bool can_minimize);
+  ClientWindowMinimize(WindowHandle info) => (DomainStatus status);
+  ClientWindowRestore(WindowHandle info) => (DomainStatus status);
+  ClientWindowIsFullscreen(WindowHandle info) => (bool fullscreen);
+  ClientWindowSetFullscreen(WindowHandle info, bool fullscreen) => (DomainStatus status);
+  ClientWindowActivate(WindowHandle info) => (DomainStatus status);
+  ClientWindowSetTitle(WindowHandle info, string title) => (DomainStatus status);
+  ClientWindowGetTitle(WindowHandle info) => (string title);
+  ClientWindowSetIcon(WindowHandle info, string url) => (DomainStatus status);
+  ClientWindowGetIcon(WindowHandle info) => (string url);
+  ClientWindowMove(WindowHandle info) => (DomainStatus status);
+  ClientWindowCanResize(WindowHandle info) => (bool can_resize);
+  ClientWindowGetSize(WindowHandle info);
+  ClientWindowSetSize(WindowHandle info) => (DomainStatus status);
+  ClientWindowGetMinimumSize(WindowHandle info);
+  ClientWindowSetMinimumSize(WindowHandle info) => (DomainStatus status);
+  ClientWindowGetMaximumSize(WindowHandle info);
+  ClientWindowSetMaximumSize(WindowHandle info) => (DomainStatus status);
+  ClientWindowSetModal(WindowHandle info) => (DomainStatus status);
+  ClientWindowSetActivatable(WindowHandle info, bool activatable) => (DomainStatus status);
+  // pages
+
+  ClientWindowPageNew(WindowHandle info, string url) => (DomainStatus status, PageHandle page);
+  ClientWindowPageClose(PageHandle page) => (DomainStatus status);
+  ClientWindowPageList(WindowHandle info) => (array<PageHandle> pages);
+  // TODO: DragNDrop, Events
+};
+
+interface WindowManagerHost {
+  HostWindowLaunch() => (DomainStatus status, WindowHandle info);
+  HostWindowClose(WindowHandle info) => (DomainStatus status);
+  HostWindowSetParent(WindowHandle info, WindowHandle parent) => (DomainStatus status);
+  HostWindowMaximize(WindowHandle info) => (DomainStatus status);
+  HostWindowMinimize(WindowHandle info) => (DomainStatus status);
+  HostWindowRestore(WindowHandle info) => (DomainStatus status);
+  HostWindowSetFullscreen(WindowHandle info, bool fullscreen) => (DomainStatus status);
+  HostWindowActivate(WindowHandle info) => (DomainStatus status);
+  HostWindowSetTitle(WindowHandle info, string title) => (DomainStatus status);
+  HostWindowSetIcon(WindowHandle info, string url) => (DomainStatus status);
+  HostWindowMove(WindowHandle info) => (DomainStatus status);
+  HostWindowSetSize(WindowHandle info) => (DomainStatus status);
+  HostWindowSetMinimumSize(WindowHandle info) => (DomainStatus status);
+  HostWindowSetMaximumSize(WindowHandle info) => (DomainStatus status);
+  HostWindowSetModal(WindowHandle info) => (DomainStatus status);
+  HostWindowSetActivatable(WindowHandle info, bool activatable) => (DomainStatus status);
+  HostWindowIsFullscreen(WindowHandle info) => (bool fullscreen);
+  HostWindowCanMaximize(WindowHandle info) => (bool can_maximize);
+  HostWindowCanMinimize(WindowHandle info) => (bool can_minimize);
+  HostWindowGetTitle(WindowHandle info) => (string title);
+  HostWindowGetIcon(WindowHandle info) => (string url);
+  HostWindowCanResize(WindowHandle info) => (bool can_resize);
+  HostWindowGetSize(WindowHandle info);
+  HostWindowGetMinimumSize(WindowHandle info);
+  HostWindowGetMaximumSize(WindowHandle info);
+  HostWindowPageNew(WindowHandle info, string url) => (DomainStatus status, PageHandle page);
+  HostWindowPageClose(PageHandle page) => (DomainStatus status);
+  HostWindowPageList(WindowHandle info) => (array<PageHandle> pages);
+};

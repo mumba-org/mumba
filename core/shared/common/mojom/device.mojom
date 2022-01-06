@@ -1,0 +1,19 @@
+// Copyright 2018 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/mojom/objects.mojom";
+
+interface DeviceManager {
+
+  AddDevice(string dev_name) => (DomainStatus status);
+  RemoveDevice(string dev_name) => (DomainStatus status);
+  GetDeviceList() => (array<DeviceHandle> devices);
+
+};
+
+interface DeviceDispatcherHost {
+  Noop();
+};

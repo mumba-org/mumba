@@ -1,0 +1,17 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+typemaps = [
+  "//lib/gpu/ipc/common/mailbox_holder_for_blink.typemap",
+  "//lib/gpu/ipc/common/sync_token.typemap",
+  "//lib/services/viz/public/cpp/compositing/begin_frame_args_for_blink.typemap",
+  "//lib/services/viz/public/cpp/compositing/compositor_frame_for_blink.typemap",
+  "//lib/services/viz/public/cpp/compositing/frame_sink_id.typemap",
+  "//lib/services/viz/public/cpp/compositing/local_surface_id.typemap",
+  "//lib/services/viz/public/cpp/compositing/returned_resource.typemap",
+  "//lib/services/viz/public/cpp/compositing/surface_id.typemap",
+  "//lib/services/viz/public/cpp/compositing/surface_info.typemap",
+  "//lib/skia/public/interfaces/skbitmap_for_blink.typemap",
+  "//lib/ui/gfx/mojo/gpu_fence_handle_for_blink.typemap",
+]

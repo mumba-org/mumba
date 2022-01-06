@@ -1,0 +1,87 @@
+swift_static("Base") {
+  public_deps = [
+    "//runtime/MumbaShims",
+  ]
+  if (is_posix){
+    public_deps += [
+      "//kit/swift/PosixShim",
+      "//kit/swift/ThirdParty/Libevent",
+    ]
+  }
+  include_dirs = [
+    #"/usr/include",
+    #"//buildtools/third_party/libc++/trunk/include"
+  ]
+
+  sources = [
+    "Sources/Atomics.swift",
+    "Sources/AtomicSequence.swift",
+    "Sources/Base64.swift",
+    "Sources/BidilineIterator.swift",
+    "Sources/ByteBuffer-aux.swift",
+    "Sources/ByteBuffer-core.swift",
+    "Sources/ByteBuffer-int.swift",
+    "Sources/ByteBuffer-views.swift",
+    "Sources/ContiguousCollection.swift",
+    "Sources/Command.swift",
+    "Sources/CoreErrors.swift",
+    "Sources/DelayedTaskManager.swift",
+    "Sources/Environment.swift",
+    "Sources/File.swift",
+    "Sources/FileDescriptorWatcher.swift",
+    "Sources/FilePath.swift",
+    "Sources/FileUtil.swift",
+    "Sources/Heap.swift",
+    "Sources/I18n.swift",
+    "Sources/ICU.swift",
+    "Sources/IncomingTaskQueue.swift",
+    "Sources/IntegerTypes.swift",
+    "Sources/LibEvent.swift",
+    "Sources/Lock.swift",
+    "Sources/MessageLoop.swift",
+    "Sources/MessageLoopCurrent.swift", 
+    "Sources/MessagePump.swift",
+    "Sources/PostTask.swift",
+    "Sources/PriorityQueue.swift",
+    "Sources/Queue.swift",
+    "Sources/RunLoop.swift",
+    "Sources/SequenceLocalStorage.swift",
+    "Sources/SchedulerPriorityQueue.swift",
+    "Sources/SchedulerSingleThreadTaskRunnerManager.swift",
+    "Sources/SchedulerWorker.swift",
+    "Sources/SchedulerWorkerPool.swift",
+    "Sources/SchedulerWorkerStack.swift", 
+    "Sources/ScopedBlockingCall.swift",
+    "Sources/System.swift",
+    "Sources/Status.swift",
+    "Sources/Task.swift",
+    "Sources/TaskAnnotator.swift",
+    "Sources/TaskRunner.swift",
+    "Sources/TaskScheduler.swift",
+    "Sources/TaskSequence.swift",
+    "Sources/TaskTracker.swift",
+    #"Sources/Thread.swift",
+    "Sources/Time.swift",
+    "Sources/Timer.swift",
+    "Sources/ULID.swift",
+    "Sources/UnguessableToken.swift",
+    "Sources/WaitableEvent.swift",
+  ]
+
+  if (is_posix) {
+    sources += [
+      "Sources/ThreadPosix.swift",
+    ]
+  }
+  if (is_win) {
+    sources += [
+      "Sources/ThreadWin.swift",
+    ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "Sources/ThreadLinux.swift",
+    ]  
+  }
+}

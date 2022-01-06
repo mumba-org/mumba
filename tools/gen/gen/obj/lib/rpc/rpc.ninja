@@ -1,0 +1,59 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_32 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_26 -DGOOGLE_PROTOBUF_NO_RTTI -DGOOGLE_PROTOBUF_NO_STATIC_INITIALIZER -DHAVE_PTHREAD -DPROTOBUF_USE_DLLS
+include_dirs = -I../../../lib/rpc -I../../../lib/rpc/third_party/c-ares -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/protobuf/src
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -Wall -Werror -Wextra -Wimplicit-fallthrough -Wthread-safety -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/include/glib-2.0 -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu/glib-2.0/include
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = rpc
+target_out_dir = obj/lib/rpc
+target_output_name = librpc
+
+build obj/lib/rpc/rpc.inputdeps.stamp: stamp obj/lib/base/anchor_functions_buildflags.stamp obj/lib/base/build_date.stamp obj/lib/base/cfi_buildflags.stamp obj/lib/base/debugging_buildflags.stamp obj/lib/base/partition_alloc_buildflags.stamp obj/lib/base/protected_memory_buildflags.stamp obj/lib/base/synchronization_buildflags.stamp obj/lib/base/allocator/buildflags.stamp
+build obj/lib/rpc/rpc/channel_cc.o: cxx ../../../lib/rpc/cpp/client/channel_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/client_context.o: cxx ../../../lib/rpc/cpp/client/client_context.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/create_channel.o: cxx ../../../lib/rpc/cpp/client/create_channel.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/create_channel_internal.o: cxx ../../../lib/rpc/cpp/client/create_channel_internal.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/create_channel_posix.o: cxx ../../../lib/rpc/cpp/client/create_channel_posix.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/credentials_cc.o: cxx ../../../lib/rpc/cpp/client/credentials_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/generic_stub.o: cxx ../../../lib/rpc/cpp/client/generic_stub.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/channel_arguments.o: cxx ../../../lib/rpc/cpp/common/channel_arguments.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/channel_filter.o: cxx ../../../lib/rpc/cpp/common/channel_filter.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/completion_queue_cc.o: cxx ../../../lib/rpc/cpp/common/completion_queue_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/core_codegen.o: cxx ../../../lib/rpc/cpp/common/core_codegen.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/resource_quota_cc.o: cxx ../../../lib/rpc/cpp/common/resource_quota_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/rpc_method.o: cxx ../../../lib/rpc/cpp/common/rpc_method.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/version_cc.o: cxx ../../../lib/rpc/cpp/common/version_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/async_generic_service.o: cxx ../../../lib/rpc/cpp/server/async_generic_service.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/channel_argument_option.o: cxx ../../../lib/rpc/cpp/server/channel_argument_option.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/create_default_thread_pool.o: cxx ../../../lib/rpc/cpp/server/create_default_thread_pool.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/dynamic_thread_pool.o: cxx ../../../lib/rpc/cpp/server/dynamic_thread_pool.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/default_health_check_service.o: cxx ../../../lib/rpc/cpp/server/health/default_health_check_service.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/health.pb.o: cc ../../../lib/rpc/cpp/server/health/health.pb.c || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/health_check_service.o: cxx ../../../lib/rpc/cpp/server/health/health_check_service.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/health_check_service_server_builder_option.o: cxx ../../../lib/rpc/cpp/server/health/health_check_service_server_builder_option.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/server_builder.o: cxx ../../../lib/rpc/cpp/server/server_builder.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/server_cc.o: cxx ../../../lib/rpc/cpp/server/server_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/server_context.o: cxx ../../../lib/rpc/cpp/server/server_context.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/server_credentials.o: cxx ../../../lib/rpc/cpp/server/server_credentials.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/server_posix.o: cxx ../../../lib/rpc/cpp/server/server_posix.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/thread_manager.o: cxx ../../../lib/rpc/cpp/thread_manager/thread_manager.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/byte_buffer_cc.o: cxx ../../../lib/rpc/cpp/util/byte_buffer_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/slice_cc.o: cxx ../../../lib/rpc/cpp/util/slice_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/status.o: cxx ../../../lib/rpc/cpp/util/status.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/string_ref.o: cxx ../../../lib/rpc/cpp/util/string_ref.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/time_cc.o: cxx ../../../lib/rpc/cpp/util/time_cc.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/insecure_credentials.o: cxx ../../../lib/rpc/cpp/client/insecure_credentials.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/secure_credentials.o: cxx ../../../lib/rpc/cpp/client/secure_credentials.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/codegen_init.o: cxx ../../../lib/rpc/cpp/codegen/codegen_init.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/auth_property_iterator.o: cxx ../../../lib/rpc/cpp/common/auth_property_iterator.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/secure_auth_context.o: cxx ../../../lib/rpc/cpp/common/secure_auth_context.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/secure_channel_arguments.o: cxx ../../../lib/rpc/cpp/common/secure_channel_arguments.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/secure_create_auth_context.o: cxx ../../../lib/rpc/cpp/common/secure_create_auth_context.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/insecure_server_credentials.o: cxx ../../../lib/rpc/cpp/server/insecure_server_credentials.cc || obj/lib/rpc/rpc.inputdeps.stamp
+build obj/lib/rpc/rpc/secure_server_credentials.o: cxx ../../../lib/rpc/cpp/server/secure_server_credentials.cc || obj/lib/rpc/rpc.inputdeps.stamp
+
+build ./librpc.so ./librpc.so.TOC: solink obj/lib/rpc/rpc/channel_cc.o obj/lib/rpc/rpc/client_context.o obj/lib/rpc/rpc/create_channel.o obj/lib/rpc/rpc/create_channel_internal.o obj/lib/rpc/rpc/create_channel_posix.o obj/lib/rpc/rpc/credentials_cc.o obj/lib/rpc/rpc/generic_stub.o obj/lib/rpc/rpc/channel_arguments.o obj/lib/rpc/rpc/channel_filter.o obj/lib/rpc/rpc/completion_queue_cc.o obj/lib/rpc/rpc/core_codegen.o obj/lib/rpc/rpc/resource_quota_cc.o obj/lib/rpc/rpc/rpc_method.o obj/lib/rpc/rpc/version_cc.o obj/lib/rpc/rpc/async_generic_service.o obj/lib/rpc/rpc/channel_argument_option.o obj/lib/rpc/rpc/create_default_thread_pool.o obj/lib/rpc/rpc/dynamic_thread_pool.o obj/lib/rpc/rpc/default_health_check_service.o obj/lib/rpc/rpc/health.pb.o obj/lib/rpc/rpc/health_check_service.o obj/lib/rpc/rpc/health_check_service_server_builder_option.o obj/lib/rpc/rpc/server_builder.o obj/lib/rpc/rpc/server_cc.o obj/lib/rpc/rpc/server_context.o obj/lib/rpc/rpc/server_credentials.o obj/lib/rpc/rpc/server_posix.o obj/lib/rpc/rpc/thread_manager.o obj/lib/rpc/rpc/byte_buffer_cc.o obj/lib/rpc/rpc/slice_cc.o obj/lib/rpc/rpc/status.o obj/lib/rpc/rpc/string_ref.o obj/lib/rpc/rpc/time_cc.o obj/lib/rpc/rpc/insecure_credentials.o obj/lib/rpc/rpc/secure_credentials.o obj/lib/rpc/rpc/codegen_init.o obj/lib/rpc/rpc/auth_property_iterator.o obj/lib/rpc/rpc/secure_auth_context.o obj/lib/rpc/rpc/secure_channel_arguments.o obj/lib/rpc/rpc/secure_create_auth_context.o obj/lib/rpc/rpc/insecure_server_credentials.o obj/lib/rpc/rpc/secure_server_credentials.o obj/lib/rpc/libnanopb.a obj/lib/rpc/libares.a | ./libprotobuf_lite.so.TOC ./libgrpc.so.TOC ./libc++.so.TOC || obj/build/config/exe_and_shlib_deps.stamp
+  ldflags = -fPIC -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -Wl,-z,defs -Wl,--no-as-needed -lpthread -Wl,--as-needed -fuse-ld=lld -Wl,--icf=all -m64 -Werror -Wl,-O2 -Wl,--gc-sections -nostdlib++ --sysroot=../../../build/linux/debian_sid_amd64-sysroot -L../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Wl,--export-dynamic
+  libs = -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 -lglib-2.0
+  output_extension = .so
+  output_dir = .
+  solibs = ./libprotobuf_lite.so ./libgrpc.so ./libc++.so

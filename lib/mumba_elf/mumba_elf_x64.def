@@ -1,0 +1,42 @@
+; Copyright 2013 The Chromium Authors. All rights reserved.
+; Use of this source code is governed by a BSD-style license that can be
+; found in the LICENSE file.
+LIBRARY  "mumba_elf.dll"
+
+EXPORTS
+  ; When functions are added to this file, they must also be added to
+  ; mumba_elf_x86.def
+
+  ; From components/crash/content/app/crash_export_stubs.cc
+  CrashForException_ExportThunk
+  DumpHungProcessWithPtype_ExportThunk
+  GetCrashpadDatabasePath_ExportThunk
+  GetCrashReports_ExportThunk
+  InjectDumpForHungInput_ExportThunk
+  RequestSingleCrashUpload_ExportThunk
+  SetUploadConsent_ExportThunk
+
+  ; X64-only exports
+  RegisterNonABICompliantCodeRange_ExportThunk
+  UnregisterNonABICompliantCodeRange_ExportThunk
+
+  ; From mumba_elf/crash/crash_helper.cc
+  SetMetricsClientId
+
+  ; From mumba_elf/mumba_elf_main.cc
+  DumpProcessWithoutCrash
+  GetUserDataDirectoryThunk
+  SignalChromeElf
+  SignalInitializeCrashReporting
+
+  ; From chrome/install_static
+  GetInstallDetailsPayload
+
+  ; From mumba_elf/blacklist/blacklist.cc
+  AddDllToBlacklist
+  IsBlacklistInitialized
+  SuccessfullyBlocked
+
+  ; From mumba_elf/third_party_dlls/logs
+  DrainLog
+  RegisterLogNotification

@@ -1,0 +1,1 @@
+/workspace/mutante/third_party/llvm-build/Release+Asserts/bin/clang --sysroot=/workspace/mutante/build/linux/debian_sid_amd64-sysroot    -lrt -fuse-ld=lld CMakeFiles/dispatch_group.dir/dispatch_group.c.o  -o dispatch_group -Wl,-rpath,/workspace/source/swift/swift-corelibs-libdispatch/src ../src/libdispatch.so ../libBlocksRuntime.a -lbsd libbsdtests.a -lm -pthread 

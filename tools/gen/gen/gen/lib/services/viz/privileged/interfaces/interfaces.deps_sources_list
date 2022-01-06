@@ -1,0 +1,5 @@
+gen/lib/services/viz/privileged/interfaces/interfaces.sources_list
+gen/lib/components/discardable_memory/public/interfaces/interfaces.sources_list
+gen/lib/services/viz/privileged/interfaces/compositing/compositing.sources_list
+gen/lib/services/viz/privileged/interfaces/gl/gl.sources_list
+gen/lib/services/viz/public/interfaces/interfaces.sources_list

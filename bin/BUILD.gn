@@ -1,0 +1,59 @@
+import("//build/config/compiler/compiler.gni")
+import("//build/config/features.gni")
+import("//build_overrides/build.gni")
+
+executable("mumbactl") {
+  configs -= [ "//build/config/clang:find_bad_constructs" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  
+  cflags = []
+  cflags_cc = []
+  defines = []
+
+  sources = [
+    "mumbactl.cc"
+  ]
+  deps = [
+    "//lib/base",
+    "//buildtools/third_party/libc++",
+    "//kit/cpp/launcher",
+    "//lib/rpc:grpc",
+    "//lib/rpc:rpc",
+    "//third_party/protobuf:protobuf_lite",
+  ]
+  cflags = [
+    "-Wno-unused-variable"
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}
+
+
+executable("mumba_install") {
+  configs -= [ "//build/config/clang:find_bad_constructs" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  
+  cflags = []
+  cflags_cc = []
+  defines = []
+
+  sources = [
+    "mumba_install.cc"
+  ]
+  deps = [
+    "//lib/base",
+    "//buildtools/third_party/libc++",
+    "//kit/cpp/launcher",
+    "//lib/rpc:grpc",
+    "//lib/rpc:rpc",
+    "//third_party/protobuf:protobuf_lite",
+  ]
+  cflags = [
+    "-Wno-unused-variable"
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}
+

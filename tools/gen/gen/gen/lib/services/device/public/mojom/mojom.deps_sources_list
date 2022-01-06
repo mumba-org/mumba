@@ -1,0 +1,5 @@
+gen/lib/services/device/public/mojom/mojom.sources_list
+gen/lib/services/device/public/mojom/constants.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list
+gen/lib/services/network/public/mojom/mojom.sources_list
+gen/lib/services/network/public/mojom/mutable_network_traffic_annotation_interface.sources_list

@@ -1,0 +1,130 @@
+# Copyright 2018 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+import("//lib/testing/test.gni")
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/services/service_manager/public/tools/test/service_test.gni")
+
+component("lib") {
+  sources = [
+    "client_change.cc",
+    "client_change.h",
+    "client_change_tracker.cc",
+    "client_change_tracker.h",
+
+    # TODO: client_root should be internal and moved to a different target.
+    "client_root.cc",
+    "client_root.h",
+    "ids.h",
+
+    # TODO: window_data should be internal and moved to a different target.
+    "window_data.cc",
+    "window_data.h",
+    "window_host_frame_sink_client.cc",
+    "window_host_frame_sink_client.h",
+    "window_service.cc",
+    "window_service.h",
+    "window_service_client.cc",
+    "window_service_client.h",
+    "window_service_client_binding.cc",
+    "window_service_client_binding.h",
+    "window_service_delegate.h",
+    "window_tree_factory.cc",
+    "window_tree_factory.h",
+  ]
+
+  public_deps = [
+    "//lib/components/viz/host",
+    "//lib/services/ui/common:mus_common",
+    "//lib/services/ui/public/interfaces",
+    "//kit/cpp/ui/aura",
+  ]
+
+  defines = [ "IS_WINDOW_SERVICE_IMPL" ]
+}
+
+static_library("test_support") {
+  # testonly = true
+
+  sources = [
+    "test_change_tracker.cc",
+    "test_change_tracker.h",
+    "test_window_service_delegate.cc",
+    "test_window_service_delegate.h",
+    "test_window_tree_client.cc",
+    "test_window_tree_client.h",
+    "window_server_service_test_base.cc",
+    "window_server_service_test_base.h",
+    "window_service_client_test_helper.cc",
+    "window_service_client_test_helper.h",
+  ]
+
+  deps = [
+    ":lib",
+    "//lib/base",
+    "//lib/base/test:test_config",
+    "//lib/components/viz/test:test_support",
+    "//lib/mojo/common",
+    "//lib/mojo/public/cpp/bindings:bindings",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/cpp:service_test_support",
+    "//lib/services/ui/common:mus_common",
+    "//lib/services/ui/public/cpp",
+    "//lib/services/ui/public/interfaces",
+    "//lib/testing/gtest",
+    "//lib/ui/display:test_support",
+    "//lib/ui/gfx/geometry/mojo",
+    "//lib/ui/gl",
+    "//kit/cpp/ui/wm",
+    "//kit/cpp/ui/aura",
+  ]
+
+  data_deps = [
+    "//lib/services/ui/ime/test_ime_driver",
+  ]
+}
+
+service_manifest("unittests_manifest") {
+  name = "ui_ws2_service_unittests"
+  source = "test_manifest.json"
+}
+
+catalog("tests_catalog") {
+  # testonly = true
+  embedded_services = [ ":unittests_manifest" ]
+  standalone_services = [ "//lib/services/ui/test_ws:manifest" ]
+}
+
+source_set("tests") {
+  # testonly = true
+
+  sources = [
+    "window_service_client_unittest.cc",
+    "window_tree_client_unittest.cc",
+  ]
+
+  deps = [
+    ":lib",
+    ":test_support",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/components/viz/common",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/services/service_manager/public/cpp:service_test_support",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/ui/public/interfaces",
+    "//lib/testing/gtest",
+    "//third_party/mesa:osmesa",
+    "//kit/cpp/ui/aura:test_support",
+    "//kit/cpp/ui/compositor:test_support",
+    "//lib/ui/gl:test_support",
+  ]
+
+  data_deps = [
+    "//lib/services/ui/test_ws",
+  ]
+}

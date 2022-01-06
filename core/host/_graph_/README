@@ -1,0 +1,8 @@
+this is a graph database module that is actually very good..
+
+some graph traversal algorithms like BFS and DFS are still missing
+
+But despite the fact this is not used in the system anymore, doesnt mean
+it cant be used as a graph database that the developers can program with.
+
+So thats why it is still here, in hopes it gets reused somewhere more fitting.

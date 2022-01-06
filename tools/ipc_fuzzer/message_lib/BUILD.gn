@@ -1,0 +1,47 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+#import("//components/nacl/features.gni")
+import("//lib/remoting/remoting_enable.gni")
+
+static_library("ipc_message_lib") {
+  configs += [ "//tools/ipc_fuzzer:ipc_fuzzer_tool_config" ]
+  public_deps = [
+    "//lib/base",
+    "//core/common",
+    #"//chrome/common/safe_browsing:proto",
+    #"//lib/components/guest_view/common",
+    #"//lib/components/nacl/common:buildflags",
+    "//lib/components/network_hints/common",
+    #"//lib/components/safe_browsing/common",
+    #"//lib/components/spellcheck/common",
+    "//lib/components/subresource_filter/core/common",
+    "//lib/components/tracing",
+    #"//content/child",
+    #"//content/public/child",
+    "//lib/gpu/ipc/common",
+    "//lib/ipc",
+    "//lib/media/cast:net",
+    "//lib/media/gpu/ipc/common",
+    #"//ppapi/proxy:ipc",
+    "//lib/skia",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/webrtc_overrides",
+    "//kit/cpp/ui/accessibility:ax_enums_mojo",
+  ]
+  sources = [
+    "all_messages.h",
+    "message_cracker.h",
+    "message_file.h",
+    "message_file_format.h",
+    "message_file_reader.cc",
+    "message_file_writer.cc",
+    "message_names.cc",
+    "message_names.h",
+  ]
+  if (enable_remoting) {
+    public_deps += [ "//lib/remoting/host" ]
+  }
+}

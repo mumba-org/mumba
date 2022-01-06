@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf8" ?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="World.Mumba.World" 
+     Version="0.0.0.1" 
+     Publisher="CN=Mumba, O=World, L=SanFrancisco, S=California, C=US" 
+     ProcessorArchitecture="x64"/>
+  <Properties>
+    <DisplayName>World</DisplayName>
+    <PublisherDisplayName>World</PublisherDisplayName>
+    <Logo>images\apple-icon-180x180.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion></OSMinVersion>
+    <OSMaxVersionTested></OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+   <Dependencies>
+    <TargetDeviceFamily Name="Linux.All" MinVersion="0.0.0.0" MaxVersionTested="0.0.0.0"/>
+  </Dependencies>
+  <Applications>
+  <Application Id="World" Executable="world_app" StartPage="index.html">
+    <VisualElements DisplayName="World" Description="mumba world" 
+         Logo="images\apple-icon-180x180.png" ForegroundText="dark" BackgroundColor="#FFFFFF" >
+      <SplashScreen Image="images\splash.png" />
+    </VisualElements>
+  </Application>
+</Applications>
+</Package>

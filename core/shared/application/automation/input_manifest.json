@@ -1,0 +1,11 @@
+{
+  "name": "input",
+  "display_name": "Input Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "input" : [ "automation.Input" ]
+      }
+    }
+  }
+}

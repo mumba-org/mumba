@@ -1,0 +1,11 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Media/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Media/AudioReader.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Media/AudioReader.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Media/AudioReader.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Media/AudioReader.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Media/AudioReader~partial.swiftmodule"
+   }
+}

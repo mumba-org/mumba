@@ -1,0 +1,8 @@
+module MumbaHostShims [extern_c] [system] {
+    textual header "Globals.h"
+    link "mumba"
+    module MumbaCore {
+        header "HostShims.h"
+        export *
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "accessibility",
+  "display_name": "Accessibility Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "accessibility" : [ "automation.Accessibility" ]
+      }
+    }
+  }
+}

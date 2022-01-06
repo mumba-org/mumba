@@ -1,0 +1,38 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+
+source_set("platform_window") {
+  sources = [
+    "platform_ime_controller.h",
+    "platform_window.h",
+    "platform_window_delegate.h",
+    "text_input_state.cc",
+    "text_input_state.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/ui/base",
+    "//lib/ui/base/ime:text_input_types",
+    "//lib/ui/gfx",
+  ]
+}
+
+group("platform_impls") {
+  public_deps = [
+    "//lib/ui/platform_window/stub",
+  ]
+  if (is_android) {
+    public_deps += [
+      "//lib/ui/platform_window/android",
+      "//lib/ui/platform_window/android:jni_headers",
+    ]
+  } else if (use_x11) {
+    public_deps += [ "//lib/ui/platform_window/x11" ]
+  } else if (is_win) {
+    public_deps += [ "//lib/ui/platform_window/win" ]
+  }
+}

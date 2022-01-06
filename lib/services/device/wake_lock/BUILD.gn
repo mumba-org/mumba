@@ -1,0 +1,29 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("wake_lock") {
+  visibility = [ "//lib/services/device:*" ]
+
+  sources = [
+    "wake_lock.cc",
+    "wake_lock.h",
+    "wake_lock_context.cc",
+    "wake_lock_context.h",
+    "wake_lock_for_testing.cc",
+    "wake_lock_for_testing.h",
+    "wake_lock_provider.cc",
+    "wake_lock_provider.h",
+  ]
+
+  public_deps = [
+    "//lib/base",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/services/device/public/mojom",
+    "//lib/ui/gfx",
+  ]
+
+  deps = [
+    "//lib/services/device/wake_lock/power_save_blocker",
+  ]
+}

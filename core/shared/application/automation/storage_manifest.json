@@ -1,0 +1,11 @@
+{
+  "name": "storage",
+  "display_name": "Storage Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "storage" : [ "automation.Storage" ]
+      }
+    }
+  }
+}

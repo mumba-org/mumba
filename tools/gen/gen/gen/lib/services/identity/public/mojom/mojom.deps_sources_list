@@ -1,0 +1,4 @@
+gen/lib/services/identity/public/mojom/mojom.sources_list
+gen/lib/services/identity/public/mojom/constants.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list
+gen/lib/url/mojom/url_mojom_gurl.sources_list

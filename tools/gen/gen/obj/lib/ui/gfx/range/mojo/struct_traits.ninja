@@ -1,0 +1,8 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_32 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_26
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+label_name = struct_traits
+target_out_dir = obj/lib/ui/gfx/range/mojo
+target_output_name = struct_traits
+
+
+build obj/lib/ui/gfx/range/mojo/struct_traits.stamp: stamp || obj/lib/ui/gfx/range/mojo/mojo_shared_cpp_sources.stamp ./librange.so.TOC ./libbindings.so.TOC ./libbindings_base.so.TOC ./libbase.so.TOC ./libmojo_public_system_cpp.so.TOC ./libmojo_public_system.so.TOC ./libmojo_cpp_platform.so.TOC ./libmessage_support.so.TOC ./libmojo_mojom_bindings.so.TOC ./libmojo_mojom_bindings_shared.so.TOC

@@ -1,0 +1,2 @@
+gen/jabberwock/app/strings/grit/content_strings.h
+gen/jabberwock/app/strings/content_strings_en-US.pak

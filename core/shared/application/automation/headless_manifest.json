@@ -1,0 +1,11 @@
+{
+  "name": "headless",
+  "display_name": "Headless Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "headless" : [ "automation.Headless" ]
+      }
+    }
+  }
+}

@@ -1,0 +1,130 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Implementations of media C++ interfaces using corresponding mojo services.
+source_set("clients") {
+  visibility = [
+    #"//chromecast/*",
+    #"//content/renderer:*",
+
+    # TODO(xhwang): Only allow //media/mojo/services:media_service_unittests
+    "//lib/media/mojo/services:*",
+
+    "//lib/media/mojo:test_support",
+
+    "//lib/media/test/*",
+    "//core/gpu:*",
+    "//core/shared/application:*",
+    #"//content/gpu:*",
+
+    # TODO(liberato): can we avoid this?
+    #"//content/test/*",
+  ]
+
+  sources = [
+    "mojo_audio_decoder.cc",
+    "mojo_audio_decoder.h",
+    "mojo_cdm.cc",
+    "mojo_cdm.h",
+    "mojo_cdm_factory.cc",
+    "mojo_cdm_factory.h",
+    "mojo_decoder_factory.cc",
+    "mojo_decoder_factory.h",
+    "mojo_decryptor.cc",
+    "mojo_decryptor.h",
+    "mojo_demuxer_stream_impl.cc",
+    "mojo_demuxer_stream_impl.h",
+    "mojo_media_log_service.cc",
+    "mojo_media_log_service.h",
+    "mojo_renderer.cc",
+    "mojo_renderer.h",
+    "mojo_renderer_factory.cc",
+    "mojo_renderer_factory.h",
+    "mojo_video_decoder.cc",
+    "mojo_video_decoder.h",
+    "mojo_video_encode_accelerator.cc",
+    "mojo_video_encode_accelerator.h",
+  ]
+
+  if (is_android) {
+    sources += [
+      "mojo_android_overlay.cc",
+      "mojo_android_overlay.h",
+    ]
+  }
+
+  public_deps = [
+    "//lib/base",
+    "//lib/media",
+    "//lib/media/mojo:buildflags",
+    "//lib/media/mojo/interfaces",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/mojo/public/cpp/system",
+    "//lib/services/service_manager/public/mojom",
+  ]
+
+  deps = [
+    "//lib/media/gpu",
+    "//lib/media/mojo/common",
+    "//lib/media/mojo/common:mojo_shared_buffer_video_frame",
+    "//lib/mojo/common",
+    "//lib/services/service_manager/public/cpp",
+  ]
+
+  if (is_android) {
+    deps += [
+      "//lib/gpu/ipc/common:common",
+      "//lib/ui/gl:gl",
+    ]
+  }
+}
+
+source_set("jpeg_decode_accelerator") {
+  visibility = [ 
+    "//core/host",
+    "//runtime/MumbaShims" 
+  ]
+
+  sources = [
+    "mojo_jpeg_decode_accelerator.cc",
+    "mojo_jpeg_decode_accelerator.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/media/mojo/interfaces",
+    "//lib/mojo/common",
+  ]
+}
+
+source_set("unit_tests") {
+  # testonly = true
+
+  sources = [
+    "mojo_audio_decoder_unittest.cc",
+    "mojo_cdm_unittest.cc",
+    "mojo_decryptor_unittest.cc",
+    "mojo_renderer_unittest.cc",
+    "mojo_video_encode_accelerator_unittest.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/media:test_support",
+    "//lib/media/mojo:test_support",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+  ]
+
+  if (is_android) {
+    sources += [ "mojo_android_overlay_unittest.cc" ]
+
+    deps += [
+      "//lib/media/mojo/interfaces:test_interfaces",
+      "//lib/ui/gfx:test_support",
+      "//lib/ui/gl",
+    ]
+  }
+}

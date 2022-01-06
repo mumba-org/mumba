@@ -1,0 +1,20 @@
+Script is a python script infrastructure that is not actually hosted on the host process
+but its executed the 'world' application/domain
+
+While world is the default, other applications (through its domain process) might
+become a ScriptHost, we just need a namespace naming system to route those properly
+
+We use the ScriptDispatcher IPC interface that is available to every application
+to communicate Host <-> World script commands
+
+
+ScriptHost => World
+ScriptDispatcher => Host
+ScriptClient => Applications
+
+a)
+
+ ScriptClient(app) <=> ScriptDispatcher(host) <=> ScriptHost(world)
+
+b)
+ command line <=> ScriptDispatcher(host) <=> ScriptHost(world)  

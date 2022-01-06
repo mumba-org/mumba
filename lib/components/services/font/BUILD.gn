@@ -1,0 +1,43 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+
+source_set("lib") {
+  sources = [
+    "font_service_app.cc",
+    "font_service_app.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/components/services/font/public/interfaces",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/mojo/public/cpp/system",
+    "//lib/services/service_manager/public/cpp",
+  ]
+
+  public_deps = [
+    "//lib/skia",
+  ]
+}
+
+service("font_service") {
+  sources = [
+    "main.cc",
+  ]
+
+  deps = [
+    ":lib",
+    "//lib/base",
+    "//lib/mojo/public/c/system",
+    "//lib/services/service_manager/public/cpp",
+  ]
+}
+
+service_manifest("manifest") {
+  name = "font_service"
+  source = "manifest.json"
+}

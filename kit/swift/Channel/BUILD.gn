@@ -1,0 +1,29 @@
+swift_static("Channel") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+  ]
+  public_deps = [
+    "//kit/swift/Web",
+    "//kit/swift/_C",
+    "//kit/swift/Base",
+    "//kit/swift/PosixShim",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/Javascript",
+    "//kit/swift/GL",
+    "//kit/swift/Gpu",
+    "//kit/swift/Graphics",
+    "//kit/swift/Compositor",
+  ]
+  if (is_linux) {
+    deps += [
+      "//kit/swift/PosixShim",
+    ]
+  }
+  sources = [
+    "Sources/ChannelRegistry.swift",
+    "Sources/ChannelStatus.swift",
+    "Sources/ChannelClient.swift",
+    "Sources/ChannelInfo.swift"
+  ]
+}

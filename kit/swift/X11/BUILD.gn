@@ -1,0 +1,24 @@
+swift_static("X11") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+    "//kit/swift/PosixShim",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/Graphics",
+    "//kit/swift/Platform",
+  ]
+  sources = [
+    "Sources/X11AtomCache.swift",
+    "Sources/X11Device.swift",
+    "Sources/X11Errors.swift",
+    "Sources/X11ErrorTracker.swift",
+    "Sources/X11EventSource.swift",
+    "Sources/X11Event.swift",
+    "Sources/X11ForeignWindowManager.swift",
+    "Sources/X11.swift",
+    "Sources/X11TouchFactory.swift",
+    "Sources/X11Utils.swift",
+    "Sources/X11Window.swift",
+    "Sources/XMenuList.swift",
+  ]
+}

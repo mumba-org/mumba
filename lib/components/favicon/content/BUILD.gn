@@ -1,0 +1,46 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+static_library("content") {
+  sources = [
+    "content_favicon_driver.cc",
+    "content_favicon_driver.h",
+    "favicon_url_util.cc",
+    "favicon_url_util.h",
+  ]
+
+  public_deps = [
+    "//lib/components/favicon/core",
+    "//lib/ui/gfx",
+    # workaround
+    "//third_party/boringssl",
+  ]
+  deps = [
+    "//lib/base",
+    "//lib/components/favicon_base",
+    #"//lib/components/history/core/browser",
+    #"//lib/content/public/browser",
+    #"//lib/content/public/common",
+    "//lib/url",
+  ]
+}
+
+source_set("unit_tests") {
+  # testonly = true
+  sources = [
+    "content_favicon_driver_unittest.cc",
+  ]
+  deps = [
+    ":content",
+    "//lib/base/test:test_support",
+    "//lib/components/favicon/core",
+    "//lib/components/favicon/core/test:test_support",
+    #"//content/public/browser",
+    #"//content/public/common",
+    #"//content/test:test_support",
+    "//lib/skia",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+  ]
+}

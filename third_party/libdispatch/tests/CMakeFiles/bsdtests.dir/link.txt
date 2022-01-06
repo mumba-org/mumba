@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbsdtests.a  CMakeFiles/bsdtests.dir/bsdtests.c.o CMakeFiles/bsdtests.dir/dispatch_test.c.o
+/usr/bin/ranlib libbsdtests.a

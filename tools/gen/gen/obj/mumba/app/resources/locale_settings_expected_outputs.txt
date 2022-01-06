@@ -1,0 +1,2 @@
+gen/jabberwock/grit/locale_settings.h
+gen/jabberwock/locale_settings_en-US.pak

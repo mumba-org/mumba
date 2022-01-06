@@ -1,0 +1,382 @@
+# Copyright 2018 Mumba. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build_overrides/build.gni")
+
+component("domain") {
+  #default_compiler_configs -= [
+  #  "//build/config/clang:find_bad_constructs",
+  #  "//build/config/clang:extra_warnings",
+    #"//build/config/compiler:no_rtti",
+  #]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+        "//build/config/compiler:no_chromium_code",
+  ]
+  #configs = []
+  #configs = default_compiler_configs
+  if (is_clang) {
+    cflags = []
+    #cflags -= [
+    # "-Wunused-variable"
+    #]
+    cflags += [
+      # Lots of third-party libraries have unused variables. Instead of
+      # suppressing them individually, we just blanket suppress them here.
+      "-Wno-unused-variable",
+      "-Wno-implicit-fallthrough",
+      "-Wno-ignored-qualifiers",
+      "-Wno-macro-redefined",
+      "-Wno-implicit-int-float-conversion"
+    ]
+
+    #ldflags = []
+    #ldflags += [
+    #  "rtti"
+    #]
+  }
+
+  configs += [
+    #"//v8:internal_config",
+    #"//build/config/compiler:rtti",
+  ]
+
+  include_dirs = [
+    #"//v8",
+   # "//v8/include",
+   # "//third_party/lwext4/build_generic/include",
+    #"//third_party/lwext4/include",
+    #"//third_party/lwext4/src",
+    #"//third_party/graphd",
+    #"$root_gen_dir/v8",
+  ]
+
+  defines = [
+    #"DOMAIN_IMPL"
+    #"ARROW_WITH_ZSTD",
+    #"ARROW_WITH_SNAPPY",
+    #"ARROW_WITH_BROTLI",
+    #"ARROW_WITH_ZLIB",
+    #"V8_USE_EXTERNAL_STARTUP_DATA",
+    "ENABLE_DISASSEMBLER",
+    "CONTENT_IMPLEMENTATION=1",
+    "V8_USE_EXTERNAL_STARTUP_DATA",
+    "BLINK_IMPLEMENTATION",
+    #"INSIDE_BLINK"
+  ]
+  if (is_win) {
+    defines += [
+     "WEBRTC_WIN"
+    ]
+  }
+  #if (current_cpu == "x64") {
+  #  defines += [
+  #    "V8_TARGET_ARCH_X64=1"
+  #  ]
+  #}
+
+  if (is_debug) {
+    defines += [
+      "DEBUG=1"
+    ]
+  }
+
+  deps = [
+    "//lib/base",
+    "//lib/ipc",
+    "//lib/net",
+    "//lib/rpc",
+    "//lib/gin",
+    "//lib/storage",
+    "//lib/storage/common",
+    "//lib/ui/events/blink",
+    "//lib/ui/events/gestures/blink",
+    "//lib/ui/native_theme",
+    #"//lib/media/mojo/clients",
+    "//lib/rpc:grpc",
+    "//lib/media/blink",
+    "//lib/mojo/public/cpp/bindings:wtf_support",
+    "//lib/services/service_manager/sandbox",
+    "//lib/services/service_manager/embedder",
+    "//lib/services/service_manager",
+    "//lib/services/service_manager/embedder",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/service_manager/runner/common",
+    "//lib/services/ui/common:mus_common",
+    "//lib/services/ui/public/cpp",
+    "//lib/services/ui/public/interfaces",
+    "//lib/services/tracing",
+    "//lib/services/network/public/cpp",
+    "//lib/services/network/public/mojom",
+    "//lib/services/network:network_service",
+    "//lib/services/tracing/public/mojom",
+    "//lib/services/tracing/public/cpp",
+    "//lib/services/viz:lib",
+    "//lib/storage:storage_common",
+    "//lib/storage/common",
+    "//lib/components/discardable_memory/client",
+    "//lib/components/discardable_memory/public/interfaces",
+    "//lib/components/viz/client",
+    "//lib/components/viz/common",
+    "//lib/components/viz/host",
+    "//lib/components/viz/service",
+    "//lib/components/webcrypto",
+    "//lib/cc/blink",
+    "//core/common",
+    "//core/shared/common:mojom",
+    "//core/common:proto_lite",
+    "//core/shared/common:mojo_bindings",
+    "//core/shared/common:export",
+    "//core/shared/common:common_shared",
+    "//core/shared/domain:domain_shared",
+    "//third_party/icu",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/renderer/platform",
+    "//third_party/blink/public:mojo_bindings",
+    "//third_party/blink/public:web_feature_mojo_bindings",
+    "//third_party/blink/public/mojom:mojom_core",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public:buildflags",
+    "//third_party/blink/public:scaled_resources",
+    "//third_party/blink/public:resources",
+    "//third_party/blink/public:image_resources",
+    "//third_party/blink/public:media_devices_mojo_bindings",
+    "//third_party/zlib",
+    "//third_party/zlib/google:zip",
+    "//third_party/zlib/google:compression_utils"
+  ]
+
+  if (is_win) {
+    #configs += [
+    #  "//third_party/khronos:khronos_headers",
+    #  "//third_party/wtl:wtl_includes",
+    #]
+    libs = [ "setupapi.lib" ]
+    deps += [ "//lib/sandbox" ]
+  }
+
+  if (is_linux || is_mac) {
+    deps += [ "//lib/sandbox" ]
+  }
+
+  sources = [
+    "application/application_manager.cc",
+    "application/application_manager.h",
+    "application/application_manager_client.cc",
+    "application/application_manager_client.h",
+    "application/window_manager_client.cc",
+    "application/window_manager_client.h",
+    "device/device.cc",
+    "device/device.h",
+    "device/device_dispatcher.cc",
+    "device/device_dispatcher.h",
+    "device/device_manager.cc",
+    "device/device_manager.h",
+    "module/bundle_executable.h",
+    "module/bundle_executable.cc",
+    "module/callable.h",
+    "module/code.cc",
+    "module/code.h",
+    "module/code_entry.h",
+    "module/code_loader.cc",
+    "module/code_loader.h",
+    "module/executable.h",
+    "module/execution_context.h",
+    "module/function.h",
+    "module/local_file_loader.cc",
+    "module/local_file_loader.h",
+    "module/memory_file_loader_linux.cc",
+    "module/memory_file_loader.h",
+    "module/module.h",
+    "module/module_dispatcher.cc",
+    "module/module_dispatcher.h",
+    "module/module_loader.cc",
+    "module/module_loader.h",
+    "module/native_executable.h",
+    "module/native_executable.cc",
+    "module/native_execution_context.h",
+    "module/native_execution_context.cc", 
+    "module/native_module.h",
+    "module/native_module.cc",
+    "module/snapshot_file_loader.cc",
+    "module/snapshot_file_loader.h",
+    "module/v8_execution_context.h",
+    "module/v8_execution_context.cc",
+    "notifications/notification_data_conversions.cc",
+    "notifications/notification_data_conversions.h",
+    "notifications/notification_dispatcher.cc",
+    "notifications/notification_dispatcher.h",
+    "notifications/notification_manager.cc",
+    "notifications/notification_manager.h", 
+    "identity/identity_manager_client.cc",
+    "identity/identity_manager_client.h",
+    "launcher/launcher_client.cc",
+    "launcher/launcher_client.h",
+    "appcache/appcache_backend_proxy.cc",
+    "appcache/appcache_backend_proxy.h",
+    "appcache/appcache_dispatcher.cc",
+    "appcache/appcache_dispatcher.h",
+    "appcache/appcache_frontend_impl.cc",
+    "appcache/appcache_frontend_impl.h",
+    "appcache/web_application_cache_host_impl.cc",
+    "appcache/web_application_cache_host_impl.h",
+    "cache_storage/webserviceworkercachestorage_impl.cc",
+    "cache_storage/webserviceworkercachestorage_impl.h",
+    "shared_worker/embedded_shared_worker_stub.cc",
+    "shared_worker/embedded_shared_worker_stub.h",
+    "shared_worker/shared_worker_client_impl.cc",
+    "shared_worker/shared_worker_client_impl.h",
+    "shared_worker/shared_worker_factory_impl.cc",
+    "shared_worker/shared_worker_factory_impl.h",
+    "shared_worker/shared_worker_repository.cc",
+    "shared_worker/shared_worker_repository.h",
+    "fileapi/file_system_dispatcher.cc",
+    "fileapi/file_system_dispatcher.h",
+    "fileapi/webfilesystem_impl.cc",
+    "fileapi/webfilesystem_impl.h",
+    "fileapi/webfilewriter_base.cc",
+    "fileapi/webfilewriter_base.h",
+    "fileapi/webfilewriter_impl.cc",
+    "fileapi/webfilewriter_impl.h",
+    "service_worker/controller_service_worker_connector.cc",
+    "service_worker/controller_service_worker_connector.h",
+    "service_worker/controller_service_worker_impl.cc",
+    "service_worker/controller_service_worker_impl.h",
+    "service_worker/embedded_worker_instance_client_impl.cc",
+    "service_worker/embedded_worker_instance_client_impl.h",
+    "service_worker/service_worker_context_client.cc",
+    "service_worker/service_worker_context_client.h",
+    "service_worker/service_worker_dispatcher.cc",
+    "service_worker/service_worker_dispatcher.h",
+    "service_worker/service_worker_fetch_context_impl.cc",
+    "service_worker/service_worker_fetch_context_impl.h",
+    "service_worker/service_worker_message_filter.cc",
+    "service_worker/service_worker_message_filter.h",
+    "service_worker/service_worker_network_provider.cc",
+    "service_worker/service_worker_network_provider.h",
+    "service_worker/service_worker_provider_context.cc",
+    "service_worker/service_worker_provider_context.h",
+    "service_worker/service_worker_subresource_loader.cc",
+    "service_worker/service_worker_subresource_loader.h",
+    "service_worker/service_worker_timeout_timer.cc",
+    "service_worker/service_worker_timeout_timer.h",
+    "service_worker/service_worker_type_converters.cc",
+    "service_worker/service_worker_type_converters.h",
+    "service_worker/service_worker_type_util.cc",
+    "service_worker/service_worker_type_util.h",
+    "service_worker/thread_safe_script_container.cc",
+    "service_worker/thread_safe_script_container.h",
+    "service_worker/web_service_worker_impl.cc",
+    "service_worker/web_service_worker_impl.h",
+    "service_worker/web_service_worker_installed_scripts_manager_impl.cc",
+    "service_worker/web_service_worker_installed_scripts_manager_impl.h",
+    "service_worker/web_service_worker_provider_impl.cc",
+    "service_worker/web_service_worker_provider_impl.h",
+    "service_worker/web_service_worker_registration_impl.cc",
+    "service_worker/web_service_worker_registration_impl.h",
+    "service_worker/worker_fetch_context_impl.cc",
+    "service_worker/worker_fetch_context_impl.h",
+    "domain_context.cc",
+    "domain_context.h",
+    "domain_main_platform_delegate.h",
+    "domain_main.cc",
+    "domain_main.h",
+    "domain_main_thread.cc",
+    "domain_main_thread.h",
+    "domain_manifest.cc",
+    "domain_manifest.h",
+    "domain_process.cc",
+    "domain_process.h",
+    "domain_thread.h",
+    "domain_thread_impl.cc",
+    "domain_thread_impl.h",
+    "domain_thread_delegate.h",
+    "categorized_worker_pool.cc",
+    "categorized_worker_pool.h",
+    "layout_test_dependencies.cc",
+    "layout_test_dependencies.h",
+    "frame_swap_message_queue.cc",
+    "frame_swap_message_queue.h",
+    "id_generator.cc",
+    "id_generator.h",
+    "notification_details.h",
+    "notification_observer.h",
+    "notification_registrar.cc",
+    "notification_registrar.h",
+    "notification_service.h",
+    "notification_service_impl.cc",
+    "notification_service_impl.h",
+    "notification_source.h",
+    "notification_types.h",
+    "file_info_util.cc",
+    "file_info_util.h",
+    "blink_platform_impl.cc",
+    "blink_platform_impl.h",
+    "child_url_loader_factory_bundle.cc",
+    "child_url_loader_factory_bundle.h",
+    "request_extra_data.cc",
+    "request_extra_data.h",
+    "request_peer.h",
+    "resource_dispatcher_delegate.h",
+    "resource_dispatcher.cc",
+    "resource_dispatcher.h",
+    "url_loader_throttle_provider_impl.cc",
+    "url_loader_throttle_provider_impl.h",
+    "url_loader_throttle_provider.h",
+    "web_url_loader_impl.cc",
+    "web_url_loader_impl.h",
+    "web_url_request_util.cc",
+    "web_url_request_util.h",
+    "websocket_handshake_throttle_provider_impl.cc",
+    "websocket_handshake_throttle_provider_impl.h",
+    "websocket_handshake_throttle_provider.h",
+    "worker_thread_registry.cc",
+    "worker_thread_registry.h",
+    "worker_thread.h",
+    "child_message_filter.cc",
+    "child_message_filter.h",
+    "thread_safe_sender.cc",
+    "thread_safe_sender.h",
+    "worker_thread_message_filter.cc",
+    "worker_thread_message_filter.h",
+    "weburlresponse_extradata_impl.cc",
+    "weburlresponse_extradata_impl.h",
+    "fixed_received_data.cc",
+    "fixed_received_data.h",
+    "sync_load_context.cc",
+    "sync_load_context.h",
+    "sync_load_response.cc",
+    "sync_load_response.h",
+    "shared_memory_data_consumer_handle.cc",
+    "shared_memory_data_consumer_handle.h",
+    "navigation_response_override_parameters.cc",
+    "navigation_response_override_parameters.h",
+    "url_loader_client_impl.cc",
+    "url_loader_client_impl.h",
+    "url_response_body_consumer.cc",
+    "url_response_body_consumer.h",
+    "web_data_consumer_handle_impl.cc",
+    "web_data_consumer_handle_impl.h",
+    "mojo/blink_interface_provider_impl.cc",
+    "mojo/blink_interface_provider_impl.h",
+    "top_level_blame_context.cc",
+    "top_level_blame_context.h",
+    "web_blob_registry_impl.cc",
+    "web_blob_registry_impl.h",
+    "layer_tree_view.cc",
+    "layer_tree_view.h",
+    "main_shadow_page.cc",
+    "main_shadow_page.h",
+    "main_shadow_page_delegate.h",
+    "webgraphicscontext3d_provider_impl.cc",
+    "webgraphicscontext3d_provider_impl.h",
+  ]
+  if (is_linux) {
+    sources += [ 
+      "domain_main_platform_delegate_linux.cc" 
+    ]
+  }
+
+}

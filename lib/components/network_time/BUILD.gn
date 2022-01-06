@@ -1,0 +1,60 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+static_library("network_time") {
+  sources = [
+    "network_time_pref_names.cc",
+    "network_time_pref_names.h",
+    "network_time_tracker.cc",
+    "network_time_tracker.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/base:i18n",
+    #"//lib/components/client_update_protocol",
+    #"//lib/components/data_use_measurement/core",
+    "//lib/components/prefs",
+    "//lib/components/variations",
+    "//lib/net",
+  ]
+}
+
+source_set("unit_tests") {
+  # testonly = true
+  sources = [
+    "network_time_tracker_unittest.cc",
+  ]
+
+  deps = [
+    ":network_time",
+    ":network_time_test_support",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    #"//lib/components/client_update_protocol",
+    "//lib/components/prefs:test_support",
+    "//lib/components/variations",
+    "//lib/net",
+    "//lib/net:test_support",
+    "//lib/testing/gtest",
+  ]
+}
+
+source_set("network_time_test_support") {
+  # testonly = true
+  sources = [
+    "network_time_test_utils.cc",
+    "network_time_test_utils.h",
+  ]
+
+  deps = [
+    ":network_time",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/components/variations",
+    "//lib/net",
+    "//lib/net:test_support",
+    "//lib/testing/gtest",
+  ]
+}

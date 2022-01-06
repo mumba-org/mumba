@@ -1,0 +1,11 @@
+{
+  "name": "emulation",
+  "display_name": "Emulation Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "emulation" : [ "automation.Emulation" ]
+      }
+    }
+  }
+}

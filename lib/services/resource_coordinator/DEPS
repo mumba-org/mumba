@@ -1,0 +1,6 @@
+include_rules = [
+  "+lib/components/ukm/test_ukm_recorder.h",
+  "+third_party/smhasher",
+  "+lib/services/metrics/public",
+  "+lib/services/service_manager/public"
+]

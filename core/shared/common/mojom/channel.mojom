@@ -1,0 +1,51 @@
+// Copyright 2021 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/ref_counted_memory.mojom";
+import "lib/mojo/public/mojom/base/big_buffer.mojom";
+import "lib/url/mojom/url.mojom";
+import "core/shared/common/message.mojom";
+
+enum ChannelStatusCode {
+  kCHANNEL_STATUS_OK = 0,
+  kCHANNEL_STATUS_ERR_FAILED,
+  kCHANNEL_STATUS_ERR_NAME_EMPTY,
+  kCHANNEL_STATUS_ERR_NOT_FOUND,
+};
+
+struct ChannelHandle {
+  string uuid;
+  string scheme;
+  string name;
+};
+
+interface ChannelClient {
+  OnMessage(CloneableMessage message);
+};
+
+interface ChannelObserver {
+  OnChannelCreated(string uuid, string scheme, string name);
+  OnChannelRemoved(string uuid, string scheme, string name);
+};
+
+interface ChannelRegistry {
+  ListChannels() => (array<ChannelHandle> feeds);
+  RemoveChannel(string scheme, string name) => (ChannelStatusCode reply);
+  RemoveChannelByUUID(string uuid) => (ChannelStatusCode reply);
+  LookupChannel(string scheme, string name) => (ChannelStatusCode code, ChannelHandle? info);
+  LookupChannelByUUID(string uuid) => (ChannelStatusCode code, ChannelHandle? info);
+  HaveChannel(string scheme, string name) => (bool have);
+  HaveChannelByUUID(string uuid) => (bool have);
+  GetChannelCount() => (uint32 count);
+  ConnectToChannel(
+    string scheme, 
+    string name,
+    associated ChannelClient receiver,
+    associated ChannelClient& sender) => (ChannelStatusCode reply);
+  AddRemoteObserver(string scheme, string name, associated ChannelObserver observer);
+  RemoveRemoteObserver(string scheme, string name);
+};

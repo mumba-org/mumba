@@ -1,0 +1,21 @@
+// Copyright 2018 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/mojom/objects.mojom";
+import "lib/services/service_manager/public/mojom/service.mojom";
+
+interface Domain {
+
+  CreateEmbedderDomainService(service_manager.mojom.Service& service_request);
+
+  GetHandle() => (DomainHandle info);
+
+  Shutdown();
+};
+
+interface DomainHost {
+  ShutdownRequest();
+};

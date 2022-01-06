@@ -1,0 +1,11 @@
+{
+  "name": "dom",
+  "display_name": "DOM Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "dom" : [ "automation.DOM" ]
+      }
+    }
+  }
+}

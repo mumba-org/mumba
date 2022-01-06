@@ -1,0 +1,11 @@
+{
+  "name": "application_cache",
+  "display_name": "ApplicationCache Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "application_cache" : [ "automation.ApplicationCacheInterface" ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFBitmap.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBitmap.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBitmap.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBitmap.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBitmap~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFBookmark.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBookmark.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBookmark.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBookmark.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFBookmark~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFDocument.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFDocument.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFDocument.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFDocument.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFDocument~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFLink.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFLink.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFLink.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFLink.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFLink~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFPage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFPage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFPage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFPage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFPage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFReader.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFReader.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFReader.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFReader.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFReader~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFRenderer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRenderer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRenderer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRenderer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRenderer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFRuntime.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRuntime.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRuntime.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRuntime.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFRuntime~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/PDF/PDFWriter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFWriter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFWriter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFWriter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/PDF/PDFWriter~partial.swiftmodule"
+   }
+}

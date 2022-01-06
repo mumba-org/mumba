@@ -1,0 +1,36 @@
+// Copyright 2013 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#ifndef CORE_DOMAIN_APPCACHE_APPCACHE_FRONTEND_IMPL_H_
+#define CORE_DOMAIN_APPCACHE_APPCACHE_FRONTEND_IMPL_H_
+
+#include "core/shared/common/appcache_interfaces.h"
+
+namespace domain {
+
+class AppCacheFrontendImpl : public common::AppCacheFrontend {
+ public:
+  void OnCacheSelected(int host_id, const common::AppCacheInfo& info) override;
+  void OnStatusChanged(const std::vector<int>& host_ids,
+                       common::AppCacheStatus status) override;
+  void OnEventRaised(const std::vector<int>& host_ids,
+                     common::AppCacheEventID event_id) override;
+  void OnProgressEventRaised(const std::vector<int>& host_ids,
+                             const GURL& url,
+                             int num_total,
+                             int num_complete) override;
+  void OnErrorEventRaised(const std::vector<int>& host_ids,
+                          const common::AppCacheErrorDetails& details) override;
+  void OnLogMessage(int host_id,
+                    common::AppCacheLogLevel log_level,
+                    const std::string& message) override;
+  void OnContentBlocked(int host_id, const GURL& manifest_url) override;
+  void OnSetSubresourceFactory(
+      int host_id,
+      network::mojom::URLLoaderFactoryPtr url_loader_factory) override;
+};
+
+}  // namespace content
+
+#endif  // CORE_DOMAIN_APPCACHE_APPCACHE_FRONTEND_IMPL_H_

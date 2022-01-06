@@ -1,0 +1,149 @@
+# Copyright 2021 Klubber. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+if (host_os == "win") {
+  bison_exe = rebase_path("//third_party/bison/bin/bison.exe", root_build_dir)
+  flex_exe = rebase_path("//third_party/flex/bin/flex.exe", root_build_dir)
+  xdrc_exe = "$root_build_dir/third_party/stellar/lib/xdrpp/xdrc/xdrc.exe"
+} else {
+  bison_exe = "bison"
+  flex_exe = "flex"
+  xdrc_exe = rebase_path("$root_build_dir/xdrc")
+}
+
+bison_lex_output_dir = "$root_gen_dir/third_party/stellar/xdrpp/xdrc"
+rel_bison_lex_gen_dir = rebase_path(bison_lex_output_dir, root_build_dir)
+
+xdrc_output_dir = "$root_gen_dir/third_party/stellar/xdrpp"
+xdrc_gen_dir = rebase_path(xdrc_output_dir, root_build_dir)
+
+config("xdrpp_config") {
+  defines = [
+    "FMT_HEADER_ONLY=1",
+    # this library is static, but the parent is shared
+    # and consumers need direct access to some methods here
+    "COMPONENT_BUILD"
+  ]
+  include_dirs = [ 
+    ".",
+    "$root_gen_dir/third_party/stellar",
+    "//third_party/boost/src/boost"
+  ]
+  if (is_clang) {
+    cflags = [ 
+      "-Wno-unused-command-line-argument",
+      "-Qunused-arguments",
+      "-Wno-unused-local-typedef",
+      "-Wno-unknown-warning-option",
+    ]
+  }
+
+}
+
+static_library("xdrpp") {
+      sources = [
+        "xdrpp/iniparse.cc",
+        "xdrpp/marshal.cc", 
+        "xdrpp/msgsock.cc",
+        "xdrpp/printer.cc", 
+        "xdrpp/pollset.cc",
+        "xdrpp/rpcbind.cc", 
+        "xdrpp/rpc_msg.cc",
+        "xdrpp/server.cc", 
+        "xdrpp/socket.cc",
+        "xdrpp/socket_unix.cc", 
+        "xdrpp/srpc.cc",
+        "xdrpp/arpc.cc",
+      ]
+      configs += [ ":xdrpp_config" ]
+      configs -= [ "//build/config/compiler:chromium_code" ]
+      configs += [ 
+        "//build/config/compiler:no_chromium_code",
+        "//build/config/compiler:exceptions",
+      ]
+      deps = [
+        ":xdrc",
+        ":xdrc_generated"
+      ]
+}
+
+executable("xdrc") {
+    sources = [
+        "xdrc/xdrc.cc", 
+        "xdrc/gen_hh.cc",
+        "xdrc/gen_server.cc",
+        "xdrc/scan.cc",
+        "xdrc/parse.cc",
+        "xdrc/parse.hh",
+        "xdrc/union.h",
+        "xdrc/xdrc_internal.h",
+        "compat/getopt_long.c", 
+        "compat/getopt.h",
+    ]
+    configs += [ ":xdrpp_config" ]
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [ 
+        "//build/config/compiler:no_chromium_code",
+        "//build/config/compiler:exceptions",
+    ]
+    deps = [
+      #":bison_parser_generated",
+      #":flex_lexer_generated",
+      "//buildtools/third_party/libc++"
+    ]
+}
+
+action_foreach("bison_parser_generated") {
+  script = "build/scripts/rule_bison.py"
+  sources = [
+    "xdrc/bison_parser.y",
+  ]
+  outputs = [
+    bison_lex_output_dir + "/{{source_name_part}}.bison.hh",
+    bison_lex_output_dir + "/{{source_name_part}}.bison.cc",
+    bison_lex_output_dir + "/location.hh",
+    bison_lex_output_dir + "/position.hh",
+    bison_lex_output_dir + "/stack.hh",
+  ]
+  args = [
+    "{{source}}",
+    rel_bison_lex_gen_dir,
+    bison_exe,
+  ]
+  if (is_mac && !use_system_xcode) {
+    args += [ hermetic_xcode_path ]
+  }
+}
+
+action_foreach("xdrc_generated") {
+  script = "build/scripts/xdrc.py"
+  sources = [
+    "xdrpp/rpc_msg.x",
+    "xdrpp/rpcb_prot.x",
+  ]
+  outputs = [
+    xdrc_output_dir + "/{{source_name_part}}.hh",
+  ]
+  args = [
+    "{{source}}",
+    xdrc_gen_dir + "/{{source_name_part}}.hh",
+    xdrc_exe,
+  ]
+}
+
+
+action_foreach("flex_lexer_generated") {
+  script = "build/scripts/rule_flex.py"
+  sources = [
+    "xdrc/scan.ll",
+  ]
+  outputs = [
+    bison_lex_output_dir + "/{{source_name_part}}.flex.cc",
+  ]
+  args = [
+    "{{source}}",
+    rel_bison_lex_gen_dir,
+    flex_exe,
+  ]
+}

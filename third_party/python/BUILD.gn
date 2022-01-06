@@ -1,0 +1,366 @@
+import("//build/config/dcheck_always_on.gni")
+import("//lib/testing/libfuzzer/fuzzer_test.gni")
+
+config("python3_compile_options") {
+  defines = [
+    "NDEBUG",
+  ]
+}
+
+config("python3_warnings") {
+  if (is_clang) {
+    cflags = [
+      "-Wno-unused-result", 
+      "-Wsign-compare", 
+      "-Wunreachable-code",
+      "-g",
+      "-fwrapv", 
+      "-O3", 
+      "-Wall",    
+      "-std=c99", 
+      "-Wextra", 
+      "-Wno-unused-result", 
+      "-Wno-unused-parameter",
+      "-Wno-unused-function", 
+      "-Wno-unreachable-code",
+      "-Wno-missing-field-initializers", 
+      "-Wstrict-prototypes", 
+      "-Werror=implicit-function-declaration", 
+      "-fprofile-instr-generate",
+      "-Wno-implicit-int-float-conversion"
+    ]
+  }
+}
+
+static_library("python3_core") {
+  visibility = [ ":*" ]
+  sources = [
+    "Include/grammar.h",
+    "Include/parsetok.h",
+    "Parser/parser.h",
+    "Parser/tokenizer.h",
+    "Parser/acceler.c",
+    "Parser/grammar1.c",
+    "Parser/listnode.c",
+    "Parser/node.c",
+    "Parser/parser.c",
+    "Parser/token.c",
+    "Parser/myreadline.c",
+    "Parser/parsetok.c",
+    "Parser/tokenizer.c",
+    "Python/_warnings.c",
+    "Python/Python-ast.c",
+    "Python/asdl.c",
+    "Python/ast.c",
+    "Python/ast_opt.c",
+    "Python/ast_unparse.c",
+    "Python/bltinmodule.c",
+    "Python/ceval.c",
+    "Python/codecs.c",
+    "Python/compile.c",
+    "Python/context.c",
+    "Python/dynamic_annotations.c",
+    "Python/errors.c",
+    "Python/frozenmain.c",
+    "Python/future.c",
+    "Python/getargs.c",
+    "Python/getcompiler.c",
+    "Python/getcopyright.c",
+    "Python/getversion.c",
+    "Python/graminit.c",
+    "Python/hamt.c",
+    "Python/import.c",
+    "Python/initconfig.c",
+    "Python/marshal.c",
+    "Python/modsupport.c",
+    "Python/mysnprintf.c",
+    "Python/mystrtoul.c",
+    "Python/pathconfig.c",
+    "Python/peephole.c",
+    "Python/preconfig.c",
+    "Python/pyarena.c",
+    "Python/pyctype.c",
+    "Python/pyfpe.c",
+    "Python/pyhash.c",
+    "Python/pylifecycle.c",
+    "Python/pymath.c",
+    "Python/pystate.c",
+    "Python/pythonrun.c",
+    "Python/pytime.c",
+    "Python/bootstrap_hash.c",
+    "Python/structmember.c",
+    "Python/symtable.c",
+    "Python/sysmodule.c",
+    "Python/thread.c",
+    "Python/traceback.c",
+    "Python/getopt.c",
+    "Python/pystrcmp.c",
+    "Python/pystrtod.c",
+    "Python/pystrhex.c",
+    "Python/dtoa.c",
+    "Python/formatter_unicode.c",
+    "Python/fileutils.c",
+    "Python/frozen.c",
+    "Python/dynload_shlib.c",
+    #$(CC) -c $(PY_CORE_CFLAGS) -DPLATFORM='"$(MACHDEP)"'
+    "Python/getplatform.c",
+    #$(CC) -c $(PY_CORE_CFLAGS) -I$(DLINCLDIR)
+    "Python/importdl.c",
+    "Objects/unicodectype.c",
+    "Objects/unicodetype_db.h",
+    "Objects/abstract.c",
+    "Objects/accu.c",
+    "Objects/boolobject.c",
+    "Objects/bytes_methods.c",
+    "Objects/bytearrayobject.c",
+    "Objects/bytesobject.c",
+    "Objects/call.c",
+    "Objects/capsule.c",
+    "Objects/cellobject.c",
+    "Objects/classobject.c",
+    "Objects/codeobject.c",
+    "Objects/complexobject.c",
+    "Objects/descrobject.c",
+    "Objects/enumobject.c",
+    "Objects/exceptions.c",
+    "Objects/genobject.c",
+    "Objects/fileobject.c",
+    "Objects/floatobject.c",
+    "Objects/frameobject.c",
+    "Objects/funcobject.c",
+    "Objects/interpreteridobject.c",
+    "Objects/iterobject.c",
+    "Objects/listobject.c",
+    "Objects/longobject.c",
+    "Objects/dictobject.c",
+    "Objects/odictobject.c",
+    "Objects/memoryobject.c",
+    "Objects/methodobject.c",
+    "Objects/moduleobject.c",
+    "Objects/namespaceobject.c",
+    "Objects/object.c",
+    "Objects/obmalloc.c",
+    "Objects/picklebufobject.c",
+    "Objects/rangeobject.c",
+    "Objects/setobject.c",
+    "Objects/sliceobject.c",
+    "Objects/structseq.c",
+    "Objects/tupleobject.c",
+    "Objects/typeobject.c",
+    "Objects/unicodeobject.c",
+    "Objects/weakrefobject.c",
+    "Objects/stringlib/count.h",
+    "Objects/stringlib/ctype.h",
+    "Objects/stringlib/fastsearch.h",
+    "Objects/stringlib/find.h",
+    "Objects/stringlib/join.h",
+    "Objects/stringlib/partition.h",
+    "Objects/stringlib/split.h",
+    "Objects/stringlib/stringdefs.h",
+    "Objects/stringlib/transmogrify.h",
+    "Objects/stringlib/asciilib.h",
+    "Objects/stringlib/codecs.h",
+    "Objects/stringlib/count.h",
+    "Objects/stringlib/fastsearch.h",
+    "Objects/stringlib/find.h",
+    "Objects/stringlib/find_max_char.h",
+    "Objects/stringlib/localeutil.h",
+    "Objects/stringlib/partition.h",
+    "Objects/stringlib/replace.h",
+    "Objects/stringlib/split.h",
+    "Objects/stringlib/ucs1lib.h",
+    "Objects/stringlib/ucs2lib.h",
+    "Objects/stringlib/ucs4lib.h",
+    "Objects/stringlib/undef.h",
+    "Objects/stringlib/unicode_format.h",
+    "Objects/stringlib/unicodedefs.h",
+    "Objects/dict-common.h",
+    "Objects/stringlib/eq.h",
+    "Objects/dict-common.h",
+    "Objects/stringlib/eq.h",
+  ]
+
+  cflags = []
+
+  root_path = rebase_path(".")
+  python_path = ""
+  
+  if (is_linux) {
+    python_path = "/usr/lib/python3"
+  }  
+  
+  defines = [
+    "Py_BUILD_CORE",
+    "PREFIX=\"/usr\"",
+    "EXEC_PREFIX=\"/usr\"",
+    "VERSION=\"3.8.5\"",
+    "VPATH=\"$root_path\"",
+    "PYTHONPATH=\"python_path\"",
+    #"Py_ENABLE_SHARED"
+  ]
+
+  print(python_path)
+
+  if (is_linux) {
+    defines += [
+        #='"$(SOABI)"'
+        "SOABI=\"cpython-38-x86_64-linux-gnu\""
+    ]
+  }
+
+  include_dirs = [
+    ".",
+    "Include/internal",
+    "Include"
+  ]
+
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    ":python3_compile_options",
+    "//build/config/compiler:no_chromium_code",
+    ":python3_warnings",
+  ]
+
+  if (is_linux) {
+    libs = [ "dl" ]
+  }
+
+  #deps = [
+  #  "//third_party/icu",
+  #]
+}
+
+static_library("python3_builtin") {
+  visibility = [ ":*" ]
+  sources = [
+    "Modules/config.c",
+    "Modules/getpath.c",
+    "Modules/main.c",
+    "Modules/gcmodule.c",
+    "Modules/_io/_iomodule.h",
+    "Modules/_io/_iomodule.c",
+    "Modules/_io/iobase.c",
+    "Modules/_io/fileio.c",
+    "Modules/_io/bufferedio.c",
+    "Modules/_io/textio.c",
+    "Modules/_io/bytesio.c",
+    "Modules/_io/stringio.c",
+    "Modules/getbuildinfo.c",
+    "Modules/_math.c", 
+    "Modules/_math.h",
+    "Modules/_sre.c", 
+    "Modules/_struct.c",
+    "Modules/_posixsubprocess.c",
+    "Modules/sre.h", 
+    "Modules/sre_constants.h", 
+    "Modules/sre_lib.h",
+    "Modules/posixmodule.c",
+    "Modules/posixmodule.h",
+    "Modules/grpmodule.c",
+    "Modules/posixmodule.h",
+    "Modules/pwdmodule.c",
+    "Modules/signalmodule.c",
+    "Modules/selectmodule.c",
+    "Modules/mathmodule.c",
+    "Modules/posixmodule.h",
+    "Modules/_tracemalloc.c",
+    "Modules/_ctypes/callproc.c",
+    "Modules/_ctypes/_ctypes.c",
+    "Modules/_ctypes/stgdict.c",
+    "Modules/_ctypes/cfield.c",
+    "Modules/_ctypes/callbacks.c",
+    "Modules/hashtable.c",
+    "Modules/faulthandler.c",
+    "Modules/errnomodule.c",
+    "Modules/_codecsmodule.c",
+    "Modules/_collectionsmodule.c",
+    "Modules/_functoolsmodule.c",
+    "Modules/_abc.c",
+    "Modules/_operator.c",
+    "Modules/_weakref.c",
+    "Modules/atexitmodule.c",
+    "Modules/itertoolsmodule.c",
+    "Modules/_stat.c",
+    "Modules/timemodule.c",
+    "Modules/_threadmodule.c",
+    "Modules/_localemodule.c",
+    "Modules/symtablemodule.c",
+    "Modules/xxsubtype.c",
+    "Modules/sha1module.c",
+    "Modules/sha256module.c",
+    "Modules/sha512module.c",
+    "Modules/_randommodule.c",
+    "Modules/zlibmodule.c",
+    "Modules/binascii.c",
+    "Modules/_datetimemodule.c",
+  ]
+
+  cflags = []
+
+  root_path = rebase_path(".")
+  root_out_dir = root_build_dir
+  
+  defines = [
+    "Py_BUILD_CORE_BUILTIN",
+    "DATE=\"xx/xx/xx\"",
+    "TIME=\"xx:xx\"",
+    "PREFIX=\"/usr\"",
+    "EXEC_PREFIX=\"/usr\"",
+    "VERSION=\"3.8.5\"",
+    "VPATH=\"$root_path\"",
+    "PYTHONPATH=\"$root_out_dir\"",
+    #"Py_ENABLE_SHARED"
+  ]
+
+  if (is_linux) {
+    defines += [
+        "SOABI='cpython-38-x86_64-linux-gnu'"
+    ]
+  }
+
+  include_dirs = [
+    ".",
+    "Include/internal",
+    "Include"
+  ]
+
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    ":python3_compile_options",
+    "//build/config/compiler:no_chromium_code",
+    ":python3_warnings",
+  ]
+
+  if (is_linux) {
+    libs = [ "util" ]
+  }
+
+  deps = [
+    ":python3_core",
+    "//third_party/zlib"
+  ]
+
+  #deps = [
+  #  "//third_party/icu",
+  #]
+}
+
+static_library("python") {
+  output_name = "python3_vm"
+  public_deps = [
+    ":python3_core",
+    ":python3_builtin",
+  ]
+  public_configs = [
+    ":python3_compile_options",
+  ]
+  sources = [
+     "module.modulemap"
+  ]
+  ldflags = [
+    "-lffi"
+  ]
+}
+
+
+

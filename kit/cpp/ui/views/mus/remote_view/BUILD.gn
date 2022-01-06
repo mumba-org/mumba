@@ -1,0 +1,66 @@
+# Copyright 2018 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("remote_view_host") {
+  sources = [
+    "remote_view_host.cc",
+    "remote_view_host.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/views",
+  ]
+}
+
+source_set("remote_view_provider") {
+  sources = [
+    "remote_view_provider.cc",
+    "remote_view_provider.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/views",
+    "//kit/cpp/ui/views/mus",
+  ]
+}
+
+source_set("test_support") {
+  #testonly = true
+
+  sources = [
+    "remote_view_provider_test_api.cc",
+    "remote_view_provider_test_api.h",
+  ]
+
+  deps = [
+    ":remote_view_provider",
+    "//lib/base",
+  ]
+}
+
+source_set("tests") {
+  #testonly = true
+
+  sources = [
+    "remote_view_host_unittest.cc",
+    "remote_view_provider_unittest.cc",
+  ]
+
+  deps = [
+    ":remote_view_host",
+    ":remote_view_provider",
+    ":test_support",
+    "//lib/base",
+    "//lib/testing/gtest",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/aura:test_support",
+    "//lib/ui/base",
+    "//kit/cpp/ui/views",
+    "//kit/cpp/ui/views/mus",
+  ]
+}

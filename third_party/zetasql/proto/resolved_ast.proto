@@ -1,0 +1,2948 @@
+//
+// Copyright 2019 ZetaSQL Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// resolved_ast.proto GENERATED FROM resolved_ast.proto.template
+syntax = "proto2";
+
+package zetasql;
+
+option java_package = "com.google.zetasql";
+option java_multiple_files = true;
+option java_outer_classname = "ZetaSQLResolvedAST";
+
+import "type_annotation.proto";
+import "type.proto";
+import "function.proto";
+import "serialization.proto";
+import "resolved_ast_enums.proto";
+
+// AnyResolvedNodeProto is a container that can hold at most one proto
+// representation of a ResolvedNode
+message AnyResolvedNodeProto {
+  oneof node {
+    AnyResolvedArgumentProto resolved_argument_node = 1;
+    AnyResolvedExprProto resolved_expr_node = 2;
+    AnyResolvedScanProto resolved_scan_node = 18;
+    AnyResolvedStatementProto resolved_statement_node = 36;
+  }
+}
+
+// Argument nodes are not self-contained nodes in the tree.  They exist
+// only to describe parameters to another node (e.g. columns in an OrderBy).
+// This node is here for organizational purposes only, to cluster these
+// argument nodes.
+message AnyResolvedArgumentProto {
+  oneof node {
+    ResolvedMakeProtoFieldProto resolved_make_proto_field_node = 14;
+    ResolvedColumnHolderProto resolved_column_holder_node = 23;
+    ResolvedComputedColumnProto resolved_computed_column_node = 32;
+    ResolvedOrderByItemProto resolved_order_by_item_node = 33;
+    ResolvedOutputColumnProto resolved_output_column_node = 34;
+    ResolvedWithEntryProto resolved_with_entry_node = 52;
+    ResolvedOptionProto resolved_option_node = 53;
+    ResolvedWindowPartitioningProto resolved_window_partitioning_node = 54;
+    ResolvedWindowOrderingProto resolved_window_ordering_node = 55;
+    ResolvedWindowFrameProto resolved_window_frame_node = 56;
+    ResolvedAnalyticFunctionGroupProto resolved_analytic_function_group_node = 57;
+    ResolvedWindowFrameExprProto resolved_window_frame_expr_node = 58;
+    ResolvedDMLValueProto resolved_dmlvalue_node = 59;
+    ResolvedAssertRowsModifiedProto resolved_assert_rows_modified_node = 61;
+    ResolvedInsertRowProto resolved_insert_row_node = 62;
+    ResolvedUpdateItemProto resolved_update_item_node = 65;
+    ResolvedPrivilegeProto resolved_privilege_node = 67;
+    ResolvedArgumentDefProto resolved_argument_def_node = 77;
+    ResolvedArgumentListProto resolved_argument_list_node = 79;
+    ResolvedTVFArgumentProto resolved_tvfargument_node = 82;
+    ResolvedFunctionSignatureHolderProto resolved_function_signature_holder_node = 84;
+    ResolvedAggregateHavingModifierProto resolved_aggregate_having_modifier_node = 85;
+    ResolvedColumnDefinitionProto resolved_column_definition_node = 91;
+    ResolvedPrimaryKeyProto resolved_primary_key_node = 92;
+    ResolvedGroupingSetProto resolved_grouping_set_node = 93;
+    ResolvedSetOperationItemProto resolved_set_operation_item_node = 94;
+    ResolvedIndexItemProto resolved_index_item_node = 96;
+    ResolvedMergeWhenProto resolved_merge_when_node = 100;
+    ResolvedUpdateArrayItemProto resolved_update_array_item_node = 102;
+    ResolvedColumnAnnotationsProto resolved_column_annotations_node = 104;
+    ResolvedGeneratedColumnInfoProto resolved_generated_column_info_node = 105;
+    ResolvedModelProto resolved_model_node = 109;
+    ResolvedForeignKeyProto resolved_foreign_key_node = 110;
+    ResolvedCheckConstraintProto resolved_check_constraint_node = 113;
+    AnyResolvedAlterActionProto resolved_alter_action_node = 116;
+    ResolvedUnnestItemProto resolved_unnest_item_node = 126;
+  }
+}
+
+message ResolvedArgumentProto {
+  optional ResolvedNodeProto parent = 1;
+
+}
+
+message AnyResolvedExprProto {
+  oneof node {
+    ResolvedLiteralProto resolved_literal_node = 3;
+    ResolvedParameterProto resolved_parameter_node = 4;
+    ResolvedExpressionColumnProto resolved_expression_column_node = 5;
+    ResolvedColumnRefProto resolved_column_ref_node = 6;
+    AnyResolvedFunctionCallBaseProto resolved_function_call_base_node = 7;
+    ResolvedCastProto resolved_cast_node = 11;
+    ResolvedMakeStructProto resolved_make_struct_node = 12;
+    ResolvedMakeProtoProto resolved_make_proto_node = 13;
+    ResolvedGetStructFieldProto resolved_get_struct_field_node = 15;
+    ResolvedGetProtoFieldProto resolved_get_proto_field_node = 16;
+    ResolvedSubqueryExprProto resolved_subquery_expr_node = 17;
+    ResolvedDMLDefaultProto resolved_dmldefault_node = 60;
+    ResolvedArgumentRefProto resolved_argument_ref_node = 78;
+    ResolvedConstantProto resolved_constant_node = 103;
+  }
+}
+
+message ResolvedExprProto {
+  optional ResolvedNodeProto parent = 1;
+
+  optional TypeProto type = 2;
+}
+
+// Any literal value, including NULL literals.
+// There is a special-cased constructor here that gets the type from the
+// Value.
+message ResolvedLiteralProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional ValueWithTypeProto value = 2;
+  // If true, then the literal is explicitly typed and cannot be used
+  // for literal coercions.
+  //
+  // This exists mainly for resolver bookkeeping and should be ignored
+  // by engines.
+  optional bool has_explicit_type = 3;
+  // Distinct ID of the literal, if it is a floating point value,
+  // within the resolved AST. When coercing from floating point
+  // to NUMERIC, the resolver uses the float_literal_id to find the
+  // original image of the literal to avoid precision loss. An ID of 0
+  // represents a literal without a cached image.
+  optional int64 float_literal_id = 4;
+}
+
+message ResolvedParameterProto {
+  optional ResolvedExprProto parent = 1;
+
+  // If non-empty, the name of the parameter.
+  //
+  // A ResolvedParameter will have either a name or a position but not
+  // both.
+  optional string name = 2;
+  // If non-zero, the 1-based position of the positional parameter.
+  //
+  // A ResolvedParameter will have either a name or a position but not
+  // both.
+  optional int64 position = 5;
+  // If true, then the parameter has no specified type.
+  //
+  // This exists mainly for resolver bookkeeping and should be ignored
+  // by engines.
+  optional bool is_untyped = 3;
+}
+
+// This represents a column when analyzing a standalone expression.
+// This is only used when the analyzer was called using AnalyzeExpression.
+// Expression column names and types come from
+// AnalyzerOptions::AddExpressionColumn.
+// <name> will always be in lowercase.
+message ResolvedExpressionColumnProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional string name = 2;
+}
+
+// An expression referencing the value of some column visible in the
+// current Scan node.
+//
+// If <is_correlated> is false, this must be a column visible in the Scan
+// containing this expression, either because it was produced inside that
+// Scan or it is on the <column_list> of some child of this Scan.
+//
+// If <is_correlated> is true, this references a column from outside a
+// subquery that is visible as a correlated column inside.
+// The column referenced here must show up on the parameters list for the
+// subquery.  See ResolvedSubqueryExpr.
+message ResolvedColumnRefProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional ResolvedColumnProto column = 2;
+  optional bool is_correlated = 3;
+}
+
+// A reference to a named constant.
+message ResolvedConstantProto {
+  optional ResolvedExprProto parent = 1;
+
+  // The matching Constant from the Catalog.
+  optional ConstantRefProto constant = 2;
+}
+
+// Common base class for scalar and aggregate function calls.
+message AnyResolvedFunctionCallBaseProto {
+  oneof node {
+    ResolvedFunctionCallProto resolved_function_call_node = 8;
+    AnyResolvedNonScalarFunctionCallBaseProto resolved_non_scalar_function_call_base_node = 86;
+  }
+}
+
+message ResolvedFunctionCallBaseProto {
+  optional ResolvedExprProto parent = 1;
+
+  // The matching Function from the Catalog.
+  optional FunctionRefProto function = 2;
+  // The concrete FunctionSignature reflecting the matching Function
+  // signature and the function's resolved input <argument_list>.
+  // The function has the mode AGGREGATE iff it is an aggregate
+  // function, in which case this node must be either
+  // ResolvedAggregateFunctionCall or ResolvedAnalyticFunctionCall.
+  optional FunctionSignatureProto signature = 3;
+  repeated AnyResolvedExprProto argument_list = 4;
+  // If error_mode=SAFE_ERROR_MODE, and if this function call returns a
+  // semantic error (based on input data, not transient server
+  // problems), return NULL instead of an error. This is used for
+  // functions called using SAFE, as in SAFE.FUNCTION(...).
+  optional ResolvedFunctionCallBaseEnums.ErrorMode error_mode = 5;
+}
+
+// A regular function call.  The signature will always have mode SCALAR.
+// Most scalar expressions show up as FunctionCalls using builtin signatures.
+message ResolvedFunctionCallProto {
+  optional ResolvedFunctionCallBaseProto parent = 1;
+
+  // This contains optional custom information about a particular
+  // function call.
+  //
+  // If some Function subclass requires computing additional
+  // information at resolving time, that extra information can be
+  // stored as a subclass of ResolvedFunctionCallInfo here.
+  // For example, TemplatedSQLFunction stores the resolved template
+  // body here as a TemplatedSQLFunctionCall.
+  //
+  // This field is ignorable because for most types of function calls,
+  // there is no extra information to consider besides the arguments
+  // and other fields from ResolvedFunctionCallBase.
+  optional ResolvedFunctionCallInfoProto function_call_info = 2;
+}
+
+// Common base class for scalar and aggregate function calls.
+message AnyResolvedNonScalarFunctionCallBaseProto {
+  oneof node {
+    ResolvedAggregateFunctionCallProto resolved_aggregate_function_call_node = 9;
+    ResolvedAnalyticFunctionCallProto resolved_analytic_function_call_node = 10;
+  }
+}
+
+message ResolvedNonScalarFunctionCallBaseProto {
+  optional ResolvedFunctionCallBaseProto parent = 1;
+
+  // Apply DISTINCT to the stream of input values before calling
+  // function.
+  optional bool distinct = 2;
+  // Apply IGNORE/RESPECT NULLS filtering to the stream of input
+  // values.
+  optional ResolvedNonScalarFunctionCallBaseEnums.NullHandlingModifier null_handling_modifier = 3;
+}
+
+// An aggregate function call.  The signature always has mode AGGREGATE.
+// This node only ever shows up as the outer function call in a
+// ResolvedAggregateScan::aggregate_list.
+message ResolvedAggregateFunctionCallProto {
+  optional ResolvedNonScalarFunctionCallBaseProto parent = 1;
+
+  // Apply HAVING MAX/MIN filtering to the stream of input values.
+  optional ResolvedAggregateHavingModifierProto having_modifier = 5;
+  // Apply ordering to the stream of input values before calling
+  // function.
+  repeated ResolvedOrderByItemProto order_by_item_list = 3;
+  optional AnyResolvedExprProto limit = 4;
+  // This contains optional custom information about a particular
+  // function call. Functions may introduce subclasses of this class to
+  // add custom information as needed on a per-function basis.
+  //
+  // This field is ignorable because for most types of function calls,
+  // there is no extra information to consider besides the arguments
+  // and other fields from ResolvedFunctionCallBase. However, for
+  // example, the TemplateSQLFunction in
+  // zetasql/public/templated_sql_function.h defines the
+  // TemplatedSQLFunctionCall subclass which includes the
+  // fully-resolved function body in context of the actual concrete
+  // types of the arguments provided to the function call.
+  optional ResolvedFunctionCallInfoProto function_call_info = 6;
+}
+
+// An analytic function call. The mode of the function is either AGGREGATE
+// or ANALYTIC. This node only ever shows up as a function call in a
+// ResolvedAnalyticFunctionGroup::analytic_function_list. Its associated
+// window is not under this node but as a sibling of its parent node.
+//
+// <window_frame> can be NULL.
+message ResolvedAnalyticFunctionCallProto {
+  optional ResolvedNonScalarFunctionCallBaseProto parent = 1;
+
+  optional ResolvedWindowFrameProto window_frame = 2;
+}
+
+// A cast expression, casting the result of an input expression to the
+// target Type.
+//
+// Valid casts are defined in the CastHashMap (see cast.cc), which identifies
+// valid from-Type, to-Type pairs.  Consumers can access it through
+// GetZetaSQLCasts().
+message ResolvedCastProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional AnyResolvedExprProto expr = 2;
+  // Whether to return NULL if the cast fails. This is set to true for
+  // SAFE_CAST.
+  optional bool return_null_on_error = 3;
+}
+
+// Construct a struct value.  <type> is always a StructType.
+// <field_list> matches 1:1 with the fields in <type> position-wise.
+// Each field's type will match the corresponding field in <type>.
+message ResolvedMakeStructProto {
+  optional ResolvedExprProto parent = 1;
+
+  repeated AnyResolvedExprProto field_list = 2;
+}
+
+// Construct a proto value.  <type> is always a ProtoType.
+// <field_list> is a vector of (FieldDescriptor, expr) pairs to write.
+// <field_list> will contain all required fields, and no duplicate fields.
+message ResolvedMakeProtoProto {
+  optional ResolvedExprProto parent = 1;
+
+  repeated ResolvedMakeProtoFieldProto field_list = 2;
+}
+
+// One field assignment in a ResolvedMakeProto expression.
+// The type of expr will match with the zetasql type of the proto field.
+// The type will be an array iff the field is repeated.
+//
+// For NULL values of <expr>, the proto field should be cleared.
+//
+// If any value of <expr> cannot be written into the field, this query
+// should fail.
+message ResolvedMakeProtoFieldProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional FieldDescriptorRefProto field_descriptor = 2;
+  // Provides the Format annotation that should be used when building
+  // this field.  The annotation specifies both the ZetaSQL type and
+  // the encoding format for this field.
+  optional FieldFormat.Format format = 3;
+  optional AnyResolvedExprProto expr = 4;
+}
+
+// Get the field in position <field_idx> (0-based) from <expr>, which has a
+// STRUCT type.
+message ResolvedGetStructFieldProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional AnyResolvedExprProto expr = 2;
+  optional int64 field_idx = 3;
+}
+
+message ResolvedGetProtoFieldProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional AnyResolvedExprProto expr = 2;
+  // The proto2 FieldDescriptor to extract.  This provides the tag
+  // number and wire type.  Additional decoding may be necessary if any
+  // of the other modifiers below are set.  Consumers should use those
+  // ZetaSQL-computed modifiers rather than examining field
+  // annotations directly.
+  //
+  // The field is an extension field iff
+  // field_descriptor->is_extension() is true.  NOTE: The extended
+  // descriptor's full_name must match the <expr>'s type's full_name,
+  // but may not be the same Descriptor. Extension FieldDescriptors may
+  // come from a different DescriptorPool.
+  //
+  // The field is required if field_descriptor->is_required().  If the
+  // field is required and not present, an error should result.
+  optional FieldDescriptorRefProto field_descriptor = 3;
+  // Default value to use when the proto field is not set. The default
+  // may be NULL (e.g. for fields with a use_defaults=false
+  // annotation).
+  //
+  // This will not be filled in (the Value will be uninitialized) if
+  // get_has_bit is true, or the field is required.
+  //
+  // If field_descriptor->is_required() and the field is not present,
+  // the engine should return an error.
+  //
+  // If the <expr> itself returns NULL, then extracting a field should
+  // also return NULL, unless <return_default_value_when_unset> is
+  // true. In that case, the default value is returned.
+  //
+  // TODO Make un-ignorable after clients migrate to start
+  // using it.
+  optional ValueWithTypeProto default_value = 4;
+  // Indicates whether to return a bool indicating if a value was
+  // present, rather than return the value (or NULL). Never set for
+  // repeated fields. This field cannot be set if
+  // <return_default_value_when_unset> is true, and vice versa.
+  // Expression type will be BOOL.
+  optional bool get_has_bit = 5;
+  // Provides the Format annotation that should be used when reading
+  // this field.  The annotation specifies both the ZetaSQL type and
+  // the encoding format for this field. This cannot be set when
+  // get_has_bit is true.
+  optional FieldFormat.Format format = 6;
+  // Indicates that the default value should be returned if <expr> is
+  // NULL.
+  //
+  // This can only be set for non-message fields and fields that are
+  // not annotated with zetasql.use_defaults=false. This cannot be
+  // set when <get_has_bit> is true or the field is required.
+  optional bool return_default_value_when_unset = 7;
+}
+
+// A subquery in an expression (not a FROM clause).  The subquery runs
+// in the context of a single input row and produces a single output value.
+//
+// Correlated subqueries can be thought of like functions, with a parameter
+// list.  The <parameter_list> gives the set of ResolvedColumns from outside
+// the subquery that are used inside.
+//
+// Inside the subquery, the only allowed references to values outside the
+// subquery are to the named ColumnRefs listed in <parameter_list>.
+// Any reference to one of these parameters will be represented as a
+// ResolvedColumnRef with <is_correlated> set to true.
+//
+// These parameters are only visible through one level of expression
+// subquery.  An expression subquery inside an expression has to list
+// parameters again if parameters from the outer query are passed down
+// further.  (This does not apply for table subqueries inside an expression
+// subquery.  Table subqueries are never indicated in the resolved AST, so
+// Scan nodes inside an expression query may have come from a nested table
+// subquery, and they can still reference the expression subquery's
+// parameters.)
+//
+// An empty <parameter_list> means that the subquery is uncorrelated.  It is
+// permissable to run an uncorrelated subquery only once and reuse the result.
+// TODO Do we want to specify semantics more firmly here?
+//
+// The semantics vary based on SubqueryType:
+//   SCALAR
+//     Usage: ( <subquery> )
+//     If the subquery produces zero rows, the output value is NULL.
+//     If the subquery produces exactly one row, that row is the output value.
+//     If the subquery produces more than one row, raise a runtime error.
+//
+//   ARRAY
+//     Usage: ARRAY( <subquery> )
+//     The subquery produces an array value with zero or more rows, with
+//     one array element per subquery row produced.
+//
+//   EXISTS
+//     Usage: EXISTS( <subquery> )
+//     The output type is always bool.  The result is true if the subquery
+//     produces at least one row, and false otherwise.
+//
+//   IN
+//     Usage: <in_expr> [NOT] IN ( <subquery> )
+//     The output type is always bool.  The result is true when <in_expr> is
+//     equal to at least one row, and false otherwise.  The <subquery> row
+//     contains only one column, and the types of <in_expr> and the
+//     subquery column must exactly match a built-in signature for the
+//     '$equals' comparison function (they must be the same type or one
+//     must be INT64 and the other UINT64).  NOT will be expressed as a $not
+//     FunctionCall wrapping this SubqueryExpr.
+//
+// The subquery for a SCALAR or ARRAY or IN subquery must have exactly one
+// output column.
+// The output type for a SCALAR or ARRAY subquery is that column's type or
+// an array of that column's type.  (The subquery scan may include a Project
+// with a MakeStruct or MakeProto expression to construct a single value
+// from multiple columns.)
+message ResolvedSubqueryExprProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional ResolvedSubqueryExprEnums.SubqueryType subquery_type = 2;
+  repeated ResolvedColumnRefProto parameter_list = 3;
+  // Field is only populated for subquery of type IN.
+  optional AnyResolvedExprProto in_expr = 4;
+  optional AnyResolvedScanProto subquery = 5;
+  // Note: Hints currently happen only for EXISTS or IN subquery but
+  // not for ARRAY or SCALAR subquery.
+  repeated ResolvedOptionProto hint_list = 6;
+}
+
+// Common superclass for all Scans, which are nodes that produce rows
+// (e.g. scans, joins, table subqueries).  A query's FROM clause is
+// represented as a single Scan that composes all input sources into
+// a single row stream.
+//
+// Each Scan has a <column_list> that says what columns are produced.
+// The Scan logically produces a stream of output rows, where each row
+// has exactly these columns.
+//
+// Each Scan may have an attached <hint_list>, storing each hint as
+// a ResolvedOption.
+//
+// If <is_ordered> is true, this Scan produces an ordered output, either
+// by generating order itself (OrderByScan) or by preserving the order
+// of its single input scan (LimitOffsetScan, ProjectScan, or WithScan).
+message AnyResolvedScanProto {
+  oneof node {
+    ResolvedSingleRowScanProto resolved_single_row_scan_node = 19;
+    ResolvedTableScanProto resolved_table_scan_node = 20;
+    ResolvedJoinScanProto resolved_join_scan_node = 21;
+    ResolvedArrayScanProto resolved_array_scan_node = 22;
+    ResolvedFilterScanProto resolved_filter_scan_node = 24;
+    ResolvedSetOperationScanProto resolved_set_operation_scan_node = 26;
+    ResolvedOrderByScanProto resolved_order_by_scan_node = 27;
+    ResolvedLimitOffsetScanProto resolved_limit_offset_scan_node = 28;
+    ResolvedWithRefScanProto resolved_with_ref_scan_node = 29;
+    ResolvedAnalyticScanProto resolved_analytic_scan_node = 30;
+    ResolvedSampleScanProto resolved_sample_scan_node = 31;
+    ResolvedProjectScanProto resolved_project_scan_node = 35;
+    ResolvedWithScanProto resolved_with_scan_node = 51;
+    ResolvedTVFScanProto resolved_tvfscan_node = 81;
+    ResolvedRelationArgumentScanProto resolved_relation_argument_scan_node = 89;
+    AnyResolvedAggregateScanBaseProto resolved_aggregate_scan_base_node = 111;
+  }
+}
+
+message ResolvedScanProto {
+  optional ResolvedNodeProto parent = 1;
+
+  repeated ResolvedColumnProto column_list = 2;
+  repeated ResolvedOptionProto hint_list = 3;
+  optional bool is_ordered = 4;
+}
+
+// Represents a machine learning model as a TVF argument.
+// <model> is the machine learning model object known to the resolver
+// (usually through the catalog).
+message ResolvedModelProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ModelRefProto model = 2;
+}
+
+// Scan that produces a single row with no columns.  Used for queries without
+// a FROM clause, where all output comes from the select list.
+message ResolvedSingleRowScanProto {
+  optional ResolvedScanProto parent = 1;
+
+}
+
+// Scan a Table.
+// The <column_list>[i] should be matched to a Table column by
+// <table>.GetColumn(<column_index_list>[i]).
+//
+// If AnalyzerOptions::prune_unused_columns is true, the <column_list> and
+// <column_index_list> will include only columns that were referenced
+// in the user query. (SELECT * counts as referencing all columns.)
+// This column_list can then be used for column-level ACL checking on tables.
+//
+// for_system_time_expr when non NULL resolves to TIMESTAMP used in
+// FOR SYSTEM_TIME AS OF clause. The expression is expected to be constant
+// and no columns are visible to it.
+//
+// If provided, <alias> refers to an explicit alias which was used to
+// reference a Table in the user query. If the Table was given an implicitly
+// generated alias, then defaults to "".
+//
+// TODO: Enforce <column_index_list> in the constructor arg list. For
+// historical reasons, some clients match <column_list> to Table columns by
+// name. All code building this should always set_column_index_list() to
+// provide the indexes of all columns in <table> right after the construction
+// of a ResolvedTableScan.
+message ResolvedTableScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional TableRefProto table = 2;
+  optional AnyResolvedExprProto for_system_time_expr = 3;
+  repeated int64 column_index_list = 4;
+  optional string alias = 5;
+}
+
+// A Scan that joins two input scans.
+// The <column_list> will contain columns selected from the union
+// of the input scan's <column_lists>.
+// When the join is a LEFT/RIGHT/FULL join, ResolvedColumns that came from
+// the non-joined side get NULL values.
+message ResolvedJoinScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional ResolvedJoinScanEnums.JoinType join_type = 2;
+  optional AnyResolvedScanProto left_scan = 3;
+  optional AnyResolvedScanProto right_scan = 4;
+  optional AnyResolvedExprProto join_expr = 5;
+}
+
+// Scan an array value, produced from some expression.
+//
+// If input_scan is NULL, this scans the given array value and produces
+// one row per array element.  This can occur when using UNNEST(expression).
+//
+// If <input_scan> is non-NULL, for each row in the stream produced by
+// input_scan, this evaluates the expression <array_expr> (which must return
+// an array type) and then produces a stream with one row per array element.
+//
+// If <join_expr> is non-NULL, then this condition is evaluated as an ON
+// clause for the array join.  The named column produced in <array_expr>
+// may be used inside <join_expr>.
+//
+// If the array is empty (after evaluating <join_expr>), then
+// 1. If <is_outer> is false, the scan produces zero rows.
+// 2. If <is_outer> is true, the scan produces one row with a NULL value for
+//    the <element_column>.
+//
+// <element_column> is the new column produced by this scan that stores the
+// array element value for each row.
+//
+// If present, <array_offset_column> defines the column produced by this
+// scan that stores the array offset (0-based) for the corresponding
+// <element_column>.
+//
+// This node's column_list can have columns from input_scan, <element_column>
+// and <array_offset_column>.
+message ResolvedArrayScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional AnyResolvedScanProto input_scan = 2;
+  optional AnyResolvedExprProto array_expr = 3;
+  optional ResolvedColumnProto element_column = 4;
+  optional ResolvedColumnHolderProto array_offset_column = 5;
+  optional AnyResolvedExprProto join_expr = 6;
+  optional bool is_outer = 7;
+}
+
+// This wrapper is used for an optional ResolvedColumn inside another node.
+message ResolvedColumnHolderProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedColumnProto column = 2;
+}
+
+// Scan rows from input_scan, and emit all rows where filter_expr
+// evaluates to true.  filter_expr is always of type bool.
+// This node's column_list will be a subset of input_scan's column_list.
+message ResolvedFilterScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional AnyResolvedScanProto input_scan = 2;
+  optional AnyResolvedExprProto filter_expr = 3;
+}
+
+// List of group by columns that form a grouping set.
+//
+// Columns must come from group_by_list in ResolvedAggregateScan.
+// group_by_column_list will not contain any duplicates. There may be more
+// than one ResolvedGroupingSet in the ResolvedAggregateScan with the same
+// columns, however.
+message ResolvedGroupingSetProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  repeated ResolvedColumnRefProto group_by_column_list = 2;
+}
+
+// Base class for aggregation scans. Apply aggregation to rows produced from
+// input_scan, and output aggregated rows.
+//
+// Group by keys in <group_by_list>.  If <group_by_list> is empty,
+// aggregate all input rows into one output row.
+//
+// Compute all aggregations in <aggregate_list>.  All expressions in
+// <aggregate_list> have a ResolvedAggregateFunctionCall with mode
+// Function::AGGREGATE as their outermost node.
+//
+// The output <column_list> contains only columns produced from
+// <group_by_list> and <aggregate_list>.  No other columns are visible after
+// aggregation.
+message AnyResolvedAggregateScanBaseProto {
+  oneof node {
+    ResolvedAggregateScanProto resolved_aggregate_scan_node = 25;
+  }
+}
+
+message ResolvedAggregateScanBaseProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional AnyResolvedScanProto input_scan = 2;
+  repeated ResolvedComputedColumnProto group_by_list = 3;
+  repeated ResolvedComputedColumnProto aggregate_list = 4;
+}
+
+// Apply aggregation to rows produced from input_scan, and output aggregated
+// rows.
+//
+// For each item in <grouping_set_list>, output additional rows computing the
+// same <aggregate_list> over the input rows using a particular grouping set.
+// The aggregation input values, including <input_scan>, computed columns in
+// <group_by_list>, and aggregate function arguments in <aggregate_list>,
+// should be computed just once and then reused as aggregation input for each
+// grouping set. (This ensures that ROLLUP rows have correct totals, even
+// with non-stable functions in the input.) For each grouping set, the
+// <group_by_list> elements not included in the <group_by_column_list> are
+// replaced with NULL.
+//
+// <rollup_column_list> is the original list of columns from
+// GROUP BY ROLLUP(...), if there was a ROLLUP clause, and is used only for
+// rebuilding equivalent SQL for the resolved AST. Engines should refer to
+// <grouping_set_list> rather than <rollup_column_list>.
+message ResolvedAggregateScanProto {
+  optional ResolvedAggregateScanBaseProto parent = 1;
+
+  repeated ResolvedGroupingSetProto grouping_set_list = 5;
+  repeated ResolvedColumnRefProto rollup_column_list = 6;
+}
+
+// This is one input item in a ResolvedSetOperation.
+// The <output_column_list> matches 1:1 with the ResolvedSetOperation's
+// <column_list> and specifies how columns from <scan> map to output columns.
+// Each column from <scan> can map to zero or more output columns.
+message ResolvedSetOperationItemProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional AnyResolvedScanProto scan = 2;
+  repeated ResolvedColumnProto output_column_list = 3;
+}
+
+// Apply a set operation (specified by <op_type>) on two or more input scans.
+//
+// <scan_list> will have at least two elements.
+//
+// <column_list> is a set of new ResolvedColumns created by this scan.
+// Each input ResolvedSetOperationItem has an <output_column_list> which
+// matches 1:1 with <column_list> and specifies how the input <scan>'s
+// columns map into the final <column_list>.
+//
+// - Results of {UNION, INTERSECT, EXCEPT} ALL can include duplicate rows.
+//   More precisely, with two input scans, if a given row R appears exactly
+//   m times in first input and n times in second input (m >= 0, n >= 0):
+//   For UNION ALL, R will appear exactly m + n times in the result.
+//   For INTERSECT ALL, R will appear exactly min(m, n) in the result.
+//   For EXCEPT ALL, R will appear exactly max(m - n, 0) in the result.
+//
+// - Results of {UNION, INTERSECT, EXCEPT} DISTINCT cannot contain any
+//   duplicate rows. For UNION and INTERSECT, the DISTINCT is computed
+//   after the result above is computed.  For EXCEPT DISTINCT, row R will
+//   appear once in the output if m > 0 and n = 0.
+//
+// - For n (>2) input scans, the above operations generalize so the output is
+//   the same as if the inputs were combined incrementally from left to right.
+message ResolvedSetOperationScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional ResolvedSetOperationScanEnums.SetOperationType op_type = 2;
+  repeated ResolvedSetOperationItemProto input_item_list = 4;
+}
+
+// Apply ordering to rows produced from input_scan, and output ordered
+// rows.
+//
+// The <order_by_item_list> must not be empty.  Each element identifies
+// a sort column and indicates direction (ascending or descending).
+//
+// Order Preservation:
+//   A ResolvedScan produces an ordered output if it has <is_ordered>=true.
+//   If <is_ordered>=false, the scan may discard order.  This can happen
+//   even for a ResolvedOrderByScan, if it is the top-level scan in a
+//   subquery (which discards order).
+//
+// The following Scan nodes may have <is_ordered>=true, producing or
+// propagating an ordering:
+//   * ResolvedOrderByScan
+//   * ResolvedLimitOffsetScan
+//   * ResolvedProjectScan
+//   * ResolvedWithScan
+// Other Scan nodes will always discard ordering.
+message ResolvedOrderByScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional AnyResolvedScanProto input_scan = 2;
+  repeated ResolvedOrderByItemProto order_by_item_list = 3;
+}
+
+// Apply a LIMIT and optional OFFSET to the rows from input_scan. Emit all
+// rows after OFFSET rows have been scanned and up to LIMIT total rows
+// emitted. The offset is the number of rows to skip.
+// E.g., OFFSET 1 means to skip one row, so the first row emitted will be the
+// second ROW, provided the LIMIT is greater than zero.
+//
+// The arguments to LIMIT <int64> OFFSET <int64> must be non-negative
+// integer literals or (possibly casted) query parameters.  Query
+// parameter values must be checked at run-time by ZetaSQL compliant
+// backend systems.
+//
+// OFFSET is optional and the absence of OFFSET implies OFFSET 0.
+message ResolvedLimitOffsetScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional AnyResolvedScanProto input_scan = 2;
+  optional AnyResolvedExprProto limit = 3;
+  optional AnyResolvedExprProto offset = 4;
+}
+
+// Scan the subquery defined in a WITH statement.
+// See ResolvedWithScan for more detail.
+// The column_list produced here will match 1:1 with the column_list produced
+// by the referenced subquery and will given a new unique name to each
+// column produced for this scan.
+message ResolvedWithRefScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional string with_query_name = 2;
+}
+
+// Apply analytic functions to rows produced from input_scan.
+//
+// The set of analytic functions are partitioned into a list of analytic
+// function groups <function_group_list> by the window PARTITION BY and the
+// window ORDER BY.
+//
+// The output <column_list> contains all columns from <input_scan>,
+// one column per analytic function. It may also conain partitioning/ordering
+// expression columns if they reference to select columns.
+message ResolvedAnalyticScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional AnyResolvedScanProto input_scan = 2;
+  repeated ResolvedAnalyticFunctionGroupProto function_group_list = 3;
+}
+
+// Samples rows from <input_scan>.
+// Specs: (broken link)
+// Specs for WITH WEIGHT and PARTITION BY: (broken link)
+//
+// <method> is the identifier for the sampling algorithm and will always be
+// in lowercase.
+// For example BERNOULLI, RESERVOIR, SYSTEM. Engines can also support their
+// own implementation-specific set of sampling algorithms.
+//
+// <size> and <unit> specifies the sample size.
+// If <unit> is "ROWS", <size> must be an <int64> and non-negative.
+// If <unit> is "PERCENT", <size> must either be a <double> or an <int64> and
+// in the range [0, 100].
+// <size> can only be a literal value or a (possibly casted) parameter.
+//
+// <repeatable_argument> is present if we had a REPEATABLE(<argument>) in the
+// TABLESAMPLE clause and can only be a literal value or a (possibly
+// casted) parameter.
+//
+// If present, <weight_column> defines the column produced by this scan that
+// stores the scaling weight for the corresponding sampled row.
+//
+// <partition_by_list> can be empty. If <partition_by_list> is not empty,
+// <unit> must be ROWS and <method> must be RESERVOIR.
+message ResolvedSampleScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional AnyResolvedScanProto input_scan = 2;
+  optional string method = 3;
+  optional AnyResolvedExprProto size = 4;
+  optional ResolvedSampleScanEnums.SampleUnit unit = 5;
+  optional AnyResolvedExprProto repeatable_argument = 6;
+  optional ResolvedColumnHolderProto weight_column = 7;
+  repeated AnyResolvedExprProto partition_by_list = 8;
+}
+
+// This is used when an expression is computed and given a name (a new
+// ResolvedColumn) that can be referenced elsewhere.  The new ResolvedColumn
+// can appear in a column_list or in ResolvedColumnRefs in other expressions,
+// when appropriate.  This node is not an expression itself - it is a
+// container that holds an expression.
+message ResolvedComputedColumnProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedColumnProto column = 2;
+  optional AnyResolvedExprProto expr = 3;
+}
+
+// This represents one column of an ORDER BY clause, with the requested
+// ordering direction.
+//
+// <collation_name> indicates the COLLATE specific rules of ordering.
+// If non-NULL, must be a string literal or a string parameter.
+// See (broken link).
+message ResolvedOrderByItemProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedColumnRefProto column_ref = 2;
+  optional AnyResolvedExprProto collation_name = 3;
+  optional bool is_descending = 4;
+}
+
+// This is used in CREATE TABLE statements to provide column annotations
+// such as NOT NULL and OPTIONS().
+//
+// This class is recursive. It mirrors the structure of the column type
+// except that child_list might be truncated.
+//
+// For ARRAY:
+//   If the element or its subfield has annotations, then child_list.size()
+//   is 1, and child_list(0) stores the element annotations.
+//   Otherwise child_list is empty.
+// For STRUCT:
+//   If the i-th field has annotations then child_list(i) stores the
+//   field annotations.
+//   Otherwise either child_list.size() <= i or child_list(i) is trivial.
+//   If none of the fields and none of their subfields has annotations, then
+//   child_list is empty.
+// For other types, child_list is empty.
+message ResolvedColumnAnnotationsProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional bool not_null = 2;
+  repeated ResolvedOptionProto option_list = 3;
+  repeated ResolvedColumnAnnotationsProto child_list = 4;
+}
+
+// <expression> indicates the expression that defines the column. The type of
+// the expression will always match the type of the column.
+//   - The <expression> can contain ResolvedColumnRefs corresponding to
+//   ResolvedColumnDefinition.<column> for any of the
+//   ResolvedColumnDefinitions in the enclosing statement.
+//   - The expression can never include a subquery.
+//
+// <is_stored> indicates whether the value of the expression should be stored
+// or not. When is_stored is true, <expression> cannot contain a volatile
+// function (e.g. RAND).
+//
+// See (broken link).
+message ResolvedGeneratedColumnInfoProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional AnyResolvedExprProto expression = 2;
+  optional bool is_stored = 3;
+}
+
+// This is used in CREATE TABLE statements to provide an explicit column
+// definition.
+//
+// if <is_hidden> is TRUE, then the column won't show up in SELECT * queries.
+//
+// if <generated_column_info> is non-NULL, then this table column is a
+// generated column.
+//
+// <column> defines an ID for the column, which may appear in expressions in
+// the PARTITION BY, CLUSTER BY clause or <generated_column_info> if either
+// is present.
+message ResolvedColumnDefinitionProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string name = 2;
+  optional TypeProto type = 3;
+  optional ResolvedColumnAnnotationsProto annotations = 4;
+  optional bool is_hidden = 5;
+  optional ResolvedColumnProto column = 6;
+  optional ResolvedGeneratedColumnInfoProto generated_column_info = 7;
+}
+
+// This represents the PRIMARY KEY constraint on a table.
+// <column_offset_list> provides the offsets of the column definitions that
+//                      comprise the primary key. This is empty when a
+//                      0-element primary key is defined.
+message ResolvedPrimaryKeyProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  repeated int64 column_offset_list = 2;
+  repeated ResolvedOptionProto option_list = 3;
+}
+
+// This represents the FOREIGN KEY constraint on a table. It is of the form:
+//
+//   CONSTRAINT <constraint_name>
+//   FOREIGN KEY <referencing_column_offset_list>
+//   REFERENCES <referenced_table> <referenced_column_offset_list>
+//   <match_mode>
+//   <update_action>
+//   <delete_action>
+//   <enforced>
+//   <option_list>
+//
+// <constraint_name> uniquely identifies the constraint.
+//
+// <referencing_column_offset_list> provides the offsets of the column
+// definitions for the table defining the foreign key.
+//
+// <referenced_table> identifies the table this constraint references.
+//
+// <referenced_column_offset_list> provides the offsets of the column
+// definitions for the table referenced by the foreign key.
+//
+// <match_mode> specifies how referencing keys with null values are handled.
+//
+// <update_action> specifies what action to take, if any, when a referenced
+// value is updated.
+//
+// <delete_action> specifies what action to take, if any, when a row with a
+// referenced values is deleted.
+//
+// <enforced> specifies whether or not the constraint is enforced.
+//
+// <option_list> for foreign key table constraints. Empty for foreign key
+// column attributes (see instead ResolvedColumnAnnotations).
+message ResolvedForeignKeyProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string constraint_name = 2;
+  repeated int64 referencing_column_offset_list = 3;
+  optional TableRefProto referenced_table = 4;
+  repeated int64 referenced_column_offset_list = 5;
+  optional ResolvedForeignKeyEnums.MatchMode match_mode = 6;
+  optional ResolvedForeignKeyEnums.ActionOperation update_action = 7;
+  optional ResolvedForeignKeyEnums.ActionOperation delete_action = 8;
+  optional bool enforced = 9;
+  repeated ResolvedOptionProto option_list = 10;
+}
+
+// This represents the CHECK constraint on a table. It is of the form:
+//
+//   CONSTRAINT <constraint_name>
+//   CHECK <expression>
+//   <enforced>
+//   <option_list>
+//
+// <constraint_name> uniquely identifies the constraint.
+//
+// <expression> defines a boolean expression to be evaluated when the row is
+// updated. If the result is FALSE, update to the row is not allowed.
+//
+// <enforced> specifies whether or not the constraint is enforced.
+//
+// <option_list> list of options for check constraint.
+//
+// See (broken link).
+message ResolvedCheckConstraintProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string constraint_name = 2;
+  optional AnyResolvedExprProto expression = 3;
+  optional bool enforced = 4;
+  repeated ResolvedOptionProto option_list = 5;
+}
+
+// This is used in ResolvedQueryStmt to provide a user-visible name
+// for each output column.
+message ResolvedOutputColumnProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string name = 2;
+  optional ResolvedColumnProto column = 3;
+}
+
+// A Project node computes new expression values, and possibly drops
+// columns from the input Scan's column_list.
+//
+// Each entry in <expr_list> is a new column computed from an expression.
+//
+// The column_list can include any columns from input_scan, plus these
+// newly computed columns.
+//
+// NOTE: This scan will propagate the is_ordered property of <input_scan>
+// by default.  To make this scan unordered, call set_is_ordered(false).
+message ResolvedProjectScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  repeated ResolvedComputedColumnProto expr_list = 2;
+  optional AnyResolvedScanProto input_scan = 3;
+}
+
+// This scan represents a call to a table-valued function (TVF). Each TVF
+// returns an entire output relation instead of a single scalar value. The
+// enclosing query may refer to the TVF as if it were a table subquery. The
+// TVF may accept scalar arguments and/or other input relations.
+//
+// Scalar arguments work the same way as arguments for non-table-valued
+// functions: in the resolved AST, their types are equal to the required
+// argument types specified in the function signature.
+//
+// The function signature may also include relation arguments, and any such
+// relation argument may specify a required schema. If such a required schema
+// is present, then in the resolved AST, the ResolvedScan for each relational
+// ResolvedTVFArgument is guaranteed to have the same number of columns as
+// the required schema, and the provided columns match position-wise with the
+// required columns. Each provided column has the same name and type as the
+// corresponding required column.
+//
+// <column_list> is a set of new ResolvedColumns created by this scan.
+// These output columns match positionally with the columns in the output
+// schema of <signature>.
+//
+// <tvf> The TableValuedFunction entry that the catalog returned for this TVF
+//       scan. Contains non-concrete function signatures which may include
+//       arguments with templated types.
+// <signature> The concrete table function signature for this TVF call,
+//             including the types of all scalar arguments and the
+//             number and types of columns of all table-valued
+//             arguments. An engine may also subclass this object to
+//             provide extra custom information and return an instance
+//             of the subclass from the TableValuedFunction::Resolve
+//             method.
+// <argument_list> The vector of resolved arguments for this TVF call.
+// <alias> The AS alias for the scan, or empty if none.
+message ResolvedTVFScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  optional TableValuedFunctionRefProto tvf = 2;
+  optional TVFSignatureProto signature = 3;
+  repeated ResolvedTVFArgumentProto argument_list = 5;
+  optional string alias = 6;
+}
+
+// This represents an argument to a table-valued function (TVF). The argument
+// can be semantically scalar, relational or represent a model. Only one of
+// the three fields will be set.
+//
+// <expr> The expression representing a scalar TVF argument.
+// <scan> The scan representing a relational TVF argument.
+// <model> The model representing an ML model TVF argument.
+//
+// <argument_column_list> maps columns from <scan> into specific columns
+// of the TVF argument's input schema, matching those columns positionally.
+// i.e. <scan>'s column_list may have fewer columns or out-of-order columns,
+// and this vector maps those columns into specific TVF input columns.
+message ResolvedTVFArgumentProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional AnyResolvedExprProto expr = 2;
+  optional AnyResolvedScanProto scan = 3;
+  optional ResolvedModelProto model = 5;
+  repeated ResolvedColumnProto argument_column_list = 4;
+}
+
+// The superclass of all ZetaSQL statements.
+message AnyResolvedStatementProto {
+  oneof node {
+    ResolvedExplainStmtProto resolved_explain_stmt_node = 37;
+    ResolvedQueryStmtProto resolved_query_stmt_node = 38;
+    AnyResolvedCreateStatementProto resolved_create_statement_node = 39;
+    ResolvedExportDataStmtProto resolved_export_data_stmt_node = 43;
+    ResolvedDefineTableStmtProto resolved_define_table_stmt_node = 44;
+    ResolvedDescribeStmtProto resolved_describe_stmt_node = 45;
+    ResolvedShowStmtProto resolved_show_stmt_node = 46;
+    ResolvedBeginStmtProto resolved_begin_stmt_node = 47;
+    ResolvedCommitStmtProto resolved_commit_stmt_node = 48;
+    ResolvedRollbackStmtProto resolved_rollback_stmt_node = 49;
+    ResolvedDropStmtProto resolved_drop_stmt_node = 50;
+    ResolvedInsertStmtProto resolved_insert_stmt_node = 63;
+    ResolvedDeleteStmtProto resolved_delete_stmt_node = 64;
+    ResolvedUpdateStmtProto resolved_update_stmt_node = 66;
+    AnyResolvedGrantOrRevokeStmtProto resolved_grant_or_revoke_stmt_node = 68;
+    ResolvedAlterTableSetOptionsStmtProto resolved_alter_table_set_options_stmt_node = 71;
+    ResolvedRenameStmtProto resolved_rename_stmt_node = 72;
+    ResolvedCreateRowPolicyStmtProto resolved_create_row_policy_stmt_node = 73;
+    ResolvedDropRowPolicyStmtProto resolved_drop_row_policy_stmt_node = 74;
+    ResolvedAlterRowPolicyStmtProto resolved_alter_row_policy_stmt_node = 75;
+    ResolvedDropFunctionStmtProto resolved_drop_function_stmt_node = 80;
+    ResolvedCallStmtProto resolved_call_stmt_node = 83;
+    ResolvedImportStmtProto resolved_import_stmt_node = 86;
+    ResolvedModuleStmtProto resolved_module_stmt_node = 87;
+    ResolvedCreateDatabaseStmtProto resolved_create_database_stmt_node = 95;
+    ResolvedAssertStmtProto resolved_assert_stmt_node = 98;
+    ResolvedMergeStmtProto resolved_merge_stmt_node = 101;
+    AnyResolvedAlterObjectStmtProto resolved_alter_object_stmt_node = 114;
+    ResolvedSetTransactionStmtProto resolved_set_transaction_stmt_node = 120;
+    ResolvedDropMaterializedViewStmtProto resolved_drop_materialized_view_stmt_node = 121;
+    ResolvedStartBatchStmtProto resolved_start_batch_stmt_node = 122;
+    ResolvedRunBatchStmtProto resolved_run_batch_stmt_node = 123;
+    ResolvedAbortBatchStmtProto resolved_abort_batch_stmt_node = 124;
+  }
+}
+
+message ResolvedStatementProto {
+  optional ResolvedNodeProto parent = 1;
+
+  repeated ResolvedOptionProto hint_list = 2;
+}
+
+// An Explain statement. This is always the root of a statement hierarchy.
+// Its child may be any statement type except another ResolvedExplainStmt.
+//
+// It is implementation dependent what action a back end system takes for an
+// ExplainStatement.
+message ResolvedExplainStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional AnyResolvedStatementProto statement = 2;
+}
+
+// A SQL query statement.  This is the outermost query statement that runs
+// and produces rows of output, like a SELECT.  (The contained query may be
+// a Scan corresponding to a non-Select top-level operation like UNION ALL
+// or WITH.)
+//
+// <output_column_list> gives the user-visible column names that should be
+// returned in the API or query tools.  There may be duplicate names, and
+// multiple output columns may reference the same column from <query>.
+message ResolvedQueryStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated ResolvedOutputColumnProto output_column_list = 2;
+  // If true, the result of this query is a value table. Rather than
+  // producing rows with named columns, it produces rows with a single
+  // unnamed value type.  output_column_list will have exactly one
+  // column, with an empty name. See (broken link).
+  optional bool is_value_table = 3;
+  optional AnyResolvedScanProto query = 4;
+}
+
+// This statement:
+//   CREATE DATABASE <name> [OPTIONS (...)]
+// <name_path> is a vector giving the identifier path in the database name.
+// <option_list> specifies the options of the database.
+message ResolvedCreateDatabaseStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated string name_path = 2;
+  repeated ResolvedOptionProto option_list = 3;
+}
+
+// Common superclass for CREATE statements with standard modifiers like
+//         CREATE [OR REPLACE] [TEMP|TEMPORARY|PUBLIC|PRIVATE] <object type>
+//         [IF NOT EXISTS] <name> ...
+//
+// <name_path> is a vector giving the identifier path in the table name.
+// <create_scope> is the relevant scope, i.e., DEFAULT, TEMP, PUBLIC,
+//                or PRIVATE.  PUBLIC/PRIVATE are only valid in module
+//                resolution context, see (broken link)
+//                for details.
+// <create_mode> indicates if this was CREATE, CREATE OR REPLACE, or
+//               CREATE IF NOT EXISTS.
+message AnyResolvedCreateStatementProto {
+  oneof node {
+    ResolvedCreateExternalTableStmtProto resolved_create_external_table_stmt_node = 42;
+    ResolvedCreateFunctionStmtProto resolved_create_function_stmt_node = 76;
+    ResolvedCreateTableFunctionStmtProto resolved_create_table_function_stmt_node = 88;
+    ResolvedCreateIndexStmtProto resolved_create_index_stmt_node = 97;
+    ResolvedCreateConstantStmtProto resolved_create_constant_stmt_node = 99;
+    AnyResolvedCreateTableStmtBaseProto resolved_create_table_stmt_base_node = 106;
+    ResolvedCreateModelStmtProto resolved_create_model_stmt_node = 107;
+    AnyResolvedCreateViewBaseProto resolved_create_view_base_node = 108;
+    ResolvedCreateProcedureStmtProto resolved_create_procedure_stmt_node = 125;
+  }
+}
+
+message ResolvedCreateStatementProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated string name_path = 2;
+  optional ResolvedCreateStatementEnums.CreateScope create_scope = 5;
+  optional ResolvedCreateStatementEnums.CreateMode create_mode = 4;
+}
+
+// Represents one of indexed items in CREATE INDEX statement, with the
+// ordering direction specified.
+message ResolvedIndexItemProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedColumnRefProto column_ref = 2;
+  optional bool descending = 3;
+}
+
+// This is used in CREATE INDEX STMT to represent the unnest operation
+// performed on the base table. The produced element columns or array offset
+// columns (optional) can appear in other ResolvedUnnestItem or index keys.
+//
+// <array_expr> is the expression of the array field, e.g., t.array_field.
+// <element_column> is the new column produced by this unnest item that
+//                  stores the array element value for each row.
+// <array_offset_column> is optional. If present, it defines the column
+//                       produced by this unnest item that stores the array
+//                       offset (0-based) for the corresponding
+//                       <element_column>.
+message ResolvedUnnestItemProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional AnyResolvedExprProto array_expr = 2;
+  optional ResolvedColumnProto element_column = 3;
+  optional ResolvedColumnHolderProto array_offset_column = 4;
+}
+
+// This statement:
+// CREATE [OR REPLACE] [UNIQUE] INDEX [IF NOT EXISTS] <index_name_path>
+// ON <table_name_path>
+// [STORING (Expression, ...)]
+// [UNNEST(path_expression) [[AS] alias] [WITH OFFSET [[AS] alias]], ...]
+// (path_expression [ASC|DESC], ...) [OPTIONS (name=value, ...)];
+//
+// <table_name_path> is the name of table being indexed.
+// <table_scan> is a TableScan on the table being indexed.
+// <is_unique> specifies if the index has unique entries.
+// <index_item_list> has the columns being indexed, specified as references
+//                   to 'computed_columns_list' entries or the columns of
+//                   'table_scan'.
+// <storing_expression_list> has the expressions in the storing clause.
+// <option_list> has engine-specific directives for how and where to
+//               materialize this index.
+// <computed_columns_list> has computed columns derived from the columns of
+//                         'table_scan' or 'unnest_expressions_list'. For
+//                         example, the extracted field (e.g., x.y.z).
+// <unnest_expressions_list> has unnest expressions derived from
+//                           'table_scan' or previous unnest expressions in
+//                           the list. So the list order is significant.
+message ResolvedCreateIndexStmtProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  repeated string table_name_path = 2;
+  optional ResolvedTableScanProto table_scan = 3;
+  optional bool is_unique = 4;
+  repeated ResolvedIndexItemProto index_item_list = 5;
+  repeated AnyResolvedExprProto storing_expression_list = 9;
+  repeated ResolvedOptionProto option_list = 6;
+  repeated ResolvedComputedColumnProto computed_columns_list = 7;
+  repeated ResolvedUnnestItemProto unnest_expressions_list = 8;
+}
+
+// This statement:
+//   CREATE [TEMP] TABLE <name> (column type, ...)
+//   [PARTITION BY expr, ...] [CLUSTER BY expr, ...]
+//   [OPTIONS (...)]
+//
+// <option_list> has engine-specific directives for how and where to
+//               materialize this table.
+// <column_definition_list> has the names and types of the columns in the
+//                          created table. If <is_value_table> is true, it
+//                          must contain exactly one column, with a generated
+//                          name such as "$struct".
+// <pseudo_column_list> is a list of some pseudo-columns expected to be
+//                      present on the created table (provided by
+//                      AnalyzerOptions::SetDdlPseudoColumns*).  These can be
+//                      referenced in expressions in <partition_by_list> and
+//                      <cluster_by_list>.
+// <primary_key> specifies the PRIMARY KEY constraint on the table, it is
+//               nullptr when no PRIMARY KEY is specified.
+// <foreign_key_list> specifies the FOREIGN KEY constraints on the table.
+// <check_constraint_list> specifies the CHECK constraints on the table.
+// <partition_by_list> specifies the partitioning expressions for the table.
+// <cluster_by_list> specifies the clustering expressions for the table.
+// <is_value_table> specifies whether the table is a value table.
+//                  See (broken link).
+message AnyResolvedCreateTableStmtBaseProto {
+  oneof node {
+    ResolvedCreateTableAsSelectStmtProto resolved_create_table_as_select_stmt_node = 40;
+    ResolvedCreateTableStmtProto resolved_create_table_stmt_node = 90;
+  }
+}
+
+message ResolvedCreateTableStmtBaseProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  repeated ResolvedOptionProto option_list = 2;
+  repeated ResolvedColumnDefinitionProto column_definition_list = 3;
+  repeated ResolvedColumnProto pseudo_column_list = 7;
+  optional ResolvedPrimaryKeyProto primary_key = 4;
+  repeated ResolvedForeignKeyProto foreign_key_list = 9;
+  repeated ResolvedCheckConstraintProto check_constraint_list = 10;
+  repeated AnyResolvedExprProto partition_by_list = 5;
+  repeated AnyResolvedExprProto cluster_by_list = 6;
+  optional bool is_value_table = 8;
+}
+
+// This statement:
+// CREATE [TEMP] TABLE <name> (column schema, ...)
+// [PARTITION BY expr, ...] [CLUSTER BY expr, ...]
+// [OPTIONS (...)]
+message ResolvedCreateTableStmtProto {
+  optional ResolvedCreateTableStmtBaseProto parent = 1;
+
+}
+
+// This statement:
+//   CREATE [TEMP] TABLE <name> [(column schema, ...)]
+//   [PARTITION BY expr, ...] [CLUSTER BY expr, ...] [OPTIONS (...)]
+//   AS SELECT ...
+//
+// The <output_column_list> matches 1:1 with the <column_definition_list> in
+// ResolvedCreateTableStmtBase, and maps ResolvedColumns produced by <query>
+// into specific columns of the created table.  The output column names and
+// types must match the column definition names and types.  If the table is
+// a value table, <output_column_list> must have exactly one column, with a
+// generated name such as "$struct".
+//
+// <output_column_list> does not contain all table schema information that
+// <column_definition_list> does. For example, NOT NULL annotations, column
+// OPTIONS, and primary keys are only available in <column_definition_list>.
+// Consumers are encouraged to read from <column_definition_list> rather
+// than than <output_column_list> to determine the table schema, if possible.
+//
+// <query> is the query to run.
+message ResolvedCreateTableAsSelectStmtProto {
+  optional ResolvedCreateTableStmtBaseProto parent = 1;
+
+  repeated ResolvedOutputColumnProto output_column_list = 2;
+  optional AnyResolvedScanProto query = 3;
+}
+
+// This statement:
+//   CREATE [TEMP] MODEL <name> [TRANSFORM(...)] [OPTIONS (...)] AS SELECT ..
+//
+// <option_list> has engine-specific directives for how to train this model.
+// <output_column_list> matches 1:1 with the <query>'s column_list, and
+//                      identifies the names and types of the columns output
+//                      from the select statement.
+// <query> is the select statement.
+// <transform_list> is the list of ResolvedComputedColumn in TRANSFORM
+//   clause.
+// <transform_output_column_list> matches 1:1 with <transform_list> output.
+message ResolvedCreateModelStmtProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  repeated ResolvedOptionProto option_list = 2;
+  repeated ResolvedOutputColumnProto output_column_list = 3;
+  optional AnyResolvedScanProto query = 4;
+  repeated ResolvedComputedColumnProto transform_list = 5;
+  repeated ResolvedOutputColumnProto transform_output_column_list = 6;
+}
+
+// Common superclass for CREATE view/materialized view:
+//   CREATE [TEMP|MATERIALIZED] VIEW <name> [OPTIONS (...)] AS SELECT ...
+//
+// <option_list> has engine-specific directives for options attached to
+//               this view.
+// <output_column_list> has the names and types of the columns in the
+//                      created view, and maps from <query>'s column_list
+//                      to these output columns.
+// <query> is the query to run.
+// <sql> is the view query text.
+// <sql_security> is the declared security mode for the function. Values
+//        include 'INVOKER', 'DEFINER'.
+//
+// Note that <query> and <sql> are both marked as IGNORABLE because
+// an engine could look at either one (but might not look at both).
+// An engine must look at one (and cannot ignore both) to be
+// semantically valid, but there is currently no way to enforce that.
+//
+// The view must produce named columns with unique names.
+message AnyResolvedCreateViewBaseProto {
+  oneof node {
+    ResolvedCreateViewStmtProto resolved_create_view_stmt_node = 41;
+    ResolvedCreateMaterializedViewStmtProto resolved_create_materialized_view_stmt_node = 119;
+  }
+}
+
+message ResolvedCreateViewBaseProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  repeated ResolvedOptionProto option_list = 2;
+  repeated ResolvedOutputColumnProto output_column_list = 3;
+  optional AnyResolvedScanProto query = 5;
+  optional string sql = 6;
+  optional ResolvedCreateStatementEnums.SqlSecurity sql_security = 7;
+  // If true, this view produces a value table. Rather than producing
+  // rows with named columns, it produces rows with a single unnamed
+  // value type.  output_column_list will have exactly one column, with
+  // an empty name. See (broken link).
+  optional bool is_value_table = 4;
+}
+
+// This statement:
+// CREATE [TEMP] VIEW <name> [OPTIONS (...)] AS SELECT ...
+message ResolvedCreateViewStmtProto {
+  optional ResolvedCreateViewBaseProto parent = 1;
+
+}
+
+// This statement:
+//   CREATE [TEMP] EXTERNAL TABLE <name> OPTIONS (...)
+//
+// <option_list> has engine-specific directives that specify how to
+//               produce data for this external table.
+message ResolvedCreateExternalTableStmtProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  repeated ResolvedOptionProto option_list = 2;
+}
+
+// This statement:
+//   EXPORT DATA (<option_list>) AS SELECT ...
+// which is used to run a query and export its result somewhere
+// without giving the result a table name.
+//
+// <option_list> has engine-specific directives for how and where to
+//               materialize the query result.
+// <output_column_list> has the names and types of the columns produced by
+//                      the query, and maps from <query>'s column_list
+//                      to these output columns.  The engine may ignore
+//                      the column names depending on the output format.
+// <query> is the query to run.
+//
+// The query must produce named columns with unique names.
+message ResolvedExportDataStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated ResolvedOptionProto option_list = 2;
+  repeated ResolvedOutputColumnProto output_column_list = 3;
+  // If true, the result of this query is a value table. Rather than
+  // producing rows with named columns, it produces rows with a single
+  // unnamed value type.  output_column_list will have exactly one
+  // column, with an empty name. See (broken link).
+  optional bool is_value_table = 4;
+  optional AnyResolvedScanProto query = 5;
+}
+
+// This statement: DEFINE TABLE name (...);
+//
+// <name_path> is a vector giving the identifier path in the table name.
+// <option_list> has engine-specific options of how the table is defined.
+//
+// DEFINE TABLE normally has the same effect as CREATE TEMP EXTERNAL TABLE.
+message ResolvedDefineTableStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated string name_path = 2;
+  repeated ResolvedOptionProto option_list = 3;
+}
+
+// This statement: DESCRIBE [<object_type>] <name> [FROM <from_name_path>];
+//
+// <object_type> is an optional string identifier,
+//               e.g., "INDEX", "FUNCTION", "TYPE", etc.
+// <name_path> is a vector giving the identifier path for the object to be
+//             described.
+// <from_name_path> is an optional vector giving the identifier path of a
+//                    containing object, e.g. a table.
+message ResolvedDescribeStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional string object_type = 2;
+  repeated string name_path = 3;
+  repeated string from_name_path = 4;
+}
+
+// This statement: SHOW <identifier> [FROM <name_path>] [LIKE <like_expr>];
+//
+// <identifier> is a string that determines the type of objects to be shown,
+//              e.g., TABLES, COLUMNS, INDEXES, STATUS,
+// <name_path> is an optional path to an object from which <identifier>
+//             objects will be shown, e.g., if <identifier> = INDEXES and
+//             <name> = table_name, the indexes of "table_name" will be
+//             shown,
+// <like_expr> is an optional ResolvedLiteral of type string that if present
+//             restricts the objects shown to have a name like this string.
+message ResolvedShowStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional string identifier = 2;
+  repeated string name_path = 3;
+  optional ResolvedLiteralProto like_expr = 4;
+}
+
+// This statement: BEGIN [TRANSACTION] [ <transaction_mode> [, ...] ]
+//
+// Where transaction_mode is one of:
+//      READ ONLY
+//      READ WRITE
+//      <isolation_level>
+//
+// <isolation_level> is a string vector storing the identifiers after
+//       ISOLATION LEVEL. The strings inside vector could be one of the
+//       SQL standard isolation levels:
+//
+//                   READ UNCOMMITTED
+//                   READ COMMITTED
+//                   READ REPEATABLE
+//                   SERIALIZABLE
+//
+//       or could be arbitrary strings. ZetaSQL does not validate that
+//       the string is valid.
+message ResolvedBeginStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedBeginStmtEnums.ReadWriteMode read_write_mode = 3;
+  repeated string isolation_level_list = 2;
+}
+
+// This statement: SET TRANSACTION <transaction_mode> [, ...]
+//
+// Where transaction_mode is one of:
+//      READ ONLY
+//      READ WRITE
+//      <isolation_level>
+//
+// <isolation_level> is a string vector storing the identifiers after
+//       ISOLATION LEVEL. The strings inside vector could be one of the
+//       SQL standard isolation levels:
+//
+//                   READ UNCOMMITTED
+//                   READ COMMITTED
+//                   READ REPEATABLE
+//                   SERIALIZABLE
+//
+//       or could be arbitrary strings. ZetaSQL does not validate that
+//       the string is valid.
+message ResolvedSetTransactionStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedBeginStmtEnums.ReadWriteMode read_write_mode = 3;
+  repeated string isolation_level_list = 2;
+}
+
+// This statement: COMMIT [TRANSACTION];
+message ResolvedCommitStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+}
+
+// This statement: ROLLBACK [TRANSACTION];
+message ResolvedRollbackStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+}
+
+// This statement: START BATCH [<batch_type>];
+//
+// <batch_type> is an optional string identifier that identifies the type of
+//              the batch. (e.g. "DML" or "DDL)
+message ResolvedStartBatchStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional string batch_type = 2;
+}
+
+// This statement: RUN BATCH;
+message ResolvedRunBatchStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+}
+
+// This statement: ABORT BATCH;
+message ResolvedAbortBatchStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+}
+
+// This statement: DROP <object_type> [IF EXISTS] <name_path>;
+//
+// <object_type> is an string identifier,
+//               e.g., "TABLE", "VIEW", "INDEX", "FUNCTION", "TYPE", etc.
+// <name_path> is a vector giving the identifier path for the object to be
+//             dropped.
+// <is_if_exists> silently ignore the "name_path does not exist" error.
+message ResolvedDropStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional string object_type = 2;
+  optional bool is_if_exists = 3;
+  repeated string name_path = 4;
+}
+
+// This statement: DROP MATERIALIZED VIEW [IF EXISTS] <name_path>;
+//
+// <name_path> is a vector giving the identifier path for the object to be
+//             dropped.
+// <is_if_exists> silently ignore the "name_path does not exist" error.
+message ResolvedDropMaterializedViewStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional bool is_if_exists = 3;
+  repeated string name_path = 4;
+}
+
+// This represents a SQL WITH query (or subquery) like
+//   WITH <with_query_name1> AS (<with_subquery1>),
+//        <with_query_name2> AS (<with_subquery2>)
+//   <query>;
+//
+// A <with_query_name> may be referenced (multiple times) inside a later
+// with_subquery, or in the final <query>.
+//
+// If a WITH subquery is referenced multiple times, the full query should
+// behave as if the subquery runs only once and its result is reused.
+//
+// There will be one ResolvedWithEntry here for each subquery in the SQL
+// WITH statement, in the same order as in the query.
+//
+// Inside the resolved <query>, or any <with_entry_list> occurring after
+// its definition, a <with_query_name> used as a table scan will be
+// represented using a ResolvedWithRefScan.
+//
+// The <with_query_name> aliases are always unique within a query, and should
+// be used to connect the ResolvedWithRefScan to the original query
+// definition.  The subqueries are not inlined and duplicated into the tree.
+//
+// In ZetaSQL 1.0, WITH is allowed only on the outermost query and not in
+// subqueries, so the ResolvedWithScan node can only occur as the outermost
+// scan in a statement (e.g. a QueryStmt or CreateTableAsSelectStmt).
+//
+// In ZetaSQL 1.1 (language option FEATURE_V_1_1_WITH_ON_SUBQUERY), WITH
+// is allowed on subqueries.  Then, ResolvedWithScan can occur anywhere in
+// the tree.  The alias introduced by a ResolvedWithEntry is visible only
+// in subsequent ResolvedWithEntry queries and in <query>.  The aliases used
+// must be globally unique in the resolved AST however, so consumers do not
+// need to implement any scoping for these names.  Because the aliases are
+// unique, it is legal to collect all ResolvedWithEntries in the tree and
+// treat them as if they were a single WITH clause at the outermost level.
+//
+// The subqueries inside ResolvedWithEntries cannot be correlated.
+//
+// If a WITH subquery is defined but never referenced, it will still be
+// resolved and still show up here.  Query engines may choose not to run it.
+//
+// SQL-style WITH RECURSIVE is not currently supported.
+message ResolvedWithScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  repeated ResolvedWithEntryProto with_entry_list = 2;
+  optional AnyResolvedScanProto query = 3;
+}
+
+// This represents one aliased subquery introduced in a WITH clause.
+//
+// The <with_query_name>s must be globally unique in the full resolved AST.
+// The <with_subquery> cannot be correlated and cannot reference any
+// columns from outside.  It may reference other WITH subqueries.
+//
+// See ResolvedWithScan for full details.
+message ResolvedWithEntryProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string with_query_name = 2;
+  optional AnyResolvedScanProto with_subquery = 3;
+}
+
+// This represents one SQL hint key/value pair.
+// The SQL syntax @{ key1=value1, key2=value2, some_db.key3=value3 }
+// will expand to three ResolvedOptions.  Keyword hints (e.g. LOOKUP JOIN)
+// are interpreted as shorthand, and will be expanded to a ResolvedOption
+// attached to the appropriate node before any explicit long-form hints.
+//
+// ResolvedOptions are attached to the ResolvedScan corresponding to the
+// operator that the SQL hint was associated with.
+// See (broken link) for more detail.
+// Hint semantics are implementation defined.
+//
+// Each hint is resolved as a [<qualifier>.]<name>:=<value> pair.
+//   <qualifier> will be empty if no qualifier was present.
+//   <name> is always non-empty.
+//   <value> can be a ResolvedLiteral or a ResolvedParameter,
+//           a cast of a ResolvedParameter (for typed hints only),
+//           or a general expression (on constant inputs).
+//
+// If AllowedHintsAndOptions was set in AnalyzerOptions, and this hint or
+// option was included there and had an expected type, the type of <value>
+// will match that expected type.  Unknown hints (not listed in
+// AllowedHintsAndOptions) are not stripped and will still show up here.
+//
+// If non-empty, <qualifier> should be interpreted as a target system name,
+// and a database system should ignore any hints targeted to different
+// systems.
+//
+// The SQL syntax allows using an identifier as a hint value.
+// Such values are stored here as ResolvedLiterals with string type.
+message ResolvedOptionProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string qualifier = 2;
+  optional string name = 3;
+  optional AnyResolvedExprProto value = 4;
+}
+
+// Window partitioning specification for an analytic function call.
+//
+// PARTITION BY keys in <partition_by_list>.
+message ResolvedWindowPartitioningProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  repeated ResolvedColumnRefProto partition_by_list = 2;
+  repeated ResolvedOptionProto hint_list = 3;
+}
+
+// Window ordering specification for an analytic function call.
+//
+// ORDER BY items in <order_by_list>. There should be exactly one ORDER
+// BY item if this is a window ORDER BY for a RANGE-based window.
+message ResolvedWindowOrderingProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  repeated ResolvedOrderByItemProto order_by_item_list = 2;
+  repeated ResolvedOptionProto hint_list = 3;
+}
+
+// Window framing specification for an analytic function call.
+//
+// ROW-based window frames compute the frame based on physical offsets
+// from the current row.
+// RANGE-based window frames compute the frame based on a logical
+// range of rows around the current row based on the current row's
+// ORDER BY key value.
+//
+// <start_expr> and <end_expr> cannot be NULL. If the window frame
+// is one-sided in the input query, the resolver will generate an
+// implicit ending boundary.
+message ResolvedWindowFrameProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedWindowFrameEnums.FrameUnit frame_unit = 2;
+  optional ResolvedWindowFrameExprProto start_expr = 3;
+  optional ResolvedWindowFrameExprProto end_expr = 4;
+}
+
+// This represents a group of analytic function calls that shares PARTITION
+// BY and ORDER BY.
+//
+// <partition_by> can be NULL. <order_by> may be NULL depending on the
+// functions in <analytic_function_list> and the window frame unit. See
+// (broken link) for more details.
+//
+// All expressions in <analytic_function_list> have a
+// ResolvedAggregateFunctionCall with a function in mode
+// Function::AGGREGATE or Function::ANALYTIC.
+message ResolvedAnalyticFunctionGroupProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedWindowPartitioningProto partition_by = 2;
+  optional ResolvedWindowOrderingProto order_by = 3;
+  repeated ResolvedComputedColumnProto analytic_function_list = 4;
+}
+
+// Window frame boundary expression that determines the first/last row of
+// the moving window for each tuple.
+//
+// <expression> cannot be NULL if the type is OFFSET_PRECEDING
+// or OFFSET_FOLLOWING. It must be a constant expression. If this is a
+// boundary for a ROW-based window, it must be integer type. Otherwise,
+// it must be numeric type and must match exactly the type of the window
+// ordering expression.  See (broken link) for more
+// details.
+message ResolvedWindowFrameExprProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedWindowFrameExprEnums.BoundaryType boundary_type = 2;
+  optional AnyResolvedExprProto expression = 3;
+}
+
+// This represents a value inside an INSERT or UPDATE statement.
+//
+// The <value> is either an expression or a DMLDefault.
+//
+// For proto fields, NULL values mean the field should be cleared.
+message ResolvedDMLValueProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional AnyResolvedExprProto value = 2;
+}
+
+// This is used to represent the value DEFAULT that shows up (in place of a
+// value expression) in INSERT and UPDATE statements.
+// For columns, engines should substitute the engine-defined default value
+// for that column, or give an error.
+// For proto fields, this always means to clear the field.
+// This will never show up inside expressions other than ResolvedDMLValue.
+message ResolvedDMLDefaultProto {
+  optional ResolvedExprProto parent = 1;
+
+}
+
+// This represents the ASSERT statement:
+//   ASSERT <expression> [AS <description>];
+//
+// <expression> is any expression that returns a bool.
+// <description> is an optional string literal used to give a more
+// descriptive error message in case the ASSERT fails.
+message ResolvedAssertStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional AnyResolvedExprProto expression = 2;
+  optional string description = 3;
+}
+
+// This represents the ASSERT ROWS MODIFIED clause on a DML statement.
+// The value must be a literal or (possibly casted) parameter int64.
+//
+// The statement should fail if the number of rows updated does not
+// exactly match this number.
+message ResolvedAssertRowsModifiedProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional AnyResolvedExprProto rows = 2;
+}
+
+// This represents one row in the VALUES clause of an INSERT.
+message ResolvedInsertRowProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  repeated ResolvedDMLValueProto value_list = 2;
+}
+
+// This represents an INSERT statement, or a nested INSERT inside an
+// UPDATE statement.
+//
+// For top-level INSERT statements, <table_scan> gives the table to
+// scan and creates ResolvedColumns for its columns.  Those columns can be
+// referenced in <insert_column_list>.
+//
+// For nested INSERTS, there is no <table_scan> or <insert_column_list>.
+// There is implicitly a single column to insert, and its type is the
+// element type of the array being updated in the ResolvedUpdateItem
+// containing this statement.
+//
+// For nested INSERTs, alternate modes are not supported and <insert_mode>
+// will always be set to OR_ERROR.
+//
+// The rows to insert come from <row_list> or the result of <query>.
+// Exactly one of these must be present.
+//
+// If <row_list> is present, the columns in the row_list match
+// positionally with <insert_column_list>.
+//
+// If <query> is present, <query_output_column_list> must also be present.
+// <query_output_column_list> is the list of output columns produced by
+// <query> that correspond positionally with the target <insert_column_list>
+// on the output table.  For nested INSERTs with no <insert_column_list>,
+// <query_output_column_list> must have exactly one column.
+//
+// <query_parameter_list> is set for nested INSERTs where <query> is set and
+// references non-target values (columns or field values) from the table. It
+// is only set when FEATURE_V_1_2_CORRELATED_REFS_IN_NESTED_DML is enabled.
+message ResolvedInsertStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedTableScanProto table_scan = 2;
+  // Behavior on duplicate rows (normally defined to mean duplicate
+  // primary keys).
+  optional ResolvedInsertStmtEnums.InsertMode insert_mode = 3;
+  optional ResolvedAssertRowsModifiedProto assert_rows_modified = 4;
+  repeated ResolvedColumnProto insert_column_list = 5;
+  repeated ResolvedColumnRefProto query_parameter_list = 9;
+  optional AnyResolvedScanProto query = 6;
+  repeated ResolvedColumnProto query_output_column_list = 8;
+  repeated ResolvedInsertRowProto row_list = 7;
+}
+
+// This represents a DELETE statement or a nested DELETE inside an
+// UPDATE statement.
+//
+// For top-level DELETE statements, <table_scan> gives the table to
+// scan and creates ResolvedColumns for its columns.  Those columns can
+// be referenced inside the <where_expr>.
+//
+// For nested DELETEs, there is no <table_scan>.  The <where_expr> can
+// only reference:
+//   (1) the element_column from the ResolvedUpdateItem containing this
+//       statement,
+//   (2) columns from the outer statements, and
+//   (3) (optionally) <array_offset_column>, which represents the 0-based
+//       offset of the array element being modified.
+//
+// <where_expr> is required.
+message ResolvedDeleteStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedTableScanProto table_scan = 2;
+  optional ResolvedAssertRowsModifiedProto assert_rows_modified = 3;
+  optional ResolvedColumnHolderProto array_offset_column = 5;
+  optional AnyResolvedExprProto where_expr = 4;
+}
+
+// This represents one item inside the SET clause of an UPDATE.
+//
+// The entity being updated is specified by <target>.
+//
+// For a regular
+//   SET {target} = {expression} | DEFAULT
+// clause (not including an array element update like SET a[OFFSET(0)] = 5),
+// <target> and <set_value> will be present, and all other fields will be
+// unset.
+//
+// For an array element update (e.g. SET a.b[<expr>].c = <value>),
+//   - <target> is set to the array,
+//   - <element_column> is a new ResolvedColumn that can be used inside the
+//     update items to refer to the array element.
+//   - <array_update_list> will have a node corresponding to the offset into
+//     that array and the modification to that array element.
+// For example, for SET a.b[<expr>].c = <value>, we have
+//    ResolvedUpdateItem
+//    +-<target> = a.b
+//    +-<element_column> = <x>
+//    +-<array_update_list>
+//      +-ResolvedUpdateArrayItem
+//        +-<offset> = <expr>
+//        +-<update_item> = ResolvedUpdateItem
+//          +-<target> = <x>.c
+//          +-<set_value> = <value>
+//
+// The engine is required to fail the update if there are two elements of
+// <array_update_list> corresponding to offset expressions that evaluate to
+// the same value. These are considered to be conflicting updates.
+//
+// Multiple updates to the same array are always represented as multiple
+// elements of <array_update_list> under a single ResolvedUpdateItem
+// corresponding to that array. <array_update_list> will only have one
+// element for modifications to an array-valued subfield of an array element.
+// E.g., for SET a[<expr1>].b[<expr2>] = 5, a[<expr3>].b[<expr4>] = 6, we
+// will have:
+//     ResolvedUpdateItem
+//     +-<target> = a
+//     +-<element_column> = x
+//     +-<array_update_list>
+//       +-ResolvedUpdateArrayItem
+//         +-<offset> = <expr1>
+//         +-ResolvedUpdateItem for <x>.b[<expr2>] = 5
+//       +-ResolvedUpdateArrayItem
+//         +-<offset> = <expr3>
+//         +-ResolvedUpdateItem for <x>.b[<expr4>] = 6
+// The engine must give a runtime error if <expr1> and <expr3> evaluate to
+// the same thing. Notably, it does not have to understand that the
+// two ResolvedUpdateItems corresponding to "b" refer to the same array iff
+// <expr1> and <expr3> evaluate to the same thing.
+//
+// TODO: Consider allowing the engine to execute an update like
+// SET a[<expr1>].b = 1, a[<expr2>].c = 2 even if <expr1> == <expr2> since
+// "b" and "c" do not overlap. Also consider allowing a more complex example
+// like SET a[<expr1>].b[<expr2>] = ...,
+// a[<expr3>].b[<expr4>].c[<expr5>] = ... even if <expr1> == <expr3>, as long
+// as <expr2> != <expr4> in that case.
+//
+// For nested DML, <target> and <element_column> will both be set, and one or
+// more of the nested statement lists will be non-empty. <target> must have
+// ARRAY type, and <element_column> introduces a ResolvedColumn representing
+// elements of that array. The nested statement lists will always be empty in
+// a ResolvedUpdateItem child of a ResolvedUpdateArrayItem node.
+//
+// See (broken link) for more detail.
+message ResolvedUpdateItemProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  // The target entity to be updated.
+  //
+  // This is an expression evaluated using the ResolvedColumns visible
+  // inside this statement.  This expression can contain only
+  // ResolvedColumnRefs, ResolvedGetProtoField and
+  // ResolvedGetStructField nodes.
+  //
+  // In a top-level UPDATE, the expression always starts with a
+  // ResolvedColumnRef referencing a column from the statement's
+  // TableScan.
+  //
+  // In a nested UPDATE, the expression always starts with a
+  // ResolvedColumnRef referencing the element_column from the
+  // ResolvedUpdateItem containing this scan.
+  //
+  // This node is also used to represent a modification of a single
+  // array element (when it occurs as a child of a
+  // ResolvedUpdateArrayItem node).  In that case, the expression
+  // starts with a ResolvedColumnRef referencing the <element_column>
+  // from its grandparent ResolvedUpdateItem. (E.g., for "SET a[<expr>]
+  // = 5", the grandparent ResolvedUpdateItem has <target> "a", the
+  // parent ResolvedUpdateArrayItem has offset <expr>, and this node
+  // has <set_value> 5 and target corresponding to the grandparent's
+  // <element_column> field.)
+  //
+  // For either a nested UPDATE or an array modification, there may be
+  // a path of field accesses after the initial ResolvedColumnRef,
+  // represented by a chain of GetField nodes.
+  //
+  // NOTE: We use the same GetField nodes as we do for queries, but
+  // they are not treated the same.  Here, they express a path inside
+  // an object that is being mutated, so they have reference semantics.
+  optional AnyResolvedExprProto target = 2;
+  // Set the target entity to this value.  The types must match.
+  // This can contain the same columns that can appear in the
+  // <where_expr> of the enclosing ResolvedUpdateStmt.
+  //
+  // This is mutually exclusive with all fields below, which are used
+  // for nested updates only.
+  optional ResolvedDMLValueProto set_value = 3;
+  // The ResolvedColumn introduced to represent the elements of the
+  // array being updated.  This works similarly to
+  // ArrayScan::element_column.
+  //
+  // <target> must have array type, and this column has the array's
+  // element type.
+  //
+  // This column can be referenced inside the nested statements below.
+  optional ResolvedColumnHolderProto element_column = 4;
+  // Array element modifications to apply. Each item runs on the value
+  // of <element_column> specified by ResolvedUpdateArrayItem.offset.
+  // This field is always empty if the analyzer option
+  // FEATURE_V_1_2_ARRAY_ELEMENTS_WITH_SET is disabled.
+  //
+  // The engine must fail if two elements in this list have offset
+  // expressions that evaluate to the same value.
+  // TODO: Consider generalizing this to allow
+  // SET a[<expr1>].b = ..., a[<expr2>].c = ...
+  repeated ResolvedUpdateArrayItemProto array_update_list = 8;
+  // Nested DELETE statements to apply.  Each delete runs on one value
+  // of <element_column> and may choose to delete that array element.
+  //
+  // DELETEs are applied before INSERTs or UPDATEs.
+  //
+  // It is legal for the same input element to match multiple DELETEs.
+  repeated ResolvedDeleteStmtProto delete_list = 5;
+  // Nested UPDATE statements to apply.  Each update runs on one value
+  // of <element_column> and may choose to update that array element.
+  //
+  // UPDATEs are applied after DELETEs and before INSERTs.
+  //
+  // It is an error if any element is matched by multiple UPDATEs.
+  repeated ResolvedUpdateStmtProto update_list = 6;
+  // Nested INSERT statements to apply.  Each insert will produce zero
+  // or more values for <element_column>.
+  //
+  // INSERTs are applied after DELETEs and UPDATEs.
+  //
+  // For nested UPDATEs, insert_mode will always be the default, and
+  // has no effect.
+  repeated ResolvedInsertStmtProto insert_list = 7;
+}
+
+// For an array element modification, this node represents the offset
+// expression and the modification, but not the array. E.g., for
+// SET a[<expr>] = 5, this node represents a modification of "= 5" to offset
+// <expr> of the array defined by the parent node.
+message ResolvedUpdateArrayItemProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  // The array offset to be modified.
+  optional AnyResolvedExprProto offset = 2;
+  // The modification to perform to the array element.
+  optional ResolvedUpdateItemProto update_item = 3;
+}
+
+// This represents an UPDATE statement, or a nested UPDATE inside an
+// UPDATE statement.
+//
+// For top-level UPDATE statements, <table_scan> gives the table to
+// scan and creates ResolvedColumns for its columns.  Those columns can be
+// referenced in the <update_item_list>. The top-level UPDATE statement may
+// also have <from_scan>, the output of which is joined with
+// the <table_scan> using expressions in the <where_expr>. The columns
+// exposed in the <from_scan> are visible in the right side of the
+// expressions in the <update_item_list> and in the <where_expr>.
+// <array_offset_column> is never set for top-level UPDATE statements.
+//
+// Top-level UPDATE statements will also have <column_access_list> populated.
+// For each column, this vector indicates if the column was read and/or
+// written. The columns in this vector match those of
+// <table_scan.column_list>. If a column was not encountered when producing
+// the resolved AST, then the value at that index will be
+// ResolvedStatement::NONE.
+//
+// For nested UPDATEs, there is no <table_scan>.  The <where_expr> can
+// only reference:
+//   (1) the element_column from the ResolvedUpdateItem containing this
+//       statement,
+//   (2) columns from the outer statements, and
+//   (3) (optionally) <array_offset_column>, which represents the 0-based
+//       offset of the array element being modified.
+// The left hand sides of the expressions in <update_item_list> can only
+// reference (1). The right hand sides of those expressions can reference
+// (1), (2), and (3).
+//
+// The updates in <update_item_list> will be non-overlapping.
+// If there are multiple nested statements updating the same entity,
+// they will be combined into one ResolvedUpdateItem.
+//
+// See (broken link) for more detail on nested DML.
+message ResolvedUpdateStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedTableScanProto table_scan = 2;
+  repeated ResolvedStatementEnums.ObjectAccess column_access_list = 8;
+  optional ResolvedAssertRowsModifiedProto assert_rows_modified = 3;
+  optional ResolvedColumnHolderProto array_offset_column = 7;
+  optional AnyResolvedExprProto where_expr = 4;
+  repeated ResolvedUpdateItemProto update_item_list = 5;
+  optional AnyResolvedScanProto from_scan = 6;
+}
+
+// This is used by ResolvedMergeStmt to represent one WHEN ... THEN clause
+// within MERGE statement.
+//
+// There are three types of clauses, which are MATCHED, NOT_MATCHED_BY_SOURCE
+// and NOT_MATCHED_BY_TARGET. The <match_type> must have one of these values.
+//
+// The <match_expr> defines an optional expression to apply to the join
+// result of <table_scan> and <from_scan> of the parent ResolvedMergeStmt.
+//
+// Each ResolvedMergeWhen must define exactly one of three operations,
+//   -- INSERT: <action_type> is ResolvedMergeWhen::INSERT.
+//              Both <insert_column_list> and <insert_row> are non-empty.
+//              The size of <insert_column_list> must be the same with the
+//              value_list size of <insert_row>, and, the column data type
+//              must match.
+//   -- UPDATE: <action_type> is ResolvedMergeWhen::UPDATE.
+//              <update_item_list> is non-empty.
+//   -- DELETE: <action_type> is ResolvedMergeWhen::DELETE.
+// The INSERT, UPDATE and DELETE operations are mutually exclusive.
+//
+// When <match_type> is MATCHED, <action_type> must be UPDATE or DELETE.
+// When <match_type> is NOT_MATCHED_BY_TARGET, <action_type> must be INSERT.
+// When <match_type> is NOT_MATCHED_BY_SOURCE, <action_type> must be UPDATE
+// or DELETE.
+//
+// The column visibility within a ResolvedMergeWhen clause is defined as
+// following,
+//   -- When <match_type> is MATCHED,
+//      -- All columns from <table_scan> and <from_scan> are allowed in
+//         <match_expr>.
+//      -- If <action_type> is UPDATE, only columns from <table_scan> are
+//         allowed on left side of expressions in <update_item_list>.
+//         All columns from <table_scan> and <from_scan> are allowed on right
+//         side of expressions in <update_item_list>.
+//   -- When <match_type> is NOT_MATCHED_BY_TARGET,
+//      -- Only columns from <from_scan> are allowed in <match_expr>.
+//      -- Only columns from <table_scan> are allowed in
+//         <insert_column_list>.
+//      -- Only columns from <from_scan> are allowed in <insert_row>.
+//   -- When <match_type> is NOT_MATCHED_BY_SOURCE,
+//      -- Only columns from <table_scan> are allowed in <match_expr>.
+//      -- If <action_type> is UPDATE, only columns from <table_scan> are
+//         allowed in <update_item_list>.
+message ResolvedMergeWhenProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedMergeWhenEnums.MatchType match_type = 2;
+  optional AnyResolvedExprProto match_expr = 3;
+  optional ResolvedMergeWhenEnums.ActionType action_type = 4;
+  repeated ResolvedColumnProto insert_column_list = 5;
+  optional ResolvedInsertRowProto insert_row = 6;
+  repeated ResolvedUpdateItemProto update_item_list = 7;
+}
+
+// This represents a MERGE statement.
+//
+// <table_scan> gives the target table to scan and creates ResolvedColumns
+// for its columns.
+//
+// <column_access_list> indicates for each column, whether it was read and/or
+// written. The columns in this vector match those of
+// <table_scan.column_list>. If a column was not encountered when producing
+// the resolved AST, then the value at that index will be
+// ResolvedStatement::NONE(0).
+//
+// The output of <from_scan> is joined with <table_scan> using the join
+// expression <merge_expr>.
+//
+// The order of elements in <when_clause_list> matters, as they are executed
+// sequentially. At most one of the <when_clause_list> clause will be applied
+// to each row from <table_scan>.
+//
+// <table_scan>, <from_scan>, <merge_expr> and <when_clause_list> are
+// required. <when_clause_list> must be non-empty.
+//
+// See (broken link) for more detail on MERGE statement.
+message ResolvedMergeStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedTableScanProto table_scan = 2;
+  repeated ResolvedStatementEnums.ObjectAccess column_access_list = 6;
+  optional AnyResolvedScanProto from_scan = 3;
+  optional AnyResolvedExprProto merge_expr = 4;
+  repeated ResolvedMergeWhenProto when_clause_list = 5;
+}
+
+// A grantable privilege.
+//
+// <action_type> is the type of privilege action, e.g. SELECT, INSERT, UPDATE
+// or DELETE.
+// <unit_list> is an optional list of units of the object (e.g. columns of a
+// table) the privilege is restricted to. Privilege on the whole object
+// should be granted/revoked if the list is empty.
+message ResolvedPrivilegeProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string action_type = 2;
+  repeated string unit_list = 3;
+}
+
+// Common superclass of GRANT/REVOKE statements.
+//
+// <privilege_list> is the list of privileges to be granted/revoked. ALL
+// PRIVILEGES should be granted/fromed if it is empty.
+// <object_type> is an optional string identifier, e.g., TABLE, VIEW.
+// <name_path> is a vector of segments of the object identifier's pathname.
+// <grantee_list> (DEPRECATED) is the list of grantees (strings).
+// <grantee_expr_list> is the list of grantees, and may include parameters.
+//
+// Only one of <grantee_list> or <grantee_expr_list> will be populated,
+// depending on whether or not the FEATURE_PARAMETERS_IN_GRANTEE_LIST
+// is enabled.  The <grantee_list> is deprecated, and will be removed
+// along with the corresponding FEATURE once all engines have migrated to
+// use the <grantee_expr_list>.  Once <grantee_expr_list> is the only
+// one, then it should be marked as NOT_IGNORABLE.
+message AnyResolvedGrantOrRevokeStmtProto {
+  oneof node {
+    ResolvedGrantStmtProto resolved_grant_stmt_node = 69;
+    ResolvedRevokeStmtProto resolved_revoke_stmt_node = 70;
+  }
+}
+
+message ResolvedGrantOrRevokeStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated ResolvedPrivilegeProto privilege_list = 2;
+  optional string object_type = 3;
+  repeated string name_path = 4;
+  repeated string grantee_list = 5;
+  repeated AnyResolvedExprProto grantee_expr_list = 6;
+}
+
+// A GRANT statement. It represents the action to grant a list of privileges
+// on a specific object to/from list of grantees.
+message ResolvedGrantStmtProto {
+  optional ResolvedGrantOrRevokeStmtProto parent = 1;
+
+}
+
+// A REVOKE statement. It represents the action to revoke a list of
+// privileges on a specific object to/from list of grantees.
+message ResolvedRevokeStmtProto {
+  optional ResolvedGrantOrRevokeStmtProto parent = 1;
+
+}
+
+// Common super class for statements:
+//   ALTER <object> [IF EXISTS] <name_path> <alter_action_list>
+//
+// <name_path> is a vector giving the identifier path in the table <name>.
+// <alter_action_list> is a vector of actions to be done to the object.
+// <is_if_exists> silently ignores the "name_path does not exist" error.
+message AnyResolvedAlterObjectStmtProto {
+  oneof node {
+    ResolvedAlterTableStmtProto resolved_alter_table_stmt_node = 115;
+    ResolvedAlterViewStmtProto resolved_alter_view_stmt_node = 118;
+    ResolvedAlterMaterializedViewStmtProto resolved_alter_materialized_view_stmt_node = 127;
+  }
+}
+
+message ResolvedAlterObjectStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated string name_path = 2;
+  repeated AnyResolvedAlterActionProto alter_action_list = 3;
+  optional bool is_if_exists = 4;
+}
+
+// This statement:
+// ALTER MATERIALIZED VIEW [IF EXISTS] <name_path> <alter_action_list>
+message ResolvedAlterMaterializedViewStmtProto {
+  optional ResolvedAlterObjectStmtProto parent = 1;
+
+}
+
+// This statement:
+// ALTER TABLE [IF EXISTS] <name_path> <alter_action_list>
+message ResolvedAlterTableStmtProto {
+  optional ResolvedAlterObjectStmtProto parent = 1;
+
+}
+
+// This statement:
+// ALTER VIEW [IF EXISTS] <name_path> <alter_action_list>
+message ResolvedAlterViewStmtProto {
+  optional ResolvedAlterObjectStmtProto parent = 1;
+
+}
+
+// A common super class for all actions in statement ALTER <object>
+message AnyResolvedAlterActionProto {
+  oneof node {
+    ResolvedSetOptionsActionProto resolved_set_options_action_node = 117;
+  }
+}
+
+message ResolvedAlterActionProto {
+  optional ResolvedArgumentProto parent = 1;
+
+}
+
+// SET OPTIONS action for ALTER <object> statement
+//
+// <option_list> has engine-specific directives that specify how to
+//               alter the metadata for this object.
+message ResolvedSetOptionsActionProto {
+  optional ResolvedAlterActionProto parent = 1;
+
+  repeated ResolvedOptionProto option_list = 2;
+}
+
+// This statement:
+//   ALTER TABLE [IF EXISTS] <name> SET OPTIONS (...)
+//
+// NOTE: This is deprecated in favor of ResolvedAlterTableStmt.
+//
+// <name_path> is a vector giving the identifier path in the table <name>.
+// <option_list> has engine-specific directives that specify how to
+//               alter the metadata for this table.
+// <is_if_exists> silently ignore the "name_path does not exist" error.
+message ResolvedAlterTableSetOptionsStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated string name_path = 2;
+  repeated ResolvedOptionProto option_list = 3;
+  optional bool is_if_exists = 4;
+}
+
+// This statement: RENAME <object_type> <old_name_path> TO <new_name_path>;
+//
+// <object_type> is an string identifier,
+//               e.g., "TABLE", "VIEW", "INDEX", "FUNCTION", "TYPE", etc.
+// <old_name_path> is a vector giving the identifier path for the object to
+//                 be renamed.
+// <new_name_path> is a vector giving the identifier path for the object to
+//                 be renamed to.
+message ResolvedRenameStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional string object_type = 2;
+  repeated string old_name_path = 3;
+  repeated string new_name_path = 4;
+}
+
+// This statement: CREATE [OR REPLACE] ROW POLICY [IF NOT EXISTS] [<name>] ON
+//                 <target_name_path> TO <grantee_list> USING (<predicate>);
+//
+// <create_mode> indicates if this was CREATE, CREATE OR REPLACE, or
+//               CREATE IF NOT EXISTS.
+// <name> is the name of the row policy to be created or an empty string.
+// <target_name_path> is a vector giving the identifier path of the target
+//                    table.
+// <table_scan> is a TableScan for the target table, which is used during
+//              resolving and validation. Consumers can use either the table
+//              object inside it or target_name_path to reference the table.
+// <grantee_list> (DEPRECATED) is the list of user principals the policy
+//                should apply to.
+// <grantee_expr_list> is the list of user principals the policy should
+//                     apply to, and may include parameters.
+// <predicate> is a boolean expression that selects the rows that are being
+//             made visible.
+// <predicate_str> is the string form of the predicate.
+//
+// Only one of <grantee_list> or <grantee_expr_list> will be populated,
+// depending on whether or not the FEATURE_PARAMETERS_IN_GRANTEE_LIST
+// is enabled.  The <grantee_list> is deprecated, and will be removed
+// along with the corresponding FEATURE once all engines have migrated to
+// use the <grantee_expr_list>.  Once <grantee_expr_list> is the only
+// one, then it should be marked as NOT_IGNORABLE.
+message ResolvedCreateRowPolicyStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedCreateStatementEnums.CreateMode create_mode = 2;
+  optional string name = 3;
+  repeated string target_name_path = 4;
+  repeated string grantee_list = 5;
+  repeated AnyResolvedExprProto grantee_expr_list = 9;
+  optional ResolvedTableScanProto table_scan = 6;
+  optional AnyResolvedExprProto predicate = 7;
+  optional string predicate_str = 8;
+}
+
+// This statement:
+//     DROP ROW POLICY <name> ON <target_name_path>; or
+//     DROP ALL ROW POLICIES ON <target_name_path>;
+//
+// <is_drop_all> indicates that all policies should be dropped.
+// <is_if_exists> silently ignore the "policy <name> does not exist" error.
+//                This is not allowed if is_drop_all is true.
+// <name> is the name of the row policy to be dropped or an empty string.
+// <target_name_path> is a vector giving the identifier path of the target
+//                    table.
+message ResolvedDropRowPolicyStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional bool is_drop_all = 2;
+  optional bool is_if_exists = 3;
+  optional string name = 4;
+  repeated string target_name_path = 5;
+}
+
+// This statement:
+//     ALTER ROW POLICY [<name>] [RENAME TO <new_name>] ON <target_name_path>
+//     [TO <grantee_list>] [USING (<predicate>)];
+//
+// <name> is the name of the row policy to be altered.
+// <new_name> is the optional new name of the row policy to be renamed to.
+//            Empty when RENAME TO clause is absent.
+// <target_name_path> is a vector giving the identifier path of the target
+//                    table.
+// <table_scan> is a TableScan for the target table, which is used during
+//              resolving and validation. Consumers can use either the table
+//              object inside it or target_name_path to reference the table.
+// <grantee_list> (DEPRECATED) is the optional list of user principals the
+//                policy should apply to. Empty when TO <grantee_list>
+//                clause is absent.
+// <grantee_expr_list> is the optional list of user principals the policy
+//                     should apply to, and may include parameters.  Empty
+//                     when TO <grantee_list> clause is absent.
+// <predicate> is an optional boolean expression that selects the rows that
+//             are being made visible. Null if USING clause is absent.
+// <predicate_str> is the string form of the predicate. Empty if USING clause
+//                 is absent.
+//
+// Only one of <grantee_list> or <grantee_expr_list> will be populated,
+// depending on whether or not the FEATURE_PARAMETERS_IN_GRANTEE_LIST
+// is enabled.  The <grantee_list> is deprecated, and will be removed
+// along with the corresponding FEATURE once all engines have migrated to
+// use the <grantee_expr_list>.
+message ResolvedAlterRowPolicyStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional string name = 2;
+  optional string new_name = 3;
+  repeated string target_name_path = 4;
+  repeated string grantee_list = 5;
+  repeated AnyResolvedExprProto grantee_expr_list = 9;
+  optional ResolvedTableScanProto table_scan = 6;
+  optional AnyResolvedExprProto predicate = 7;
+  optional string predicate_str = 8;
+}
+
+// This statement creates a user-defined named constant:
+// CREATE [OR REPLACE] [TEMP | TEMPORARY | PUBLIC | PRIVATE] CONSTANT
+//   [IF NOT EXISTS] <name_path> = <expression>
+//
+// <name_path> is the identifier path of the named constants.
+// <expr> is the expression that determines the type and the value of the
+//        named constant. Note that <expr> need not be constant. Its value
+//        is bound to the named constant which is then treated as
+//        immutable. <expr> can be evaluated at the time this statement is
+//        processed or later (lazy evaluation during query execution).
+message ResolvedCreateConstantStmtProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  optional AnyResolvedExprProto expr = 2;
+}
+
+// This statement creates a user-defined function:
+//   CREATE [TEMP] FUNCTION [IF NOT EXISTS] <name_path> (<arg_list>)
+//     [RETURNS <return_type>] [LANGUAGE <language>]
+//     [AS <code> | AS ( <function_expression> )] [OPTIONS (<option_list>)]
+//
+//   <name_path> is the identifier path of the function.
+//   <has_explicit_return_type> is true iff RETURNS clause is present.
+//   <return_type> is the return type for the function, which can be any
+//          valid ZetaSQL type, including ARRAY or STRUCT. It is inferred
+//          from <function_expression> if not explicitly set.
+//          TODO: Deprecate and remove this. The return type is
+//          already specified by the <signature>.
+//   <argument_name_list> The names of the function arguments.
+//   <signature> is the FunctionSignature of the created function, with all
+//          options.  This can be used to create a Function to load into a
+//          Catalog for future queries.
+//   <is_aggregate> is true if this is an aggregate function.  All arguments
+//          are assumed to be aggregate input arguments that may vary for
+//          every row.
+//   <language> is the programming language used by the function. This field
+//          is set to 'SQL' for SQL functions and otherwise to the language
+//          name specified in the LANGUAGE clause.
+//   <code> is a string literal that contains the function definition.  Some
+//          engines may allow this argument to be omitted for certain types
+//          of external functions. This will always be set for SQL functions.
+//   <aggregate_expression_list> is a list of SQL aggregate functions to
+//          compute prior to computing the final <function_expression>.
+//          See below.
+//   <function_expression> is the resolved SQL expression invoked for the
+//          function. This will be unset for external language functions. For
+//          non-template SQL functions, this is a resolved representation of
+//          the expression in <code>.
+//   <option_list> has engine-specific directives for modifying functions.
+//   <sql_security> is the declared security mode for the function. Values
+//          include 'INVOKER', 'DEFINER'.
+//
+// Note that <function_expression> and <code> are both marked as IGNORABLE
+// because an engine could look at either one (but might not look at both).
+// An engine must look at one (and cannot ignore both) to be semantically
+// valid, but there is currently no way to enforce that.
+//
+// For aggregate functions, <is_aggregate> will be true.
+// Aggregate functions will only occur if LanguageOptions has
+// FEATURE_CREATE_AGGREGATE_FUNCTION enabled.
+//
+// Arguments to aggregate functions must have
+// <FunctionSignatureArgumentTypeOptions::is_not_aggregate> true or false.
+// Non-aggregate arguments must be passed constant values only.
+//
+// For SQL aggregate functions, there will be both an
+// <aggregate_expression_list>, with aggregate expressions to compute first,
+// and then a final <function_expression> to compute on the results
+// of the aggregates.  Each aggregate expression is a
+// ResolvedAggregateFunctionCall, and may reference any input arguments.
+// Each ResolvedComputedColumn in <aggregate_expression_list> gives the
+// aggregate expression a column id.  The final <function_expression> can
+// reference these created aggregate columns, and any input arguments
+// with <argument_kind>=NOT_AGGREGATE.
+//
+// For example, with
+//   CREATE TEMP FUNCTION my_avg(x) = (SUM(x) / COUNT(x));
+// we would have an <aggregate_expression_list> with
+//   agg1#1 := SUM(ResolvedArgumentRef(x))
+//   agg2#2 := COUNT(ResolvedArgumentRef(x))
+// and a <function_expression>
+//   ResolvedColumnRef(agg1#1) / ResolvedColumnRef(agg2#2)
+//
+// For example, with
+//   CREATE FUNCTION scaled_avg(x,y NOT AGGREGATE) = (SUM(x) / COUNT(x) * y);
+// we would have an <aggregate_expression_list> with
+//   agg1#1 := SUM(ResolvedArgumentRef(x))
+//   agg2#2 := COUNT(ResolvedArgumentRef(x))
+// and a <function_expression>
+//   ResolvedColumnRef(agg1#1) / ResolvedColumnRef(agg2#2) * ResolvedArgumentRef(y)
+//
+// When resolving a query that calls an aggregate UDF, the query will
+// have a ResolvedAggregateScan that invokes the UDF function.  The engine
+// should remove the UDF aggregate function from the <aggregate_list>, and
+// instead compute the additional aggregates from the
+// UDF's <aggregate_expression_list>, and then add an additional Project
+// to compute the final <function_expression>, which should produce the
+// value for the original ResolvedAggregateScan's computed column for the
+// UDF.  Some rewrites of the ResolvedColumn references inside the UDF will
+// be required.  TODO If using ResolvedColumns makes this renaming
+// too complicated, we could switch to use ResolvedArgumentRefs, or
+// something new.
+message ResolvedCreateFunctionStmtProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  optional bool has_explicit_return_type = 13;
+  optional TypeProto return_type = 3;
+  repeated string argument_name_list = 11;
+  optional FunctionSignatureProto signature = 10;
+  optional bool is_aggregate = 8;
+  optional string language = 4;
+  optional string code = 5;
+  repeated ResolvedComputedColumnProto aggregate_expression_list = 9;
+  optional AnyResolvedExprProto function_expression = 6;
+  repeated ResolvedOptionProto option_list = 7;
+  optional ResolvedCreateStatementEnums.SqlSecurity sql_security = 12;
+}
+
+// This represents an argument definition, e.g. in a function's argument
+// list.
+//
+// <name> is the name of the argument; optional for DROP FUNCTION statements.
+// <type> is the type of the argument.
+// <argument_kind> indicates what kind of argument this is, including scalar
+//         vs aggregate.  NOT_AGGREGATE means this is a non-aggregate
+//         argument in an aggregate function, which can only passed constant
+//         values only.
+//
+// NOTE: Statements that create functions now include a FunctionSignature
+// directly, and an argument_name_list if applicable.  These completely
+// describe the function signature, so the ResolvedArgumentDef list can
+// be considered unnecessary and deprecated.
+// TODO We could remove this node in the future.
+message ResolvedArgumentDefProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional string name = 2;
+  optional TypeProto type = 3;
+  optional ResolvedArgumentDefEnums.ArgumentKind argument_kind = 4;
+}
+
+// This represents an argument reference, e.g. in a function's body.
+// <name> is the name of the argument.
+// <argument_kind> is the ArgumentKind from the ResolvedArgumentDef.
+//         For scalar functions, this is always SCALAR.
+//         For aggregate functions, it can be AGGREGATE or NOT_AGGREGATE.
+//         If NOT_AGGREGATE, then this is a non-aggregate argument
+//         to an aggregate function, which has one constant value
+//         for the entire function call (over all rows in all groups).
+//         (This is copied from the ResolvedArgumentDef for convenience.)
+message ResolvedArgumentRefProto {
+  optional ResolvedExprProto parent = 1;
+
+  optional string name = 2;
+  optional ResolvedArgumentDefEnums.ArgumentKind argument_kind = 3;
+}
+
+// This statement creates a user-defined table-valued function:
+//   CREATE [TEMP] TABLE FUNCTION [IF NOT EXISTS]
+//     <name_path> (<argument_name_list>)
+//     [RETURNS <return_type>]
+//     [OPTIONS (<option_list>)]
+//     [LANGUAGE <language>]
+//     [AS <code> | AS ( <query> )]
+//
+//   <argument_name_list> contains the names of the function arguments.
+//   <signature> is the FunctionSignature of the created function, with all
+//          options.  This can be used to create a Function to load into a
+//          Catalog for future queries.
+//   <option_list> has engine-specific directives for modifying functions.
+//   <language> is the programming language used by the function. This field
+//          is set to 'SQL' for SQL functions, to the language name specified
+//          in the LANGUAGE clause if present, and to 'UNDECLARED' if both
+//          the LANGUAGE clause and query are not present.
+//   <code> is an optional string literal that contains the function
+//          definition.  Some engines may allow this argument to be omitted
+//          for certain types of external functions.  This will always be set
+//          for SQL functions.
+//   <query> is the SQL query invoked for the function.  This will be unset
+//          for external language functions. For non-templated SQL functions,
+//          this is a resolved representation of the query in <code>.
+//   <output_column_list> is the list of resolved output
+//          columns returned by the table-valued function.
+//   <is_value_table> If true, this function returns a value table.
+//          Rather than producing rows with named columns, it produces
+//          rows with a single unnamed value type. <output_column_list> will
+//          have exactly one anonymous column (with no name).
+//          See (broken link).
+//   <sql_security> is the declared security mode for the function. Values
+//          include 'INVOKER', 'DEFINER'.
+//
+// ----------------------
+// Table-Valued Functions
+// ----------------------
+//
+// This is a statement to create a new table-valued function. Each
+// table-valued function returns an entire table as output instead of a
+// single scalar value. Table-valued functions can only be created if
+// LanguageOptions has FEATURE_CREATE_TABLE_FUNCTION enabled.
+//
+// For SQL table-valued functions that include a defined SQL body, the
+// <query> is non-NULL and contains the resolved SQL body.
+// In this case, <output_column_list> contains a list of the
+// output columns of the SQL body. The <query> uses
+// ResolvedArgumentRefs to refer to scalar arguments and
+// ResolvedRelationArgumentScans to refer to relation arguments.
+//
+// The table-valued function may include RETURNS TABLE<...> to explicitly
+// specify a schema for the output table returned by the function. If the
+// function declaration includes a SQL body, then the names and types of the
+// output columns of the corresponding <query> will have been
+// coerced to exactly match 1:1 with the names and types of the columns
+// specified in the RETURNS TABLE<...> section.
+//
+// When resolving a query that calls a table-valued function, the query will
+// have a ResolvedTVFScan that invokes the function.
+//
+// Value tables: If the function declaration includes a value-table
+// parameter, this is written as an argument of type "TABLE" where the table
+// contains a single anonymous column with a type but no name. In this case,
+// calls to the function may pass a (regular or value) table with a single
+// (named or unnamed) column for any of these parameters, and ZetaSQL
+// accepts these arguments as long as the column type matches.
+//
+// Similarly, if the CREATE TABLE FUNCTION statement includes a "RETURNS
+// TABLE" section with a single column with no name, then this defines a
+// value-table return type. The function then returns a value table as long
+// as the SQL body returns a single column whose type matches (independent of
+// whether the SQL body result is a value table or not, and whether the
+// returned column is named or unnamed).
+//
+// --------------------------------
+// Templated Table-Valued Functions
+// --------------------------------
+//
+// ZetaSQL supports table-valued function declarations with parameters of
+// type ANY TABLE. This type indicates that any schema is valid for tables
+// passed for this parameter. In this case:
+//
+// * the IsTemplated() method of the <signature> field returns true,
+// * the <output_column_list> field is empty,
+// * the <is_value_table> field is set to a default value of false (since
+//   ZetaSQL cannot analyze the function body in the presence of templated
+//   parameters, it is not possible to detect this property yet),
+//
+// TODO: Update this description once ZetaSQL supports more types
+// of templated function parameters. Currently only ANY TABLE is supported.
+message ResolvedCreateTableFunctionStmtProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  repeated string argument_name_list = 2;
+  optional FunctionSignatureProto signature = 3;
+  repeated ResolvedOptionProto option_list = 4;
+  optional string language = 5;
+  optional string code = 6;
+  optional AnyResolvedScanProto query = 7;
+  repeated ResolvedOutputColumnProto output_column_list = 8;
+  optional bool is_value_table = 9;
+  optional ResolvedCreateStatementEnums.SqlSecurity sql_security = 10;
+}
+
+// This represents a relation argument reference in a table-valued function's
+// body. The 'column_list' of this ResolvedScan includes column names from
+// the relation argument in the table-valued function signature.
+message ResolvedRelationArgumentScanProto {
+  optional ResolvedScanProto parent = 1;
+
+  // This is the name of the relation argument for the table-valued
+  // function.  It is used to match this relation argument reference in
+  // a TVF SQL function body with one of possibly several relation
+  // arguments in the TVF call.
+  optional string name = 2;
+  // If true, the result of this query is a value table. Rather than
+  // producing rows with named columns, it produces rows with a single
+  // unnamed value type. See (broken link).
+  optional bool is_value_table = 3;
+}
+
+// This statement: [ (<arg_list>) ];
+//
+// <arg_list> is an optional list of parameters.  If given, each parameter
+//            may consist of a type, or a name and a type.
+//
+// NOTE: This can be considered deprecated in favor of the FunctionSignature
+//       stored directly in the statement.
+//
+// NOTE: ResolvedArgumentList is not related to the ResolvedArgument class,
+//       which just exists to organize node classes.
+message ResolvedArgumentListProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  repeated ResolvedArgumentDefProto arg_list = 2;
+}
+
+// This wrapper is used for an optional FunctionSignature.
+message ResolvedFunctionSignatureHolderProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional FunctionSignatureProto signature = 2;
+}
+
+// This statement: DROP FUNCTION [IF EXISTS] <name_path>
+//   [ (<arguments>) ];
+//
+// <is_if_exists> silently ignore the "name_path does not exist" error.
+// <name_path> is the identifier path of the function to be dropped.
+// <arguments> is an optional list of parameters.  If given, each parameter
+//            may consist of a type, or a name and a type.  The name is
+//            disregarded, and is allowed to permit copy-paste from CREATE
+//            FUNCTION statements.
+// <signature> is the signature of the dropped function.  Argument names and
+//            argument options are ignored because only the types matter
+//            for matching signatures in DROP FUNCTION.  The return type
+//            in this signature will always be <void>, since return type
+//            is ignored when matching signatures for DROP.
+//            TODO <arguments> could be deprecated in favor of this.
+message ResolvedDropFunctionStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional bool is_if_exists = 2;
+  repeated string name_path = 3;
+  // NOTE: arguments for DROP FUNCTION statements are matched only on
+  // type; names for any arguments in ResolvedArgumentList will be set
+  // to the empty string irrespective of whether or not argument names
+  // were given in the DROP FUNCTION statement.
+  optional ResolvedArgumentListProto arguments = 4;
+  // NOTE: arguments for DROP FUNCTION statements are matched only on
+  // type; names are irrelevant, so no argument names are saved to use
+  // with this signature.  Additionally, the return type will always be
+  // <void>, since return types are ignored for DROP FUNCTION.
+  optional ResolvedFunctionSignatureHolderProto signature = 5;
+}
+
+// This statement: CALL <procedure>;
+//
+// <procedure> Procedure to call.
+// <signature> Resolved FunctionSignature for this procedure.
+// <argument_list> Procedure arguments.
+message ResolvedCallStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ProcedureRefProto procedure = 2;
+  optional FunctionSignatureProto signature = 3;
+  repeated AnyResolvedExprProto argument_list = 4;
+}
+
+// This statement: IMPORT <import_kind>
+//                              [<name_path> [AS|INTO <alias_path>]
+//                              |<file_path>]
+//                        [<option_list>];
+//
+// <import_kind> The type of the object, currently supports MODULE and PROTO.
+// <name_path>   The identifier path of the object to import, e.g., foo.bar,
+//               used in IMPORT MODULE statement.
+// <file_path>   The file path of the object to import, e.g., "file.proto",
+//               used in IMPORT PROTO statement.
+// <alias_path>  The AS alias path for the object.
+// <into_alias_path>  The INTO alias path for the object.
+// <option_list> Engine-specific directives for the import.
+//
+// Either <name_path> or <file_path> will be populated but not both.
+//       <name_path> will be populated for IMPORT MODULE.
+//       <file_path> will be populated for IMPORT PROTO.
+//
+// At most one of <alias_path> or <into_alias_path> will be populated.
+//       <alias_path> may be populated for IMPORT MODULE.
+//       <into_alias_path> may be populated for IMPORT PROTO.
+//
+// IMPORT MODULE and IMPORT PROTO both support options.
+//
+// See (broken link) for more detail on IMPORT MODULE.
+// See (broken link) for more detail on IMPORT PROTO.
+message ResolvedImportStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  optional ResolvedImportStmtEnums.ImportKind import_kind = 2;
+  repeated string name_path = 3;
+  optional string file_path = 4;
+  repeated string alias_path = 5;
+  repeated string into_alias_path = 7;
+  repeated ResolvedOptionProto option_list = 6;
+}
+
+// This statement: MODULE <name_path> [<option_list>];
+//
+// <name_path> is the identifier path of the module.
+// <option_list> Engine-specific directives for the module statement.
+//
+// See (broken link) for more detail on MODULEs.
+message ResolvedModuleStmtProto {
+  optional ResolvedStatementProto parent = 1;
+
+  repeated string name_path = 2;
+  repeated ResolvedOptionProto option_list = 3;
+}
+
+// This represents a HAVING MAX or HAVING MIN modifier in an aggregate
+// expression. If an aggregate has arguments (x HAVING {MAX/MIN} y),
+// the aggregate will be computed over only the x values in the rows with the
+// maximal/minimal values of y.
+//
+// <kind> the MAX/MIN kind of this HAVING
+// <having_expr> the HAVING expression (y in the above example)
+message ResolvedAggregateHavingModifierProto {
+  optional ResolvedArgumentProto parent = 1;
+
+  optional ResolvedAggregateHavingModifierEnums.HavingModifierKind kind = 2;
+  optional AnyResolvedExprProto having_expr = 3;
+}
+
+// This statement:
+// CREATE MATERIALIZED VIEW <name> [OPTIONS (...)] AS SELECT ...
+message ResolvedCreateMaterializedViewStmtProto {
+  optional ResolvedCreateViewBaseProto parent = 1;
+
+}
+
+// This statement creates a user-defined procedure:
+// CREATE [OR REPLACE] [TEMP] PROCEDURE [IF NOT EXISTS] <name_path>
+// (<arg_list>) [OPTIONS (<option_list>)]
+// BEGIN
+// <procedure_body>
+// END;
+//
+// <name_path> is the identifier path of the procedure.
+// <argument_name_list> The names of the function arguments.
+// <signature> is the FunctionSignature of the created procedure, with all
+//        options.  This can be used to create a procedure to load into a
+//        Catalog for future queries.
+// <option_list> has engine-specific directives for modifying procedures.
+// <procedure_body> is a string literal that contains the procedure body.
+//        It includes everything between BEGIN and END. Procedure body is
+//        a list of SQL statement which was parsed to be syntactically
+//        correct when CREATE PROCEDURE is parsed, but will only be
+//        analyzed when procedure is called later.
+message ResolvedCreateProcedureStmtProto {
+  optional ResolvedCreateStatementProto parent = 1;
+
+  repeated string argument_name_list = 2;
+  optional FunctionSignatureProto signature = 3;
+  repeated ResolvedOptionProto option_list = 4;
+  optional string procedure_body = 5;
+}
+

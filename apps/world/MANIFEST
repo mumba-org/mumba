@@ -1,0 +1,17 @@
+{
+  "name": "World",
+  "description": "World app", 
+  "version": "1.0",
+  "icons": {
+    "16": "tweedy-16.png",
+    "128": "tweedy-128.png",
+  },
+  "app": "world_app",
+  "service": "world_service",
+  "supported_platforms": [
+    "linux_x64"
+  ]
+  "routes": [
+    "new",
+  ]
+}

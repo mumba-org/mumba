@@ -1,0 +1,11 @@
+{
+  "name": "layer_tree",
+  "display_name": "Layer Tree Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "layer_tree" : [ "automation.LayerTree" ]
+      }
+    }
+  }
+}

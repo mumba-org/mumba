@@ -1,0 +1,16 @@
+static_library("CGRPCZlib") {
+  include_dirs = [
+    "include"
+  ]
+  sources = [
+   "module.modulemap",
+   "include/CGRPCZlib.h",
+   "CGRPCZlib.c",
+  ]
+  deps = [
+    "//third_party/zlib"
+  ]
+  public_deps = [
+    "//third_party/zlib"
+  ]
+}

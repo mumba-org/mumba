@@ -1,0 +1,11 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/glibtest/master.swiftdeps"
+   },
+   "/workspace/jabberwock/apps/appbar/Sources/glibmain.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/glibtest/glibmain.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/glibtest/glibmain.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/glibtest/glibmain.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/glibtest/glibmain~partial.swiftmodule"
+   }
+}

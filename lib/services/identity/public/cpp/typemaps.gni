@@ -1,0 +1,6 @@
+typemaps = [
+  "//lib/services/identity/public/cpp/account_info.typemap",
+  "//lib/services/identity/public/cpp/account_state.typemap",
+  "//lib/services/identity/public/cpp/google_service_auth_error.typemap",
+  "//lib/services/identity/public/cpp/scope_set.typemap",
+]

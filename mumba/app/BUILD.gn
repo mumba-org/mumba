@@ -1,0 +1,225 @@
+# Copyright 2018 Mumba. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+import("//mumba/features.gni")
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//tools/grit/grit_rule.gni")
+
+grit("generated_resources") {
+  source = "generated_resources.grd"
+  defines = mumba_grit_defines
+  output_dir = "$root_gen_dir/mumba"
+  outputs = [
+    "grit/generated_resources.h",
+    "generated_resources_en-US.pak",
+  ]
+
+  if (is_android) {
+    outputs += android_generated_java_resources
+  }
+}
+
+grit("content_strings") {
+  source = "strings/content_strings.grd"
+  defines = mumba_grit_defines
+  output_dir = "$root_gen_dir/mumba/app/strings"
+  outputs = [
+    "grit/content_strings.h",
+    #"content_strings_am.pak",
+    #"content_strings_ar.pak",
+   # "content_strings_bg.pak",
+   # "content_strings_bn.pak",
+   # "content_strings_ca.pak",
+   # "content_strings_cs.pak",
+   # "content_strings_da.pak",
+   # "content_strings_de.pak",
+   # "content_strings_el.pak",
+   # "content_strings_en-GB.pak",
+    "content_strings_en-US.pak",
+   # "content_strings_es.pak",
+   # "content_strings_es-419.pak",
+   # "content_strings_et.pak",
+   # "content_strings_fa.pak",
+   # "content_strings_fake-bidi.pak",
+   # "content_strings_fi.pak",
+   # "content_strings_fil.pak",
+   # "content_strings_fr.pak",
+   # "content_strings_gu.pak",
+   # "content_strings_he.pak",
+   # "content_strings_hi.pak",
+   # "content_strings_hr.pak",
+   # "content_strings_hu.pak",
+   # "content_strings_id.pak",
+   # "content_strings_it.pak",
+   # "content_strings_ja.pak",
+   # "content_strings_kn.pak",
+   # "content_strings_ko.pak",
+   # "content_strings_lt.pak",
+  #  "content_strings_lv.pak",
+  #  "content_strings_ml.pak",
+  #  "content_strings_mr.pak",
+  #  "content_strings_ms.pak",
+  #  "content_strings_nl.pak",
+  #  "content_strings_nb.pak",
+  #  "content_strings_pl.pak",
+  #  "content_strings_pt-BR.pak",
+  #  "content_strings_pt-PT.pak",
+  #  "content_strings_ro.pak",
+  #  "content_strings_ru.pak",
+  #  "content_strings_sk.pak",
+  #  "content_strings_sl.pak",
+  #  "content_strings_sr.pak",
+  #  "content_strings_sv.pak",
+  #  "content_strings_sw.pak",
+  #  "content_strings_ta.pak",
+  #  "content_strings_te.pak",
+  #  "content_strings_th.pak",
+  #  "content_strings_tr.pak",
+  #  "content_strings_uk.pak",
+  #  "content_strings_vi.pak",
+  #  "content_strings_zh-CN.pak",
+  #  "content_strings_zh-TW.pak",
+  ]
+}
+
+grit("chromium_strings") {
+  source = "mumba_strings.grd"
+  defines = mumba_grit_defines
+  output_dir = "$root_gen_dir/chrome"
+  outputs = [
+    "grit/chromium_strings.h",
+    "chromium_strings_am.pak",
+    "chromium_strings_ar.pak",
+    "chromium_strings_bg.pak",
+    "chromium_strings_bn.pak",
+    "chromium_strings_ca.pak",
+    "chromium_strings_cs.pak",
+    "chromium_strings_da.pak",
+    "chromium_strings_de.pak",
+    "chromium_strings_el.pak",
+    "chromium_strings_en-GB.pak",
+    "chromium_strings_en-US.pak",
+    "chromium_strings_es.pak",
+    "chromium_strings_es-419.pak",
+    "chromium_strings_et.pak",
+    "chromium_strings_fa.pak",
+    "chromium_strings_fake-bidi.pak",
+    "chromium_strings_fi.pak",
+    "chromium_strings_fil.pak",
+    "chromium_strings_fr.pak",
+    "chromium_strings_gu.pak",
+    "chromium_strings_he.pak",
+    "chromium_strings_hi.pak",
+    "chromium_strings_hr.pak",
+    "chromium_strings_hu.pak",
+    "chromium_strings_id.pak",
+    "chromium_strings_it.pak",
+    "chromium_strings_ja.pak",
+    "chromium_strings_kn.pak",
+    "chromium_strings_ko.pak",
+    "chromium_strings_lt.pak",
+    "chromium_strings_lv.pak",
+    "chromium_strings_ml.pak",
+    "chromium_strings_mr.pak",
+    "chromium_strings_ms.pak",
+    "chromium_strings_nl.pak",
+    "chromium_strings_nb.pak",
+    "chromium_strings_pl.pak",
+    "chromium_strings_pt-BR.pak",
+    "chromium_strings_pt-PT.pak",
+    "chromium_strings_ro.pak",
+    "chromium_strings_ru.pak",
+    "chromium_strings_sk.pak",
+    "chromium_strings_sl.pak",
+    "chromium_strings_sr.pak",
+    "chromium_strings_sv.pak",
+    "chromium_strings_sw.pak",
+    "chromium_strings_ta.pak",
+    "chromium_strings_te.pak",
+    "chromium_strings_th.pak",
+    "chromium_strings_tr.pak",
+    "chromium_strings_uk.pak",
+    "chromium_strings_vi.pak",
+    "chromium_strings_zh-CN.pak",
+    "chromium_strings_zh-TW.pak",
+  ]
+}
+
+service_manifest("packaged_services_manifest") {
+  name = "packaged_services"
+  source = "mojo/packaged_services_manifest.json"
+  packaged_services = [
+    "//lib/components/services/heap_profiling:manifest",
+    "//lib/media/mojo/services:cdm_manifest",
+    "//lib/media/mojo/services:media_manifest",
+    "//lib/services/audio:manifest",
+    "//lib/services/data_decoder:manifest",
+    "//lib/services/device:manifest",
+    "//lib/services/metrics:manifest",
+    "//lib/services/network:manifest",
+    "//lib/services/resource_coordinator:manifest",
+    "//lib/services/shape_detection:manifest",
+    "//lib/services/tracing:manifest",
+    "//lib/services/video_capture:manifest",
+    "//lib/services/viz:manifest",
+  ]
+
+  if (enable_mus) {
+    packaged_services += [ "//lib/services/ui:manifest" ]
+  }
+}
+
+service_manifest("host_manifest") {
+  name = "host"
+  source = "mojo/host_manifest.json"
+ # packaged_services = [ "//services/file:manifest" ]
+}
+
+service_manifest("domain_manifest") {
+  name = "domain"
+  source = "mojo/domain_manifest.json"
+}
+
+service_manifest("application_manifest") {
+  name = "application"
+  source = "mojo/application_manifest.json"
+}
+
+service_manifest("gpu_manifest") {
+  name = "gpu"
+  source = "mojo/gpu_manifest.json"
+}
+
+service_manifest("utility_manifest") {
+  name = "utility"
+  source = "mojo/utility_manifest.json"
+}
+
+service_manifest("tools_manifest") {
+  name = "tools"
+  source = "mojo/tools_manifest.json"
+}
+
+action("world") {
+    script = "//mumba/app/mumba_bundle.py"
+    deps = [
+      "//mumba:mumba_bundle",
+      "//apps/world/app:world_app", 
+      "//apps/world/service:world_service"
+    ]
+    out_dir = rebase_path("//apps") #root_out_dir
+    args = [
+      "world",
+      "$out_dir",
+    ]
+    outputs = [
+      "$out_dir/world/world.bundle",
+      "$out_dir/world/world_app-linux-x64.appx",
+      "$out_dir/world/world_resources.appx",
+      "$out_dir/world/world_service-linux-x64.appx"
+    ]
+}
+# TODO: implement the rest, like modules

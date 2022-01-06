@@ -1,0 +1,11 @@
+{
+  "name": "device_orientation",
+  "display_name": "Device Orientation Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "device_orientation" : [ "automation.DeviceOrientation" ]
+      }
+    }
+  }
+}

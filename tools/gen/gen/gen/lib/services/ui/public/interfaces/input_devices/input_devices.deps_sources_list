@@ -1,0 +1,2 @@
+gen/lib/services/ui/public/interfaces/input_devices/input_devices.sources_list
+gen/lib/ui/events/devices/mojo/mojo.sources_list

@@ -1,0 +1,25 @@
+import("//build/config/compiler/compiler.gni")
+import("//build/config/features.gni")
+import("//build_overrides/build.gni")
+
+component("net") {
+  sources = [
+    "mumba/client/client_driver.cc",
+    "mumba/client/client_driver.h"
+  ]
+  deps = [
+   "//buildtools/third_party/libc++",
+    "//lib/base",
+    "//lib/ui/base",
+  ]
+  public_deps = [
+    "//lib/rpc:grpc",
+    "//lib/rpc:rpc"
+  ]
+  cflags = [
+    "-Wno-unused-variable"
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}

@@ -1,0 +1,10 @@
+gen/lib/services/network/public/mojom/mojom.sources_list
+gen/lib/services/network/public/mojom/data_pipe_interfaces.sources_list
+gen/lib/services/network/public/mojom/mutable_network_traffic_annotation_interface.sources_list
+gen/lib/services/network/public/mojom/udp_socket_interface.sources_list
+gen/lib/services/network/public/mojom/websocket_mojom.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list
+gen/lib/net/interfaces/interfaces.sources_list
+gen/lib/services/proxy_resolver/public/mojom/mojom.sources_list
+gen/lib/url/mojom/url_mojom_gurl.sources_list
+gen/lib/url/mojom/url_mojom_origin.sources_list

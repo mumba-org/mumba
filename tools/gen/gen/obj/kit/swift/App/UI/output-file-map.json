@@ -1,0 +1,1421 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/ResourceBundle.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResourceBundle.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResourceBundle.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResourceBundle.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResourceBundle~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/UIErrors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIErrors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIErrors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIErrors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIErrors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/AcceleratorManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AcceleratorManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AcceleratorManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AcceleratorManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AcceleratorManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Accessibility.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Accessibility.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Accessibility.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Accessibility.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Accessibility~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Activation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Activation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Activation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Activation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Activation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/Animation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Animation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Animation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Animation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Animation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/AnimationContainer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/AnimationContainerElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainerElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainerElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainerElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationContainerElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/AnimationDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/AnimationDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/FloatAnimationCurveAdapter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FloatAnimationCurveAdapter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FloatAnimationCurveAdapter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FloatAnimationCurveAdapter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FloatAnimationCurveAdapter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/InkDrop.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDrop.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDrop.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDrop.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDrop~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/InkDropHighlight.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHighlight.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHighlight.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHighlight.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHighlight~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/InkDropHostView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHostView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHostView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHostView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropHostView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/InkDropMask.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropMask.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropMask.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropMask.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropMask~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/InkDropPaintedLayerDelegates.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropPaintedLayerDelegates.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropPaintedLayerDelegates.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropPaintedLayerDelegates.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropPaintedLayerDelegates~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/InkDropRipple.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropRipple.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropRipple.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropRipple.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropRipple~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/InkDropUtil.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropUtil.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropUtil.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropUtil.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InkDropUtil~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/LinearAnimation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinearAnimation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinearAnimation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinearAnimation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinearAnimation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/MultiAnimation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MultiAnimation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MultiAnimation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MultiAnimation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MultiAnimation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/ScrollAnimator.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollAnimator.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollAnimator.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollAnimator.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollAnimator~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/SlideAnimation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SlideAnimation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SlideAnimation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SlideAnimation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SlideAnimation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/ThrobAnimation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThrobAnimation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThrobAnimation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThrobAnimation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThrobAnimation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Animation/TransformAnimationCurveAdapter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformAnimationCurveAdapter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformAnimationCurveAdapter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformAnimationCurveAdapter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformAnimationCurveAdapter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Background.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Background.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Background.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Background.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Background~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Border.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Border.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Border.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Border.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Border~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Bubble/BubbleBorder.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleBorder.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleBorder.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleBorder.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleBorder~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Bubble/BubbleDialogDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleDialogDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleDialogDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleDialogDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleDialogDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Bubble/BubbleFrameView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleFrameView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleFrameView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleFrameView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleFrameView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Bubble/BubbleTargeter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleTargeter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleTargeter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleTargeter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BubbleTargeter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Bubble/InfoBubble.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InfoBubble.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InfoBubble.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InfoBubble.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InfoBubble~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/CallbackLayerAnimationObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CallbackLayerAnimationObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CallbackLayerAnimationObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CallbackLayerAnimationObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CallbackLayerAnimationObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Client.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Client.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Client.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Client.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Client~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ClientView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClientView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClientView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClientView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClientView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ClipRecorder.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClipRecorder.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClipRecorder.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClipRecorder.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ClipRecorder~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Clipboard.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Clipboard.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Clipboard.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Clipboard.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Clipboard~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/CompositionText.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompositionText.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompositionText.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompositionText.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompositionText~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/CompoundEventFilter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompoundEventFilter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompoundEventFilter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompoundEventFilter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CompoundEventFilter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ContextMenuController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ContextMenuController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ContextMenuController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ContextMenuController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ContextMenuController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Button.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Button.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Button.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Button.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Button~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/CalendarView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CalendarView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CalendarView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CalendarView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CalendarView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Checkbox.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Checkbox.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Checkbox.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Checkbox.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Checkbox~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/ComboBox.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ComboBox.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ComboBox.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ComboBox.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ComboBox~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/DatePicker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DatePicker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DatePicker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DatePicker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DatePicker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/FocusableBorder.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusableBorder.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusableBorder.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusableBorder.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusableBorder~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/ImageButton.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageButton.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageButton.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageButton.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageButton~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/ImageView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImageView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Label.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Label.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Label.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Label.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Label~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/LabelButton.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButton.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButton.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButton.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButton~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/LabelButtonLabel.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButtonLabel.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButtonLabel.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButtonLabel.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LabelButtonLabel~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuButton.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuButton.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuButton.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuButton.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuButton~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuHost.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHost.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHost.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHost.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHost~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuHostRootView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHostRootView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHostRootView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHostRootView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuHostRootView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuImageUtil.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuImageUtil.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuImageUtil.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuImageUtil.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuImageUtil~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuModel.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuModel.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuModel.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuModel.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuModel~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuPreTargetHandler.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuPreTargetHandler.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuPreTargetHandler.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuPreTargetHandler.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuPreTargetHandler~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuRunner.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuRunner.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuRunner.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuRunner.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuRunner~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuScrollViewContainer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuScrollViewContainer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuScrollViewContainer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuScrollViewContainer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuScrollViewContainer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/MenuView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MenuView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/PdfView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PdfView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PdfView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PdfView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PdfView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/PopupView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PopupView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PopupView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PopupView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PopupView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/PrefixSelector.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixSelector.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixSelector.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixSelector.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixSelector~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/ProgressBar.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ProgressBar.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ProgressBar.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ProgressBar.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ProgressBar~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/RadioButton.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RadioButton.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RadioButton.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RadioButton.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RadioButton~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/ResizeArea.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResizeArea.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResizeArea.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResizeArea.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ResizeArea~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Scrollbar.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollbar.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollbar.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollbar.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollbar~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Scrollview.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollview.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollview.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollview.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Scrollview~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Slider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Slider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Slider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Slider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Slider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Spinner.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Spinner.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Spinner.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Spinner.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Spinner~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/SplitView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SplitView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SplitView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SplitView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SplitView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/StackView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/StackView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/StackView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/StackView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/StackView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Switch.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Switch.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Switch.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Switch.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Switch~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/TabbedPane.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TabbedPane.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TabbedPane.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TabbedPane.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TabbedPane~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/TableView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TableView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TableView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TableView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TableView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Textfield.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textfield.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textfield.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textfield.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textfield~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Textview.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textview.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textview.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textview.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Textview~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Throbber.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Throbber.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Throbber.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Throbber.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Throbber~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/TimePicker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TimePicker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TimePicker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TimePicker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TimePicker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/Toast.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Toast.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Toast.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Toast.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Toast~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/ToggleButton.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ToggleButton.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ToggleButton.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ToggleButton.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ToggleButton~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/TreeView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TreeView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TreeView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TreeView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TreeView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/VideoView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VideoView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VideoView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VideoView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VideoView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Controls/ZoomButton.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ZoomButton.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ZoomButton.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ZoomButton.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ZoomButton~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/CursorManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CursorManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CursorManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CursorManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CursorManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/CustomFrameView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CustomFrameView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CustomFrameView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CustomFrameView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CustomFrameView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopCaptureClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCaptureClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCaptureClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCaptureClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCaptureClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopCursorLoaderUpdater.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCursorLoaderUpdater.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCursorLoaderUpdater.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCursorLoaderUpdater.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopCursorLoaderUpdater~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopDispatcherClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDispatcherClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDispatcherClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDispatcherClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDispatcherClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopDragDropClientX11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDragDropClientX11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDragDropClientX11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDragDropClientX11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopDragDropClientX11~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopEventClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopEventClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopEventClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopEventClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopEventClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopFocusRules.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFocusRules.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFocusRules.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFocusRules.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFocusRules~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopFrameView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFrameView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFrameView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFrameView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopFrameView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopNativeCursorManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeCursorManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeCursorManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeCursorManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeCursorManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopNativeWidget.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeWidget.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeWidget.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeWidget.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopNativeWidget~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopScreen.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreen.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreen.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreen.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreen~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopScreenPositionClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenPositionClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenPositionClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenPositionClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenPositionClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopScreenX11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenX11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenX11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenX11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopScreenX11~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopWindowMoveClientX11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowMoveClientX11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowMoveClientX11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowMoveClientX11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowMoveClientX11~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopWindowTreeHost.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHost.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHost.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHost.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHost~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/DesktopWindowTreeHostX11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHostX11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHostX11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHostX11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DesktopWindowTreeHostX11~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/MoveLoopX11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MoveLoopX11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MoveLoopX11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MoveLoopX11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MoveLoopX11~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Desktop/WindowEventFilterX11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventFilterX11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventFilterX11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventFilterX11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventFilterX11~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DialogButton.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogButton.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogButton.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogButton.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogButton~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DialogClientView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogClientView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogClientView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogClientView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogClientView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DialogDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DialogDelegateView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegateView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegateView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegateView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogDelegateView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DialogModel.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogModel.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogModel.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogModel.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogModel~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DialogObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DialogObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DirectOutputSurface.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DirectOutputSurface.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DirectOutputSurface.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DirectOutputSurface.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DirectOutputSurface~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DispatcherClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DispatcherClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DispatcherClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DispatcherClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DispatcherClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DragController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DragDrop.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDrop.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDrop.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDrop.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDrop~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DragDropClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDropClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDropClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDropClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DragDropClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/DropHelper.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DropHelper.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DropHelper.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DropHelper.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DropHelper~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/EventMonitor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/EventMonitor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/EventMonitor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/EventMonitor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/EventMonitor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ExternalBeginFrameClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ExternalBeginFrameClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ExternalBeginFrameClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ExternalBeginFrameClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ExternalBeginFrameClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/FillLayoutOld.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayoutOld.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayoutOld.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayoutOld.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayoutOld~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/FocusController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/FocusManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/FocusRules.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusRules.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusRules.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusRules.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusRules~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/FocusSearch.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusSearch.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusSearch.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusSearch.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FocusSearch~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/FrameBackground.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameBackground.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameBackground.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameBackground.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameBackground~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/FrameButtons.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameButtons.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameButtons.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameButtons.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FrameButtons~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/HitTest.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/HitTest.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/HitTest.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/HitTest.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/HitTest~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ImplicitAnimationObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImplicitAnimationObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImplicitAnimationObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImplicitAnimationObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ImplicitAnimationObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/InProcessContextFactory.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextFactory.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextFactory.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextFactory.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextFactory~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/InProcessContextProvider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextProvider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextProvider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextProvider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InProcessContextProvider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/InputMethod.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethod.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethod.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethod.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethod~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Layer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Layer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Layer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Layer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Layer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerAnimation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerAnimationElement.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationElement.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationElement.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationElement.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationElement~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerAnimationSequence.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationSequence.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationSequence.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationSequence.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimationSequence~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerAnimator.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimator.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimator.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimator.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimator~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerAnimatorCollection.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimatorCollection.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimatorCollection.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimatorCollection.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerAnimatorCollection~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayerOwner.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerOwner.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerOwner.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerOwner.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayerOwner~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Layout/BoxLayout.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BoxLayout.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BoxLayout.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BoxLayout.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/BoxLayout~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Layout/FillLayout.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayout.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayout.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayout.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/FillLayout~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Layout/GridLayout.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/GridLayout.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/GridLayout.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/GridLayout.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/GridLayout~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Layout/LayoutProvider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutProvider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutProvider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutProvider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutProvider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/LayoutManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LayoutManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Linux/InputMethodLinux.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethodLinux.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethodLinux.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethodLinux.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/InputMethodLinux~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Linux/LinuxInputMethodContext.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinuxInputMethodContext.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinuxInputMethodContext.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinuxInputMethodContext.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/LinuxInputMethodContext~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/NativeFrameView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeFrameView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeFrameView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeFrameView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeFrameView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/NativeWidget.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidget.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidget.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidget.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidget~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/NativeWidgetDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidgetDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidgetDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidgetDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NativeWidgetDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/NonClientView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NonClientView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NonClientView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NonClientView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/NonClientView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/PaintCache.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintCache.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintCache.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintCache.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintCache~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/PaintContext.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintContext.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintContext.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintContext.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintContext~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/PaintInfo.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintInfo.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintInfo.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintInfo.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintInfo~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/PaintRecorder.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintRecorder.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintRecorder.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintRecorder.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PaintRecorder~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Painter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Painter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Painter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Painter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Painter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/PlatformCursorManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformCursorManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformCursorManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformCursorManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformCursorManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/PrefixDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PrefixDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/PropertyChangeReason.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PropertyChangeReason.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PropertyChangeReason.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PropertyChangeReason.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PropertyChangeReason~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Reflector.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Reflector.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Reflector.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Reflector.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Reflector~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/RootView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/RootViewTargeter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootViewTargeter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootViewTargeter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootViewTargeter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/RootViewTargeter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ScopedLayerAnimationSettings.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScopedLayerAnimationSettings.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScopedLayerAnimationSettings.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScopedLayerAnimationSettings.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScopedLayerAnimationSettings~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ScreenPositionClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScreenPositionClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScreenPositionClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScreenPositionClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScreenPositionClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ScrollInputHandler.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollInputHandler.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollInputHandler.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollInputHandler.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollInputHandler~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ScrollView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ScrollView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/SelectionController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ShadowController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ShadowTypes.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowTypes.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowTypes.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowTypes.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ShadowTypes~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Style/PlatformStyle.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformStyle.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformStyle.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformStyle.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/PlatformStyle~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TextInput.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInput.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInput.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInput.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInput~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TextInputClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInputClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInputClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInputClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextInputClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TextStyles.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextStyles.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextStyles.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextStyles.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TextStyles~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Theme/Theme.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Theme.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Theme.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Theme.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Theme~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Theme/ThemePainter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Theme/ThemePainterDefault.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterDefault.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterDefault.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterDefault.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterDefault~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Theme/ThemePainterLinux.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterLinux.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterLinux.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterLinux.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ThemePainterLinux~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Tooltip.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Tooltip.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Tooltip.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Tooltip.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Tooltip~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TooltipClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TooltipController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TooltipManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TooltipManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TouchEditable.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TouchEditable.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TouchEditable.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TouchEditable.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TouchEditable~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TransformRecorder.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformRecorder.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformRecorder.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformRecorder.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransformRecorder~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TransientWindowClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TransientWindowController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TransientWindowManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/TransientWindowObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/TransientWindowObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UI.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UI.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UI.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UI.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UI~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UIApplicationOld.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplicationOld.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplicationOld.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplicationOld.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplicationOld~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UICompositor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UICompositorLock.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorLock.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorLock.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorLock.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorLock~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UICompositorVSyncManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorVSyncManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorVSyncManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorVSyncManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UICompositorVSyncManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UIContextFactory.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIContextFactory.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIContextFactory.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIContextFactory.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIContextFactory~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UIWidget.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidget.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidget.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidget.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidget~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UIWidgetDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UIWidgetDeletionObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDeletionObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDeletionObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDeletionObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetDeletionObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/UIWidgetObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWidgetObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/View.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/View.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/View.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/View.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/View~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ViewObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ViewStorage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewStorage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewStorage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewStorage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewStorage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ViewTargeter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ViewTargeterDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeterDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeterDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeterDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTargeterDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ViewTracker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTracker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTracker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTracker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewTracker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/ViewsDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewsDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewsDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewsDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/ViewsDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/VisibilityController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisibilityController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisibilityController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisibilityController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisibilityController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/Window.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Window.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Window.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Window.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/Window~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowAnimations.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowAnimations.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowAnimations.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowAnimations.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowAnimations~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowButtonOrderProvider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowButtonOrderProvider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowButtonOrderProvider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowButtonOrderProvider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowButtonOrderProvider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowDelegate.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowDelegate.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowDelegate.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowDelegate.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowDelegate~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowEventDispatcher.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventDispatcher.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventDispatcher.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventDispatcher.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowEventDispatcher~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowFocusManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowFocusManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowFocusManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowFocusManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowFocusManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowLayoutManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowLayoutManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowLayoutManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowLayoutManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowLayoutManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowModalityController.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowModalityController.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowModalityController.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowModalityController.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowModalityController~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowParentingClient.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowParentingClient.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowParentingClient.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowParentingClient.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowParentingClient~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowReorderer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowReorderer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowReorderer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowReorderer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowReorderer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowShape.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowShape.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowShape.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowShape.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowShape~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowTargeter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTargeter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTargeter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTargeter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTargeter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowTracker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTracker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTracker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTracker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTracker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowTreeHost.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHost.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHost.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHost.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHost~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/WindowTreeHostPlatform.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHostPlatform.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHostPlatform.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHostPlatform.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/WindowTreeHostPlatform~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Views/l10n.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/l10n.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/l10n.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/l10n.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/l10n~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/CreateNewWindowParams.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CreateNewWindowParams.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CreateNewWindowParams.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CreateNewWindowParams.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/CreateNewWindowParams~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/DidOverscrollParams.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DidOverscrollParams.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DidOverscrollParams.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DidOverscrollParams.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/DidOverscrollParams~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/MouseLockDispatcher.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MouseLockDispatcher.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MouseLockDispatcher.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MouseLockDispatcher.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/MouseLockDispatcher~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/SelectionBoundsParams.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionBoundsParams.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionBoundsParams.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionBoundsParams.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/SelectionBoundsParams~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIApplication.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplication.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplication.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplication.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIApplication~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIDispatcher.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIDispatcher.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIDispatcher.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIDispatcher.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIDispatcher~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWebFrame.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrame.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrame.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrame.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrame~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWebFrameObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWebFrameProxy.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameProxy.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameProxy.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameProxy.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebFrameProxy~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWebWindow.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindow.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindow.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindow.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindow~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWebWindowCompositor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindowCompositor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindowCompositor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindowCompositor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWebWindowCompositor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWindow.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindow.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindow.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindow.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindow~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWindowInputHandler.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandler.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandler.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandler.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandler~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWindowInputHandlerManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandlerManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandlerManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandlerManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowInputHandlerManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWindowMouseLockDispatcher.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowMouseLockDispatcher.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowMouseLockDispatcher.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowMouseLockDispatcher.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowMouseLockDispatcher~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/UIWindowObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/UIWindowObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/UI/Web/VisualProperties.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisualProperties.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisualProperties.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisualProperties.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/UI/VisualProperties~partial.swiftmodule"
+   }
+}

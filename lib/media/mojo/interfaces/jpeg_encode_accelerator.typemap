@@ -1,0 +1,23 @@
+# Copyright 2018 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+mojom = "//lib/media/mojo/interfaces/jpeg_encode_accelerator.mojom"
+
+public_headers = [ "//media/video/jpeg_encode_accelerator.h" ]
+
+traits_headers =
+    [ "//lib/media/mojo/interfaces/jpeg_encode_accelerator_typemap_traits.h" ]
+
+sources = [
+  "//lib/media/mojo/interfaces/jpeg_encode_accelerator_typemap_traits.cc",
+]
+
+deps = [
+  "//lib/base",
+  "//lib/media",
+  "//lib/media/base/ipc",
+]
+
+type_mappings =
+    [ "media.mojom.EncodeStatus=media::JpegEncodeAccelerator::Status" ]

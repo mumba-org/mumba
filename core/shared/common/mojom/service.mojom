@@ -1,0 +1,120 @@
+// Copyright 2020 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/ref_counted_memory.mojom";
+import "lib/mojo/public/mojom/base/big_buffer.mojom";
+import "lib/services/network/public/mojom/network_param.mojom";
+import "lib/services/network/public/mojom/url_loader.mojom";
+import "lib/net/interfaces/ip_address.mojom";
+import "lib/url/mojom/url.mojom";
+
+enum ServiceStatusCode {
+  kSERVICE_STATUS_OK = 0,
+  kSERVICE_STATUS_ERR_FAILED,
+  kSERVICE_STATUS_ERR_UNKNOWN_SERVICE,
+  kSERVICE_STATUS_ERR_PATH_EMPTY,
+  kSERVICE_STATUS_ERR_ENTRY_NOT_FOUND,
+};
+
+enum ServiceState {
+  kSERVICE_STATE_INIT = 0,
+  kSERVICE_STATE_STARTING,
+  kSERVICE_STATE_STARTED,
+  kSERVICE_STATE_STOPPED,
+  kSERVICE_STATE_STOPPING,
+  kSERVICE_STATE_DISABLED,
+  kSERVICE_STATE_ERROR,
+};
+
+enum ServiceType {
+  // no other kinds of (native) services for now
+  kSERVICE_GRPC = 0,
+  kSERVICE_CUSTOM = 1,  
+};
+
+struct ServiceEntry {
+  ServiceType type;
+  ServiceState state;
+  // if service type is of custom type
+  // here we will have a definition of its type
+  string custom_type;
+  int32 id;
+  string uuid;
+  string scheme;
+  string name;
+  string version;
+  // if the service is discoverable or not
+  // defaults to true
+  bool discoverable;
+  network.mojom.HostPortPair host_port;
+};
+
+struct ServiceBindRequest {
+  ServiceType type;
+  // uuid of the service requesting it
+  string service_uuid;
+  // should it bind the localhost interface only? if not, it will bind on both
+  bool local_only;
+  // optional: will bind if available
+  int32 desired_port;
+};
+
+struct ServiceBindResult {
+  ServiceStatusCode code;
+  // if ok: the host and port its bounded to
+  network.mojom.HostPortPair host_port;
+};
+
+interface ServiceSubscriber {
+  OnServiceAdded(ServiceEntry entry);
+  OnServiceRemoved(ServiceEntry entry);
+  OnServiceChanged(ServiceEntry entry);
+  OnServiceStateChanged(ServiceEntry entry, ServiceState new_state);
+};
+
+// domain process
+
+interface ServiceDispatcher {
+  LookupServiceByName(string name) => (ServiceEntry entry);
+  LookupServiceByUUID(string uuid) => (ServiceEntry entry);
+  HaveServiceByName(string name) => (bool have);
+  HaveServiceByUUID(string uuid) => (bool have);
+  GetServiceHeader(string url) => (network.mojom.URLResponseHead head);
+  ListServices() => (array<ServiceEntry> services);
+  GetServiceCount() => (uint32 count);
+  StartService(string uuid) => (ServiceStatusCode status);
+  StopService(string uuid) => (ServiceStatusCode status);
+  Subscribe(ServiceSubscriber subscriber) => (int32 id);
+  Unsubscribe(int32 id);
+};
+
+// host process
+interface ServiceDispatcherClient {
+  // ask for the host to bind service
+  // this will return the service interfaces and port back
+
+  // the actual binding is done on the domain process
+  // by using the interfaces and ports allowed
+  BindService(ServiceBindRequest request) => (ServiceBindResult result);
+};
+
+interface ServiceRegistry {
+  LookupService(string scheme, string name) => (ServiceStatusCode code, ServiceEntry? entry);
+  LookupServiceByUUID(string uuid) => (ServiceStatusCode code, ServiceEntry? entry);
+  HaveService(string scheme, string name) => (bool have);
+  HaveServiceByUUID(string uuid) => (bool have);
+  GetServiceHeader(string url) => (network.mojom.URLResponseHead head);
+  ListServices() => (array<ServiceEntry> entries);
+  ListServicesForScheme(string scheme) => (array<ServiceEntry> entries);
+  GetServiceCount() => (uint32 count);
+
+  StartService(string uuid) => (ServiceStatusCode status);
+  StopService(string uuid) => (ServiceStatusCode status);
+
+  Subscribe(string scheme, ServiceSubscriber subscriber) => (int32 id);
+  Unsubscribe(int32 id);
+};

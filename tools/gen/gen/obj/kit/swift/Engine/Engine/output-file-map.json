@@ -1,0 +1,59 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/Application.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Application.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Application.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Application.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Application~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/ApplicationEntry.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationEntry.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationEntry.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationEntry.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationEntry~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/ApplicationInstance.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationInstance.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationInstance.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationInstance.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/ApplicationInstance~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/C.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/C.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/C.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/C.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/C~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/Engine.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Engine.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Engine.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Engine.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Engine~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/Errors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Errors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Errors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Errors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Errors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/Instance.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Instance.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Instance.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Instance.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Instance~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/Page.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Page.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Page.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Page.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Page~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Engine/Sources/Status.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Status.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Status.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Status.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Engine/Engine/Status~partial.swiftmodule"
+   }
+}

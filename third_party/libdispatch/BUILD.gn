@@ -1,0 +1,268 @@
+import("//build_overrides/build.gni")
+
+declare_args() {
+  use_internal_workqueue = false
+  if (!is_mac) {
+    use_internal_workqueue = true
+  }
+}
+
+config("dispatch_config") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+  ]
+  configs = []
+  configs = default_compiler_configs
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  cflags = [
+    "-fPIC", 
+    "-fvisibility=hidden",
+    "-Werror", 
+    "-Wall",
+    "-Wextra",
+    "-Warray-bounds-pointer-arithmetic",
+    "-Wassign-enum",
+    "-Watomic-properties",
+    "-Wcomma",
+    "-Wconditional-uninitialized",
+    "-Wconversion",
+    "-Wcovered-switch-default",
+    "-Wdate-time",
+    "-Wdeprecated",
+    "-Wdocumentation", 
+    "-Wdouble-promotion",
+    "-Wduplicate-enum", 
+    "-Wexpansion-to-defined",
+    "-Wfloat-equal",
+    "-Widiomatic-parentheses", 
+    "-Winfinite-recursion", 
+    "-Wmissing-prototypes", 
+    "-Wnewline-eof", 
+    "-Wnullable-to-nonnull-conversion", 
+    "-Wobjc-interface-ivars", 
+    "-Wover-aligned", 
+    "-Wpacked", 
+    "-Wpointer-arith",
+    "-Wselector",
+    "-Wshadow", 
+    "-Wshorten-64-to-32", 
+    "-Wsign-conversion", 
+    "-Wstatic-in-inline", 
+    "-Wsuper-class-method-mismatch", 
+    "-Wswitch-enum", 
+    "-Wunguarded-availability", 
+    "-Wunreachable-code",
+    "-Wunused", 
+    "-Wno-unknown-warning-option", 
+    "-Wno-trigraphs", 
+    "-Wno-four-char-constants", 
+    "-Wno-disabled-macro-expansion",
+    "-Wno-pedantic", 
+    "-Wno-bad-function-cast", 
+    "-Wno-c++-compat", 
+    "-Wno-c++98-compat",
+    "-Wno-c++98-compat-pedantic", 
+    "-Wno-cast-align", 
+    "-Wno-cast-qual", 
+    "-Wno-documentation-unknown-command", 
+    "-Wno-format-nonliteral", 
+    "-Wno-missing-variable-declarations", 
+    "-Wno-old-style-cast", 
+    "-Wno-padded", 
+    "-Wno-reserved-id-macro", 
+    "-Wno-shift-sign-overflow", 
+    "-Wno-undef", 
+    "-Wno-unreachable-code-aggressive", 
+    "-Wno-unused-macros", 
+    "-Wno-used-but-marked-unused",     
+    "-Wno-vla", 
+    "-Wno-error=assign-enum", 
+    "-fno-exceptions",
+    "-isystem /usr/include/bsd", 
+    "-fblocks", 
+    "-momit-leaf-frame-pointer",
+    "-pthread", 
+    "-std=gnu11"
+  ]
+  defines = [
+    "DISPATCH_USE_DTRACE=0",
+    "HAVE_CONFIG_H",
+    "_GNU_SOURCE=1",
+    "HAVE_GETPROGNAME=0",
+    "dispatch_EXPORTS",
+    #"LIBBSD_OVERLAY"
+  ]
+  #if (is_posix) {
+  #  defines += [
+  #    "HAVE_GETPROGNAME",
+  #    "HAVE_STRLCPY"
+  #  ]
+  #}
+}
+
+config("dispatch_public_config") {
+  include_dirs = [
+    ".",
+    "private/",
+    "src/",
+    "src/BlocksRuntime/"
+  ]
+}
+
+#component("BlocksRuntime") {
+static_library("BlocksRuntime") {
+  configs = []
+  configs += [
+    ":dispatch_config"
+  ]
+  sources = [
+    "src/BlocksRuntime/Block.h",
+    "src/BlocksRuntime/Block_private.h",
+    "src/BlocksRuntime/data.c",
+    "src/BlocksRuntime/runtime.c",
+  ]
+}
+
+static_library("libdispatch") {
+#component("libdispatch") {
+  configs = []
+  configs += [
+    ":dispatch_config"
+  ]
+  public_configs = [
+    ":dispatch_public_config"
+  ]
+  deps = [
+    ":BlocksRuntime"
+  ]
+  sources = [
+      "dispatch/base.h",
+      "dispatch/block.h",
+      "dispatch/data.h",
+      "dispatch/dispatch.h",
+      "dispatch/group.h",
+      "dispatch/introspection.h",
+      "dispatch/io.h",
+      "dispatch/object.h",
+      "dispatch/once.h",
+      "dispatch/queue.h",
+      "dispatch/semaphore.h",
+      "dispatch/source.h",
+      "dispatch/time.h",
+      "private/generic/module.modulemap",
+      "private/benchmark.h",
+      "private/data_private.h",
+      "private/introspection_private.h",
+      "private/io_private.h",
+      "private/layout_private.h",
+      "private/mach_private.h",
+      "private/private.h",
+      "private/queue_private.h",
+      "private/source_private.h",
+      # swift is providing those, so unless we do this
+      # we get duplicated symbol at linking time
+      #"src/allocator.c",
+      #"src/apply.c",
+      "src/benchmark.c",
+      #"src/data.c",
+      #"src/init.c",
+      "src/introspection.c",
+      #"src/io.c",
+      "src/mach.c",
+      #"src/object.c",
+      #"src/once.c",
+      #"src/queue.c",
+      #"src/semaphore.c",
+      #"src/source.c",
+      #"src/time.c",
+      "src/transform.c",
+      #"src/voucher.c",
+      "src/shims.c",
+      "src/protocol.defs",
+      "src/provider.d",
+      "src/allocator_internal.h",
+      "src/data_internal.h",
+      "src/inline_internal.h",
+      "src/internal.h",
+      "src/introspection_internal.h",
+      "src/io_internal.h",
+      "src/mach_internal.h",
+      "src/object_internal.h",
+      "src/queue_internal.h",
+      "src/semaphore_internal.h",
+      "src/shims.h",
+      "src/source_internal.h",
+      "src/trace.h",
+      "src/voucher_internal.h",
+      #"src/event/event.c",
+      "src/event/event_config.h",
+      #"src/event/event_epoll.c",
+      "src/event/event_internal.h",
+      "src/event/event_kevent.c",
+      "src/event/event_windows.c",
+      "src/firehose/firehose_internal.h",
+      "src/shims/android_stubs.h",
+      "src/shims/atomic.h",
+      "src/shims/atomic_sfb.h",
+      "src/shims/getprogname.h",
+      "src/shims/hw_config.h",
+      #"src/shims/lock.c",
+      "src/shims/lock.h",
+      "src/shims/perfmon.h",
+      "src/shims/time.h",
+      "src/shims/tsd.h",
+      "src/shims/yield.h",
+      #"src/block.cpp"
+    ]
+
+    if (is_win) {
+      sources += [
+        "src/shims/generic_sys_queue.h",
+        "src/shims/generic_win_stubs.c",
+        "src/shims/generic_win_stubs.h",
+        "src/shims/getprogname.c"
+      ]
+    }
+    if (use_internal_workqueue) {
+       sources += [
+          #"src/event/workqueue.c",
+          "src/event/workqueue_internal.h"
+       ] 
+    }
+}
+
+swift_static("Dispatch") {
+  deps = [
+    ":libdispatch",
+    ":libdispatch-swift-c"
+  ]
+  sources = [
+    "src/swift/Block.swift",
+    "src/swift/Data.swift",
+    "src/swift/Dispatch.swift",
+    "src/swift/IO.swift",
+    "src/swift/Private.swift",
+    "src/swift/Queue.swift",
+    "src/swift/Source.swift",
+    "src/swift/Time.swift",
+    "src/swift/Wrapper.swift",
+  ]
+}
+
+static_library("libdispatch-swift-c") {
+  configs = []
+  configs += [
+    ":dispatch_config"
+  ]
+  deps = [
+    ":libdispatch"
+  ]
+  include_dirs = [
+    "."
+  ]
+  sources = [
+    "src/swift/DispatchStubs.cc"
+  ]
+}

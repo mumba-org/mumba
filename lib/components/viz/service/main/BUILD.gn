@@ -1,0 +1,44 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/testing/test.gni")
+
+source_set("main") {
+  output_name = "viz_main_impl"
+
+  sources = [
+    "viz_main_impl.cc",
+    "viz_main_impl.h",
+  ]
+
+  deps = [
+    "//lib/cc",
+    "//lib/components/discardable_memory/client",
+    "//lib/components/discardable_memory/public/interfaces",
+    "//lib/components/viz/service",
+    "//lib/gpu/ipc:gl_in_process_context",
+    "//lib/gpu/ipc/common",
+    "//lib/gpu/ipc/common:gpu_preferences_util",
+    "//lib/gpu/ipc/service",
+    "//lib/ipc",
+    "//lib/mojo/public/cpp/system",
+    "//lib/services/metrics/public/cpp:metrics_cpp",
+    "//lib/services/metrics/public/mojom",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/viz/privileged/interfaces",
+    "//lib/ui/gfx:memory_buffer",
+    "//lib/ui/gl/init",
+  ]
+
+  if (use_ozone) {
+    deps += [ "//lib/ui/ozone:ozone" ]
+  }
+
+  if (is_chromeos) {
+    deps += [ "//lib/media/gpu" ]
+  }
+}

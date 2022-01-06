@@ -1,0 +1,132 @@
+// Copyright 2020 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/ref_counted_memory.mojom";
+import "lib/mojo/public/mojom/base/big_buffer.mojom";
+import "lib/services/network/public/mojom/network_param.mojom";
+import "lib/services/network/public/mojom/url_loader.mojom";
+import "lib/url/mojom/url.mojom";
+
+enum RouteStatusCode {
+  kROUTE_STATUS_OK = 0,
+  kROUTE_STATUS_ERR_FAILED,
+  kROUTE_STATUS_ERR_PATH_EMPTY,
+  kROUTE_STATUS_ERR_ENTRY_NOT_FOUND,
+};
+
+enum RouteEntryType {
+  kROUTE_ENTRY_TYPE_SCHEME = 0,
+  kROUTE_ENTRY_TYPE_ENTRY = 1,
+};
+
+enum RouteEntryTransportType {
+  kROUTE_ENTRY_TRANSPORT_IPC = 0,
+  kROUTE_ENTRY_TRANSPORT_RPC = 1,
+  kROUTE_ENTRY_TRANSPORT_HTTP = 2,
+};
+
+enum RouteEntryRPCMethodType {
+  kRPC_METHOD_NORMAL = 0,
+  kRPC_METHOD_CLIENT_STREAM = 1,
+  kRPC_METHOD_SERVER_STREAM = 2,
+  kRPC_METHOD_BIDI_STREAM = 3,
+};
+
+struct RouteEntryExtras {
+  handle<shared_buffer>? icon_data;
+  uint32 icon_data_size;
+};
+
+struct RouteEntry {
+  RouteEntryType type;
+  RouteEntryTransportType transport_type;
+  RouteEntryRPCMethodType rpc_method_type;
+  string content_type;
+  string name;
+  string uuid;
+  mojo_base.mojom.String16 title;
+  url.mojom.Url url;
+  string fullname;
+  string path;
+  int64 content_size;
+  string content_hash_sha1;
+};
+
+// the host process is the first subscriber
+// and this allow it to update the entry index
+
+interface RouteSubscriber {
+  GetUUID() => (string uuid);
+  OnRouteHeaderChanged(network.mojom.URLResponseHead head);
+  OnRouteAdded(RouteEntry entry);
+  OnRouteRemoved(RouteEntry entry);
+  OnRouteChanged(RouteEntry entry);
+};
+
+// created after URLLoader
+interface RouteDispatcher {
+  const uint32 kClientDisconnectReason = 1;
+  // control/management
+  LookupRoute(string query) => (RouteStatusCode code, array<RouteEntry>? entries);
+  LookupRouteByPath(string path) => (RouteStatusCode code, RouteEntry? entry);
+  LookupRouteByUrl(url.mojom.Url url) => (RouteStatusCode code, RouteEntry? entry);
+  LookupRouteByUUID(string uuid) => (RouteStatusCode code, RouteEntry? entry);
+  GetRouteHeader(string url) => (network.mojom.URLResponseHead head);
+  GetRouteCount() => (uint32 count);
+  Subscribe(RouteSubscriber subscriber) => (int32 id);
+  Unsubscribe(int32 subscriber_id);
+  
+  // requests
+  StartRequest(int32 request_id, string url, handle<data_pipe_consumer> read_stream, handle<data_pipe_producer> write_stream);
+  FollowRedirect(int32 request_id);
+  ProceedWithResponse(int32 request_id);
+  SetPriority(int32 request_id, network.mojom.RequestPriority priority, int32 intra_priority_value);
+  PauseReadingBodyFromNet(int32 request_id);
+  ResumeReadingBodyFromNet(int32 request_id);
+};
+
+// created after URLLoaderClient
+interface RouteDispatcherClient {
+  
+  // requests completions
+  OnRequestStarted(int32 request_id);
+  OnReceiveResponse(int32 request_id, 
+                    network.mojom.URLResponseHead head,
+                    network.mojom.DownloadedTempFile? downloaded_file);
+  OnReceiveRedirect(int32 request_id, 
+                    network.mojom.URLRequestRedirectInfo redirect_info, 
+                    network.mojom.URLResponseHead head);
+  OnDataDownloaded(int32 request_id, int64 data_length, int64 encoded_length);
+  OnUploadProgress(int32 request_id, int64 current_position, int64 total_size) => ();
+  OnReceiveCachedMetadata(int32 request_id, array<uint8> data);
+  OnTransferSizeUpdated(int32 request_id, int32 transfer_size_diff);
+  OnStartLoadingResponseBody(int32 request_id, handle<data_pipe_consumer> body);
+  OnComplete(int32 request_id, network.mojom.URLLoaderCompletionStatus status);
+};
+
+interface RouteRegistry {
+  AddRoute(RouteEntry entry, RouteEntryExtras extras) => (RouteStatusCode reply);
+  RemoveRoute(string path) => (RouteStatusCode reply);
+  RemoveRouteByUrl(url.mojom.Url url) => (RouteStatusCode reply);
+  RemoveRouteByUUID(string uuid) => (RouteStatusCode reply);
+  LookupRoute(string scheme, string path) => (RouteStatusCode code, RouteEntry? entry);
+  LookupRouteByPath(string path) => (RouteStatusCode code, RouteEntry? entry);
+  LookupRouteByUrl(url.mojom.Url url) => (RouteStatusCode code, RouteEntry? entry);
+  LookupRouteByUUID(string uuid) => (RouteStatusCode code, RouteEntry? entry);
+  HaveRoute(string path) => (bool have);
+  HaveRouteByUrl(url.mojom.Url url) => (bool have);
+  HaveRouteByUUID(string uuid) => (bool have);
+  ListSchemes() => (array<RouteEntry> entries);
+  ListRoutes() => (array<RouteEntry> entries);
+  ListRoutesForScheme(string scheme) => (array<RouteEntry> entries);
+  GetRouteCount() => (uint32 count);
+  GetRouteCountByScheme(string scheme) => (uint32 count);
+  GetRouteHeader(string scheme, string path) => (network.mojom.URLResponseHead head);
+
+  Subscribe(string scheme, RouteSubscriber subscriber) => (int32 id);
+  Unsubscribe(int32 subscriber_id);
+};

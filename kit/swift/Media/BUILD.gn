@@ -1,0 +1,12 @@
+swift_static("Media") {
+  deps = [
+    "//kit/swift/Base",
+    "//kit/swift/Graphics",
+    "//runtime/MumbaShims",
+    "//kit/swift/PosixShim",
+    "//kit/swift/ThirdParty/Libevent",
+  ]
+  sources = [
+    "Sources/Video/VideoFrame.swift",
+  ]
+}

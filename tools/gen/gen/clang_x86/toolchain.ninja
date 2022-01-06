@@ -1,0 +1,174 @@
+rule clang_x86_cc
+  command =  ../../../third_party/llvm-build/Release+Asserts/bin/clang -MMD -MF ${out}.d ${defines} ${include_dirs} ${cflags} ${cflags_c} -c ${in} -o ${out}
+  description = CC ${out}
+  depfile = ${out}.d
+  deps = gcc
+rule clang_x86_cxx
+  command =  ../../../third_party/llvm-build/Release+Asserts/bin/clang++ -MMD -MF ${out}.d ${defines} ${include_dirs} ${cflags} ${cflags_cc} -c ${in} -o ${out}
+  description = CXX ${out}
+  depfile = ${out}.d
+  deps = gcc
+rule clang_x86_swiftc
+  command = /usr/local/bin/swiftc ${include_dirs} ${cflags_swift} -c ${in}
+  description = SWIFTC ${out}
+rule clang_x86_asm
+  command =  ../../../third_party/llvm-build/Release+Asserts/bin/clang -MMD -MF ${out}.d ${defines} ${include_dirs} ${asmflags} -c ${in} -o ${out}
+  description = ASM ${out}
+  depfile = ${out}.d
+  deps = gcc
+rule clang_x86_alink
+  command = python "../../../build/toolchain/gcc_ar_wrapper.py"  --output=${out} --ar="../../../third_party/llvm-build/Release+Asserts/bin/llvm-ar" "${arflags} -r -c -s -D" @"${out}.rsp"
+  description = AR ${out}
+  rspfile = ${out}.rsp
+  rspfile_content = ${in}
+rule clang_x86_solink
+  command = python "../../../build/toolchain/gcc_solink_wrapper.py" --readelf="readelf" --nm="nm" --sofile="${output_dir}/${target_output_name}${output_extension}" --tocfile="${output_dir}/${target_output_name}${output_extension}.TOC" --output="${output_dir}/${target_output_name}${output_extension}"  -- ../../../third_party/llvm-build/Release+Asserts/bin/clang++ -shared ${ldflags} -o "${output_dir}/${target_output_name}${output_extension}" -Wl,-soname="${target_output_name}${output_extension}" @"${output_dir}/${target_output_name}${output_extension}.rsp"
+  description = SOLINK ${output_dir}/${target_output_name}${output_extension}
+  rspfile = ${output_dir}/${target_output_name}${output_extension}.rsp
+  rspfile_content = -Wl,--whole-archive ${in} ${solibs} -Wl,--no-whole-archive  ${libs} 
+  pool = build_toolchain_link_pool
+  restat = 1
+rule clang_x86_solink_module
+  command = ../../../third_party/llvm-build/Release+Asserts/bin/clang++ -shared ${ldflags} -o "${output_dir}/${target_output_name}${output_extension}" -Wl,-soname="${target_output_name}${output_extension}" @"${output_dir}/${target_output_name}${output_extension}.rsp"
+  description = SOLINK_MODULE ${output_dir}/${target_output_name}${output_extension}
+  rspfile = ${output_dir}/${target_output_name}${output_extension}.rsp
+  rspfile_content = -Wl,--whole-archive ${in} ${solibs} -Wl,--no-whole-archive  ${libs} 
+  pool = build_toolchain_link_pool
+rule clang_x86_link
+  command = python "../../../build/toolchain/gcc_link_wrapper.py" --output="${output_dir}/${target_output_name}${output_extension}" -- ../../../third_party/llvm-build/Release+Asserts/bin/clang++ ${ldflags} -o "${output_dir}/${target_output_name}${output_extension}" -Wl,--start-group @"${output_dir}/${target_output_name}${output_extension}.rsp" ${solibs} -Wl,--end-group   ${libs} 
+  description = LINK ${output_dir}/${target_output_name}${output_extension}
+  rspfile = ${output_dir}/${target_output_name}${output_extension}.rsp
+  rspfile_content = ${in}
+  pool = build_toolchain_link_pool
+rule clang_x86_stamp
+  command = touch ${out}
+  description = STAMP ${out}
+rule clang_x86_copy
+  command = ln -f ${in} ${out} 2>/dev/null || (rm -rf ${out} && cp -af ${in} ${out})
+  description = COPY ${in} ${out}
+
+build clang_x86/obj/build/config/exe_and_shlib_deps.stamp: clang_x86_stamp clang_x86/libc++.so.TOC
+build clang_x86/obj/build/win/default_exe_manifest.stamp: clang_x86_stamp
+subninja clang_x86/obj/buildtools/third_party/libc++/libc++.ninja
+subninja clang_x86/obj/buildtools/third_party/libc++abi/libc++abi.ninja
+build clang_x86/obj/third_party/icu/icu.stamp: clang_x86_stamp clang_x86/libicui18n.so.TOC clang_x86/libicuuc.so.TOC
+build clang_x86/icudtl.dat: clang_x86_copy ../../../third_party/icu/common/icudtl.dat
+
+build clang_x86/obj/third_party/icu/icudata.stamp: clang_x86_stamp clang_x86/icudtl.dat
+subninja clang_x86/obj/third_party/icu/icui18n.ninja
+subninja clang_x86/obj/third_party/icu/icuuc.ninja
+subninja clang_x86/obj/v8/d8.ninja
+rule __v8_d8_js2c___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/js2c.py clang_x86/gen/v8/d8-js.cc D8 ../../../v8/src/d8.js ../../../v8/src/js/macros.py
+  description = ACTION //v8:d8_js2c(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/d8-js.cc: __v8_d8_js2c___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/js2c.py ../../../v8/src/d8.js ../../../v8/src/js/macros.py
+
+build clang_x86/obj/v8/d8_js2c.stamp: clang_x86_stamp clang_x86/gen/v8/d8-js.cc
+rule __v8_js2c___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/js2c.py clang_x86/gen/v8/libraries.cc CORE ../../../v8/src/js/macros.py ../../../v8/src/messages.h ../../../v8/src/js/prologue.js ../../../v8/src/js/array.js ../../../v8/src/js/typedarray.js ../../../v8/src/debug/mirrors.js ../../../v8/src/debug/debug.js ../../../v8/src/debug/liveedit.js ../../../v8/src/js/intl.js --startup_blob clang_x86/gen/v8/libraries.bin
+  description = ACTION //v8:js2c(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/libraries.cc clang_x86/gen/v8/libraries.bin: __v8_js2c___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/js2c.py ../../../v8/tools/jsmin.py ../../../v8/src/js/macros.py ../../../v8/src/messages.h ../../../v8/src/js/prologue.js ../../../v8/src/js/array.js ../../../v8/src/js/typedarray.js ../../../v8/src/debug/mirrors.js ../../../v8/src/debug/debug.js ../../../v8/src/debug/liveedit.js ../../../v8/src/js/intl.js
+
+build clang_x86/obj/v8/js2c.stamp: clang_x86_stamp clang_x86/gen/v8/libraries.cc clang_x86/gen/v8/libraries.bin
+rule __v8_js2c_experimental_extras___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/js2c.py clang_x86/gen/v8/experimental-extras-libraries.cc EXPERIMENTAL_EXTRAS ../../../v8/test/cctest/test-experimental-extra.js --startup_blob clang_x86/gen/v8/libraries_experimental_extras.bin
+  description = ACTION //v8:js2c_experimental_extras(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/experimental-extras-libraries.cc clang_x86/gen/v8/libraries_experimental_extras.bin: __v8_js2c_experimental_extras___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/js2c.py ../../../v8/tools/jsmin.py ../../../v8/test/cctest/test-experimental-extra.js
+
+build clang_x86/obj/v8/js2c_experimental_extras.stamp: clang_x86_stamp clang_x86/gen/v8/experimental-extras-libraries.cc clang_x86/gen/v8/libraries_experimental_extras.bin
+rule __v8_js2c_extras___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/js2c.py clang_x86/gen/v8/extras-libraries.cc EXTRAS ../../../v8/test/cctest/test-extra.js --startup_blob clang_x86/gen/v8/libraries_extras.bin
+  description = ACTION //v8:js2c_extras(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/extras-libraries.cc clang_x86/gen/v8/libraries_extras.bin: __v8_js2c_extras___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/js2c.py ../../../v8/tools/jsmin.py ../../../v8/test/cctest/test-extra.js
+
+build clang_x86/obj/v8/js2c_extras.stamp: clang_x86_stamp clang_x86/gen/v8/extras-libraries.cc clang_x86/gen/v8/libraries_extras.bin
+subninja clang_x86/obj/v8/mksnapshot.ninja
+rule __v8_natives_blob___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/concatenate-files.py clang_x86/gen/v8/libraries.bin clang_x86/gen/v8/libraries_extras.bin clang_x86/gen/v8/libraries_experimental_extras.bin clang_x86/natives_blob.bin
+  description = ACTION //v8:natives_blob(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/natives_blob.bin: __v8_natives_blob___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/concatenate-files.py clang_x86/gen/v8/libraries.bin clang_x86/gen/v8/libraries_extras.bin clang_x86/gen/v8/libraries_experimental_extras.bin clang_x86/obj/v8/js2c.stamp clang_x86/obj/v8/js2c_experimental_extras.stamp clang_x86/obj/v8/js2c_extras.stamp
+
+build clang_x86/obj/v8/natives_blob.stamp: clang_x86_stamp clang_x86/natives_blob.bin
+rule __v8_run_mksnapshot_default___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/run.py ./clang_x86/mksnapshot --turbo_instruction_scheduling --random-seed 314159265 --startup_blob clang_x86/snapshot_blob.bin
+  description = ACTION //v8:run_mksnapshot_default(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/snapshot_blob.bin: __v8_run_mksnapshot_default___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/run.py clang_x86/obj/third_party/icu/icudata.stamp clang_x86/obj/v8/js2c.stamp clang_x86/obj/v8/js2c_experimental_extras.stamp clang_x86/obj/v8/js2c_extras.stamp clang_x86/mksnapshot clang_x86/obj/v8/run_torque.stamp clang_x86/obj/v8/v8_dump_build_config.stamp clang_x86/obj/v8/src/inspector/inspector_injected_script.stamp clang_x86/obj/v8/src/inspector/protocol_compatibility.stamp clang_x86/obj/v8/src/inspector/protocol_generated_sources.stamp
+
+build clang_x86/obj/v8/run_mksnapshot_default.stamp: clang_x86_stamp clang_x86/snapshot_blob.bin
+rule __v8_run_torque___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/run.py ./clang_x86/torque -o clang_x86/gen/v8 ../../../v8/src/builtins/base.tq ../../../v8/src/builtins/array.tq ../../../v8/src/builtins/typed-array.tq
+  description = ACTION //v8:run_torque(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/builtin-definitions-from-dsl.h clang_x86/gen/v8/builtins-array-from-dsl-gen.cc clang_x86/gen/v8/builtins-array-from-dsl-gen.h clang_x86/gen/v8/builtins-base-from-dsl-gen.cc clang_x86/gen/v8/builtins-base-from-dsl-gen.h clang_x86/gen/v8/builtins-typed-array-from-dsl-gen.cc clang_x86/gen/v8/builtins-typed-array-from-dsl-gen.h: __v8_run_torque___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/run.py ../../../v8/src/builtins/base.tq ../../../v8/src/builtins/array.tq ../../../v8/src/builtins/typed-array.tq clang_x86/torque clang_x86/obj/v8/v8_dump_build_config.stamp
+
+build clang_x86/obj/v8/run_torque.stamp: clang_x86_stamp clang_x86/gen/v8/builtin-definitions-from-dsl.h clang_x86/gen/v8/builtins-array-from-dsl-gen.cc clang_x86/gen/v8/builtins-array-from-dsl-gen.h clang_x86/gen/v8/builtins-base-from-dsl-gen.cc clang_x86/gen/v8/builtins-base-from-dsl-gen.h clang_x86/gen/v8/builtins-typed-array-from-dsl-gen.cc clang_x86/gen/v8/builtins-typed-array-from-dsl-gen.h
+subninja clang_x86/obj/v8/torque.ninja
+subninja clang_x86/obj/v8/v8.ninja
+subninja clang_x86/obj/v8/v8_base.ninja
+rule __v8_v8_dump_build_config___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/tools/testrunner/utils/dump_build_config.py clang_x86/v8_build_config.json current_cpu=\"x86\" dcheck_always_on=false is_asan=false is_cfi=false is_component_build=true is_debug=false is_gcov_coverage=false is_msan=false is_tsan=false is_ubsan_vptr=false target_cpu=\"x64\" v8_current_cpu=\"x86\" v8_enable_i18n_support=true v8_enable_verify_predictable=false v8_target_cpu=\"x64\" v8_use_snapshot=true
+  description = ACTION //v8:v8_dump_build_config(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/v8_build_config.json: __v8_v8_dump_build_config___build_toolchain_linux_clang_x86__rule | ../../../v8/tools/testrunner/utils/dump_build_config.py
+
+build clang_x86/obj/v8/v8_dump_build_config.stamp: clang_x86_stamp clang_x86/v8_build_config.json
+subninja clang_x86/obj/v8/v8_external_snapshot.ninja
+subninja clang_x86/obj/v8/v8_headers.ninja
+subninja clang_x86/obj/v8/v8_init.ninja
+subninja clang_x86/obj/v8/v8_initializers.ninja
+subninja clang_x86/obj/v8/v8_libbase.ninja
+subninja clang_x86/obj/v8/v8_libplatform.ninja
+subninja clang_x86/obj/v8/v8_libsampler.ninja
+subninja clang_x86/obj/v8/v8_maybe_snapshot.ninja
+subninja clang_x86/obj/v8/v8_nosnapshot.ninja
+subninja clang_x86/obj/v8/v8_version.ninja
+subninja clang_x86/obj/v8/src/inspector/inspector.ninja
+rule __v8_src_inspector_inspector_injected_script___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/src/inspector/build/xxd.py InjectedScriptSource_js ../../../v8/src/inspector/injected-script-source.js clang_x86/gen/v8/src/inspector/injected-script-source.h
+  description = ACTION //v8/src/inspector:inspector_injected_script(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/src/inspector/injected-script-source.h: __v8_src_inspector_inspector_injected_script___build_toolchain_linux_clang_x86__rule | ../../../v8/src/inspector/build/xxd.py ../../../v8/src/inspector/injected-script-source.js
+
+build clang_x86/obj/v8/src/inspector/inspector_injected_script.stamp: clang_x86_stamp clang_x86/gen/v8/src/inspector/injected-script-source.h
+rule __v8_src_inspector_protocol_compatibility___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/third_party/inspector_protocol/CheckProtocolCompatibility.py --stamp clang_x86/gen/v8/src/inspector/js_protocol.stamp ../../../v8/src/inspector/js_protocol.json
+  description = ACTION //v8/src/inspector:protocol_compatibility(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/src/inspector/js_protocol.stamp: __v8_src_inspector_protocol_compatibility___build_toolchain_linux_clang_x86__rule | ../../../v8/third_party/inspector_protocol/CheckProtocolCompatibility.py ../../../v8/src/inspector/js_protocol.json
+
+build clang_x86/obj/v8/src/inspector/protocol_compatibility.stamp: clang_x86_stamp clang_x86/gen/v8/src/inspector/js_protocol.stamp
+rule __v8_src_inspector_protocol_generated_sources___build_toolchain_linux_clang_x86__rule
+  command = python ../../../v8/third_party/inspector_protocol/CodeGenerator.py --jinja_dir ../../../third_party/ --output_base clang_x86/gen/v8/src/inspector --config ../../../v8/src/inspector/inspector_protocol_config.json
+  description = ACTION //v8/src/inspector:protocol_generated_sources(//build/toolchain/linux:clang_x86)
+  restat = 1
+  pool = build_toolchain_action_pool
+
+build clang_x86/gen/v8/src/inspector/protocol/Forward.h clang_x86/gen/v8/src/inspector/protocol/Protocol.cpp clang_x86/gen/v8/src/inspector/protocol/Protocol.h clang_x86/gen/v8/src/inspector/protocol/Console.cpp clang_x86/gen/v8/src/inspector/protocol/Console.h clang_x86/gen/v8/src/inspector/protocol/Debugger.cpp clang_x86/gen/v8/src/inspector/protocol/Debugger.h clang_x86/gen/v8/src/inspector/protocol/HeapProfiler.cpp clang_x86/gen/v8/src/inspector/protocol/HeapProfiler.h clang_x86/gen/v8/src/inspector/protocol/Profiler.cpp clang_x86/gen/v8/src/inspector/protocol/Profiler.h clang_x86/gen/v8/src/inspector/protocol/Runtime.cpp clang_x86/gen/v8/src/inspector/protocol/Runtime.h clang_x86/gen/v8/src/inspector/protocol/Schema.cpp clang_x86/gen/v8/src/inspector/protocol/Schema.h clang_x86/gen/v8/include/inspector/Debugger.h clang_x86/gen/v8/include/inspector/Runtime.h clang_x86/gen/v8/include/inspector/Schema.h: __v8_src_inspector_protocol_generated_sources___build_toolchain_linux_clang_x86__rule | ../../../v8/third_party/inspector_protocol/CodeGenerator.py ../../../v8/src/inspector/inspector_protocol_config.json ../../../v8/third_party/inspector_protocol/lib/Allocator_h.template ../../../v8/third_party/inspector_protocol/lib/Array_h.template ../../../v8/third_party/inspector_protocol/lib/Collections_h.template ../../../v8/third_party/inspector_protocol/lib/DispatcherBase_cpp.template ../../../v8/third_party/inspector_protocol/lib/DispatcherBase_h.template ../../../v8/third_party/inspector_protocol/lib/ErrorSupport_cpp.template ../../../v8/third_party/inspector_protocol/lib/ErrorSupport_h.template ../../../v8/third_party/inspector_protocol/lib/Forward_h.template ../../../v8/third_party/inspector_protocol/lib/FrontendChannel_h.template ../../../v8/third_party/inspector_protocol/lib/Maybe_h.template ../../../v8/third_party/inspector_protocol/lib/Object_cpp.template ../../../v8/third_party/inspector_protocol/lib/Object_h.template ../../../v8/third_party/inspector_protocol/lib/Parser_cpp.template ../../../v8/third_party/inspector_protocol/lib/Parser_h.template ../../../v8/third_party/inspector_protocol/lib/Protocol_cpp.template ../../../v8/third_party/inspector_protocol/lib/ValueConversions_h.template ../../../v8/third_party/inspector_protocol/lib/Values_cpp.template ../../../v8/third_party/inspector_protocol/lib/Values_h.template ../../../v8/third_party/inspector_protocol/templates/Exported_h.template ../../../v8/third_party/inspector_protocol/templates/Imported_h.template ../../../v8/third_party/inspector_protocol/templates/TypeBuilder_cpp.template ../../../v8/third_party/inspector_protocol/templates/TypeBuilder_h.template ../../../v8/src/inspector/js_protocol.json ../../../v8/src/inspector/inspector_protocol_config.json clang_x86/obj/v8/src/inspector/protocol_compatibility.stamp
+
+build clang_x86/obj/v8/src/inspector/protocol_generated_sources.stamp: clang_x86_stamp clang_x86/gen/v8/src/inspector/protocol/Forward.h clang_x86/gen/v8/src/inspector/protocol/Protocol.cpp clang_x86/gen/v8/src/inspector/protocol/Protocol.h clang_x86/gen/v8/src/inspector/protocol/Console.cpp clang_x86/gen/v8/src/inspector/protocol/Console.h clang_x86/gen/v8/src/inspector/protocol/Debugger.cpp clang_x86/gen/v8/src/inspector/protocol/Debugger.h clang_x86/gen/v8/src/inspector/protocol/HeapProfiler.cpp clang_x86/gen/v8/src/inspector/protocol/HeapProfiler.h clang_x86/gen/v8/src/inspector/protocol/Profiler.cpp clang_x86/gen/v8/src/inspector/protocol/Profiler.h clang_x86/gen/v8/src/inspector/protocol/Runtime.cpp clang_x86/gen/v8/src/inspector/protocol/Runtime.h clang_x86/gen/v8/src/inspector/protocol/Schema.cpp clang_x86/gen/v8/src/inspector/protocol/Schema.h clang_x86/gen/v8/include/inspector/Debugger.h clang_x86/gen/v8/include/inspector/Runtime.h clang_x86/gen/v8/include/inspector/Schema.h

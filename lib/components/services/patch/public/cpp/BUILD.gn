@@ -1,0 +1,17 @@
+# Copyright 2017 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+
+source_set("cpp") {
+  sources = [
+    "patch.cc",
+    "patch.h",
+  ]
+
+  public_deps = [
+    "//lib/components/services/patch/public/interfaces",
+    "//lib/services/service_manager/public/cpp",
+  ]
+}

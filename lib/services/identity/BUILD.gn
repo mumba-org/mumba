@@ -1,0 +1,67 @@
+# Copyright 2017 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+
+source_set("lib") {
+  sources = [
+    "identity_manager_impl.cc",
+    "identity_manager_impl.h",
+    "identity_service.cc",
+    "identity_service.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    #"//lib/components/signin/core/browser",
+    #"//lib/components/signin/core/browser:account_info",
+    "//lib/services/identity/public/cpp:cpp_types",
+    "//lib/services/identity/public/mojom",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+  ]
+}
+
+service_manifest("manifest") {
+  name = "identity"
+  source = "manifest.json"
+}
+
+source_set("tests") {
+  # testonly = true
+  deps = [
+    ":lib",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    #"//lib/components/signin/core/browser",
+    #"//lib/components/signin/core/browser:account_info",
+    #"//lib/components/signin/core/browser:test_support",
+    #"//lib/components/sync_preferences:test_support",
+    "//lib/mojo/public/cpp/bindings:bindings",
+    "//lib/services/identity/public/cpp",
+    "//lib/services/identity/public/mojom",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/cpp:service_test_support",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+  ]
+  sources = [
+    "identity_manager_impl_unittest.cc",
+    "public/cpp/identity_manager_unittest.cc",
+    "public/cpp/primary_account_access_token_fetcher_unittest.cc",
+  ]
+}
+
+service_manifest("unittest_manifest") {
+  name = "identity_unittests"
+  source = "unittest_manifest.json"
+  packaged_services = [ ":manifest" ]
+}
+
+catalog("tests_catalog") {
+  # testonly = true
+  embedded_services = [ ":unittest_manifest" ]
+}

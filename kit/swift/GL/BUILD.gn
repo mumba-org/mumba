@@ -1,0 +1,8 @@
+swift_static("GL") {
+  deps = [
+    "//runtime/MumbaShims",
+  ]
+  sources = [
+     "Sources/GL2.swift"
+  ]
+}

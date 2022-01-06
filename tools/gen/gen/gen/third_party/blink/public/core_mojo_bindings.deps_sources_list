@@ -1,0 +1,3 @@
+gen/third_party/blink/public/core_mojo_bindings.sources_list
+gen/third_party/blink/public/mojom/mojom_core.sources_list
+gen/lib/url/mojom/url_mojom_origin.sources_list

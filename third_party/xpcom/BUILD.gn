@@ -1,0 +1,795 @@
+
+
+static_library("xpcom_base") {
+  include_dirs = [
+    #"/dom/base",
+    #"/mfbt",
+    #"/netwerk/base",
+    ".",
+    "ds",
+    "build",
+  ]
+  deps = [
+    ":xpidl_generated",
+    #":build",
+    ":xpcom_ds"
+  ]
+  sources = [
+    #"base/!ErrorList.h",
+    #"base/!ErrorNamesInternal.h",
+    "base/CodeAddressService.h",
+    "base/nsAlgorithm.h",
+    "base/nsAutoRef.h",
+    "base/nsCom.h",
+    "base/nsCOMPtr.h",
+    "base/nscore.h",
+    "base/nsCRTGlue.h",
+    "base/nsCycleCollectionNoteChild.h",
+    "base/nsCycleCollectionNoteRootCallback.h",
+    "base/nsCycleCollectionParticipant.h",
+    "base/nsCycleCollectionTraversalCallback.h",
+    "base/nsCycleCollector.h",
+    "base/nsDebug.h",
+    "base/nsDebugImpl.h",
+    "base/nsDumpUtils.h",
+    "base/nsError.h",
+    "base/nsErrorService.h",
+    "base/nsGZFileWriter.h",
+    "base/nsIClassInfoImpl.h",
+    "base/nsID.h",
+    "base/nsIDUtils.h",
+    "base/nsIInterfaceRequestorUtils.h",
+    "base/nsINIParser.h",
+    "base/nsInterfaceRequestorAgg.h",
+    "base/nsISizeOf.h",
+    "base/nsISupportsBase.h",
+    "base/nsISupportsImpl.h",
+    "base/nsISupportsUtils.h",
+    "base/nsIWeakReferenceUtils.h",
+    "base/nsMaybeWeakPtr.h",
+    "base/nsMemory.h",
+    "base/nsMemoryReporterManager.h",
+    "base/nsQueryObject.h",
+    "base/nsSystemInfo.h",
+    "base/nsTraceRefcnt.h",
+    "base/nsVersionComparator.h",
+    "base/nsWeakReference.h",
+    "base/AppShutdown.h",
+    "base/AutoRestore.h",
+    "base/AvailableMemoryTracker.h",
+    "base/AvailableMemoryWatcher.h",
+    "base/ClearOnShutdown.h",
+    "base/CountingAllocatorBase.h",
+    "base/CycleCollectedJSContext.h",
+    "base/CycleCollectedJSRuntime.h",
+    "base/Debug.h",
+    "base/DebuggerOnGCRunnable.h",
+    "base/DeferredFinalize.h",
+    "base/EnumeratedArrayCycleCollection.h",
+    "base/ErrorNames.h",
+    "base/GkRustUtils.h",
+    "base/HoldDropJSObjects.h",
+    "base/IntentionalCrash.h",
+    "base/JSObjectHolder.h",
+    "base/Logging.h",
+    "base/MemoryInfo.h",
+    "base/MemoryMapping.h",
+    "base/MemoryReportingProcess.h",
+    "base/MemoryTelemetry.h",
+    "base/nsMemoryInfoDumper.h",
+    "base/NSPRLogModulesParser.h",
+    "base/OwningNonNull.h",
+    "base/RLBoxSandboxPool.h",
+    "base/RLBoxUtils.h",
+    "base/ShutdownPhase.h",
+    "base/SizeOfState.h",
+    "base/StaticLocalPtr.h",
+    "base/StaticMonitor.h",
+    "base/StaticMutex.h",
+    "base/StaticPtr.h",
+    "base/TupleCycleCollection.h",
+    #"base/nsDebugImpl.cpp",
+    "base/nsDumpUtils.cpp", 
+    "base/AppShutdown.cpp",
+    "base/AvailableMemoryTracker.cpp",
+    "base/AvailableMemoryWatcher.cpp",
+    "base/ClearOnShutdown.cpp",
+    "base/CycleCollectedJSContext.cpp",
+    "base/CycleCollectedJSRuntime.cpp",
+    "base/Debug.cpp",
+    "base/DebuggerOnGCRunnable.cpp",
+    "base/DeferredFinalize.cpp",
+    "base/ErrorNames.cpp",
+    "base/GkRustUtils.cpp",
+    "base/HoldDropJSObjects.cpp",
+    "base/JSObjectHolder.cpp",
+    "base/LogCommandLineHandler.cpp",
+    "base/Logging.cpp",
+    "base/LogModulePrefWatcher.cpp",
+    "base/MemoryTelemetry.cpp",
+    "base/nsClassInfoImpl.cpp",
+    "base/nsCOMPtr.cpp",
+    "base/nsConsoleMessage.cpp",
+    "base/nsConsoleService.cpp",
+    "base/nsCRTGlue.cpp",
+    "base/nsCycleCollectionParticipant.cpp",
+    "base/nsCycleCollector.cpp",
+    "base/nsCycleCollectorTraceJSHelpers.cpp",
+    "base/nsErrorService.cpp",
+    "base/nsGZFileWriter.cpp",
+    "base/nsID.cpp",
+    "base/nsIInterfaceRequestorUtils.cpp",
+    "base/nsINIParser.cpp",
+    "base/nsInterfaceRequestorAgg.cpp",
+    "base/nsISupportsImpl.cpp",
+    "base/nsMemory.cpp",
+    "base/nsMemoryImpl.cpp",
+    "base/nsMemoryInfoDumper.cpp",
+    "base/nsMemoryReporterManager.cpp",
+    "base/nsMessageLoop.cpp",
+    "base/NSPRLogModulesParser.cpp",
+    "base/nsSecurityConsoleMessage.cpp",
+    "base/nsSystemInfo.cpp",
+    "base/nsTraceRefcnt.cpp",
+    "base/nsUUIDGenerator.cpp",
+    "base/nsVersionComparator.cpp",
+    "base/nsVersionComparatorImpl.cpp",
+    "base/nsWeakReference.cpp",
+    "base/RLBoxSandboxPool.cpp",
+  ]
+
+  if (current_os == "Windows") {
+    sources += [
+      "base/nsWindowsHelpers.h",
+      "base/AvailableMemoryWatcherWin.cpp",
+      "base/MemoryInfo.cpp",
+    ]
+    ldlink_flags = [
+      "wscapi"
+    ]
+  } else if (current_os == "Linux") {
+    sources += [
+      "base/MemoryMapping.cpp",
+      "base/AvailableMemoryWatcherLinux.cpp",
+      "base/AvailableMemoryWatcherUtils.h",
+    ]
+  } else if (current_os == "Macos") {
+    sources += [
+      "base/AvailableMemoryWatcherMac.cpp",
+      "base/MemoryPressureLevelMac.h"
+    ]
+  }
+
+}
+
+static_library("xpcom_build") {
+  deps = [
+    ":xpidl_generated",
+  ]
+  include_dirs = [
+    ".",
+    "base",
+    "components",
+    "ds",
+    "glue",
+    "io",
+    "threads",
+    #"/chrome",
+    #"/docshell/base",
+    #"/js/xpconnect/loader",
+  ]
+  sources = [
+    "build/nsXPCOM.h",
+    "build/nsXPCOMCID.h",
+    "build/nsXPCOMCIDInternal.h",
+    "build/nsXULAppAPI.h",
+    "build/XREChildData.h",
+    "build/xrecore.h",
+    "build/XREShellData.h",
+    #"build/GeckoProcessTypes.h",
+    #"build/Services.h",
+    "build/FileLocation.h",
+    "build/IOInterposer.h",
+    "build/LateWriteChecks.h",
+    "build/Omnijar.h",
+    "build/PoisonIOInterposer.h",
+    "build/SmallArrayLRUCache.h",
+    "build/XPCOM.h",
+    "build/XREAppData.h",
+    "build/FileLocation.cpp",
+    "build/IOInterposer.cpp",
+    "build/LateWriteChecks.cpp",
+    "build/MainThreadIOLogger.cpp",
+    "build/Omnijar.cpp",
+    "build/XPCOMInit.cpp",
+  ]
+
+  if (current_os == "Windows") {
+    sources += [
+      "build/perfprobe.h",
+      "build/perfprobe.cpp",
+      "build/PoisonIOInterposerBase.cpp",
+      "build/PoisonIOInterposerWin.cpp",
+    ]
+  } else if (current_os == "MacOS") {
+    sources += [
+      "build/PoisonIOInterposerBase.cpp",
+      "build/PoisonIOInterposerMac.cpp",
+    ]
+  } else {
+    sources += [
+      "build/PoisonIOInterposerStub.cpp"
+    ]
+  }
+}
+
+
+#"components.conf",
+
+static_library("xpcom_components") {
+  deps = [
+    ":xpidl_generated",
+  ]
+  include_dirs = [
+    ".",
+    "base",
+    "build",
+    "ds"
+  ]  
+  sources = [
+    "components/nsCategoryCache.h",
+    "components/nsCategoryManagerUtils.h",
+    "components/nsComponentManagerUtils.h",
+    "components/nsServiceManagerUtils.h",
+    "components/GenericFactory.h",
+    "components/Module.h",
+    "components/ModuleUtils.h",
+    # generated
+    #"Components.h",
+    #"StaticComponentData.h",
+    #"StaticComponents.cpp",
+    #"services.json",
+    "components/GenericFactory.cpp",
+    "components/ManifestParser.cpp",
+    "components/nsCategoryCache.cpp",
+    "components/nsCategoryManager.cpp",
+    "components/nsComponentManager.cpp",
+    "components/nsComponentManagerUtils.cpp",
+    # generated
+    #"!StaticComponents.cpp",
+  ]
+
+}
+
+#"nsIArray.idl",
+#"nsIArrayExtensions.idl",
+#"nsIINIParser.idl",
+#"nsIMutableArray.idl",
+#"nsIObserver.idl",
+#"nsIObserverService.idl",
+#"nsIPersistentProperties2.idl",
+#"nsIProperties.idl",
+#"nsIProperty.idl",
+#"nsIPropertyBag.idl",
+#"nsIPropertyBag2.idl",
+#"nsISerializable.idl",
+#"nsISimpleEnumerator.idl",
+#"nsIStringEnumerator.idl",
+#"nsISupportsIterators.idl",
+#"nsISupportsPrimitives.idl",
+#"nsIVariant.idl",
+#"nsIWritablePropertyBag.idl",
+#"nsIWritablePropertyBag2.idl",
+
+
+static_library("xpcom_ds") {
+  deps = [
+    ":xpidl_generated",
+  ]
+  include_dirs = [
+    ".",
+    "io",
+  ]  
+  sources = [
+    "ds/nsGkAtomConsts.h",
+    "ds/nsGkAtomList.h",
+    "ds/nsArray.h",
+    "ds/nsArrayEnumerator.h",
+    "ds/nsArrayUtils.h",
+    "ds/nsAtom.h",
+    "ds/nsBaseHashtable.h",
+    "ds/nsCharSeparatedTokenizer.h",
+    "ds/nsCheapSets.h",
+    "ds/nsClassHashtable.h",
+    "ds/nsCOMArray.h",
+    "ds/nsCRT.h",
+    "ds/nsDeque.h",
+    "ds/nsEnumeratorUtils.h",
+    "ds/nsExpirationTracker.h",
+    "ds/nsGkAtoms.h",
+    "ds/nsHashKeys.h",
+    "ds/nsHashPropertyBag.h",
+    "ds/nsHashtablesFwd.h",
+    "ds/nsInterfaceHashtable.h",
+    "ds/nsMathUtils.h",
+    "ds/nsPersistentProperties.h",
+    "ds/nsPointerHashKeys.h",
+    "ds/nsProperties.h",
+    "ds/nsQuickSort.h",
+    "ds/nsRefCountedHashtable.h",
+    "ds/nsRefPtrHashtable.h",
+    "ds/nsSimpleEnumerator.h",
+    "ds/nsStaticAtomUtils.h",
+    "ds/nsStaticNameTable.h",
+    "ds/nsStringEnumerator.h",
+    "ds/nsSupportsPrimitives.h",
+    "ds/nsTArray-inl.h",
+    "ds/nsTArray.h",
+    "ds/nsTArrayForwardDeclare.h",
+    "ds/nsTHashMap.h",
+    "ds/nsTHashSet.h",
+    "ds/nsTHashtable.h",
+    "ds/nsTObserverArray.h",
+    "ds/nsTPriorityQueue.h",
+    "ds/nsVariant.h",
+    "ds/nsWhitespaceTokenizer.h",
+    "ds/PLDHashTable.h",
+    "ds/ArenaAllocator.h",
+    "ds/ArenaAllocatorExtensions.h",
+    "ds/ArrayAlgorithm.h",
+    "ds/ArrayIterator.h",
+    "ds/AtomArray.h",
+    "ds/Dafsa.h",
+    "ds/IncrementalTokenizer.h",
+    "ds/MruCache.h",
+    "ds/Observer.h",
+    "ds/PerfectHash.h",
+    "ds/SimpleEnumerator.h",
+    "ds/StickyTimeDuration.h",
+    "ds/Tokenizer.h",
+    "ds/Dafsa.cpp",
+    "ds/IncrementalTokenizer.cpp",
+    "ds/nsArray.cpp",
+    "ds/nsArrayEnumerator.cpp",
+    "ds/nsArrayUtils.cpp",
+    "ds/nsAtomTable.cpp",
+    "ds/nsCOMArray.cpp",
+    "ds/nsCRT.cpp",
+    "ds/nsDeque.cpp",
+    "ds/nsEnumeratorUtils.cpp",
+    "ds/nsGkAtoms.cpp",
+    "ds/nsHashPropertyBag.cpp",
+    "ds/nsINIParserImpl.cpp",
+    "ds/nsObserverList.cpp",
+    "ds/nsObserverService.cpp",
+    "ds/nsPersistentProperties.cpp",
+    "ds/nsProperties.cpp",
+    "ds/nsQuickSort.cpp",
+    "ds/nsSimpleEnumerator.cpp",
+    "ds/nsStaticNameTable.cpp",
+    "ds/nsStringEnumerator.cpp",
+    "ds/nsSupportsPrimitives.cpp",
+    "ds/nsTArray.cpp",
+    "ds/nsTObserverArray.cpp",
+    "ds/nsVariant.cpp",
+    "ds/PLDHashTable.cpp",
+    "ds/Tokenizer.cpp",
+  ]
+
+}
+
+static_library("xpcom_glue") {
+  include_dirs= [
+    "build",
+    "threads",
+  ]
+  defines = [
+    "_USE_ANSI_CPP=1",
+    "XPCOM_GLUE=1",
+  ]
+  sources = [
+    "glue/FileUtils.h",
+    "glue/MemUtils.h",
+    "glue/FileUtils.cpp",
+    "glue/MemUtils.cpp",
+    "glue/standalone/nsXPCOMGlue.cpp",
+  ]
+  
+}
+
+#"nsIAsyncInputStream.idl",
+#"nsIAsyncOutputStream.idl",
+#"nsIBinaryInputStream.idl",
+#"nsIBinaryOutputStream.idl",
+#"nsICloneableInputStream.idl",
+#"nsIConverterInputStream.idl",
+#"nsIConverterOutputStream.idl",
+#"nsIDirectoryEnumerator.idl",
+#"nsIDirectoryService.idl",
+#"nsIFile.idl",
+#"nsIInputStream.idl",
+#"nsIInputStreamLength.idl",
+#"nsIInputStreamPriority.idl",
+#"nsIInputStreamTee.idl",
+#"nsIIOUtil.idl",
+#"nsILineInputStream.idl",
+#"nsILocalFileWin.idl",
+#"nsIMultiplexInputStream.idl",
+#"nsIObjectInputStream.idl",
+#"nsIObjectOutputStream.idl",
+#"nsIOutputStream.idl",
+#"nsIPipe.idl",
+#"nsISafeOutputStream.idl",
+#"nsIScriptableBase64Encoder.idl",
+#"nsIScriptableInputStream.idl",
+#"nsISeekableStream.idl",
+#"nsIStorageStream.idl",
+#"nsIStreamBufferAccess.idl",
+#"nsIStringStream.idl",
+#"nsITellableStream.idl",
+#"nsIUnicharInputStream.idl",
+#"nsIUnicharLineInputStream.idl",
+#"nsIUnicharOutputStream.idl",
+
+static_library("xpcom_io") {
+  deps = [
+    ":xpidl_generated",
+  ]
+  include_dirs= [
+    "build"
+  ]
+  sources = [
+    "io/FileDescriptorFile.h",
+    "io/nsAnonymousTemporaryFile.h",
+    "io/nsAppDirectoryServiceDefs.h",
+    "io/nsDirectoryService.h",
+    "io/nsDirectoryServiceDefs.h",
+    "io/nsDirectoryServiceUtils.h",
+    "io/nsEscape.h",
+    "io/nsLinebreakConverter.h",
+    "io/nsLocalFile.h",
+    "io/nsLocalFileCommon.h",
+    "io/nsMultiplexInputStream.h",
+    "io/nsNativeCharsetUtils.h",
+    "io/nsScriptableInputStream.h",
+    "io/nsStorageStream.h",
+    "io/nsStreamUtils.h",
+    "io/nsStringStream.h",
+    "io/nsUnicharInputStream.h",
+    "io/nsWildCard.h",
+    "io/SpecialSystemDirectory.h",
+    "io/Base64.h",
+    "io/FilePreferences.h",
+    "io/InputStreamLengthHelper.h",
+    "io/InputStreamLengthWrapper.h",
+    "io/NonBlockingAsyncInputStream.h",
+    "io/SeekableStreamWrapper.h",
+    "io/SlicedInputStream.h",
+    "io/SnappyCompressOutputStream.h",
+    "io/SnappyFrameUtils.h",
+    "io/SnappyUncompressInputStream.h",
+    "io/Base64.cpp",
+    "io/crc32c.c",
+    "io/FileDescriptorFile.cpp",
+    "io/FilePreferences.cpp",
+    "io/InputStreamLengthHelper.cpp",
+    "io/InputStreamLengthWrapper.cpp",
+    "io/NonBlockingAsyncInputStream.cpp",
+    "io/nsAnonymousTemporaryFile.cpp",
+    "io/nsAppFileLocationProvider.cpp",
+    "io/nsBinaryStream.cpp",
+    "io/nsDirectoryService.cpp",
+    "io/nsEscape.cpp",
+    "io/nsInputStreamTee.cpp",
+    "io/nsIOUtil.cpp",
+    "io/nsLinebreakConverter.cpp",
+    "io/nsLocalFileCommon.cpp",
+    "io/nsMultiplexInputStream.cpp",
+    "io/nsNativeCharsetUtils.cpp",
+    "io/nsPipe3.cpp",
+    "io/nsScriptableBase64Encoder.cpp",
+    "io/nsScriptableInputStream.cpp",
+    "io/nsSegmentedBuffer.cpp",
+    "io/nsStorageStream.cpp",
+    "io/nsStreamUtils.cpp",
+    "io/nsStringStream.cpp",
+    "io/nsUnicharInputStream.cpp",
+    "io/nsWildCard.cpp",
+    "io/SeekableStreamWrapper.cpp",
+    "io/SlicedInputStream.cpp",
+    "io/SnappyCompressOutputStream.cpp",
+    "io/SnappyFrameUtils.cpp",
+    "io/SnappyUncompressInputStream.cpp",
+    "io/SpecialSystemDirectory.cpp",
+  ]
+   if (current_os == "Windows") {
+    sources += [
+      "io/FileUtilsWin.h",
+      "io/FileUtilsWin.cpp",
+      "io/nsLocalFileWin.cpp",
+    ]
+  } else  {
+    sources += [
+      "io/nsLocalFileUnix.cpp",  
+    ]
+  }
+  if (current_os == "Linux") {
+    defines = [
+      "HAVE_USR_LIB64_DIR"
+    ]
+  }
+}
+
+static_library("xpcom_reflect") {
+  cflags = [
+    "-fno-integrated-as",
+  ]
+  sources = [
+    "reflect/xptcall/nsXPTCUtils.h",
+    "reflect/xptcall/xptcall.h",
+    "reflect/xptcall/xptcall.cpp",
+    "reflect/xptcall/xptcstubsdecl.inc",
+    "reflect/xptcall/xptcstubsdef.inc",
+    "reflect/xptinfo/xptinfo.h",
+    "reflect/xptinfo/xptinfo.cpp",
+  ]
+  if (current_cpu == "arm64" && current_os == "Posix") {
+    sources += [
+      "reflect/xptcall/unix/xptcinvoke_aarch64.cpp",
+      "reflect/xptcall/unix/xptcinvoke_asm_aarch64.S",
+      "reflect/xptcall/unix/xptcstubs_aarch64.cpp",
+      "reflect/xptcall/unix/xptcstubs_asm_aarch64.S",
+    ]
+  }
+  if (current_os == "Macos") {
+    sources += [
+      "reflect/xptcall/unix/xptcinvoke_darwin.cpp",
+      "reflect/xptcall/unix/xptcstubs_darwin.cpp",
+    ]
+    if (current_cpu == "x64") {
+      sources += [
+        "reflect/xptcall/unix/xptcinvoke_asm_x86_64_unix.S",
+      ]
+    }
+  }
+  if (current_os == "Linux") {
+    sources += [
+      "reflect/xptcall/unix/xptcinvoke_gcc_x86_unix.cpp", 
+      "reflect/xptcall/unix/xptcstubs_gcc_x86_unix.cpp",
+      "reflect/xptcall/unix/xptcinvoke_asm_x86_64_unix.S",
+      "reflect/xptcall/unix/xptcinvoke_x86_64_unix.cpp",
+      "reflect/xptcall/unix/xptcstubs_x86_64_linux.cpp",
+    ]
+  }
+  if (current_os == "Windows") {
+    sources += [
+      "reflect/xptcall/win32/xptcinvoke_x86_64.cpp",
+      "reflect/xptcall/win32/xptcstubs_x86_64_gnu.cpp",
+      "reflect/xptcall/win32/xptcinvoke_asm_x86_64_gnu.s"
+    ]
+  }
+}
+
+static_library("xpcom_string") {
+  include_dirs= [
+
+  ]
+  sources = [
+    "string/nsAString.h",
+    "string/nsCharTraits.h",
+    "string/nsDependentString.h",
+    "string/nsDependentSubstring.h",
+    "string/nsLiteralString.h",
+    "string/nsPrintfCString.h",
+    "string/nsPromiseFlatString.h",
+    "string/nsReadableUtils.h",
+    "string/nsString.h",
+    "string/nsStringBuffer.h",
+    "string/nsStringFlags.h",
+    "string/nsStringFwd.h",
+    "string/nsStringIterator.h",
+    "string/nsTDependentString.h",
+    "string/nsTDependentSubstring.h",
+    "string/nsTextFormatter.h",
+    "string/nsTLiteralString.h",
+    "string/nsTPromiseFlatString.h",
+    "string/nsTString.h",
+    "string/nsTStringHasher.h",
+    "string/nsTStringRepr.h",
+    "string/nsTSubstring.h",
+    "string/nsTSubstringTuple.h",
+    "string/nsUTF8Utils.h",
+    "string/nsASCIIMask.cpp",
+    "string/nsDependentString.cpp",
+    "string/nsDependentSubstring.cpp",
+    "string/nsPromiseFlatString.cpp",
+    "string/nsReadableUtils.cpp",
+    "string/nsString.cpp",
+    "string/nsStringComparator.cpp",
+    "string/nsStringObsolete.cpp",
+    "string/nsSubstring.cpp",
+    "string/nsTextFormatter.cpp",
+    "string/nsTSubstringTuple.cpp",
+    "string/precompiled_templates.cpp",
+  ]
+}
+
+static_library("xpcom_threads") {
+  sources = [
+    "threads/MainThreadUtils.h",
+    "threads/nsICancelableRunnable.h",
+    "threads/nsIDelayedRunnableObserver.h",
+    "threads/nsIDiscardableRunnable.h",
+    "threads/nsIIdleRunnable.h",
+    "threads/nsMemoryPressure.h",
+    "threads/nsProcess.h",
+    "threads/nsProxyRelease.h",
+    "threads/nsThread.h",
+    "threads/nsThreadManager.h",
+    "threads/nsThreadPool.h",
+    "threads/nsThreadUtils.h",
+    "threads/AbstractThread.h",
+    "threads/BlockingResourceBase.h",
+    "threads/CondVar.h",
+    "threads/CPUUsageWatcher.h",
+    "threads/DataMutex.h",
+    "threads/DeadlockDetector.h",
+    "threads/DelayedRunnable.h",
+    "threads/EventQueue.h",
+    "threads/IdlePeriodState.h",
+    "threads/IdleTaskRunner.h",
+    "threads/InputTaskManager.h",
+    "threads/LazyIdleThread.h",
+    "threads/MainThreadIdlePeriod.h",
+    "threads/Monitor.h",
+    "threads/MozPromise.h",
+    "threads/MozPromiseInlines.h",
+    "threads/Mutex.h",
+    "threads/PerformanceCounter.h",
+    "threads/Queue.h",
+    "threads/RecursiveMutex.h",
+    "threads/ReentrantMonitor.h",
+    "threads/RWLock.h",
+    "threads/SchedulerGroup.h",
+    "threads/SharedThreadPool.h",
+    "threads/SpinEventLoopUntil.h",
+    "threads/StateMirroring.h",
+    "threads/StateWatching.h",
+    "threads/SynchronizedEventQueue.h",
+    "threads/SyncRunnable.h",
+    "threads/TaskCategory.h",
+    "threads/TaskController.h",
+    "threads/TaskDispatcher.h",
+    "threads/TaskQueue.h",
+    "threads/ThreadBound.h",
+    "threads/ThreadEventQueue.h",
+    "threads/ThrottledEventQueue.h",
+    "threads/VsyncTaskManager.h",
+    "threads/IdleTaskRunner.cpp",
+    "threads/ThreadDelay.cpp",
+    "threads/AbstractThread.cpp",
+    "threads/BlockingResourceBase.cpp",
+    "threads/CPUUsageWatcher.cpp",
+    "threads/DelayedRunnable.cpp",
+    "threads/EventQueue.cpp",
+    "threads/IdlePeriodState.cpp",
+    "threads/InputEventStatistics.cpp",
+    "threads/InputTaskManager.cpp",
+    "threads/LazyIdleThread.cpp",
+    "threads/MainThreadIdlePeriod.cpp",
+    "threads/nsEnvironment.cpp",
+    "threads/nsMemoryPressure.cpp",
+    "threads/nsProcessCommon.cpp",
+    "threads/nsProxyRelease.cpp",
+    "threads/nsThread.cpp",
+    "threads/nsThreadManager.cpp",
+    "threads/nsThreadPool.cpp",
+    "threads/nsThreadUtils.cpp",
+    "threads/nsTimerImpl.cpp",
+    "threads/PerformanceCounter.cpp",
+    "threads/RecursiveMutex.cpp",
+    "threads/RWLock.cpp",
+    "threads/SchedulerGroup.cpp",
+    "threads/SharedThreadPool.cpp",
+    "threads/SynchronizedEventQueue.cpp",
+    "threads/TaskController.cpp",
+    "threads/TaskQueue.cpp",
+    "threads/ThreadEventQueue.cpp",
+    "threads/ThreadEventTarget.cpp",
+    "threads/ThreadLocalVariables.cpp",
+    "threads/ThrottledEventQueue.cpp",
+    "threads/TimerThread.cpp",
+    "threads/VsyncTaskManager.cpp",
+  ]
+}
+
+xpcom_output_dir = "$root_gen_dir/third_party/xpcom"
+
+action_foreach("xpidl_generated") {
+  script = "idl-parser/xpidl/xpidl.py"
+  sources = [
+    "io/nsIAsyncInputStream.idl",
+    "io/nsIAsyncOutputStream.idl",
+    "io/nsIBinaryInputStream.idl",
+    "io/nsIBinaryOutputStream.idl",
+    "io/nsICloneableInputStream.idl",
+    "io/nsIConverterInputStream.idl",
+    "io/nsIConverterOutputStream.idl",
+    "io/nsIDirectoryEnumerator.idl",
+    "io/nsIDirectoryService.idl",
+    "io/nsIFile.idl",
+    "io/nsIInputStream.idl",
+    "io/nsIInputStreamLength.idl",
+    "io/nsIInputStreamPriority.idl",
+    "io/nsIInputStreamTee.idl",
+    "io/nsIIOUtil.idl",
+    "io/nsILineInputStream.idl",
+    "io/nsILocalFileWin.idl",
+    "io/nsIMultiplexInputStream.idl",
+    "io/nsIObjectInputStream.idl",
+    "io/nsIObjectOutputStream.idl",
+    "io/nsIOutputStream.idl",
+    "io/nsIPipe.idl",
+    "io/nsISafeOutputStream.idl",
+    "io/nsIScriptableBase64Encoder.idl",
+    "io/nsIScriptableInputStream.idl",
+    "io/nsISeekableStream.idl",
+    "io/nsIStorageStream.idl",
+    "io/nsIStreamBufferAccess.idl",
+    "io/nsIStringStream.idl",
+    "io/nsITellableStream.idl",
+    "io/nsIUnicharInputStream.idl",
+    "io/nsIUnicharLineInputStream.idl",
+    "io/nsIUnicharOutputStream.idl",
+    "components/nsICategoryManager.idl",
+    "components/nsIClassInfo.idl",
+    "components/nsIComponentManager.idl",
+    "components/nsIComponentRegistrar.idl",
+    "components/nsIFactory.idl",
+    "components/nsIModule.idl",
+    "components/nsIServiceManager.idl",
+    "ds/nsIArray.idl",
+    "ds/nsIArrayExtensions.idl",
+    "ds/nsIINIParser.idl",
+    "ds/nsIMutableArray.idl",
+    "ds/nsIObserver.idl",
+    "ds/nsIObserverService.idl",
+    "ds/nsIPersistentProperties2.idl",
+    "ds/nsIProperties.idl",
+    "ds/nsIProperty.idl",
+    "ds/nsIPropertyBag.idl",
+    "ds/nsIPropertyBag2.idl",
+    "ds/nsISerializable.idl",
+    "ds/nsISimpleEnumerator.idl",
+    "ds/nsIStringEnumerator.idl",
+    "ds/nsISupportsIterators.idl",
+    "ds/nsISupportsPrimitives.idl",
+    "ds/nsIVariant.idl",
+    "ds/nsIWritablePropertyBag.idl",
+    "ds/nsIWritablePropertyBag2.idl",
+  ]
+  outputs = [
+    xpcom_output_dir + "/{{source_name_part}}.h",
+  ]
+  args = [
+    "-m",
+    "header",
+    "{{source}}"
+  ]
+}
+
+
+component("xpcom") {
+  deps = [
+    ":xpidl_generated",
+    ":xpcom_components",
+    ":xpcom_base",
+    ":xpcom_build",
+    ":xpcom_ds",
+    ":xpcom_glue",
+    ":xpcom_io",
+    ":xpcom_reflect",
+    ":xpcom_string",
+    ":xpcom_threads",
+  ]
+}

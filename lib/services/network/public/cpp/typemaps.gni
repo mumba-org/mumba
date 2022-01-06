@@ -1,0 +1,19 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+typemaps = [
+  "//lib/services/network/public/cpp/cookie_manager.typemap",
+  "//lib/services/network/public/cpp/cors_error_status.typemap",
+  "//lib/services/network/public/cpp/http_request_headers.typemap",
+  "//lib/services/network/public/cpp/mutable_network_traffic_annotation_tag.typemap",
+  "//lib/services/network/public/cpp/mutable_partial_network_traffic_annotation_tag.typemap",
+  "//lib/services/network/public/cpp/network_param.typemap",
+  "//lib/services/network/public/cpp/network_types.typemap",
+  "//lib/services/network/public/cpp/proxy_config.typemap",
+  "//lib/services/network/public/cpp/proxy_config_with_annotation.typemap",
+  "//lib/services/network/public/cpp/url_loader_completion_status.typemap",
+  "//lib/services/network/public/cpp/url_request.typemap",
+  "//lib/services/network/public/cpp/url_request_redirect_info.typemap",
+  "//lib/services/network/public/cpp/url_response_head.typemap",
+]

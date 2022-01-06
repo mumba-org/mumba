@@ -1,0 +1,23 @@
+swift_static("Route") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+  ]
+  if (is_linux) {
+    deps += [
+      "//kit/swift/PosixShim",
+      "//kit/swift/ThirdParty/Libevent",
+      "//kit/swift/ThirdParty/ProtocolBuffers",
+    ]
+  }
+  sources = [
+    "Sources/RouteHandler.swift",
+    "Sources/RouteRegistry.swift",
+    "Sources/RouteRequestHandler.swift",
+    "Sources/RouteRequest.swift",
+    "Sources/RouteResponse.swift",
+    "Sources/RouteBuffer.swift",
+    "Sources/RouteRequestError.swift",
+    
+  ]
+}

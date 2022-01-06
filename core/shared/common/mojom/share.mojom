@@ -1,0 +1,187 @@
+// Copyright 2021 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/ref_counted_memory.mojom";
+import "lib/mojo/public/mojom/base/big_buffer.mojom";
+import "lib/url/mojom/url.mojom";
+import "core/shared/common/mojom/repo.mojom";
+
+enum ShareTransportType {
+  kSHARE_TRANSPORT_RPC = 0,
+  kSHARE_TRANSPORT_HTTP = 1,
+  kSHARE_TRANSPORT_HTTP2 = 2,
+  kSHARE_TRANSPORT_WEBSOCKET = 3,
+  kSHARE_TRANSPORT_WEBRTC = 4,
+  kSHARE_TRANSPORT_QUIC = 5,
+  kSHARE_TRANSPORT_TORRENT = 6,
+  kSHARE_TRANSPORT_IPFS = 7
+};
+
+enum IPAddressType {
+  kIP_ADDR_TYPE_IPV4 = 0,
+  kIP_ADDR_TYPE_IPV6 = 1
+};
+
+enum IPAddressFormat {
+  kIP_ADDR_FORMAT_BYTES = 0,
+  kIP_ADDR_FORMAT_STRING = 1
+};
+
+struct ShareTransport {
+  ShareTransportType type;
+  string name;
+  string vendor;
+  string version;
+  string options;
+};
+
+enum ShareRemoteStatus {
+  kREMOTE_STATUS_UNKNOWN = 0,
+  kREMOTE_STATUS_UP = 1,
+  kREMOTE_STATUS_DOWN = 2,
+  kREMOTE_STATUS_ERROR = 3
+};
+
+struct ShareService {
+  string uuid;
+  string name;
+  string full_name;
+  string vendor;
+  string description;
+  string mime_type;
+  string version;
+  ShareTransport transport;
+  string peer_uuid;
+  string ip_address;
+  IPAddressType ip_address_type;
+  IPAddressFormat ip_address_format;
+  int32 port;
+  string options;
+  ShareRemoteStatus status;
+};
+
+struct SharePeer {
+  string uuid;
+  string ip_address;
+  IPAddressType ip_address_type;
+  IPAddressFormat ip_address_format;
+  int32 port;
+  array<ShareService> services;
+  ShareRemoteStatus status;
+};
+
+enum ShareState {
+  kSHARE_STATE_CHECKING_FILES = 0,
+  kSHARE_STATE_DOWNLOADING_METADATA = 1,
+  kSHARE_STATE_DOWNLOADING = 2,
+  kSHARE_STATE_FINISHED = 3,
+  kSHARE_STATE_SEEDING = 4,
+  kSHARE_STATE_ALLOCATING = 5,
+  kSHARE_STATE_CHECKING_RESUME_DATA = 6,
+  kSHARE_STATE_PAUSED = 7,
+  kSHARE_STATE_RESUMED = 8,
+  kSHARE_STATE_CHECKED = 9
+};
+
+enum ShareStatusCode {
+  kSHARE_STATUS_OK = 0,
+  kSHARE_STATUS_ERR_FAILED,
+  kSHARE_STATUS_ERR_PATH_EMPTY,
+  kSHARE_STATUS_ERR_ENTRY_NOT_FOUND,
+};
+
+enum ShareType {
+  kSHARE_TYPE_RAW = 0,
+  kSHARE_TYPE_APPLICATION = 1,
+  kSHARE_TYPE_FILESET = 2,
+  kSHARE_TYPE_DATABASE = 3
+};
+
+enum SharePieceState {
+  kPIECE_STATE_NONE = 0,
+  kPIECE_STATE_READ = 1,
+  kPIECE_STATE_WRITE = 2,
+  kPIECE_STATE_PASS = 3,
+  kPIECE_STATE_FINISHED = 4,
+  kPIECE_STATE_READ_ERROR = 5,
+  kPIECE_STATE_HASH_FAILED = 6,
+  kPIECE_STATE_FAILED = 7
+};
+
+struct SharePiece {
+  int32 piece_index;
+  int64 piece_size;
+  SharePieceState state;
+};
+
+struct ShareFile {
+  string name;
+  int64 size;
+  int64 piece_count;
+};
+
+struct ShareEntry {
+  string uuid;
+  ShareType type;
+  ShareState state;
+  ShareTransport transport;
+  string name;
+  string manifest;
+  string creator;
+  string domain;
+  string address;
+  RepoAddressFormat address_format;
+  string address_format_version;
+  string root_tree; // raw_bytes
+  string public_key; // raw_bytes
+  PKCryptoFormat pk_crypto_format;
+  int64 piece_count;
+  int64 piece_length;
+  int64 size;
+  RepoEntry source;
+  array<SharePeer> peers;
+};
+
+// this is 'before' the actual ShareEntry
+// this is mostly an address reference to a possible Share
+struct ShareDescriptor {
+  string address;
+  RepoAddressFormat address_format;
+  string address_format_version;
+};
+
+interface ShareWatcher {
+  OnShareAdded(ShareEntry entry);
+  OnShareRemoved(ShareEntry entry);
+};
+
+interface ShareRegistry {
+  
+  AddShare(ShareEntry entry) => (ShareStatusCode reply);
+  AddShareByAddress(ShareDescriptor descriptor) => (ShareStatusCode reply);
+  RemoveShare(string address) => (ShareStatusCode reply);
+  RemoveShareByUUID(string uuid) => (ShareStatusCode reply);
+  LookupShare(string address) => (ShareStatusCode code, ShareEntry? entry);
+  LookupShareByName(string name) => (ShareStatusCode code, ShareEntry? entry);
+  LookupShareByUUID(string uuid) => (ShareStatusCode code, ShareEntry? entry);
+  HaveShare(string address) => (bool have);
+  HaveShareByName(string name) => (bool have);
+  HaveShareByUUID(string uuid) => (bool have);
+  ListShares() => (array<ShareEntry> entries);
+  ListSharesByDomain(string domain) => (array<ShareEntry> entries);
+  GetShareCount() => (uint32 count);
+  PauseShare(string address) => (ShareStatusCode reply);
+  ResumeShare(string address) => (ShareStatusCode reply);
+  AnnounceShare(string address) => (ShareStatusCode reply);
+  SeedShare(string address) => (ShareStatusCode reply);
+  ListSharePeers(string address) => (array<SharePeer> peers);
+  ListSharePieces(string address) => (array<SharePiece> pieces);
+  ListShareFiles(string address) => (array<ShareFile> files);
+  
+  AddWatcher(ShareWatcher watcher) => (int32 id);
+  RemoveWatcher(int32 watcher);
+};

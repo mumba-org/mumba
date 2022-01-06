@@ -1,0 +1,61 @@
+{
+'variables': {
+ },
+ 'targets': [
+  {
+   'target_name': 'cmark',
+   'type': 'static_library',
+   'dependencies': [
+      #'../../../lib/lang/llvm/llvm.gyp:llvm',
+      #'../../../lib/lang/clang/clang.gyp:clang',
+   ],
+   'include_dirs': [
+     'src',
+     #'../../../lib/lang',
+   ],
+   'cflags_cc!': [
+     #'-fno-rtti',
+   ],
+   'defines': [
+    #'SWIFT_VERSION=4.1', 
+    #'SWIFT_VERSION_MAJOR=4', 
+    #'SWIFT_VERSION_MINOR=1',
+   ],
+   'sources': [
+      'src/cmark.h',
+      'src/parser.h',
+      'src/buffer.h',
+      'src/node.h',
+      'src/iterator.h',
+      'src/chunk.h',
+      'src/references.h',
+      'src/bench.h',
+      'src/utf8.h',
+      'src/scanners.h',
+      'src/inlines.h',
+      'src/houdini.h',
+      'src/cmark_ctype.h',
+      'src/render.h',
+      'src/cmark.c',
+      'src/node.c',
+      'src/iterator.c',
+      'src/blocks.c',
+      'src/inlines.c',
+      'src/scanners.c',
+      'src/scanners.re',
+      'src/utf8.c',
+      'src/buffer.c',
+      'src/references.c',
+      'src/render.c',
+      'src/man.c',
+      'src/xml.c',
+      'src/html.c',
+      'src/commonmark.c',
+      'src/latex.c',
+      'src/houdini_href_e.c',
+      'src/houdini_html_e.c',
+      'src/houdini_html_u.c',
+      'src/cmark_ctype.c',
+   ]
+   }],
+}

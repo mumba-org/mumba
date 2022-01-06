@@ -1,0 +1,77 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11AtomCache.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11AtomCache.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11AtomCache.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11AtomCache.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11AtomCache~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11Device.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Device.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Device.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Device.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Device~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11ErrorTracker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ErrorTracker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ErrorTracker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ErrorTracker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ErrorTracker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11Errors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Errors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Errors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Errors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Errors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11Event.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Event.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Event.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Event.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Event~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11EventSource.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11EventSource.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11EventSource.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11EventSource.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11EventSource~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11ForeignWindowManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ForeignWindowManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ForeignWindowManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ForeignWindowManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11ForeignWindowManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11TouchFactory.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11TouchFactory.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11TouchFactory.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11TouchFactory.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11TouchFactory~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11Utils.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Utils.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Utils.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Utils.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Utils~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/X11Window.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Window.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Window.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Window.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/X11Window~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/X11/XMenuList.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/XMenuList.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/XMenuList.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/XMenuList.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/X11/XMenuList~partial.swiftmodule"
+   }
+}

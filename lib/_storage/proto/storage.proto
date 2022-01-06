@@ -1,0 +1,390 @@
+syntax = "proto3";
+
+package storage_proto;
+
+enum ExecutableArchitecture {
+  LINUX_X86_64 = 0;
+  LINUX_ARM = 1;
+  LINUX_AARCH64 = 2;
+  DARWIN_X86_64 = 3;
+  DARWIN_ARM = 4;
+  DARWIN_AARCH64 = 5;
+  WINDOWS_X86_64 = 6;
+  WINDOWS_ARM = 7;
+  WINDOWS_AARCH64 = 8;
+  ANY_LLVMIR = 9;
+  ANY_WASM = 10;
+  ANY_SOURCE = 11;
+  MAX_ARCH = 12;
+}
+
+enum ExecutableFormat {
+  //  a code library
+  LIBRARY = 0;
+  //  a code program
+  PROGRAM = 1;
+} 
+
+// well-known entry codes
+enum ExecutableEntryCode {
+  APP_INIT = 0;
+  APP_DESTROY = 1;
+  APP_GET_CLIENT = 2;
+}
+
+message ExecutableEntry {
+  enum Kind {
+    STATIC = 0;
+    DYNAMIC = 1;
+  }
+  Kind kind = 1;
+  ExecutableEntryCode code = 2; // if is static.. lookup here
+  string name = 3; // if is dynamic should lookup by name instead
+}
+
+
+// TODO: precisamos poder representar informações de manifestos torrent
+//       como a 'piece_index' e hashes do tipo sha1
+//       agora isso será o header de todo blob alocado
+//       no cache fs, e não pode depender de herança
+//       (se tiver informaçoes importantes nos impls precisa colocar aqui agora)
+//
+
+enum ResourceKind {
+    STORAGE_RESOURCE = 0; // another (inner) disk
+    MANIFEST_RESOURCE = 1;
+    PROTOCOL_RESOURCE = 2; // a protobuf file with the description of a service
+    CODE_RESOURCE = 3; // a executable image (cand be dll or executable for several arch's)
+    APPLICATION_RESOURCE = 4; // application db. has 1-to-many libraries
+    DATABASE_RESOURCE = 5; // a sqlite kv db
+    BLOB_RESOURCE = 6; // any other opaque) asset
+    SYNC_RESOURCE = 7; // a seed as a sync to a resource
+                 // that is not in the disk yet, but should be synchronized
+    SIGNATURE_RESOURCE = 8;
+    DATASET_RESOURCE = 9;
+    HEAD_RESOURCE = 10;
+    README_RESOURCE = 11;
+}
+
+message Resource {
+  bytes uuid = 1;
+  ResourceKind kind = 2;
+  string path = 3;
+  int64 size = 4;
+  bytes sha256_hash = 5;
+}
+
+message Blob {
+  Resource resource = 1;
+}
+
+message Dataset {
+  enum Source {
+    // available over http
+    HTTP = 0;
+    // available over torrent
+    TORRENT = 1;
+    // available over git
+    GIT = 2;
+    // a generic way to define a custom/unknown protocol
+    // can be web socket, udp, ipfs, etc..
+    CUSTOM = 3;
+  }
+  enum SyncKind {
+    // only download available (as mostly is the case for HTTP)
+    SYNC_DOWN = 0;
+    SYNC_UP = 1;
+    SYNC_TWOWAY = 2;
+    SYNC_SHARE = 3;
+  }
+  enum SyncMode {
+    // need to sync the whole resource before using
+    SYNC_MODE_BATCH = 0;
+    SYNC_MODE_STREAM = 1;
+    // no finite size resource..
+    // always streaming.. and transient
+    // like in a radio broadcast
+    SYNC_MODE_STREAM_ALWAYS = 2;
+  }
+  enum SyncState {
+    SYNC_STATE_IDLE = 0;
+    // downloading
+    SYNC_STATE_DOWLOADING = 1;
+    // only uploading
+    SYNC_STATE_UPLOADING = 2;
+    // when both dowloading/uploading
+    SYNC_STATE_STREAMING = 3;
+    // when fully downloaded and idle
+    SYNC_STATE_SYNCED = 4;
+    // fully downloaded and sharing
+    SYNC_STATE_SEEDING = 5;
+  }
+  
+  Resource resource = 1;
+  Source source = 2;
+  SyncKind kind = 3;
+  SyncMode mode = 4;
+  SyncState state = 5;
+  string url = 6;
+  // more data passed, that cannot go into the url
+  string url_data = 7;
+  // the whole size of the resource to be synced
+  // as the 'resource.size' will return
+  // the size of the manifest, and not the
+  // thing it points to 
+  int64 full_size = 8;
+  // how much do we have of the resource locally
+  int64 downloaded_size = 9;
+}
+
+message Application {
+  Resource resource = 1;
+  ExecutableFormat format = 2;
+  string version = 3;
+}
+
+// represents a executable program or dinamic library (we dont deal with static)
+message Code {
+  Resource resource = 1;
+  ExecutableFormat format = 2;
+  ExecutableArchitecture architecture = 3;
+}
+
+message Signature {
+  enum Kind {
+    PKCS11 = 0;
+  }
+  Resource resource = 1;
+  Kind kind = 2;
+  bytes data = 3;
+}
+
+message Database {
+  Resource resource = 1;
+}
+
+message Protocol {
+  Resource resource = 1;
+}
+
+message Head {
+  Resource resource = 1;
+}
+
+message Readme {
+  Resource resource = 1;
+}
+
+message MerkleTree {
+  Resource resource = 1;
+}
+
+message HeaderVersion {
+  int32 major_number = 1;
+  int32 minor_number = 2;
+}
+
+message StorageHeader {
+  HeaderVersion version = 1;
+  Info root = 2;
+}
+
+//enum InfoInodeType {
+//  INODE_KEYSPACE = 0;
+//  INODE_FILE = 1;
+//  INODE_DATABASE = 2;
+//}
+
+message InfoInode {
+  string name = 1;
+  bytes root_hash = 2;
+  bytes parent = 3;
+  int64 offset = 4;
+  int64 piece_count = 5;
+  int64 piece_start = 6;
+  int64 piece_end = 7;
+  int64 length = 8;
+  // dir + name + ext
+  string path = 11;
+  string content_type = 12;
+  int64 creation_date = 13;
+  int32 mtime = 14;
+  string attr = 15;
+  // for when a blob is a db
+  //InfoInodeType type = 16;
+}
+
+enum InfoKind {
+  INFO_RAW = 0;
+  INFO_DATA = 1;
+  INFO_FILE = 2;
+}
+
+enum InfoState {
+  // empty entry, when not even metadata is here
+  STATE_NONE = 0;
+  STATE_CHECKING = 1;
+  STATE_DOWNLOADING_META = 2;
+  STATE_DOWNLOADING = 3;
+  STATE_FINISHED = 4;
+  STATE_SEEDING = 5;
+  STATE_ERROR = 6;
+}
+
+message InfoPeerNode {
+  string address = 1;
+  int32 port = 2;
+}
+
+message InfoTracker {
+
+}
+
+message InfoPiece {
+  int32 index = 1;
+  int64 length = 2;
+  // all torrent states work here
+  // except maybe 'downloading meta'
+  InfoState state = 3;
+}
+
+message Info {
+  InfoKind kind = 1;
+  InfoState state = 2;
+  string path = 3;
+  bytes id = 4;
+  bytes tree = 5;
+  bytes root_hash = 6;
+  string comment = 7;
+  string created_by = 8;
+  int64 piece_length = 9;
+  int64 piece_count = 10;
+  int64 length = 11;
+  int64 hash_header_length = 12;
+  int64 hash_content_length = 13;
+  int64 creation_date = 14;
+  int32 mtime = 15;
+  bool readonly = 17;
+  string announce = 18;
+  repeated string announce_list = 19;
+  repeated InfoInode inodes = 20;
+  repeated InfoPeerNode nodes = 21;
+  repeated InfoTracker trackers = 22;
+  //repeated InfoPiece pieces = 23;
+}
+
+message EntryMerkleHeaderNode {
+  int64 content_size = 1;
+  int64 node_count = 2;
+  int64 leaf_count = 3;
+  int64 block_count = 4;
+  int64 first_leaf = 5;
+}
+
+message EntryMerkleHeader {
+  int64 count = 1;
+  int64 content_size = 2;
+  repeated EntryMerkleHeaderNode node = 3;
+}
+
+// this is whats describes a full disk
+// in DHT
+// this should be the "header of the disk"
+// and should probably be allocated
+// in a well-known address on the on-disk hash table
+// like '00000...' or '__HEADER__'
+message EntryHeaderBlock {
+  int64 entry_count = 2;
+  repeated Info entries = 3;
+  string next = 4;
+}
+
+enum ColumnType {
+  COLUMN_INT32 = 0;
+  COLUMN_INT64 = 1;
+  COLUMN_UINT32 = 2;
+  COLUMN_UINT64 = 3;
+  COLUMN_BOOL = 4;
+  COLUMN_FLOAT = 5;
+  COLUMN_DOUBLE = 6;
+  COLUMN_STRING = 7;
+  COLUMN_BYTES = 8;
+  COLUMN_DATE = 9;
+  COLUMN_TIMESTAMP = 10;
+  COLUMN_TIME = 11;
+  COLUMN_DATETIME = 12;
+  COLUMN_GEOGRAPHY = 13;
+  COLUMN_NUMERIC = 14;
+  COLUMN_STRUCT = 15;
+  COLUMN_INT32_ARRAY = 16;
+  COLUMN_INT64_ARRAY = 17;
+  COLUMN_UINT32_ARRAY = 18;
+  COLUMN_UINT64_ARRAY = 19;
+  COLUMN_BOOL_ARRAY = 20;
+  COLUMN_FLOAT_ARRAY = 21;
+  COLUMN_DOUBLE_ARRAY = 22;
+  COLUMN_STRING_ARRAY = 23;
+  COLUMN_BYTES_ARRAY = 24;
+  COLUMN_TIMESTAMP_ARRAY = 25;
+  COLUMN_DATETIME_ARRAY = 26;
+  COLUMN_GEOGRAPHY_ARRAY = 27;
+  COLUMN_NUMERIC_ARRAY = 28;
+}
+
+message Column {
+  string name = 1;
+  ColumnType type = 2;
+  uint32 offset = 3;
+}
+
+message Table {
+  string name = 1;
+  int32 index = 2;
+  string keyspace = 3;
+  bool readonly = 4;
+  string proto = 5;
+  string table_descriptor_name = 6;
+  repeated Column column = 7;
+}
+
+message Catalog {
+  string name = 1;
+  int64 table_count = 2;
+  Table meta_table = 4;
+  repeated Table table = 5;
+}
+
+message CatalogMetadata {
+  Catalog catalog = 1;
+};
+
+enum StorageStatus {
+  STORAGE_STATUS_NONE = 0;
+  STORAGE_STATUS_OFFLINE = 1;
+  STORAGE_STATUS_ONLINE = 2;
+  STORAGE_STATUS_ERROR = 3;
+  STORAGE_STATUS_DISABLED = 4;
+};
+
+message StorageState {
+  StorageStatus status = 1;
+  string version = 2;
+  string address = 3;
+  string local_path = 4;
+  string creator = 5;
+  bytes pubkey = 6;
+  bytes privkey = 7;
+  int64 size = 8;
+  int64 entry_count = 9;
+  int64 started_time = 10;
+  bool dirty = 11;
+  bool sharing = 12;
+  bool owner = 13;
+};
+
+message StorageManifest {
+  string name = 1;
+  bytes pubkey = 2;
+  string creator = 3;
+  repeated Info record = 4;
+};

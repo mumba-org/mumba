@@ -1,0 +1,19 @@
+# Copyright 2018 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("tests") {
+  # testonly = true
+
+  sources = [
+    "platform_handle_unittest.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/mojo/public/c/system",
+    "//lib/mojo/public/cpp/platform",
+    "//lib/mojo/public/cpp/system",
+    "//lib/testing/gtest",
+  ]
+}

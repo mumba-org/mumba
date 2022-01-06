@@ -1,0 +1,56 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+static_library("core") {
+  sources = [
+    "data_use_user_data.cc",
+    "data_use_user_data.h",
+  ]
+  deps = [
+    "//lib/base",
+    "//lib/net",
+  ]
+}
+
+static_library("ascriber") {
+  sources = [
+    "data_use.cc",
+    "data_use.h",
+    "data_use_ascriber.cc",
+    "data_use_ascriber.h",
+    "data_use_measurement.cc",
+    "data_use_measurement.h",
+    "data_use_network_delegate.cc",
+    "data_use_network_delegate.h",
+    "data_use_recorder.cc",
+    "data_use_recorder.h",
+  ]
+  deps = [
+    ":core",
+    "//lib/base",
+    "//lib/components/metrics",
+    #"//google_apis",
+    "//lib/net",
+  ]
+
+  if (!is_ios) {
+    deps += [ "//lib/components/domain_reliability" ]
+  }
+}
+
+source_set("unit_tests") {
+  sources = [
+    "data_use_measurement_unittest.cc",
+    "data_use_network_delegate_unittest.cc",
+  ]
+  # testonly = true
+  deps = [
+    ":ascriber",
+    ":core",
+    "//lib/base/test:test_support",
+    "//lib/components/metrics:metrics",
+    "//lib/net:test_support",
+    "//lib/testing/gtest",
+  ]
+}

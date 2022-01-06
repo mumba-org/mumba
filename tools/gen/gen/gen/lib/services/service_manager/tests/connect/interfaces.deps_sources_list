@@ -1,0 +1,2 @@
+gen/lib/services/service_manager/tests/connect/interfaces.sources_list
+gen/lib/services/service_manager/public/mojom/mojom.sources_list

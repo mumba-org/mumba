@@ -1,0 +1,79 @@
+// Copyright 2018 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+enum DomainStatus {
+  kOk = 0,
+  kError
+};
+
+// enum DomainState {
+//   kUndefined = 0,
+//   kStarted,
+//   kStopped
+// };
+
+enum DomainState {
+  kDOM_STATE_INIT = 0,
+  kDOM_STATE_ONLINE,
+  kDOM_STATE_OFFLINE,
+  kDOM_STATE_ERROR,
+};
+
+struct DomainHandle {
+  string uuid;
+  string name;
+  DomainState state;
+};
+
+struct DeviceHandle {
+  string uuid;
+  string name;
+};
+
+enum ModuleState {
+  kUndefined = 0,
+  kOk,
+  kCorrupt,
+  kInvalid
+};
+
+struct ModuleHandle {
+  string uuid;
+  string name;
+  string creator;
+  string machine_target;
+};
+
+struct PageHandle {
+  string uuid;
+  string url;
+};
+
+struct WindowHandle {
+  string uuid;
+};
+
+struct ServiceHandle {
+  string uuid;
+};
+
+struct IdentityHandle {
+  string uuid;
+};
+
+struct WorkspaceHandle {
+  string uuid;
+};
+
+struct UrlHandle {
+  string uuid;
+  string url;
+};
+
+struct KeyValue {
+  array<uint8> key;
+  array<uint8> value;
+};

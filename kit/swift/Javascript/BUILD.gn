@@ -1,0 +1,14 @@
+swift_static("Javascript") {
+  deps = [
+    "//runtime/MumbaShims"
+  ]
+  sources = [
+    #"Sources/JsEngine.swift",
+    "Sources/Context.swift",
+    "Sources/Debug.swift",
+    "Sources/Error.swift",
+    "Sources/Module.swift",
+    "Sources/Object.swift",
+    "Sources/Script.swift"
+  ]
+}

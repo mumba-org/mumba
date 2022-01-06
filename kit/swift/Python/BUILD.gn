@@ -1,0 +1,12 @@
+swift_static("Python") {
+  sources = [
+   "Python.swift",
+  ]
+  public_deps = [
+    "//third_party/python"
+  ]
+  ldflags = [
+    "-lffi",
+    "-lpython3_vm",
+  ]
+}

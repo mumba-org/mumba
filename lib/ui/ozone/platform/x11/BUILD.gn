@@ -1,0 +1,77 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+visibility = [ "//lib/ui/ozone/*" ]
+
+source_set("x11") {
+  sources = [
+    "client_native_pixmap_factory_x11.cc",
+    "client_native_pixmap_factory_x11.h",
+    "gl_ozone_glx.cc",
+    "gl_ozone_glx.h",
+    "gl_surface_egl_ozone_x11.cc",
+    "gl_surface_egl_ozone_x11.h",
+    "gl_surface_glx_ozone.cc",
+    "gl_surface_glx_ozone.h",
+    "ozone_platform_x11.cc",
+    "ozone_platform_x11.h",
+    "x11_cursor_factory_ozone.cc",
+    "x11_cursor_factory_ozone.h",
+    "x11_cursor_ozone.cc",
+    "x11_cursor_ozone.h",
+    "x11_surface_factory.cc",
+    "x11_surface_factory.h",
+    "x11_window_manager_ozone.cc",
+    "x11_window_manager_ozone.h",
+    "x11_window_ozone.cc",
+    "x11_window_ozone.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/skia",
+    "//lib/ui/base",
+    "//lib/ui/base/x",
+    "//lib/ui/display/manager",
+    "//lib/ui/events",
+    "//lib/ui/events/devices",
+    "//lib/ui/events/ozone:events_ozone",
+    "//lib/ui/events/platform",
+    "//lib/ui/events/platform/x11",
+    "//lib/ui/events/x",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/gfx/x",
+    "//lib/ui/gl",
+    "//lib/ui/ozone:ozone_base",
+    "//lib/ui/ozone/common",
+    "//lib/ui/platform_window",
+    "//lib/ui/platform_window/x11",
+  ]
+
+  configs += [ "//lib/build/config/linux:x11" ]
+
+  public_configs = [ "//third_party/khronos:khronos_headers" ]
+}
+
+source_set("x11_unittests") {
+  # testonly = true
+  sources = [
+    "x11_cursor_factory_ozone_unittest.cc",
+    "x11_window_ozone_unittest.cc",
+  ]
+
+  deps = [
+    ":x11",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+    "//lib/ui/events:test_support",
+    "//lib/ui/events/devices/x11",
+    "//lib/ui/events/platform/x11",
+    "//lib/ui/ozone:platform",
+    "//lib/ui/ozone:test_support",
+    "//lib/ui/ozone/common",
+    "//lib/ui/platform_window/x11:x11",
+  ]
+}

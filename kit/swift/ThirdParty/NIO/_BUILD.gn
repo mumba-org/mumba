@@ -1,0 +1,141 @@
+
+static_library("CNIOAtomics") {
+  include_dirs = [
+    "Sources/CNIOAtomics/include"
+  ]
+  sources = [
+    "Sources/CNIOAtomics/module.modulemap",
+    "Sources/CNIOAtomics/include/CNIOAtomics.h",
+    "Sources/CNIOAtomics/include/cpp_magic.h",
+    "Sources/CNIOAtomics/src/c-atomics.c"
+  ]
+}
+
+static_library("CNIOSHA1") {
+  include_dirs = [
+    "Sources/CNIOSHA1/include"
+  ]
+  sources = [
+    "Sources/CNIOSHA1/include/CNIOSHA1.h",
+    "Sources/CNIOSHA1/c_nio_sha1.c"
+  ]
+}
+
+static_library("CNIOLinux") {
+  include_dirs = [
+    "Sources/CNIOLinux/include"
+  ]
+  sources = [
+    "Sources/CNIOLinux/module.modulemap",
+    "Sources/CNIOLinux/include/CNIOLinux.h",
+    "Sources/CNIOLinux/shim.c"
+  ]
+  if (is_android) {
+    sources += [
+      "Sources/CNIOLinux/include/ifaddrs-android.h",
+      "Sources/CNIOLinux/ifaddrs-android.c"
+    ]
+  }
+}
+
+static_library("CNIODarwin") {
+  include_dirs = [
+    "Sources/CNIODarwin/include"
+  ]
+  sources = [
+    "Sources/CNIODarwin/include/CNIODarwin.h",
+    "Sources/CNIODarwin/shim.c",   
+  ]
+}
+
+swift_static("NIOConcurrencyHelpers") {
+    deps = [
+      ":CNIOAtomics"
+    ]
+    sources = [
+      "Sources/NIOConcurrencyHelpers/atomics.swift",
+      "Sources/NIOConcurrencyHelpers/lock.swift"
+    ]
+}
+
+swift_static("NIOPriorityQueue") {
+    sources = [
+      "Sources/NIOPriorityQueue/Heap.swift",
+      "Sources/NIOPriorityQueue/PriorityQueue.swift"
+    ]  
+}
+
+swift_static("NIO") {
+  deps = [
+    ":NIOConcurrencyHelpers",
+    ":CNIOAtomics",
+    ":NIOPriorityQueue",
+    ":CNIOSHA1"
+  ]
+  if (is_linux) {
+    public_deps = [
+      ":CNIOLinux"
+    ]
+  } else if (is_mac) {
+    public_deps = [
+      ":CNIODarwin"
+    ]
+  }
+  sources = [
+    "Sources/NIO/AddressedEnvelope.swift",
+    "Sources/NIO/BaseSocketChannel.swift",
+    "Sources/NIO/BaseSocket.swift",
+    "Sources/NIO/BlockingIOThreadPool.swift",
+    "Sources/NIO/Bootstrap.swift",
+    "Sources/NIO/ByteBuffer-aux.swift",
+    "Sources/NIO/ByteBuffer-core.swift",
+    "Sources/NIO/ByteBuffer-int.swift",
+    "Sources/NIO/ByteBuffer-views.swift",
+    "Sources/NIO/ChannelHandlers.swift",
+    "Sources/NIO/ChannelHandler.swift",
+    "Sources/NIO/ChannelInvoker.swift",
+    "Sources/NIO/ChannelOption.swift",
+    "Sources/NIO/ChannelPipeline.swift",
+    "Sources/NIO/Channel.swift",
+    "Sources/NIO/CircularBuffer.swift",
+    "Sources/NIO/Codec.swift",
+    "Sources/NIO/CompositeError.swift",
+    "Sources/NIO/ContiguousCollection.swift",
+    "Sources/NIO/DeadChannel.swift",
+    "Sources/NIO/Embedded.swift",
+    "Sources/NIO/EventLoop.swift",
+    "Sources/NIO/EventLoopFuture.swift",
+    "Sources/NIO/FileDescriptor.swift",
+    "Sources/NIO/FileHandle.swift",
+    "Sources/NIO/FileRegion.swift",
+    "Sources/NIO/GetaddrinfoResolver.swift",
+    "Sources/NIO/HappyEyeballs.swift",
+    "Sources/NIO/Heap.swift",
+    "Sources/NIO/IntegerTypes.swift",
+    "Sources/NIO/Interfaces.swift",
+    "Sources/NIO/IOData.swift",
+    "Sources/NIO/IO.swift",
+    "Sources/NIO/LinuxCPUSet.swift",
+    "Sources/NIO/Linux.swift",
+    "Sources/NIO/MarkedCircularBuffer.swift",
+    "Sources/NIO/MulticastChannel.swift",
+    "Sources/NIO/NIOAny.swift",
+    "Sources/NIO/NonBlockingFileIO.swift",
+    "Sources/NIO/PendingDatagramWritesManager.swift",
+    "Sources/NIO/PendingWritesManager.swift",
+    "Sources/NIO/PriorityQueue.swift",
+    "Sources/NIO/RecvByteBufferAllocator.swift",
+    "Sources/NIO/Resolver.swift",
+    "Sources/NIO/Selectable.swift",
+    "Sources/NIO/Selector.swift",
+    "Sources/NIO/ServerSocket.swift",
+    "Sources/NIO/SocketAddresses.swift",
+    "Sources/NIO/SocketChannel.swift",
+    "Sources/NIO/SocketOptionProvider.swift",
+    "Sources/NIO/Socket.swift",
+    "Sources/NIO/System.swift",
+    "Sources/NIO/Thread.swift",
+    "Sources/NIO/TypeAssistedChannelHandler.swift",
+    "Sources/NIO/Utilities.swift",
+  ]
+}

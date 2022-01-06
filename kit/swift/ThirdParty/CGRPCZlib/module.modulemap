@@ -1,0 +1,5 @@
+module CGRPCZlib [extern_c] [system] {
+  textual header "include/globals.h"
+  header "include/CGRPCZlib.h"
+  export *
+}

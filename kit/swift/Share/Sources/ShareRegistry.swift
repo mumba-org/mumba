@@ -1,0 +1,1 @@
+ShareRegistry.swift

@@ -1,0 +1,28 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES -DANGLE_IS_64_BIT_CPU
+include_dirs = -I../../../third_party/angle/src/common/third_party/base -I../../../third_party/angle/include -I../../../third_party/angle/src -Igen/angle
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -Wall -Werror -Wextra -Wimplicit-fallthrough -Wthread-safety -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Winconsistent-missing-override -Wunneeded-internal-declaration -Wno-comment
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = angle_common
+target_out_dir = obj/third_party/angle
+target_output_name = libangle_common
+
+build obj/third_party/angle/angle_common/Float16ToFloat32.o: cxx ../../../third_party/angle/src/common/Float16ToFloat32.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/MemoryBuffer.o: cxx ../../../third_party/angle/src/common/MemoryBuffer.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/aligned_memory.o: cxx ../../../third_party/angle/src/common/aligned_memory.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/angleutils.o: cxx ../../../third_party/angle/src/common/angleutils.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/debug.o: cxx ../../../third_party/angle/src/common/debug.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/mathutil.o: cxx ../../../third_party/angle/src/common/mathutil.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/matrix_utils.o: cxx ../../../third_party/angle/src/common/matrix_utils.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/string_utils.o: cxx ../../../third_party/angle/src/common/string_utils.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/system_utils.o: cxx ../../../third_party/angle/src/common/system_utils.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/sha1.o: cxx ../../../third_party/angle/src/common/third_party/base/anglebase/sha1.cc || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/PMurHash.o: cxx ../../../third_party/angle/src/common/third_party/smhasher/src/PMurHash.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/tls.o: cxx ../../../third_party/angle/src/common/tls.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/uniform_type_info_autogen.o: cxx ../../../third_party/angle/src/common/uniform_type_info_autogen.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/utilities.o: cxx ../../../third_party/angle/src/common/utilities.cpp || obj/third_party/angle/commit_id.stamp
+build obj/third_party/angle/angle_common/system_utils_linux.o: cxx ../../../third_party/angle/src/common/system_utils_linux.cpp || obj/third_party/angle/commit_id.stamp
+
+build obj/third_party/angle/libangle_common.a: alink obj/third_party/angle/angle_common/Float16ToFloat32.o obj/third_party/angle/angle_common/MemoryBuffer.o obj/third_party/angle/angle_common/aligned_memory.o obj/third_party/angle/angle_common/angleutils.o obj/third_party/angle/angle_common/debug.o obj/third_party/angle/angle_common/mathutil.o obj/third_party/angle/angle_common/matrix_utils.o obj/third_party/angle/angle_common/string_utils.o obj/third_party/angle/angle_common/system_utils.o obj/third_party/angle/angle_common/sha1.o obj/third_party/angle/angle_common/PMurHash.o obj/third_party/angle/angle_common/tls.o obj/third_party/angle/angle_common/uniform_type_info_autogen.o obj/third_party/angle/angle_common/utilities.o obj/third_party/angle/angle_common/system_utils_linux.o || obj/third_party/angle/commit_id.stamp obj/third_party/angle/includes.stamp
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/angle

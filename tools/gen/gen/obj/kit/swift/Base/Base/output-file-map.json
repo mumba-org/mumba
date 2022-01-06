@@ -1,0 +1,311 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/AtomicSequence.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/AtomicSequence.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/AtomicSequence.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/AtomicSequence.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/AtomicSequence~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Atomics.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Atomics.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Atomics.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Atomics.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Atomics~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/BidilineIterator.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/BidilineIterator.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/BidilineIterator.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/BidilineIterator.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/BidilineIterator~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ByteBuffer-aux.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-aux.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-aux.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-aux.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-aux~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ByteBuffer-core.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-core.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-core.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-core.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-core~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ByteBuffer-int.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-int.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-int.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-int.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-int~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ByteBuffer-views.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-views.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-views.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-views.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ByteBuffer-views~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Command.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Command.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Command.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Command.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Command~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ContiguousCollection.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ContiguousCollection.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ContiguousCollection.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ContiguousCollection.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ContiguousCollection~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/CoreErrors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/CoreErrors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/CoreErrors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/CoreErrors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/CoreErrors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/DelayedTaskManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/DelayedTaskManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/DelayedTaskManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/DelayedTaskManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/DelayedTaskManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Environment.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Environment.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Environment.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Environment.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Environment~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/File.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/File.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/File.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/File.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/File~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/FileDescriptorWatcher.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileDescriptorWatcher.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileDescriptorWatcher.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileDescriptorWatcher.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileDescriptorWatcher~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/FilePath.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FilePath.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FilePath.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FilePath.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FilePath~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/FileUtil.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileUtil.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileUtil.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileUtil.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/FileUtil~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Heap.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Heap.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Heap.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Heap.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Heap~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/I18n.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/I18n.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/I18n.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/I18n.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/I18n~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ICU.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ICU.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ICU.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ICU.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ICU~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/IncomingTaskQueue.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IncomingTaskQueue.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IncomingTaskQueue.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IncomingTaskQueue.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IncomingTaskQueue~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/IntegerTypes.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IntegerTypes.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IntegerTypes.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IntegerTypes.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/IntegerTypes~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/LibEvent.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/LibEvent.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/LibEvent.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/LibEvent.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/LibEvent~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Lock.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Lock.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Lock.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Lock.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Lock~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/MessageLoop.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoop.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoop.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoop.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoop~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/MessageLoopCurrent.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoopCurrent.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoopCurrent.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoopCurrent.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessageLoopCurrent~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/MessagePump.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessagePump.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessagePump.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessagePump.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/MessagePump~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/PostTask.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PostTask.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PostTask.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PostTask.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PostTask~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/PriorityQueue.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PriorityQueue.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PriorityQueue.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PriorityQueue.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/PriorityQueue~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Queue.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Queue.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Queue.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Queue.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Queue~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/RunLoop.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/RunLoop.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/RunLoop.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/RunLoop.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/RunLoop~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/SchedulerPriorityQueue.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerPriorityQueue.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerPriorityQueue.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerPriorityQueue.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerPriorityQueue~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/SchedulerSingleThreadTaskRunnerManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerSingleThreadTaskRunnerManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerSingleThreadTaskRunnerManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerSingleThreadTaskRunnerManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerSingleThreadTaskRunnerManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/SchedulerWorker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/SchedulerWorkerPool.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerPool.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerPool.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerPool.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerPool~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/SchedulerWorkerStack.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerStack.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerStack.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerStack.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SchedulerWorkerStack~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ScopedBlockingCall.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ScopedBlockingCall.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ScopedBlockingCall.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ScopedBlockingCall.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ScopedBlockingCall~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/SequenceLocalStorage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SequenceLocalStorage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SequenceLocalStorage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SequenceLocalStorage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/SequenceLocalStorage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/System.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/System.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/System.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/System.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/System~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Task.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Task.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Task.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Task.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Task~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/TaskAnnotator.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskAnnotator.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskAnnotator.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskAnnotator.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskAnnotator~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/TaskRunner.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskRunner.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskRunner.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskRunner.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskRunner~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/TaskScheduler.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskScheduler.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskScheduler.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskScheduler.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskScheduler~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/TaskSequence.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskSequence.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskSequence.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskSequence.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskSequence~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/TaskTracker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskTracker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskTracker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskTracker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/TaskTracker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ThreadLinux.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadLinux.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadLinux.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadLinux.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadLinux~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ThreadPosix.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadPosix.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadPosix.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadPosix.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ThreadPosix~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Time.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Time.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Time.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Time.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Time~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/Timer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Timer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Timer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Timer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/Timer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/ULID.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ULID.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ULID.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ULID.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/ULID~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/UnguessableToken.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/UnguessableToken.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/UnguessableToken.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/UnguessableToken.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/UnguessableToken~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Base/Sources/WaitableEvent.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/WaitableEvent.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/WaitableEvent.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/WaitableEvent.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Base/Base/WaitableEvent~partial.swiftmodule"
+   }
+}

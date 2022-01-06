@@ -1,0 +1,24 @@
+# Copyright 2018 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+typemaps = [
+  "//lib/mojo/public/cpp/base/big_buffer.typemap",
+  "//lib/mojo/public/cpp/base/big_string.typemap",
+  "//lib/mojo/public/cpp/base/file_error.typemap",
+  "//lib/mojo/public/cpp/base/file_info.typemap",
+  "//lib/mojo/public/cpp/base/file_path.typemap",
+  "//lib/mojo/public/cpp/base/file.typemap",
+  "//lib/mojo/public/cpp/base/read_only_buffer.typemap",
+  "//lib/mojo/public/cpp/base/memory_allocator_dump_cross_process_uid.typemap",
+  "//lib/mojo/public/cpp/base/process_id.typemap",
+  "//lib/mojo/public/cpp/base/ref_counted_memory.typemap",
+  "//lib/mojo/public/cpp/base/shared_memory.typemap",
+  "//lib/mojo/public/cpp/base/string16.typemap",
+  "//lib/mojo/public/cpp/base/logfont_win.typemap",
+  "//lib/mojo/public/cpp/base/text_direction.typemap",
+  "//lib/mojo/public/cpp/base/thread_priority.typemap",
+  "//lib/mojo/public/cpp/base/time.typemap",
+  "//lib/mojo/public/cpp/base/unguessable_token.typemap",
+  "//lib/mojo/public/cpp/base/values.typemap",
+]

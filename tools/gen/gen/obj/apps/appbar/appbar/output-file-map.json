@@ -1,0 +1,35 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/master.swiftdeps"
+   },
+   "/workspace/jabberwock/apps/appbar/Sources/Appbar.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Appbar.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Appbar.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Appbar.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Appbar~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/apps/appbar/Sources/Taskbar.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Taskbar.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Taskbar.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Taskbar.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/Taskbar~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/apps/appbar/Sources/TaskbarModel.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarModel.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarModel.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarModel.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarModel~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/apps/appbar/Sources/TaskbarView.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarView.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarView.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarView.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/TaskbarView~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/apps/appbar/Sources/main.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/main.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/main.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/main.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/appbar/appbar/main~partial.swiftmodule"
+   }
+}

@@ -1,0 +1,203 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+config("libwebm_config") {
+  include_dirs = [ "./source" ]
+}
+
+static_library("libwebm") {
+  configs += [ ":libwebm_config" ]
+  public_configs = [ ":libwebm_config" ]
+
+  if (!is_win) {
+    cflags = [ "-Wno-deprecated-declarations" ]  # libwebm uses std::auto_ptr
+  }
+
+  sources = [
+    "source/mkvmuxer/mkvmuxer.cc",
+    "source/mkvmuxer/mkvmuxerutil.cc",
+    "source/mkvmuxer/mkvwriter.cc",
+  ]
+}
+
+static_library("libwebm_mkvparser") {
+  configs += [ ":libwebm_config" ]
+  public_configs = [ ":libwebm_config" ]
+
+  if (!is_win) {
+    cflags = [ "-Wno-deprecated-declarations" ]  # libwebm uses std::auto_ptr
+  }
+
+  sources = [
+    "source/mkvparser/mkvparser.cc",
+    "source/mkvparser/mkvreader.cc",
+  ]
+}
+
+static_library("libwebm_full") {
+  configs += [ ":libwebm_config" ]
+  public_configs = [ ":libwebm_config" ]
+
+  if (!is_win) {
+    cflags = [ "-Wno-deprecated-declarations" ]  # libwebm uses std::auto_ptr
+  }
+
+  include_dirs = [
+    "source/webm_parser",
+    "source/webm_parser/include"
+  ]
+
+  deps = [
+    ":libwebm_mkvparser",
+    "//buildtools/third_party/libc++"
+  ]
+
+  sources = [
+    "source/common/file_util.cc",
+    "source/common/file_util.h",
+    "source/common/hdr_util.cc",
+    "source/common/hdr_util.h",
+    "source/common/webmids.h",
+    "source/mkvmuxer/mkvmuxer.cc",
+    "source/mkvmuxer/mkvmuxer.h",
+    "source/mkvmuxer/mkvmuxertypes.h",
+    "source/mkvmuxer/mkvmuxerutil.cc",
+    "source/mkvmuxer/mkvmuxerutil.h",
+    "source/mkvmuxer/mkvwriter.cc",
+    "source/mkvmuxer/mkvwriter.h",
+    "source/vttdemux.cc",
+    "source/webm_parser/include/webm/buffer_reader.h",
+    "source/webm_parser/include/webm/callback.h",
+    "source/webm_parser/include/webm/dom_types.h",
+    "source/webm_parser/include/webm/element.h",
+    "source/webm_parser/include/webm/file_reader.h",
+    "source/webm_parser/include/webm/id.h",
+    "source/webm_parser/include/webm/istream_reader.h",
+    "source/webm_parser/include/webm/reader.h",
+    "source/webm_parser/include/webm/status.h",
+    "source/webm_parser/include/webm/webm_parser.h",
+    "source/webm_parser/src/ancestory.cc",
+    "source/webm_parser/src/ancestory.h",
+    "source/webm_parser/src/audio_parser.h",
+    "source/webm_parser/src/bit_utils.cc",
+    "source/webm_parser/src/bit_utils.h",
+    "source/webm_parser/src/block_additions_parser.h",
+    "source/webm_parser/src/block_group_parser.h",
+    "source/webm_parser/src/block_header_parser.cc",
+    "source/webm_parser/src/block_header_parser.h",
+    "source/webm_parser/src/block_more_parser.h",
+    "source/webm_parser/src/block_parser.cc",
+    "source/webm_parser/src/block_parser.h",
+    "source/webm_parser/src/bool_parser.h",
+    "source/webm_parser/src/buffer_reader.cc",
+    "source/webm_parser/src/byte_parser.h",
+    "source/webm_parser/src/callback.cc",
+    "source/webm_parser/src/chapter_atom_parser.h",
+    "source/webm_parser/src/chapter_display_parser.h",
+    "source/webm_parser/src/chapters_parser.h",
+    "source/webm_parser/src/cluster_parser.h",
+    "source/webm_parser/src/colour_parser.h",
+    "source/webm_parser/src/content_enc_aes_settings_parser.h",
+    "source/webm_parser/src/content_encoding_parser.h",
+    "source/webm_parser/src/content_encodings_parser.h",
+    "source/webm_parser/src/content_encryption_parser.h",
+    "source/webm_parser/src/cue_point_parser.h",
+    "source/webm_parser/src/cue_track_positions_parser.h",
+    "source/webm_parser/src/cues_parser.h",
+    "source/webm_parser/src/date_parser.cc",
+    "source/webm_parser/src/date_parser.h",
+    "source/webm_parser/src/ebml_parser.h",
+    "source/webm_parser/src/edition_entry_parser.h",
+    "source/webm_parser/src/element_parser.h",
+    "source/webm_parser/src/file_reader.cc",
+    "source/webm_parser/src/float_parser.cc",
+    "source/webm_parser/src/float_parser.h",
+    "source/webm_parser/src/id_element_parser.cc",
+    "source/webm_parser/src/id_element_parser.h",
+    "source/webm_parser/src/id_parser.cc",
+    "source/webm_parser/src/id_parser.h",
+    "source/webm_parser/src/info_parser.h",
+    "source/webm_parser/src/int_parser.h",
+    "source/webm_parser/src/istream_reader.cc",
+    "source/webm_parser/src/master_parser.cc",
+    "source/webm_parser/src/master_parser.h",
+    "source/webm_parser/src/master_value_parser.h",
+    "source/webm_parser/src/mastering_metadata_parser.h",
+    "source/webm_parser/src/parser.h",
+    "source/webm_parser/src/parser_utils.cc",
+    "source/webm_parser/src/parser_utils.h",
+    "source/webm_parser/src/projection_parser.h",
+    "source/webm_parser/src/recursive_parser.h",
+    "source/webm_parser/src/seek_head_parser.h",
+    "source/webm_parser/src/seek_parser.h",
+    "source/webm_parser/src/segment_parser.cc",
+    "source/webm_parser/src/segment_parser.h",
+    "source/webm_parser/src/simple_tag_parser.h",
+    "source/webm_parser/src/size_parser.cc",
+    "source/webm_parser/src/size_parser.h",
+    "source/webm_parser/src/skip_callback.h",
+    "source/webm_parser/src/skip_parser.cc",
+    "source/webm_parser/src/skip_parser.h",
+    "source/webm_parser/src/slices_parser.h",
+    "source/webm_parser/src/tag_parser.h",
+    "source/webm_parser/src/tags_parser.h",
+    "source/webm_parser/src/targets_parser.h",
+    "source/webm_parser/src/time_slice_parser.h",
+    "source/webm_parser/src/track_entry_parser.h",
+    "source/webm_parser/src/tracks_parser.h",
+    "source/webm_parser/src/unknown_parser.cc",
+    "source/webm_parser/src/unknown_parser.h",
+    "source/webm_parser/src/var_int_parser.cc",
+    "source/webm_parser/src/var_int_parser.h",
+    "source/webm_parser/src/video_parser.h",
+    "source/webm_parser/src/virtual_block_parser.cc",
+    "source/webm_parser/src/virtual_block_parser.h",
+    "source/webm_parser/src/void_parser.cc",
+    "source/webm_parser/src/void_parser.h",
+    "source/webm_parser/src/webm_parser.cc",
+    "source/common/indent.cc",
+    "source/common/indent.h",
+    "source/common/vp9_header_parser.cc",
+    "source/common/vp9_header_parser.h",
+    "source/common/vp9_level_stats.cc",
+    "source/common/vp9_level_stats.h",
+    "source/common/webm_constants.h",
+    "source/common/webm_endian.cc",
+    "source/common/webm_endian.h",
+    "source/webm_info.cc",
+    "source/common/libwebm_util.cc",
+    "source/common/libwebm_util.h",
+    "source/common/video_frame.cc",
+    "source/common/video_frame.h",
+    "source/m2ts/vpxpes2ts.cc",
+    "source/m2ts/vpxpes2ts.h",
+    "source/m2ts/vpxpes_parser.cc",
+    "source/m2ts/vpxpes_parser.h",
+    "source/m2ts/webm2pes.cc",
+    "source/m2ts/webm2pes.h",
+    "source/webvtt/vttreader.cc",
+    "source/webvtt/vttreader.h",
+    "source/webvtt/webvttparser.cc",
+    "source/webvtt/webvttparser.h",
+  ]
+}
+
+executable("mkvmuxer_sample") {
+  configs += [ ":libwebm_config" ]
+  public_configs = [ ":libwebm_config" ]
+
+  if (!is_win) {
+    cflags = [ "-Wno-deprecated-declarations" ]  # libwebm uses std::auto_ptr
+  }
+
+  deps = [
+    ":libwebm_full"
+  ]
+
+  sources = [
+    "source/mkvmuxer_sample.cc",
+    "source/sample_muxer_metadata.cc",
+    "source/sample_muxer_metadata.h",
+  ]
+}

@@ -1,0 +1,36 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+
+source_set("lib") {
+  sources = [
+    "file_service.cc",
+    "file_service.h",
+    "file_system.cc",
+    "file_system.h",
+    "user_id_map.cc",
+    "user_id_map.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/components/services/filesystem:lib",
+    "//lib/components/services/filesystem/public/interfaces",
+    "//lib/components/services/leveldb:lib",
+    "//lib/components/services/leveldb/public/interfaces",
+    "//lib/mojo/common",
+    "//lib/mojo/public/cpp/system",
+    "//lib/services/file/public/mojom",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/url",
+  ]
+}
+
+service_manifest("manifest") {
+  name = "file"
+  source = "manifest.json"
+}

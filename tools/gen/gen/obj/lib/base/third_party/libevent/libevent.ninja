@@ -1,0 +1,27 @@
+defines = -DHAVE_CONFIG_H -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../../lib/base/third_party/libevent/linux -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = libevent
+target_out_dir = obj/lib/base/third_party/libevent
+target_output_name = libevent
+
+build obj/lib/base/third_party/libevent/libevent/buffer.o: cc ../../../lib/base/third_party/libevent/buffer.c
+build obj/lib/base/third_party/libevent/libevent/evbuffer.o: cc ../../../lib/base/third_party/libevent/evbuffer.c
+build obj/lib/base/third_party/libevent/libevent/evdns.o: cc ../../../lib/base/third_party/libevent/evdns.c
+build obj/lib/base/third_party/libevent/libevent/event.o: cc ../../../lib/base/third_party/libevent/event.c
+build obj/lib/base/third_party/libevent/libevent/event_tagging.o: cc ../../../lib/base/third_party/libevent/event_tagging.c
+build obj/lib/base/third_party/libevent/libevent/evrpc.o: cc ../../../lib/base/third_party/libevent/evrpc.c
+build obj/lib/base/third_party/libevent/libevent/evutil.o: cc ../../../lib/base/third_party/libevent/evutil.c
+build obj/lib/base/third_party/libevent/libevent/http.o: cc ../../../lib/base/third_party/libevent/http.c
+build obj/lib/base/third_party/libevent/libevent/log.o: cc ../../../lib/base/third_party/libevent/log.c
+build obj/lib/base/third_party/libevent/libevent/poll.o: cc ../../../lib/base/third_party/libevent/poll.c
+build obj/lib/base/third_party/libevent/libevent/select.o: cc ../../../lib/base/third_party/libevent/select.c
+build obj/lib/base/third_party/libevent/libevent/signal.o: cc ../../../lib/base/third_party/libevent/signal.c
+build obj/lib/base/third_party/libevent/libevent/strlcpy.o: cc ../../../lib/base/third_party/libevent/strlcpy.c
+build obj/lib/base/third_party/libevent/libevent/epoll.o: cc ../../../lib/base/third_party/libevent/epoll.c
+
+build obj/lib/base/third_party/libevent/libevent.a: alink obj/lib/base/third_party/libevent/libevent/buffer.o obj/lib/base/third_party/libevent/libevent/evbuffer.o obj/lib/base/third_party/libevent/libevent/evdns.o obj/lib/base/third_party/libevent/libevent/event.o obj/lib/base/third_party/libevent/libevent/event_tagging.o obj/lib/base/third_party/libevent/libevent/evrpc.o obj/lib/base/third_party/libevent/libevent/evutil.o obj/lib/base/third_party/libevent/libevent/http.o obj/lib/base/third_party/libevent/libevent/log.o obj/lib/base/third_party/libevent/libevent/poll.o obj/lib/base/third_party/libevent/libevent/select.o obj/lib/base/third_party/libevent/libevent/signal.o obj/lib/base/third_party/libevent/libevent/strlcpy.o obj/lib/base/third_party/libevent/libevent/epoll.o
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/lib/base/third_party/libevent

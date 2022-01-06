@@ -1,0 +1,59 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/LinePosition.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePosition.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePosition.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePosition.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePosition~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/LinePositionSpan.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePositionSpan.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePositionSpan.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePositionSpan.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/LinePositionSpan~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/StringText.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/StringText.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/StringText.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/StringText.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/StringText~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/SubText.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/SubText.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/SubText.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/SubText.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/SubText~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/Text.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/Text.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/Text.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/Text.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/Text~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/TextEdit.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextEdit.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextEdit.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextEdit.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextEdit~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/TextLine.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLine.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLine.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLine.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLine~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/TextLines.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLines.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLines.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLines.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextLines~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Text/TextSpan.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextSpan.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextSpan.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextSpan.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Text/TextSpan~partial.swiftmodule"
+   }
+}

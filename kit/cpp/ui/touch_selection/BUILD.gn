@@ -1,0 +1,112 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/jumbo.gni")
+import("//build/config/ui.gni")
+import("//lib/testing/test.gni")
+
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
+
+jumbo_component("touch_selection") {
+  include_dirs = [
+    "//kit/cpp"
+  ]
+  output_name = "ui_touch_selection"
+
+  sources = [
+    "longpress_drag_selector.cc",
+    "longpress_drag_selector.h",
+    "selection_event_type.h",
+    "touch_handle.cc",
+    "touch_handle.h",
+    "touch_handle_orientation.h",
+    "touch_selection_controller.cc",
+    "touch_selection_controller.h",
+    "touch_selection_draggable.h",
+    "ui_touch_selection_export.h",
+  ]
+
+  defines = [ "UI_TOUCH_SELECTION_IMPLEMENTATION" ]
+
+  deps = [
+    "//lib/base:base",
+    "//lib/ui/base:base",
+    "//lib/ui/events:events",
+    "//lib/ui/events:gesture_detection",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/geometry",
+  ]
+
+  if (use_aura) {
+    deps += [
+      "//lib/services/ui/public/interfaces",
+      "//lib/skia:skia",
+      "//kit/cpp/ui/aura",
+      "//kit/cpp/ui/aura_extra",
+      "//kit/cpp/ui/compositor:compositor",
+      "//lib/ui/gfx:gfx",
+      "//lib/ui/resources",
+    ]
+
+    sources += [
+      "touch_handle_drawable_aura.cc",
+      "touch_handle_drawable_aura.h",
+      "touch_selection_menu_runner.cc",
+      "touch_selection_menu_runner.h",
+    ]
+  }
+}
+
+static_library("test_support") {
+  #testonly = true
+
+  sources = [
+    "touch_selection_controller_test_api.cc",
+    "touch_selection_controller_test_api.h",
+  ]
+
+  deps = [
+    ":touch_selection",
+    "//lib/base:base",
+  ]
+}
+
+test("ui_touch_selection_unittests") {
+  sources = [
+    "longpress_drag_selector_unittest.cc",
+    "touch_handle_unittest.cc",
+    "touch_selection_controller_unittest.cc",
+  ]
+
+  deps = [
+    ":test_support",
+    ":touch_selection",
+    "//lib/base/test:run_all_unittests",
+    "//lib/testing/gmock:gmock",
+    "//lib/testing/gtest:gtest",
+    "//lib/ui/base:base",
+    "//lib/ui/events:test_support",
+    "//lib/ui/gfx:gfx",
+    "//lib/ui/gfx:test_support",
+  ]
+
+  data_deps = [
+    "//third_party/mesa:osmesa",
+  ]
+}
+
+if (is_android) {
+  java_cpp_enum("ui_touch_selection_enums_srcjar") {
+    sources = [
+      "selection_event_type.h",
+    ]
+  }
+  java_cpp_enum("ui_touch_handle_orientation_srcjar") {
+    sources = [
+      "touch_handle_orientation.h",
+    ]
+  }
+}

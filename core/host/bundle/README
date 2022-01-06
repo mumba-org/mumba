@@ -1,0 +1,9 @@
+A bundle is a package with :
+ * manifest
+ * executables
+ * sources
+ * assets
+
+ Its stored in a CAS storage and its used to install and update the applications
+
+ The bundle is the distribution currency of this platform

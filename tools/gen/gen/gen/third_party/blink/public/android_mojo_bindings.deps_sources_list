@@ -1,0 +1,5 @@
+gen/third_party/blink/public/android_mojo_bindings.sources_list
+gen/lib/components/payments/mojom/mojom.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list
+gen/lib/ui/gfx/geometry/mojo/mojo.sources_list
+gen/lib/url/mojom/url_mojom_gurl.sources_list

@@ -1,0 +1,83 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+import("//lib/testing/test.gni")
+
+source_set("display") {
+  sources = [
+    "screen_manager.cc",
+    "screen_manager.h",
+    "screen_manager_delegate.h",
+    "viewport_metrics.cc",
+    "viewport_metrics.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/ui/display",
+    "//lib/ui/gfx",
+  ]
+
+  if (use_ozone) {
+    if (is_chromeos) {
+      sources += [
+        "output_protection.cc",
+        "output_protection.h",
+        "screen_manager_forwarding.cc",
+        "screen_manager_forwarding.h",
+        "screen_manager_ozone_internal.cc",
+        "screen_manager_ozone_internal.h",
+      ]
+
+      deps += [
+        #"//lib/chromeos",
+        "//lib/services/ui/public/interfaces/display",
+        "//lib/ui/display/manager",
+        "//lib/ui/display/mojo:interfaces",
+        "//lib/ui/ozone",
+      ]
+    } else {
+      sources += [
+        "screen_manager_ozone_external.cc",
+        "screen_manager_ozone_external.h",
+      ]
+    }
+  } else {
+    sources += [
+      "screen_manager_stub_internal.cc",
+      "screen_manager_stub_internal.h",
+    ]
+  }
+}
+
+if (is_chromeos) {
+  source_set("tests") {
+    # testonly = true
+
+    sources = [
+      "screen_manager_ozone_internal_unittests.cc",
+    ]
+
+    deps = [
+      ":display",
+      "//lib/base",
+      "//lib/base/test:test_support",
+      "//lib/services/ui/common:task_runner_test_base",
+      "//lib/testing/gmock",
+      "//lib/testing/gtest",
+      "//lib/ui/base",
+      "//lib/ui/display/manager",
+      "//lib/ui/events/devices",
+      "//lib/ui/gfx",
+      "//lib/ui/gfx:test_support",
+      "//lib/ui/ozone",
+    ]
+
+    data_deps = [
+      "//lib/ui/resources:ui_test_pak_data",
+    ]
+  }
+}

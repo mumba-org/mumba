@@ -1,0 +1,21 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/features.gni")
+import("//build/config/ui.gni")
+import("//build/util/version.gni")
+import("//lib/remoting/remoting_enable.gni")
+import("//lib/remoting/remoting_locales.gni")
+import("//lib/remoting/remoting_options.gni")
+import("//lib/remoting/remoting_version.gni")
+import("//lib/remoting/tools/build/remoting_localize.gni")
+import("//lib/testing/test.gni")
+
+if (is_win) {
+  import("//build/config/win/manifest.gni")
+  import("//lib/remoting/host/predefines_win.gni")
+} else if (is_mac) {
+  import("//build/config/mac/rules.gni")
+  import("//third_party/icu/config.gni")
+}

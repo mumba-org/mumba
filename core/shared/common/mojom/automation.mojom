@@ -1,0 +1,2561 @@
+// Copyright 2021 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module automation;
+
+import "lib/ui/gfx/geometry/mojo/geometry.mojom";
+import "core/shared/common/mojom/values.mojom";
+import "third_party/blink/public/mojom/blob/data_element.mojom";
+import "third_party/blink/public/mojom/blob/serialized_blob.mojom";
+
+enum ResourceType {
+  kRESOURCE_TYPE_DOCUMENT,
+  kRESOURCE_TYPE_STYLESHEET,
+  kRESOURCE_TYPE_IMAGE,
+  kRESOURCE_TYPE_MEDIA,
+  kRESOURCE_TYPE_FONT,
+  kRESOURCE_TYPE_SCRIPT,
+  kRESOURCE_TYPE_TEXTTRACK,
+  kRESOURCE_TYPE_XHR,
+  kRESOURCE_TYPE_FETCH,
+  kRESOURCE_TYPE_EVENTSOURCE,
+  kRESOURCE_TYPE_WEBSOCKET,
+  kRESOURCE_TYPE_MANIFEST,
+  kRESOURCE_TYPE_OTHER
+};
+
+enum TransitionType {
+  kTRANSITION_LINK,
+  kTRANSITION_TYPED,
+  kTRANSITION_AUTO_BOOKMARK,
+  kTRANSITION_AUTO_SUBFRAME,
+  kTRANSITION_MANUAL_SUBFRAME,
+  kTRANSITION_GENERATED,
+  kTRANSITION_AUTO_TOPLEVEL,
+  kTRANSITION_FORM_SUBMIT,
+  kTRANSITION_RELOAD,
+  kTRANSITION_KEYWORD,
+  kTRANSITION_KEYWORD_GENERATED,
+  kTRANSITION_OTHER
+};
+
+enum ScreenOrientationType {
+  kSCREEN_PORTRAIT_PRIMARY, 
+  kSCREEN_PORTRAIT_SECONDARY, 
+  kSCREEN_LANDSCAPE_PRIMARY,
+  kSCREEN_LANDSCAPE_SECONDARY
+};
+
+enum CookieSameSite {
+  COOKIE_SAME_SITE_STRICT,
+  COOKIE_SAME_SITE_LAX
+};
+
+enum WindowState {
+  kWINDOW_STATE_NORMAL,
+  kWINDOW_STATE_MINIMIZED,
+  kWINDOW_STATE_MAXIMIZED,
+  kWINDOW_STATE_FULLSCREEN
+};
+
+enum FrameFormat {
+  kFRAME_JPEG,
+  kFRAME_PNG
+};
+
+enum NavigationReason {
+  kNAVIGATION_FORM_SUBMISSION_GET,
+  kNAVIGATION_FORM_SUBMISSION_POST,
+  kNAVIGATION_HTTP_HEADER_REFRESH,
+  kNAVIGATION_SCRIPT_INITIATED,
+  kNAVIGATION_META_TAG_REFRESH,
+  kNAVIGATION_PAGE_BLOCK_INTERSTITIAL,
+  kNAVIGATION_RELOAD
+};
+
+enum InspectMode {
+  kINSPECT_MODE_SEARCH_FOR_NODE,
+  kINSPECT_MODE_SEARCH_FOR_UA_SHADOW_DOM,
+  kINSPECT_MODE_NONE
+};
+
+enum PseudoType {
+  kPSEUDO_TYPE_FIRST_LINE,
+  kPSEUDO_TYPE_FIRST_LETTER,
+  kPSEUDO_TYPE_BEFORE,
+  kPSEUDO_TYPE_AFTER,
+  kPSEUDO_TYPE_BACKDROP,
+  kPSEUDO_TYPE_SELECTION,
+  kPSEUDO_TYPE_FIRST_LINE_INHERITED,
+  kPSEUDO_TYPE_SCROLLBAR,
+  kPSEUDO_TYPE_SCROLLBAR_THUMB,
+  kPSEUDO_TYPE_SCROLLBAR_BUTTON,
+  kPSEUDO_TYPE_SCROLLBAR_TRACK,
+  kPSEUDO_TYPE_SCROLLBAR_TRACK_PIECE,
+  kPSEUDO_TYPE_SCROLLBAR_CORNER,
+  kPSEUDO_TYPE_RESIZER,
+  kPSEUDO_TYPE_INPUT_LIST_BUTTON
+};
+
+enum ShadowRootType {
+  kSHADOW_ROOT_TYPE_USER_AGENT,
+  kSHADOW_ROOT_TYPE_OPEN,
+  kSHADOW_ROOT_TYPE_CLOSED
+};
+
+enum ServiceWorkerVersionRunningStatus {
+  kSERVICE_WORKER_RUNNING_STATUS_STOPPED,
+  kSERVICE_WORKER_RUNNING_STATUS_STARTING,
+  kSERVICE_WORKER_RUNNING_STATUS_RUNNING,
+  kSERVICE_WORKER_RUNNING_STATUS_STOPPING
+};
+
+enum ServiceWorkerVersionStatus {
+  kSERVICE_WORKER_STATUS_NEW,
+  kSERVICE_WORKER_STATUS_INSTALLING,
+  kSERVICE_WORKER_STATUS_INSTALLED,
+  kSERVICE_WORKER_STATUS_ACTIVATING,
+  kSERVICE_WORKER_STATUS_ACTIVATED,
+  kSERVICE_WORKER_STATUS_REDUNDANT
+};
+
+enum StorageType {
+  kSTORAGE_TYPE_APPCACHE,
+  kSTORAGE_TYPE_COOKIES,
+  kSTORAGE_TYPE_FILE_SYSTEMS,
+  kSTORAGE_TYPE_INDEXEDDB,
+  kSTORAGE_TYPE_LOCAL_STORAGE,
+  kSTORAGE_TYPE_SHADER_CACHE,
+  kSTORAGE_TYPE_WEBSQL,
+  kSTORAGE_TYPE_SERVICE_WORKERS,
+  kSTORAGE_TYPE_CACHE_STORAGE,
+  kSTORAGE_TYPE_TORRENT,
+  kSTORAGE_TYPE_ALL,
+  kSTORAGE_TYPE_OTHER
+};
+
+enum ErrorReason {
+  kERROR_REASON_FAILED,
+  kERROR_REASON_ABORTED,
+  kERROR_REASON_TIMEDOUT,
+  kERROR_REASON_ACCESS_DENIED,
+  kERROR_REASON_CONNECTION_CLOSED,
+  kERROR_REASON_CONNECTION_RESET,
+  kERROR_REASON_CONNECTION_REFUSED,
+  kERROR_REASON_CONNECTION_ABORT,
+  kERROR_REASON_CONNECTION_FAILED,
+  kERROR_REASON_NAME_NOT_RESOLVED,
+  kERROR_REASON_INTERNET_DISCONNECTED,
+  kERROR_REASON_ADDRESS_UNREACHABLE
+};
+
+// The underlying connection technology that the browser is supposedly using.
+enum ConnectionType {
+  kCONNECTION_TYPE_NONE,
+  kCONNECTION_TYPE_CELLULAR_2G,
+  kCONNECTION_TYPE_CELLULAR_3G,
+  kCONNECTION_TYPE_CELLULAR_4G,
+  kCONNECTION_TYPE_BLUETOOTH,
+  kCONNECTION_TYPE_ETHERNET,
+  kCONNECTION_TYPE_WIFI,
+  kCONNECTION_TYPE_WIMAX,
+  kCONNECTION_TYPE_OTHER
+};
+
+enum ResourcePriority {
+  kRESOURCE_PRIORITY_VERYLOW,
+  kRESOURCE_PRIORITY_LOW,
+  kRESOURCE_PRIORITY_MEDIUM,
+  kRESOURCE_PRIORITY_HIGH,
+  kRESOURCE_PRIORITY_VERYHIGH
+};
+
+enum ReferrerPolicy {
+  kREFERRER_POLICY_UNSAFE_URL,
+  kREFERRER_POLICY_NO_REFERRER_WHEN_DOWNGRADE,
+  kREFERRER_POLICY_NO_REFERRER,
+  kREFERRER_POLICY_ORIGIN,
+  kREFERRER_POLICY_ORIGIN_WHEN_CROSS_ORIGIN,
+  kREFERRER_POLICY_SAME_ORIGIN,
+  kREFERRER_POLICY_STRICT_ORIGIN,
+  kREFERRER_POLICY_STRICT_ORIGIN_WHEN_CROSS_ORIGIN
+};
+
+enum MixedContentType {
+  kMIXED_CONTENT_TYPE_BLOCKABLE,
+  kMIXED_CONTENT_TYPE_OPTIONALLY_BLOCKABLE,
+  kMIXED_CONTENT_TYPE_NONE
+};
+
+enum CSSMediaSource {
+  kCSS_MEDIA_SOURCE_MEDIA_RULE,
+  kCSS_MEDIA_SOURCE_IMPORT_RULE,
+  kCSS_MEDIA_SOURCE_LINKED_SHEET,
+  kCSS_MEDIA_SOURCE_INLINE_SHEET
+};
+
+enum CertificateTransparencyCompliance {
+  kCERTIFICATE_TRANSPARENCY_COMPLIANCE_UNKNOWN,
+  kCERTIFICATE_TRANSPARENCY_COMPLIANCE_NOT_COMPLIANT,
+  kCERTIFICATE_TRANSPARENCY_COMPLIANCE_COMPLIANT
+};
+
+enum BlockedReason {
+  BLOCKED_REASON_CSP,
+  BLOCKED_REASON_MIXED_CONTENT,
+  BLOCKED_REASON_ORIGIN,
+  BLOCKED_REASON_INSPECTOR,
+  BLOCKED_REASON_SUBRESOURCE_FILTER,
+  BLOCKED_REASON_OTHER
+};
+
+enum SecurityState {
+  SECURITY_STATE_UNKNOWN,
+  SECURITY_STATE_NEUTRAL,
+  SECURITY_STATE_INSECURE,
+  SECURITY_STATE_SECURE,
+  SECURITY_STATE_INFO
+};
+
+enum InitiatorType {
+  INITIATOR_TYPE_PARSER,
+  INITIATOR_TYPE_SCRIPT,
+  INITIATOR_TYPE_PRELOAD,
+  INITIATOR_TYPE_OTHER
+};
+
+enum AuthChallengeSource {
+  kAUTH_CHALLENGE_SOURCE_SERVER,
+  kAUTH_CHALLENGE_SOURCE_PROXY
+};
+
+enum AuthChallengeResponseType {
+  kAUTH_CHALLENGE_RESPONSE_DEFAULT,
+  kAUTH_CHALLENGE_RESPONSE_CANCEL_AUTH,
+  kAUTH_CHALLENGE_RESPONSE_PROVIDE_CREDENTIALS
+};
+
+enum KeyEventType {
+  kKEY_EVENT_TYPE_KEY_DOWN,
+  kKEY_EVENT_TYPE_KEY_UP,
+  kKEY_EVENT_TYPE_RAW_KEY_DOWN,
+  kKEY_EVENT_TYPE_CHAR
+};
+
+enum MouseEventType {
+  kMOUSE_EVENT_TYPE_MOUSE_PRESSED,
+  kMOUSE_EVENT_TYPE_MOUSE_RELEASED,
+  kMOUSE_EVENT_TYPE_MOUSE_MOVED,
+  kMOUSE_EVENT_TYPE_MOUSE_WHEEL
+};
+
+enum MouseButton {
+  kMOUSE_BUTTON_NONE,
+  kMOUSE_BUTTON_LEFT,
+  kMOUSE_BUTTON_MIDDLE,
+  kMOUSE_BUTTON_RIGHT
+};
+
+enum TouchEventType {
+  kTOUCH_EVENT_TYPE_TOUCH_START,
+  kTOUCH_EVENT_TYPE_TOUCH_END,
+  kTOUCH_EVENT_TYPE_TOUCH_MOVE,
+  kTOUCH_EVENT_TYPE_TOUCH_CANCEL
+};
+
+enum AXValueType {
+  kAX_VALUE_TYPE_BOOLEAN,
+  kAX_VALUE_TYPE_TRISTATE,
+  kAX_VALUE_TYPE_BOOLEAN_OR_UNDEFINED,
+  kAX_VALUE_TYPE_IDREF,
+  kAX_VALUE_TYPE_IDREF_LIST,
+  kAX_VALUE_TYPE_INTEGER,
+  kAX_VALUE_TYPE_NODE,
+  kAX_VALUE_TYPE_NODE_LIST,
+  kAX_VALUE_TYPE_NUMBER,
+  kAX_VALUE_TYPE_STRING,
+  kAX_VALUE_TYPE_COMPUTED_STRING,
+  kAX_VALUE_TYPE_TOKEN,
+  kAX_VALUE_TYPE_TOKEN_LIST,
+  kAX_VALUE_TYPE_DOM_RELATION,
+  kAX_VALUE_TYPE_ROLE,
+  kAX_VALUE_TYPE_INTERNAL_ROLE,
+  kAX_VALUE_TYPE_VALUE_UNDEFINED
+};        
+
+enum AXValueSourceType {
+  kAX_VALUE_SOURCE_TYPE_ATTRIBUTE,
+  kAX_VALUE_SOURCE_TYPE_IMPLICIT,
+  kAX_VALUE_SOURCE_TYPE_STYLE,
+  kAX_VALUE_SOURCE_TYPE_CONTENTS,
+  kAX_VALUE_SOURCE_TYPE_PLACEHOLDER,
+  kAX_VALUE_SOURCE_TYPE_RELATED_ELEMENT
+};                          
+
+enum AXValueNativeSourceType {
+  kAX_VALUE_NATIVE_SOURCE_TYPE_FIGCAPTION,
+  kAX_VALUE_NATIVE_SOURCE_TYPE_LABEL,
+  kAX_VALUE_NATIVE_SOURCE_TYPE_LABELFOR,
+  kAX_VALUE_NATIVE_SOURCE_TYPE_LABELWRAPPED,
+  kAX_VALUE_NATIVE_SOURCE_TYPE_LEGEND,
+  kAX_VALUE_NATIVE_SOURCE_TYPE_TABLECAPTION,
+  kAX_VALUE_NATIVE_SOURCE_TYPE_TITTLE,
+  kAX_VALUE_NATIVE_SOURCE_TYPE_OTHER
+};
+
+enum InterceptionStage {
+  kINTERCEPTION_STAGE_REQUEST,
+  kINTERCEPTION_STAGE_HEADERS_RECEIVED
+};
+
+enum GestureSourceType {
+  kGESTURE_SOURCE_TYPE_DEFAULT,
+  kGESTURE_SOURCE_TYPE_TOUCH,
+  kGESTURE_SOURCE_TYPE_MOUSE
+};
+
+enum AXPropertyName {
+  kAX_PROPERTY_NAME_BUSY,
+  kAX_PROPERTY_NAME_DISABLED,
+  kAX_PROPERTY_NAME_HIDDEN,
+  kAX_PROPERTY_NAME_HIDDEN_ROOT,
+  kAX_PROPERTY_NAME_INVALID,
+  kAX_PROPERTY_NAME_KEYSHORTCUTS,
+  kAX_PROPERTY_NAME_ROLEDESCRIPTION,
+  kAX_PROPERTY_NAME_LIVE,
+  kAX_PROPERTY_NAME_ATOMIC,
+  kAX_PROPERTY_NAME_RELEVANT,
+  kAX_PROPERTY_NAME_ROOT,
+  kAX_PROPERTY_NAME_AUTOCOMPLETE,
+  kAX_PROPERTY_NAME_HASPOPUP,
+  kAX_PROPERTY_NAME_LEVEL,
+  kAX_PROPERTY_NAME_MULTISELECTABLE,
+  kAX_PROPERTY_NAME_ORIENTATION,
+  kAX_PROPERTY_NAME_MULTILINE,
+  kAX_PROPERTY_NAME_READONLY,
+  kAX_PROPERTY_NAME_REQUIRED,
+  kAX_PROPERTY_NAME_VALUEMIN,
+  kAX_PROPERTY_NAME_VALUEMAX,
+  kAX_PROPERTY_NAME_VALUETEXT,
+  kAX_PROPERTY_NAME_CHECKED,
+  kAX_PROPERTY_NAME_EXPANDED,
+  kAX_PROPERTY_NAME_MODAL,
+  kAX_PROPERTY_NAME_PRESSED,
+  kAX_PROPERTY_NAME_SELECTED,
+  kAX_PROPERTY_NAME_ACTIVEDESCENDANT,
+  kAX_PROPERTY_NAME_CONTROLS,
+  kAX_PROPERTY_NAME_DESCRIBEDBY,
+  kAX_PROPERTY_NAME_DETAILS,
+  kAX_PROPERTY_NAME_ERRORMESSAGE,
+  kAX_PROPERTY_NAME_FLOWTO,
+  kAX_PROPERTY_NAME_LABELLEDBY,
+  kAX_PROPERTY_NAME_OWNS
+};
+
+enum KeyType {
+  kKEY_TYPE_NUMBER,
+  kKEY_TYPE_STRING,
+  kKEY_TYPE_DATE,
+  kKEY_TYPE_ARRAY
+};
+
+enum VirtualTimePolicy {
+  kVIRTUAL_TIME_POLICY_ADVANCE,
+  kVIRTUAL_TIME_POLICY_PAUSE,
+  kVIRTUAL_TIME_POLICY_PAUSE_IF_NETWORK_FETCHES_PENDING
+};
+
+enum ScreenshotFormat {
+  kSCREENSHOT_FORMAT_JPEG,
+  kSCREENSHOT_FORMAT_PNG
+};
+
+enum KeyPathType {
+  kKEY_PATH_NULL,
+  kKEY_PATH_STRING,
+  kKEY_PATH_ARRAY
+};
+
+enum ScrollRectType {
+  kSCROLL_RECT_TYPE_REPAINTS_ON_SCROLL,
+  kSCROLL_RECT_TYPE_TOUCH_EVENT_HANDLER,
+  kSCROLL_RECT_TYPE_WHEEL_EVENT_HANDLER
+};
+
+// type StyleSheetId extends string
+enum StyleSheetOrigin {
+  kSTYLE_SHEET_ORIGIN_INJECTED,
+  kSTYLE_SHEET_ORIGIN_USER_AGENT,
+  kSTYLE_SHEET_ORIGIN_INSPECTOR,
+  kSTYLE_SHEET_ORIGIN_REGULAR
+};
+
+enum AnimationType {
+  kANIMATION_TYPE_CSS_TRANSITION,
+  kANIMATION_TYPE_CSS_ANIMATION,
+  kANIMATION_TYPE_WEB_ANIMATION
+};
+
+enum TouchEventForMouseConfiguration {
+  kTOUCH_EVENT_MOBILE,
+  kTOUCH_EVENT_DESKTOP
+};
+
+enum DialogType {
+  kDIALOG_TYPE_ALERT,
+  kDIALOG_TYPE_CONFIRM,
+  kDIALOG_TYPE_PROMPT,
+  kDIALOG_TYPE_BEFORE_UNLOAD
+};
+
+struct NavigationEntry {
+  int32 id;
+  string url;
+  string user_typed_url;
+  string title;
+  TransitionType transition_type;
+};
+
+struct Cookie {
+  string name;
+  string value;
+  string domain;
+  string path;
+  int32 expires;
+  int32 size;
+  bool http_only;
+  bool secure;
+  bool session;
+  CookieSameSite same_site;
+};
+
+struct CookieParam {
+  string name;
+  string value;
+  string? url;
+  string? domain;
+  string? path;
+  bool secure;
+  bool http_only;
+  CookieSameSite same_site;
+  int64 expires;
+};
+
+struct Frame {
+  string id;
+  string parent_id;
+  string loader_id;
+  string name;
+  string url;
+  string security_origin;
+  string mime_type;
+  string unreachable_url;
+};
+
+struct FrameResource {
+  string url;
+  ResourceType type;
+  string mime_type;
+  int64 last_modified;
+  int64 content_size;
+  bool failed;
+  bool canceled;
+};
+
+struct FrameTree {
+  Frame frame;
+  array<FrameTree> child_frames;
+};
+
+struct FrameResourceTree {
+  Frame frame;
+  array<FrameResourceTree> child_frames; 
+  array<FrameResource> resources;
+};
+
+struct SearchMatch {
+  int32 line_number;
+  string line_content;
+};
+
+struct Viewport {
+  int32 x;
+  int32 y;
+  int32 width;
+  int32 height;
+  float scale;
+};
+
+struct VisualViewport {
+  int32 offset_x;
+  int32 offset_y;
+  int32 page_x;
+  int32 page_y;
+  int32 client_width;
+  int32 client_height;
+  float scale;
+};
+
+struct LayoutViewport {
+  int32 page_x;
+  int32 page_y;
+  int32 client_width;
+  int32 client_height;
+};
+
+struct ScreenOrientation {
+  ScreenOrientationType type;
+  int32 angle;
+};
+
+struct Bounds {
+  int32 left;
+  int32 top;
+  int32 width;
+  int32 height;
+  WindowState window_state;
+};
+
+struct ScreencastFrameMetadata {
+  int32 offset_top;
+  float page_scale_factor;
+  int32 device_width;
+  int32 device_height;
+  int32 scroll_offset_x;
+  int32 scroll_offset_y;
+  int64 timestamp;
+};
+
+struct RGBA {
+  int32 r;
+  int32 g;
+  int32 b;
+  float a;
+};
+
+struct HighlightConfig {
+  bool show_info;
+  bool show_rulers;
+  bool show_extension_lines;
+  bool display_as_material;
+  RGBA? content_color;
+  RGBA? padding_color;
+  RGBA? border_color;
+  RGBA? margin_color;
+  RGBA? event_target_color;
+  RGBA? shape_color;
+  RGBA? shape_margin_color;
+  string? selector_list;
+  RGBA? css_grid_color;
+};
+
+struct BackendNode {
+  int32 node_type;
+  string node_name;
+  int32 backend_node_id;
+};
+
+struct DOMNode {
+  int32 node_id;
+  int32 parent_id;
+  int32 backend_node_id;
+  int32 node_type;
+  string node_name;
+  string local_name;
+  string node_value;
+  int32 child_node_count;
+  array<DOMNode>? children;
+  array<string> attributes;
+  string? document_url;
+  string? base_url;
+  string? public_id;
+  string? system_id;
+  string? internal_subset;
+  string? xml_version;
+  string? name;
+  string? value;
+  PseudoType pseudo_type;
+  ShadowRootType shadow_root_type;
+  string? frame_id;
+  DOMNode? content_document;
+  array<DOMNode>? shadow_roots;
+  DOMNode? template_content;
+  array<DOMNode>? pseudo_elements;
+  DOMNode? imported_document;
+  array<BackendNode>? distributed_nodes;
+  bool is_svg;
+};
+
+struct DOMSnapshotNode {
+  int32 node_type;
+  string node_name;
+  string node_value;
+  string? text_value;
+  string? input_value;
+  bool input_checked;
+  bool option_selected;
+  int32 backend_node_id;
+  array<int32>? child_node_indexes;
+  array<NameValue>? attributes;
+  array<int32>? pseudo_element_indexes;
+  int32 layout_node_index;
+  string? document_url;
+  string? base_url;
+  string? content_language;
+  string? document_encoding;
+  string? public_id;
+  string? system_id;
+  string? frame_id;
+  int32 content_document_index;
+  int32 imported_document_index;
+  int32 template_content_index;
+  PseudoType pseudo_type;
+  ShadowRootType shadow_root_type;
+  bool is_clickable;
+  array<EventListener>? event_listeners;
+  string? current_source_url;
+};
+
+struct ServiceWorkerRegistration {
+  string registration_id;
+  string scope_url;
+  bool is_deleted;
+};
+
+struct ServiceWorkerVersion {
+  string version_id;
+  string registration_id;
+  string script_url;
+  ServiceWorkerVersionRunningStatus running_status;
+  ServiceWorkerVersionStatus status;
+  int64 script_last_modified;
+  int64 script_response_time;
+  array<int32>? controlled_clients;
+  int32 target_id;
+};
+
+struct ServiceWorkerErrorMessage {
+  string error_message;
+  string registration_id;
+  string version_id;
+  string source_url;
+  int32 line_number;
+  int32 column_number;
+};
+
+struct UsageForType {
+  StorageType storage_type;
+  int32 usage;
+};
+
+struct GPUDevice {
+  int32 vendor_id;
+  int32 device_id;
+  string vendor_string;
+  string device_string;
+};
+
+struct GPUInfo {
+  array<GPUDevice> devices;
+  map<string, string>? aux_attributes;
+  map<string, string>? feature_status;
+  array<string> driverBugWorkarounds;
+};
+
+struct TargetInfo {
+  string target_id;
+  string type;
+  string title;
+  string url;
+  bool attached;
+  string? opener_id;
+  string? browser_context_id;
+};
+
+struct RemoteLocation {
+  string host;
+  int32 port;
+};
+
+// Timing information for the request.
+struct ResourceTiming {
+  int64 request_time;
+  int64 proxy_start;
+  int64 proxy_end;
+  int64 dns_start;
+  int64 dns_end;
+  int64 connect_start;
+  int64 connect_end;
+  int64 ssl_start;
+  int64 ssl_end;
+  int64 worker_start;
+  int64 worker_ready;
+  int64 send_start;
+  int64 send_end;
+  int64 push_start;
+  int64 push_end;
+  int64 receive_headers_end;
+};
+
+struct Request {
+  string url;
+  string method;
+  map<string, string> headers;
+  string? post_data;
+  bool has_post_data;
+  MixedContentType mixed_content_type;
+  ResourcePriority initial_priority;
+  ReferrerPolicy referrer_policy;
+  bool is_link_preload;
+};
+
+struct SignedCertificateTimestamp {
+  string status;
+  string origin;
+  string log_description;
+  string log_id;
+  int64 timestamp;
+  string hash_algorithm;
+  string signature_algorithm;
+  string signature_data;
+};
+
+struct SecurityDetails {
+  string protocol;
+  string key_exchange;
+  string? key_exchange_group;
+  string cipher;
+  string? mac;
+  int32 certificate_id;
+  string subject_name;
+  array<string> san_list;
+  string issuer;
+  int64 valid_from;
+  int64 valid_to;
+  array<SignedCertificateTimestamp> signed_certificate_timestamp_list;
+  CertificateTransparencyCompliance certificate_transparency_compliance;
+};
+
+struct Response {
+  string url;
+  int32 status;
+  string status_text;
+  map<string, string> headers;
+  string? headers_text;
+  string mime_type;
+  map<string, string>? request_headers;
+  string? request_headers_text;
+  bool connection_reused;
+  int32 connection_id;
+  string? remote_ip_address;
+  int16 remote_port;
+  bool from_disk_cache;
+  bool from_service_worker;
+  int64 encoded_data_length;
+  ResourceTiming timing;
+  string? protocol;
+  SecurityState security_state;
+  SecurityDetails? security_details;
+};
+
+struct WebSocketRequest {
+  map<string, string> headers;
+};
+
+struct WebSocketResponse {    
+  int32 status;
+  string status_text;
+  map<string, string> headers;
+  string? headers_text;
+  map<string, string>? request_headers;
+  string? request_headers_text;
+};
+
+struct WebSocketFrame {
+  int32 opcode;
+  bool mask;
+  string payload_data;
+};
+
+struct CachedResource {
+  string url;
+  ResourceType type;
+  Response? response;
+  int64 body_size;
+};
+
+struct Initiator {
+  InitiatorType type;
+  //Runtime.StackTrace stack?;
+  string? url;
+  int32 line_number;
+};
+
+struct AuthChallenge {
+  AuthChallengeSource source;
+  string origin;
+  string scheme;
+  string realm;
+};
+
+struct AuthChallengeResponse {
+  AuthChallengeResponseType respose;
+  string? username;
+  string? password;
+};
+
+struct RequestPattern {
+  // Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is
+  // backslash. Omitting is equivalent to "*".
+  string? url_pattern;
+  // If set, only requests for matching resource types will be intercepted.
+  ResourceType resource_type;
+  // Stage at wich to begin intercepting requests. Default is Request.
+  InterceptionStage interception_stage;
+};
+
+struct TouchPoint {
+  int32 x;
+  int32 y;
+  int32 radius_x;
+  int32 radius_y;
+  int32 rotation_angle;
+  int32 force;
+  int32 id;
+};
+
+struct Bucket {
+  int32 low;
+  int32 high;
+  int32 count;
+};
+
+struct Histogram {
+  string name;
+  int32 sum;
+  int32 count;
+  array<Bucket> buckets;
+};
+
+struct AXValueSource {
+  AXValueSourceType type;
+  AXValue? value;
+  string? attribute;
+  AXValue? attribute_value;
+  bool superseded;
+  AXValueNativeSourceType native_source;
+  AXValue? native_source_value;
+  bool invalid;
+  string? invalid_reason;
+};
+
+struct AXRelatedNode {
+  string backend_dom_node_id;
+  string? idref;
+  string? text;
+};
+                          
+struct AXProperty {
+  AXPropertyName name;
+  AXValue value;
+};
+                          
+struct AXValue {
+  Value value;
+  array<AXRelatedNode>? relate_nodes;
+  array<AXValueSource>? sources;
+};
+                          
+struct AXNode {
+  string node_id;
+  bool ignored;
+  array<AXProperty>? ignored_reasons;
+  AXValue? role;
+  AXValue? name;
+  AXValue? description;
+  AXValue? value;
+  array<AXProperty>? properties;
+  array<string>? child_ids;
+  string? backend_dom_node_id;
+};
+
+struct Key {
+  KeyType type;
+  int64 number;
+  string? str;
+  int64 date;
+  array<Key>? arr;
+};
+
+struct KeyRange {
+  Key? lower;
+  Key? upper;
+  bool lower_open;
+  bool upper_open;
+};
+
+// FIXME: this is fake
+struct RemoteObject {
+  int32 type;
+};
+
+// values are serialized V8 types
+struct IndexedDBDataEntry {
+  string key;
+  string primary_key;
+  string value;
+};
+
+struct KeyPath {
+  KeyPathType type;
+  string? str;
+  array<string> arr;
+};
+
+struct ObjectStoreIndex {
+  string name;
+  KeyPath key_path;
+  bool unique;
+  bool multi_entry;
+};
+
+struct ObjectStore {
+  string name;
+  KeyPath key_path;
+  bool auto_increment;
+  array<ObjectStoreIndex> indexes;
+};
+
+struct DatabaseWithObjectStores {
+  string name;
+  int32 version;
+  array<ObjectStore> object_stores;
+};
+
+struct StorageId {
+  string security_origin;
+  bool is_local_storage;
+};
+
+struct ScrollRect {
+  gfx.mojom.Rect rect;
+  ScrollRectType type;
+};
+
+struct StickyPositionConstraint {
+  gfx.mojom.Rect sticky_box_rect;
+  gfx.mojom.Rect containing_block_rect;
+  string nearest_layer_shifting_sticky_box;
+  string nearest_layer_shifting_containing_block;
+};
+
+struct PictureTile {
+  int32 x;
+  int32 y;
+  string picture;
+};
+
+struct Layer {
+  string layer_id;
+  string? parent_layer_id;
+  int32 backend_node_id;
+  int32 offset_x;
+  int32 offset_y;
+  int32 width;
+  int32 height;
+  array<double>? transform;
+  int32 anchor_x;
+  int32 anchor_y;
+  int32 anchor_z;
+  int32 paint_count;
+  bool draws_content;
+  bool invisible;
+  array<ScrollRect>? scroll_rects;
+  StickyPositionConstraint? sticky_position_constraint;
+};
+
+struct ScreenshotParams {
+  ScreenshotFormat format;
+  int32 quality;
+};
+
+struct KeyframesRule {
+  string? name;
+  array<KeyframeStyle> keyframes;
+};
+
+struct KeyframeStyle {
+  string offset;
+  string easing;
+};
+
+struct AnimationEffect {
+  int32 delay;
+  int32 end_delay;
+  int32 iteration_start;
+  int32 iterations;
+  int32 duration;
+  string direction;
+  string fill;
+  int32 backend_node_id;
+  KeyframesRule? keyframes_rule;
+  string easing;
+};
+
+struct Animation {
+  string id;
+  string name;
+  bool paused_state;
+  string play_state;
+  int32 playback_rate;
+  int64 start_time;
+  int64 current_time;
+  AnimationType type;
+  AnimationEffect? source;
+  string? css_id;
+};
+
+struct Database {
+  string id;
+  string domain;
+  string name;
+  string version;
+};
+
+struct Error {
+  string message;
+  int32 code;
+};
+
+struct InlineTextBox {
+  gfx.mojom.Rect bounding_box;
+  int32 start_character_index;
+  int32 num_characters;
+};
+
+struct LayoutTreeNode {
+  int32 dom_node_index;
+  gfx.mojom.Rect bounding_box;
+  string? layout_text;
+  array<InlineTextBox>? inline_text_nodes;
+  int32 style_index;
+  int32 paint_order;
+};
+
+struct ComputedStyle {
+  array<NameValue> properties;
+};
+
+struct NameValue {
+  string name;
+  string value;
+};
+
+struct EventListener {
+  string type;
+  bool use_capture;
+  bool passive;
+  bool once;
+  string script_id;
+  int32 line_number;
+  int32 column_number;
+  RemoteObject? handler;
+  RemoteObject? original_handler;
+  int32 backend_node_id;
+};
+
+struct BoxModel {
+  array<double> content;
+  array<double> padding;
+  array<double> border;
+  array<double> margin;
+  int32 width;
+  int32 height;
+  ShapeOutsideInfo? shape_outside;
+};
+
+struct ShapeOutsideInfo {
+  array<double> bounds;
+  array<Value> shape;
+  array<Value> margin_shape;
+};
+  
+struct PseudoElementMatches {
+  PseudoType pseudo_type;
+  array<RuleMatch> matches;
+};
+  
+struct InheritedStyleEntry {
+  CSSStyle? inline_style;
+  array<RuleMatch> matched_css_rules;
+};
+  
+struct RuleMatch {
+  CSSRule rule;
+  array<int32> matching_selectors;
+};
+  
+struct CSSValue {
+  string text;
+  SourceRange? range;
+};
+  
+struct SelectorList {
+  array<CSSValue> selectors;
+  string text;
+};
+  
+struct CSSStyleSheetHeader {
+  string style_sheet_id;
+  string frame_id;
+  string source_url;
+  string? source_map_url;
+  StyleSheetOrigin origin;
+  string title;
+  int32 owner_node;
+  bool disabled;
+  bool has_source_url;
+  bool is_inline;
+  int32 start_line;
+  int32 start_column;
+  int32 length;
+};
+  
+struct CSSRule {
+  string? style_sheet_id;
+  SelectorList selector_list;
+  StyleSheetOrigin origin;
+  CSSStyle style;
+  array<CSSMedia>? media;
+};
+  
+struct CSSRuleUsage {
+  string style_sheet_id;
+  int32 start_offset;
+  int32 end_offset;
+  bool used;
+};
+  
+struct SourceRange {
+  int32 start_line;
+  int32 start_column;
+  int32 end_line;
+  int32 end_column;
+};
+  
+struct ShorthandEntry {
+  string name;
+  string value;
+  bool important;
+};
+  
+struct CSSComputedStyleProperty {
+  string name;
+  string value;
+};
+  
+struct CSSStyle {
+  string? style_sheet_id;
+  array<CSSProperty> css_properties;
+  array<ShorthandEntry> shorthand_entries;
+  string? css_text;
+  SourceRange? range;
+};
+  
+struct CSSProperty {
+  string name;
+  string value;
+  bool important;
+  bool implicit;
+  string? text;
+  bool parsed_ok;
+  bool disabled;
+  SourceRange? range;
+};
+  
+struct CSSMedia {
+  CSSMediaSource source;
+  string text;
+  string? source_url;
+  SourceRange? range;
+  string? style_sheet_id;
+  array<CSSMediaQuery>? media_list;
+};
+  
+struct CSSMediaQuery {
+  array<CSSMediaQueryExpression> expressions;
+  bool active;
+};
+  
+struct CSSMediaQueryExpression {
+  int32 value;
+  string unit;
+  string feature;
+  SourceRange? value_range;
+  int32 computed_length;
+};
+  
+struct PlatformFontUsage {
+  string family_name;
+  bool is_custom_font;
+  int32 glyph_count;
+};
+  
+struct FontFace {
+  string font_family;
+  string font_style;
+  string font_variant;
+  string font_weight;
+  string font_stretch;
+  string unicode_range;
+  string src;
+  string platform_font_family;
+};
+  
+struct CSSKeyframesRule {
+  CSSValue animation_name;
+  array<CSSKeyframeRule> keyframes;
+};
+  
+struct CSSKeyframeRule {
+  string? style_sheet_id;
+  StyleSheetOrigin origin;
+  CSSValue key_text;
+  CSSStyle style;
+};
+  
+struct StyleDeclarationEdit {
+  string style_sheet_id;
+  SourceRange range;
+  string text;
+};
+  
+struct DataEntry {
+  string request_url;
+  string request_method;
+  array<Header> request_headers;
+  int64 response_time;
+  int32 response_status;
+  string response_status_text;
+  array<Header> response_headers;
+};
+  
+struct Cache {
+  string cache_id;
+  string security_origin;
+  string cache_name;
+};
+  
+struct Header {
+  string name;
+  string value;
+};
+  
+struct CachedResponse {
+  string body;
+};
+
+struct ApplicationCacheResource {
+  string url;
+  int32 size;
+  string type;
+};
+
+struct ApplicationCache {
+  string manifest_url;
+  int64 size;
+  int64 creation_time;
+  int64 update_time;
+  array<ApplicationCacheResource> resources;
+};
+
+struct FrameWithManifest {
+  string frame_id;
+  string manifest_url;
+  int32 status;
+};
+
+// FIXME mumba: our system info here can be much more elaborated
+
+// The SystemInfo domain defines methods and events for querying low-level system information.
+interface SystemInfo {
+  Register(int32 application_id);
+  // Returns information about the system.
+  GetInfo() => (GPUInfo gpu, string model_name, string model_version, string commandLine);
+};
+
+interface Host {
+
+  Register(int32 application_id);
+  
+  // Close browser gracefully
+  Close();
+
+  // Returns version information.
+  GetVersion() => (string protocolVersion, string product, string revision, string userAgent, string jsVersion);
+
+  // Returns the command line switches for the browser process if, and only if
+  // --enable-automation is on the commandline.
+  GetHostCommandLine() => (array<string> arguments);
+
+  // Get Chrome histograms.
+  GetHistograms(string? query) => (array<Histogram> histograms);
+
+  // Get a Chrome histogram by name.
+  GetHistogram(string name) => (Histogram histogram);
+
+  // Get position and size of the browser window.
+  GetWindowBounds(int32 window_id) => (Bounds bounds);
+
+  // Get the browser window that contains the devtools target.
+  GetWindowForTarget(string target_id) => (int32 window_id, Bounds bounds);
+
+  // Set position and/or size of the browser window.
+  SetWindowBounds(int32 window_id, Bounds bounds);
+
+};
+
+interface Page {
+  Register(int32 application_id);
+  // Enables page domain notifications
+  Enable();
+  // Disables page domain notifications
+  Disable();
+  // Evaluates given script in every frame upon creation (before loading frame's scripts)
+  AddScriptToEvaluateOnNewDocument(string source) => (string identifier);
+  // Removes given script from the list
+  RemoveScriptToEvaluateOnNewDocument(string identifier);
+  // Controls whether browser will open a new inspector window for connected pages.
+  SetAutoAttachToCreatedPages(bool auto_attach);
+  // Controls whether page will emit lifecycle events
+  SetLifecycleEventsEnabled(bool enabled);
+  // Reloads given page optionally ignoring the cache
+  Reload(bool ignore_cache, string script_to_evaluate_on_load);
+  // Enable Chrome's experimental ad filter on all sites
+  SetAdBlockingEnabled(bool enabled);
+  // Navigates current page to the given URL
+  Navigate(string url, string referrer, TransitionType transition_type) => (string frame_id, int32 loader_id, string error_text);
+  // Force the page stop all navigations and pending resource fetches
+  StopLoading();
+  // Returns navigation history for the current page
+  GetNavigationHistory() => (int32 currentIndex, array<NavigationEntry> entries);
+  // Navigates current page to the given history entry
+  NavigateToHistoryEntry(int32 entry_id);
+  // Returns all browser cookies. Depending on the backend support, will return detailed cookie information in the <code>cookies</code> field
+  GetCookies() => (array<Cookie> cookies);
+  // Deletes browser cookie with given name, domain and path
+  DeleteCookie(string cookie_name, string url);
+  // Returns present frame / resource tree structure
+  GetResourceTree() => (FrameResourceTree frame_tree);
+  // Returns present frame tree structure
+  GetFrameTree() => (FrameTree frame_tree);
+  // Returns content of the given resource
+  GetResourceContent(string frame_id, string url) => (string content, bool base64_encoded);
+  // Searches for given string in response content  
+  SearchInResource(string frame_id, string url, string query, bool case_sensitive, bool is_regex) => (array<SearchMatch> result);
+  // Sets given markup as the document's HTML
+  SetDocumentContent(string frame_id, string html);
+  // Overrides the values of device screen dimensions (window.screen.width, window.screen.height, window.innerWidth, window.innerHeight, and device-width/device-height-related CSS media query results)
+  SetDeviceMetricsOverride(int32 width, int32 height, int32 device_scale_factor, bool mobile, int32 scale, int32 screen_width, int32 screen_height, int32 position_x, int32 position_y, bool dont_set_visible_size, ScreenOrientation screen_orientation, Viewport? viewport);
+  // Clears the overriden device metrics
+  ClearDeviceMetricsOverride();
+  // Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable
+  SetGeolocationOverride(int32 latitude, int32 longitude, int32 accuracy);
+  // Clears the overriden Geolocation Position and Error
+  ClearGeolocationOverride();
+  // Overrides the Device Orientation
+  SetDeviceOrientationOverride(int32 alpha, int32 beta, int32 gamma);
+  // Clears the overridden Device Orientation
+  ClearDeviceOrientationOverride();
+  // Whether the touch event emulation should be enabled
+  SetTouchEmulationEnabled(bool enabled, string configuration);
+  // Capture page screenshot
+  CaptureScreenshot(FrameFormat format, int32 quality, Viewport? clip, bool from_surface) => (string base64_data);
+  // Print page as PDF
+  PrintToPDF(
+    bool landscape, 
+    bool display_header_footer, 
+    bool print_background, 
+    float scale, 
+    float /*inches (8.5)*/ paper_width, 
+    float /*inches (11)*/ paper_height,
+    float /*inches (0.4)*/ margin_top,
+    float /*inches (0.4)*/ margin_bottom,
+    float /*inches (0.4)*/ margin_left,
+    float /*inches (0.4)*/ margin_right,
+    string? page_ranges,
+    bool ignore_invalid_page_ranges) => (string base64_data);
+  // Starts sending each frame using the OnScreencastFrame event  
+  StartScreencast(FrameFormat format, int32 quality, int32 max_width, int32 max_height, int32 every_nth_frame);
+  // Stops sending each frame in the OnScreencastFrame event
+  StopScreencast();
+  // enable/disable CSP bypass
+  SetBypassCSP(bool enable);
+  // Acknowledges that a screencast frame has been received by the frontend
+  ScreencastFrameAck(int32 session_id);
+  // Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload)
+  HandleJavaScriptDialog(bool accept, string prompt_text);
+  // 
+  GetAppManifest() => (string url, array<string> errors, string? data);
+  // 
+  RequestAppBanner();
+  // Returns metrics relating to the layouting of the page, such as viewport bounds/scale
+  GetLayoutMetrics() => (LayoutViewport layout_viewport, VisualViewport visual_viewport, gfx.mojom.Rect content_size);
+  // Creates an isolated world for the given frame
+  CreateIsolatedWorld(string frame_id, string? world_name, bool grant_universal_access) => (int32 execution_context_id);
+  // Brings page to front (activates tab)
+  BringToFront();
+  // Set the behavior when downloading a file
+  SetDownloadBehavior(string /*"deny", "allow", "default"*/ behavior, string? download_path);
+  // close
+  Close();
+};
+
+// to receive incoming events
+interface PageClient {
+  OnFrameAttached(string frame_id, string parent_frame_id);
+  OnDomContentEventFired(int64 timestamp);
+  OnFrameClearedScheduledNavigation(string frame_id);
+  OnFrameDetached(string frame_id);
+  OnFrameNavigated(Frame frame);
+  OnFrameResized();
+  OnFrameScheduledNavigation(string frame_id, int32 delay, NavigationReason reason, string url);
+  OnFrameStartedLoading(string frame_id);
+  OnFrameStoppedLoading(string frame_id);
+  OnInterstitialHidden();
+  OnInterstitialShown();
+  OnJavascriptDialogClosed(bool result, string user_input);
+  OnJavascriptDialogOpening(string url, string message, DialogType type, bool has_browser_handler, string? default_prompt);
+  OnLifecycleEvent(string frame_id, int32 loader_id, string name, int64 timestamp);
+  OnLoadEventFired(int64 timestamp);
+  OnNavigatedWithinDocument(string frame_id, string url);
+  OnScreencastFrame(string base64_data, ScreencastFrameMetadata metadata, int32 session_id);
+  OnScreencastVisibilityChanged(bool visible);
+  OnWindowOpen(string url, string window_name, array<string> window_features, bool user_gesture);
+  OnPageLayoutInvalidated(bool resized);
+};
+
+interface Overlay {
+  Register(int32 application_id);
+  Disable();
+  Enable();
+  // GetHighlightObjectForTest(int32 node_id) => (InspectorHighlight);
+  HideHighlight();
+  HighlightFrame(string frame_id, RGBA content_color, RGBA content_outline_color);
+  HighlightNode(HighlightConfig highlight_config, int32 node_id, int32 backend_node_id, string? object_id);
+  HighlightQuad(array<double> quad, RGBA? color, RGBA? outline_color);
+  HighlightRect(int32 x, int32 y, int32 width, int32 height, RGBA? color, RGBA? outline_color);
+  SetInspectMode(InspectMode mode, HighlightConfig? highlight_config);
+  SetPausedInDebuggerMessage(string? message);
+  SetShowDebugBorders(bool show);
+  SetShowFPSCounter(bool show);
+  SetShowPaintRects(bool result);
+  SetShowScrollBottleneckRects(bool show);
+  SetShowViewportSizeOnResize(bool show);
+  SetSuspended(bool suspended);
+};
+
+interface OverlayClient {
+  InspectNodeRequested(int32 backend_node_id);
+  NodeHighlightRequested(int32 node_id);
+  ScreenshotRequested(Viewport viewport);
+};
+
+interface ServiceWorker {
+  Register(int32 application_id);
+  DeliverPushMessage(string origin, string registration_id, string data);
+  Disable();
+  DispatchSyncEvent(string origin, string registration_id, string tag, bool last_chance);
+  Enable();
+  InspectWorker(string version_id);
+  SetForceUpdateOnPageLoad(bool force_update_on_pageload);
+  SkipWaiting(string scope_url);
+  StartWorker(string scope_url);
+  StopAllWorkers();
+  StopWorker(string version_id);
+  Unregister(string scope_url);
+  UpdateRegistration(string scope_url);
+  SendMessageToTarget(string message, string? session_id, string? target_id);
+};
+
+interface ServiceWorkerClient {
+  WorkerErrorReported(ServiceWorkerErrorMessage error_message);
+  WorkerRegistrationUpdated(array<ServiceWorkerRegistration> registrations);
+  WorkerVersionUpdated(array<ServiceWorkerVersion> versions);
+  // Issued when attached to target because of auto-attach or `attachToTarget` command.
+  OnAttachedToTarget(string session_id, TargetInfo target_info, bool waiting_for_debugger);
+  // Issued when detached from target for any reason (including `detachFromTarget` command). Can be
+  // issued multiple times per target if multiple sessions have been attached to it.
+  OnDetachedFromTarget(string session_id, string? target_id);
+  // Notifies about a new protocol message received from the session (as reported in
+  // `attachedToTarget` event).
+  OnReceivedMessageFromTarget(string session_id, string message, string? target_id);
+};
+
+// FIXME mumba: our storage here can be much more elaborated
+
+interface Storage {
+  Register(int32 application_id);
+  // Clears storage for origin.
+  ClearDataForOrigin(string origin, array<StorageType> storage_types);
+  // Returns usage and quota in bytes.
+  GetUsageAndQuota(string origin, int64 usage, int64 quota, array<UsageForType> usage_breakdown);
+  TrackCacheStorageForOrigin(string origin);
+  TrackIndexedDBForOrigin(string origin);
+  // Unregisters origin from receiving notifications for cache storage.
+  UntrackCacheStorageForOrigin(string origin);
+  // Unregisters origin from receiving notifications for IndexedDB.
+  UntrackIndexedDBForOrigin(string origin);
+};
+
+interface StorageClient {
+  // A cache's contents have been modified.
+  OnCacheStorageContentUpdated(string origin, string cache_name);
+  // A cache has been added/deleted.
+  OnCacheStorageListUpdated(string origin);
+  OnIndexedDBContentUpdated(string origin, string database_name, string object_store_name);
+  OnIndexedDBListUpdated(string origin);
+};
+
+interface Target {  
+  Register(int32 application_id);
+  // Activates (focuses) the target.
+  ActivateTarget(string target_id);
+  // Attaches to the target with given id.
+  AttachToTarget(string targetId) => (string session_id);
+  // Closes the target. If the target is a page that gets closed too.
+  CloseTarget(string target_id) => (bool success);
+
+  CreateBrowserContext() => (string browser_context_id);
+  
+  // Creates a new page.
+  CreateTarget(string url, int32 width, int32 height, string? browser_context_id, bool enable_begin_frame_control) => (string target_id);
+    
+  // Detaches session with given id.
+  DetachFromTarget(string? session_id, string? target_id);
+
+  // Deletes a BrowserContext, will fail of any open page uses it.
+  DisposeBrowserContext(string browser_context_id) => (bool success);
+
+  // Returns information about a target.
+  GetTargetInfo(string targetId) => (TargetInfo result);
+
+  // Retrieves a list of available targets.
+  GetTargets() => (array<TargetInfo> result);
+
+  // Sends protocol message over session with given id.
+  SendMessageToTarget(string message, string? session_id, string? target_id);
+
+  // Controls whether to automatically attach to new targets which are considered to be related to
+  // this one. When turned on, attaches to all existing related targets as well. When turned off,
+  // automatically detaches from all currently attached targets.
+  SetAutoAttach(bool auto_attach, bool wait_for_debugger_on_start);
+
+  // Controls whether to discover available targets and notify via
+  // `targetCreated/targetInfoChanged/targetDestroyed` events.
+  SetDiscoverTargets(bool discover);
+
+  // Enables target discovery for the specified locations, when `setDiscoverTargets` was set to
+  // `true`.
+  SetRemoteLocations(array<RemoteLocation> locations);
+};
+
+interface TargetClient {
+  // Issued when attached to target because of auto-attach or `attachToTarget` command.
+  OnAttachedToTarget(string session_id, TargetInfo target_info, bool waiting_for_debugger);
+
+  // Issued when detached from target for any reason (including `detachFromTarget` command). Can be
+  // issued multiple times per target if multiple sessions have been attached to it.
+  OnDetachedFromTarget(string session_id, string? target_id);
+
+  // Notifies about a new protocol message received from the session (as reported in
+  // `attachedToTarget` event).
+  OnReceivedMessageFromTarget(string session_id, string message, string? target_id);
+
+  // Issued when a possible inspection target is created.
+  OnTargetCreated(TargetInfo targetInfo);
+
+  // Issued when a target is destroyed.
+  OnTargetDestroyed(string target_id);
+
+  // Issued when some information about a target has changed. This only happens between
+  // `targetCreated` and `targetDestroyed`.
+  OnTargetInfoChanged(TargetInfo targetInfo);
+};
+
+// The Tethering domain defines methods and events for browser port binding.
+interface Tethering {
+  Register(int32 application_id);
+  Bind(int32 port);
+  Unbind(int32 port);
+};
+
+interface TetheringClient {
+  // Informs that port was successfully bound and got a specified connection id.
+  OnAccepted(int32 port, string connection_id);
+};
+
+// Network interface allows tracking network activities of the page. It exposes information about http,
+// file, data and other requests and responses, their headers, bodies, timing, etc.
+interface Network {
+  Register(int32 application_id);
+  // Tells whether clearing browser cache is supported.
+  CanClearBrowserCache() => (bool result);
+
+  // Tells whether clearing browser cookies is supported.
+  CanClearBrowserCookies() => (bool result); 
+    
+  // Tells whether emulation of network conditions is supported.
+  CanEmulateNetworkConditions() => (bool result);  
+
+  // Clears browser cache.
+  ClearBrowserCache();
+
+  // Clears browser cookies.
+  ClearBrowserCookies();
+
+  // Response to Network.requestIntercepted which either modifies the request to continue with any
+  // modifications, or blocks it, or completes it with the provided response bytes. If a network
+  // fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
+  // event will be sent with the same InterceptionId.
+  ContinueInterceptedRequest(string interception_id,
+    ErrorReason error_reason,
+    string? raw_response,
+    string? url,
+    string? method,
+    string? post_data,
+    map<string, string>? headers,
+    AuthChallengeResponse? auth_challenge_response);
+
+  // Deletes browser cookies with matching name and url or domain/path pair.
+  DeleteCookies(string name, string? url, string? domain, string? path);
+
+  // Disables network tracking, prevents network events from being sent to the client.
+  Disable();
+
+  // Activates emulation of network conditions.
+  EmulateNetworkConditions(bool offline, int64 latency, int64 download_throughput, int64 upload_throughput, ConnectionType connection_type);
+
+  // Enables network tracking, network events will now be delivered to the client.
+  Enable(int32 max_total_buffer_size, int32 max_resource_buffer_size, int32 max_post_data_size);
+
+  // Returns all browser cookies. Depending on the backend support, will return detailed cookie
+  // information in the `cookies` field.
+  GetAllCookies() => (array<Cookie> cookies);
+
+  // Returns the DER-encoded certificate.
+  GetCertificate(string origin) => (array<string> table_names);
+
+  // Returns all browser cookies for the current URL. Depending on the backend support, will return
+  // detailed cookie information in the `cookies` field.
+  GetCookies(array<string>? urls) => (array<Cookie> cookies);
+
+  // Returns content served for the given request.
+  GetResponseBody(string request_id) => (string body, bool base64_encoded);
+
+  // Returns post data sent with the request. Returns an error when no data was sent with the request.
+  GetRequestPostData(string request_id) => (string post_data);
+
+  // Returns content served for the given currently intercepted request.
+  GetResponseBodyForInterception(string interception_id) => (string body, bool base64_encoded);
+
+  // Returns a handle to the stream representing the response body. Note that after this command,
+  // the intercepted request can't be continued as is -- you either need to cancel it or to provide
+  // the response body. The stream only supports sequential read, IO.read will fail if the position
+  // is specified.
+  TakeResponseBodyForInterceptionAsStream(string interception_id) => (string stream);
+
+  // This method sends a new XMLHttpRequest which is identical to the original one. The following
+  // parameters should be identical: method, url, async, request body, extra headers, withCredentials
+  // attribute, user, password.
+  ReplayXHR(string request_id);
+
+  // Searches for given string in response content.
+  SearchInResponseBody(string request_id, string query, bool case_sensitive, bool is_regex) => (array<SearchMatch> result);
+
+  // Blocks URLs from loading.
+  SetBlockedURLs(array<string> urls);
+
+  // Toggles ignoring of service worker for each request.
+  SetBypassServiceWorker(bool bypass);
+
+  // Toggles ignoring cache for each request. If `true`, cache will not be used.
+  SetCacheDisabled(bool cache_disabled);
+
+  // Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
+  SetCookie(
+    string name,
+    string value,
+    string? url,
+    string? domain,
+    string? path,
+    bool secure,
+    bool http_only,
+    CookieSameSite same_site,
+    int64 expires) => (bool success);
+
+  // Sets given cookies.
+  SetCookies(array<CookieParam> cookies);
+
+  // For testing.
+  SetDataSizeLimitsForTest(int32 max_total_size, int32 max_resource_size);
+
+  // Specifies whether to always send extra HTTP headers with the requests from this page.
+  SetExtraHTTPHeaders(map<string, string> headers);
+
+  // Sets the requests to intercept that match a the provided patterns and optionally resource types.
+  SetRequestInterception(array<RequestPattern> patterns);
+
+  // Allows overriding user agent with the given string.
+  SetUserAgentOverride(string userAgent);
+};
+
+interface NetworkClient {
+
+  // Fired when data chunk was received over the network.
+  OnDataReceived(string request_id, int64 timestamp, int64 data_length, int64 encoded_data_length);
+
+  // Fired when EventSource message is received.
+  OnEventSourceMessageReceived(string request_id, int64 timestamp, string event_name, string event_id, string data);
+
+  // Fired when HTTP request has failed to load.
+  OnLoadingFailed(string request_id, int64 timestamp, ResourceType type, string error_text, bool canceled, BlockedReason blocked_reason);
+  
+  // Fired when HTTP request has finished loading.
+  OnLoadingFinished(string request_id, int64 timestamp, int64 encoded_data_length, bool blocked_cross_site_document);
+
+  // Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
+  // mocked.
+  OnRequestIntercepted(
+      string interceptionId,
+      Request request,
+      string frame_id,
+      ResourceType resource_type,
+      bool is_navigation_request,
+      bool is_download,
+      string? redirect_url,
+      AuthChallenge? auth_challenge,
+      ErrorReason response_error_reason,
+      int32 response_status_code,
+      map<string, string>? response_headers);
+
+  // Fired if request ended up loading from cache.
+  OnRequestServedFromCache(string request_id);
+
+  // Fired when page is about to send HTTP request.
+  OnRequestWillBeSent(
+      string request_id,
+      string loader_id,
+      string document_url,
+      Request request,
+      int64 timestamp,
+      int64 wall_time,
+      Initiator initiator,
+      Response? redirect_response,
+      ResourceType type,
+      string? frame_id,
+      bool has_user_gesture);
+
+  // Fired when resource loading priority is changed
+  OnResourceChangedPriority(
+      string request_id,
+      ResourcePriority new_priority,
+      int64 timestamp);
+
+  // Fired when HTTP response is available.
+  OnResponseReceived(
+    string request_id,
+    string loader_id,
+    int64 timestamp,
+    ResourceType type,
+    Response response,
+    string? frame_id);
+
+  // Fired when WebSocket is closed.
+  OnWebSocketClosed(string request_id, int64 timestamp);
+
+  // Fired upon WebSocket creation.
+  OnWebSocketCreated(string request_id, string url, Initiator? initiator);
+
+  // Fired when WebSocket frame error occurs.
+  OnWebSocketFrameError(string request_id, int64 timestamp, string error_message);
+
+  // Fired when WebSocket frame is received.
+  OnWebSocketFrameReceived(string request_id, int64 timestamp, WebSocketFrame response);
+
+  // Fired when WebSocket frame is sent.
+  OnWebSocketFrameSent(string request_id, int64 timestamp, WebSocketFrame response);
+
+  // Fired when WebSocket handshake response becomes available.
+  OnWebSocketHandshakeResponseReceived(string request_id, int64 timestamp, WebSocketResponse response);
+
+  // Fired when WebSocket is about to initiate handshake.
+  OnWebSocketWillSendHandshakeRequest(string request_id, int64 timestamp, int64 wall_time, WebSocketRequest request);
+
+  Flush();
+};
+
+// # Array of timings, one per paint step.
+// type PaintProfile extends array of number
+
+interface LayerTree {
+  
+  Register(int32 application_id);
+  
+  // Provides the reasons why the given layer was composited.
+  CompositingReasons(string layer_id) => (array<string> compositing_reasons);
+    
+  // Disables compositing tree inspection.
+  Disable();
+
+  // Enables compositing tree inspection.
+  Enable();
+
+  // Returns the snapshot identifier.
+  LoadSnapshot(array<PictureTile> tiles) => (string snapshot_id);
+
+  // Returns the layer snapshot identifier.
+  MakeSnapshot(string layer_id) => (string snapshot_id);
+
+  ProfileSnapshot(string snapshot_id, int32 min_repeat_count, int32 min_duration, gfx.mojom.Rect? clip_rect) => (array<array<double>> timings);
+    
+  // Releases layer snapshot captured by the back-end.
+  ReleaseSnapshot(string snapshot_id);
+
+  // Replays the layer snapshot and returns the resulting bitmap.
+  ReplaySnapshot(string snapshot_id, int32 from_step, int32 to_step, int32 scale) => (string data_url);
+
+  // Replays the layer snapshot and returns canvas log.
+  SnapshotCommandLog(string snapshot_id) => (string command_log);
+
+};
+
+interface LayerTreeClient {
+  OnLayerPainted(string layer_id, gfx.mojom.Rect clip);
+  OnLayerTreeDidChange(array<Layer>? layers);
+};
+
+interface Input {
+  
+  Register(int32 application_id);
+
+  // Dispatches a key event to the page.
+  DispatchKeyEvent(
+    KeyEventType type,
+    int32 modifiers,
+    int64 timestamp,
+    string? text,
+    string? unmodified_text,
+    string? key_identifier,
+    string? code,
+    string? key,
+    int32 windows_virtual_key_code,
+    int32 native_virtual_key_code,
+    bool auto_repeat,
+    bool is_keypad,
+    bool is_system_key,
+    int32 location) => (bool handled);
+    
+  // Dispatches a mouse event to the page.
+  DispatchMouseEvent(
+    MouseEventType type, 
+    int32 x, 
+    int32 y, 
+    int32 modifiers, 
+    int64 timestamp, 
+    MouseButton button, 
+    int32 click_count, 
+    int32 delta_x, 
+    int32 delta_y) => (bool handled);
+    
+  // Dispatches a touch event to the page.
+  DispatchTouchEvent(TouchEventType type, array<TouchPoint> touch_points, int32 modifiers, int64 timestamp) => (bool handled);
+    
+  // Emulates touch event from the mouse event parameters.
+  EmulateTouchFromMouseEvent(MouseEventType type, 
+    int32 x, 
+    int32 y, 
+    MouseButton button,
+    int64 timestamp,
+    int32 delta_x,
+    int32 delta_y,
+    int32 modifiers,
+    int32 click_count) => (bool handled);
+    
+  // Ignores input events (useful while auditing page).
+  SetIgnoreInputEvents(bool ignore);
+    
+  // Synthesizes a pinch gesture over a time period by issuing appropriate touch events.
+  SynthesizePinchGesture(
+    int32 x,
+    int32 y,
+    int32 scale_factor,
+    int32 relative_speed,
+    GestureSourceType gesture_source_type) => (bool handled);
+    
+  // Synthesizes a scroll gesture over a time period by issuing appropriate touch events.
+  SynthesizeScrollGesture(
+    int32 x,
+    int32 y,
+    int32 x_distance,
+    int32 y_distance,
+    int32 x_overscroll,
+    int32 y_overscroll,
+    bool prevent_fling,
+    int32 speed,
+    GestureSourceType gesture_source_type,
+    int32 repeat_count,
+    int32 repeat_delay_ms,
+    string? interaction_marker_name) => (bool handled);
+    
+  // Synthesizes a tap gesture over a time period by issuing appropriate touch events.
+  SynthesizeTapGesture(
+    int32 x,
+    int32 y,
+    int32 duration,
+    int32 tap_count,
+    GestureSourceType gesture_source_type) => (bool handled);
+
+};
+
+interface IndexedDB {
+
+  Register(int32 application_id);
+
+  // Disables events from backend.
+  Disable();
+
+  // Enables events from backend.
+  Enable();
+        
+  // Clears all entries from an object store.
+  ClearObjectStore(string security_origin, string database_name, string object_store_name) => (bool success);
+
+  // Deletes a database.
+  DeleteDatabase(string security_origin, string database_name) => (bool success);
+
+  // Delete a range of entries from an object store
+  DeleteObjectStoreEntries(string security_origin, string database_name, string object_store_name, KeyRange keyRange) => (bool success);
+
+  // Requests data from object store or index.
+  RequestData(
+    string security_origin, 
+    string database_name, 
+    string object_store_name,
+    string index_name,
+    int32 skip_count,
+    int32 page_size,
+    KeyRange? key_range) => (array<IndexedDBDataEntry> entries, bool has_more);
+
+  // Requests database with given name in given frame.
+  RequestDatabase(string security_origin, string database_name) => (DatabaseWithObjectStores database_with_object_stores);
+  
+  // Requests database names for given security origin.
+  RequestDatabaseNames(string security_origin) => (array<string> names);
+
+};
+
+interface IO {
+
+  Register(int32 application_id);
+  
+  // Close the stream, discard any temporary backing storage.
+  Close(string handl);
+
+  // Read a chunk of the stream
+  Read(string handl, int32 offset, int32 size) => (bool base64_encoded, string data, bool eof);
+
+  // Return UUID of Blob object specified by a remote object id.
+  ResolveBlob(string object_id) => (string uuid);
+
+};
+      
+interface Headless {
+
+  Register(int32 application_id);
+        
+  // Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
+  // screenshot from the resulting frame. Requires that the target was created with enabled
+  // BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
+  // https://goo.gl/3zHXhB for more background.
+  BeginFrame(
+      int64 frame_time,
+      int32 frame_time_ticks,
+      int64 deadline,
+      int32 deadline_ticks,
+      int32 interval,
+      bool no_display_updates,
+      ScreenshotParams? screenshot) => (bool has_damage, string? screenshot_data);
+    
+  // Puts the browser into deterministic mode.  Only effective for subsequently created web contents.
+  // Only supported in headless mode.  Once set there's no way of leaving deterministic mode.
+  EnterDeterministicMode(int32 initial_date);
+
+  // Disables headless events for the target.
+  Disable();
+
+  // Enables headless events for the target.
+  Enable();
+};
+
+interface HeadlessClient {
+  // Issued when the target starts or stops needing BeginFrames.
+  OnNeedsBeginFramesChanged(bool needs_begin_frames);
+};
+
+
+interface DOMStorage {
+
+  Register(int32 application_id);
+
+  //# DOM Storage item.
+  //type Item extends array of string
+  Clear(StorageId storage_id);
+
+  //Disables storage tracking, prevents storage events from being sent to the client.
+  Disable();
+
+  //Enables storage tracking, storage events will now be delivered to the client.
+  Enable();
+
+  GetDOMStorageItems(StorageId storageId) => (array<array<string>> entries);
+
+  RemoveDOMStorageItem(StorageId storage_id, string key);
+
+  SetDOMStorageItem(StorageId storageId, string key, string value);
+
+};
+
+interface DOMStorageClient {
+  OnDomStorageItemAdded(StorageId storage_id, string key, string new_value);
+  OnDomStorageItemRemoved(StorageId storage_id, string key);
+  OnDomStorageItemUpdated(StorageId storage_id, string key, string old_value, string new_value);
+  OnDomStorageItemsCleared(StorageId storage_id);
+};
+
+interface DatabaseInterface {
+
+  Register(int32 application_id);
+
+  // Disables database tracking, prevents database events from being sent to the client.
+  Disable();
+
+  // Enables database tracking, database events will now be delivered to the client.
+  Enable();
+
+  ExecuteSQL(string database_id, string query) => (array<string>? column_names, array<Value>? values, Error sql_error);
+
+  GetDatabaseTableNames(string database_id) => (array<string> table_names);
+};
+
+interface DatabaseClient {
+  OnAddDatabase(Database database);
+};
+
+interface DeviceOrientation {
+  Register(int32 application_id);
+  ClearDeviceOrientationOverride();
+  SetDeviceOrientationOverride(int32 alpha, int32 beta, int32 gamma);
+};
+
+
+interface Emulation {
+  Register(int32 application_id);
+  // Tells whether emulation is supported.
+  CanEmulate() => (bool result);
+
+  // Clears the overriden device metrics.
+  ClearDeviceMetricsOverride();
+
+  // Clears the overriden Geolocation Position and Error.
+  ClearGeolocationOverride();
+
+  // Requests that page scale factor is reset to initial values.
+  ResetPageScaleFactor();
+
+  // Enables CPU throttling to emulate slow CPUs.
+  SetCPUThrottlingRate(int32 rate);
+
+  // Sets or clears an override of the default background color of the frame. This override is used
+  // if the content does not specify one.
+  SetDefaultBackgroundColorOverride(RGBA? color);
+
+  // Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
+  // window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media
+  // query results).
+  SetDeviceMetricsOverride(
+    int32 width,
+    int32 height,
+    float device_scale_factor,
+    bool mobile,
+    float scale,
+    int32 screen_width,
+    int32 screen_height,
+    int32 position_x,
+    int32 position_y,
+    bool dont_set_visible_size,
+    ScreenOrientation screen_orientation,
+    Viewport? viewport);
+
+  SetEmitTouchEventsForMouse(bool enabled, TouchEventForMouseConfiguration configuration);
+      
+  // Emulates the given media for CSS media queries.
+  SetEmulatedMedia(string media);
+
+  // Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
+  // unavailable.
+  SetGeolocationOverride(int64 latitude, int64 longitude, int64 accuracy);
+
+  // Overrides value returned by the javascript navigator object.
+  SetNavigatorOverrides(string platform);
+
+  SetPageScaleFactor(float page_scale_factor);
+
+  // Switches script execution in the page.
+  SetScriptExecutionDisabled(bool value);
+
+  // Enables touch on platforms which do not support them.
+  SetTouchEmulationEnabled(bool enabled, int32 max_touch_points);
+
+  // Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets
+  // the current virtual time policy.  Note this supersedes any previous time budget.
+  SetVirtualTimePolicy(
+    VirtualTimePolicy policy,
+    int32 budget,
+    int32 max_virtual_time_task_starvation_count,
+    bool wait_for_navigation) => (int64 virtualTimeBase, int64 virtual_time_ticks_base);
+
+  // Resizes the frame/viewport of the page. Note that this does not affect the frame's container
+  // (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
+  // on Android.
+  SetVisibleSize(int32 width, int32 height);
+
+};
+
+interface EmulationClient {
+  // Notification sent after the virtual time has advanced.
+  OnVirtualTimeAdvanced(int32 virtual_time_elapsed);
+
+  // Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
+  OnVirtualTimeBudgetExpired();
+
+  // Notification sent after the virtual time has paused.
+  OnVirtualTimePaused(int32 virtual_time_elapsed);
+};
+
+// DOMSnapshot
+
+interface DOMSnapshot {
+
+  Register(int32 application_id);
+
+  GetSnapshot(array<string> computed_style_whitelist,
+             bool include_event_listeners,
+             bool include_paint_order,
+             bool include_user_agent_shadow_tree) => (array<DOMSnapshotNode> dom_nodes, 
+                                                      array<LayoutTreeNode> layout_tree_nodes, 
+                                                      array<ComputedStyle> computed_styles);
+};
+
+interface DOM {
+
+  Register(int32 application_id);
+
+  // Collects class names for the node with given id and all of it's child nodes.
+  CollectClassNamesFromSubtree(int32 node_id) => (array<string> class_names);
+
+  // Creates a deep copy of the specified node and places it into the target container before the
+  // given anchor.
+  CopyTo(int32 node_id, int32 target_node_id, int32 anchor_node_id) => (int32 nodeId);
+
+  // Describes node given its id, does not require domain to be enabled. Does not start tracking any
+  // objects, can be used for automation.
+  DescribeNode(
+    int32 node_id,
+    int32 backend_node_id,
+    string? object_id,
+    int32 depth,
+    bool pierce) => (DOMNode node);
+
+  Disable();
+
+  // Discards search results from the session with the given id. `getSearchResults` should no longer
+  // be called for that search.
+  DiscardSearchResults(string search_id);
+
+  // Enables DOM agent for the given page.
+  Enable();
+
+  // Focuses the given element.
+  Focus(int32 node_id, int32 backend_node_id, string? object_id);
+
+  // Returns attributes for the specified node.
+  GetAttributes(int32 node_id) => (array<string> attributes);
+
+  // Returns boxes for the given node.
+  GetBoxModel(int32 node_id, int32 backend_node_id, string? object_id) => (BoxModel model);
+
+  // Returns the root DOM node (and optionally the subtree) to the caller.
+  GetDocument(int32 depth, bool pierce) => (DOMNode root);
+
+  // Returns the root DOM node (and optionally the subtree) to the caller.
+  GetFlattenedDocument(int32 depth, bool pierce) => (array<DOMNode> nodes);  
+
+  // Returns node id at given location.
+  GetNodeForLocation(int32 x, int32 y, bool include_user_agent_shadow_dom) => (int32 node_id);
+  
+  // Returns node's HTML markup.
+  GetOuterHTML(int32 node_id, int32 backend_node_id, string? object_id) => (string outer_html);
+
+  // Returns the id of the nearest ancestor that is a relayout boundary.
+  GetRelayoutBoundary(int32 node_id) => (int32 node_id);
+
+  // Returns search results from given `fromIndex` to given `toIndex` from the search with the given
+  // identifier.
+  GetSearchResults(string search_id, int32 from_index, int32 to_index) => (array<int32> node_ids);
+
+  // Hides any highlight.
+  HideHighlight();
+
+  // Highlights DOM node.
+  HighlightNode(HighlightConfig highlight_config, int32 node_id, int32 backend_node_id, int32 object_id);
+
+  // Highlights given rectangle.
+  HighlightRect(int32 x, int32 y, int32 width, int32 height, RGBA? color, RGBA? outline_color);
+  
+  // Marks last undoable state.
+  MarkUndoableState();
+
+  // Moves node into the new container, places it before the given anchor.
+  MoveTo(int32 node_id, int32 target_node_id, int32 insert_before_node_id) => (int32 node_id);
+
+  // Searches for a given string in the DOM tree. Use `getSearchResults` to access search results or
+  // `cancelSearch` to end this search session.
+  PerformSearch(string query, bool include_user_agent_shadow_dom) => (string search_id, int32 result_count);
+
+  // Requests that the node is sent to the caller given its path. // FIXME, use XPath
+  PushNodeByPathToFrontend(string path) => (int32 node_id);
+  
+  // Requests that a batch of nodes is sent to the caller given their backend node ids.
+  PushNodesByBackendIdsToFrontend(array<int32> backend_node_ids) => (array<int32> node_ids);
+
+  // Executes `querySelector` on a given node.
+  QuerySelector(int32 node_id, string selector) => (int32 nodeId);
+
+  QuerySelectorAll(int32 node_id, string selector) => (array<int32> node_ids);
+
+  // Re-does the last undone action.
+  Redo();
+
+  // Removes attribute with given name from an element with given id.
+  RemoveAttribute(int32 node_id, string name);
+
+  // Removes node with given id.
+  RemoveNode(int32 node_id);
+
+  // Requests that children of the node with given id are returned to the caller in form of
+  // `setChildNodes` events where not only immediate children are retrieved, but all children down to
+  // the specified depth.
+  RequestChildNodes(int32 node_id, int32 depth, bool pierce);
+
+  // Requests that the node is sent to the caller given the JavaScript node object reference. All
+  // nodes that form the path from the node to the root are also sent to the client as a series of
+  // `setChildNodes` notifications.
+  RequestNode(string object_id) => (int32 node_id);
+
+  // Resolves the JavaScript node object for a given NodeId or BackendNodeId.
+  ResolveNode(int32 node_id, string? object_group) => (RemoteObject object);
+
+  // Sets attribute for an element with given id.
+  SetAttributeValue(int32 node_id, string name, string value);
+
+  // Sets attributes on element with given id. This method is useful when user edits some existing
+  // attribute value and types in several attribute name/value pairs.
+  SetAttributesAsText(int32 node_id, string text, string? name);
+
+  // Sets files for the given file input element.
+  SetFileInputFiles(array<string> files, int32 node_id, int32 backend_node_id, string? object_id);
+
+  // Enables console to refer to the node with given id via $x (see Command Line API for more details
+  // $x functions).
+  SetInspectedNode(int32 node_id);
+
+  // Sets node name for a node with given id.
+  SetNodeName(int32 node_id, string name) => (int32 node_id);
+
+  // Sets node value for a node with given id.
+  SetNodeValue(int32 node_id, string value);
+
+  // Sets node HTML markup, returns new node id.
+  SetOuterHTML(int32 node_id, string outer_html);
+
+  // Undoes the last performed action.
+  Undo();
+
+  // Returns iframe node that owns iframe with the given domain.
+  GetFrameOwner(string frame_id) => (int32 node_id);
+};
+
+interface DOMClient {
+
+  // Fired when backend wants to provide client with the missing DOM structure. This happens upon
+  // most of the calls requesting node ids.
+  SetChildNodes(int32 parent_id, array<DOMNode> nodes);
+
+  // Fired when `Element`'s attribute is modified.
+  OnAttributeModified(int32 node_id, string name, string value);
+
+  // Fired when `Element`'s attribute is removed.
+  OnAttributeRemoved(int32 node_id, string name);
+
+  // Mirrors `DOMCharacterDataModified` event.
+  OnCharacterDataModified(int32 node_id, string character_data);
+
+  // Fired when `Container`'s child node count has changed. 
+  OnChildNodeCountUpdated(int32 node_id, int32 child_node_count);
+
+  // Mirrors `DOMNodeInserted` event.
+  OnChildNodeInserted(int32 parent_node_id, int32 previous_node_id, DOMNode node);
+
+  // Mirrors `DOMNodeRemoved` event.
+  OnChildNodeRemoved(int32 parent_node_id, int32 node_id);
+
+  // Called when distrubution is changed.
+  OnDistributedNodesUpdated(int32 insertion_point_id, array<BackendNode> distributed_nodes);
+
+  // Fired when `Document` has been totally updated. DOMNode ids are no longer valid.
+  OnDocumentUpdated();
+
+  // Fired when `Element`'s inline style is modified via a CSS property modification.
+  OnInlineStyleInvalidated(array<int32> node_ids);
+
+  // Called when a pseudo element is added to an element.
+  OnPseudoElementAdded(int32 parent_id, DOMNode pseudo_element);
+
+  // Called when a pseudo element is removed from an element.
+  OnPseudoElementRemoved(int32 parent_id, int32 pseudo_element_id);
+
+  // Called when shadow root is popped from the element.
+  OnShadowRootPopped(int32 host_id, int32 root_id);
+
+  // Called when shadow root is pushed into the element.
+  OnShadowRootPushed(int32 host_id, DOMNode root);
+};
+
+interface CSS {
+  
+  Register(int32 application_id);
+
+  // Inserts a new rule with the given `ruleText` in a stylesheet with given `styleSheetId`, at the
+  // position specified by `location`.
+  AddRule(string style_sheet_id, string rule_text, SourceRange location) => (CSSRule rule);
+
+  // Returns all class names from specified stylesheet.
+  CollectClassNames(string style_sheet_id) => (array<string> class_names);
+
+  // Creates a new special "via-inspector" stylesheet in the frame with given `frameId`.
+  CreateStyleSheet(string frame_id) => (string style_sheet_id);
+
+  // Disables the CSS agent for the given page.
+  Disable();
+
+  // Enables the CSS agent for the given page. Clients should not assume that the CSS agent has been
+  // enabled until the result of this command is received.
+  Enable();
+
+  // Ensures that the given node will have specified pseudo-classes whenever its style is computed by
+  // the browser.
+  ForcePseudoState(int32 node_id, array<string> forced_pseudo_classes);
+
+  GetBackgroundColors(int32 node_id) => (
+    array<string>? background_colors, 
+    string? computed_font_size,
+    string? computed_font_weight,
+    string? computed_body_font_size);
+
+  // Returns the computed style for a DOM node identified by `nodeId`.
+  GetComputedStyleForNode(int32 node_id) => (array<CSSComputedStyleProperty> computed_style);
+
+  // Returns the styles defined inline (explicitly in the "style" attribute and implicitly, using DOM
+  // attributes) for a DOM node identified by `nodeId`.
+  GetInlineStylesForNode(int32 node_id) => (CSSStyle? inline_style, CSSStyle? attributes_style);
+
+  // Returns requested styles for a DOM node identified by `nodeId`.
+  GetMatchedStylesForNode(int32 node_id) => 
+    (CSSStyle? inline_style,
+    CSSStyle? attributes_style,
+    array<RuleMatch>? matched_css_rules,
+    array<PseudoElementMatches>? pseudo_elements,
+    array<InheritedStyleEntry>? inherited,
+    array<CSSKeyframesRule>? css_keyframes_rules);
+
+  // Returns all media queries parsed by the rendering engine.
+  GetMediaQueries() => (array<CSSMedia> medias);
+
+  // Requests information about platform fonts which we used to render child TextNodes in the given
+  // node.
+  GetPlatformFontsForNode(int32 node_id) => (array<PlatformFontUsage> fonts);
+
+  // Returns the current textual content for a stylesheet.
+  GetStyleSheetText(string style_sheet_id) => (string text);
+
+  // Find a rule with the given active property for the given node and set the new value for this
+  // property
+  SetEffectivePropertyValueForNode(int32 node_id, string property_name, string value);
+
+  // Modifies the keyframe rule key text.
+  SetKeyframeKey(string style_sheet_id, SourceRange range, string key_text) => (CSSValue key_text);
+
+  // Modifies the rule selector.
+  SetMediaText(string style_sheet_id, SourceRange range, string text) => (CSSMedia media);
+
+  // Modifies the rule selector.
+  SetRuleSelector(string style_sheet_id, SourceRange range, string selector) => (SelectorList selector_list);
+
+  // Sets the new stylesheet text.
+  SetStyleSheetText(string style_sheet_id, string text) => (string? source_map_url);
+
+  // Applies specified style edits one after another in the given order.
+  SetStyleTexts(array<StyleDeclarationEdit> edits) => (array<CSSStyle> styles);
+
+  // Enables the selector recording.
+  StartRuleUsageTracking();
+
+  // Stop tracking rule usage and return the list of rules that were used since last call to
+  // `takeCoverageDelta` (or since start of coverage instrumentation)
+  StopRuleUsageTracking() => (array<CSSRuleUsage> rule_usage);
+
+  // Obtain list of rules that became used since last call to this method (or since start of coverage
+  // instrumentation)
+  TakeCoverageDelta() => (array<CSSRuleUsage> coverage);
+};
+
+interface CSSClient {
+  // Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
+  // web font
+  OnFontsUpdated(FontFace? font);
+
+  //Fires whenever a MediaQuery result changes (for example, after a browser window has been
+  //resized.) The current implementation considers only viewport-dependent media features.
+  OnMediaQueryResultChanged();
+
+  // Fired whenever an active document stylesheet is added.
+  OnStyleSheetAdded(CSSStyleSheetHeader header);
+
+  // Fired whenever a stylesheet is changed as a result of the client operation.
+  OnStyleSheetChanged(string style_sheet_id);
+
+  // Fired whenever an active document stylesheet is removed.
+  OnStyleSheetRemoved(string style_sheet_id);
+};
+
+/// CacheStorage
+              
+interface CacheStorage {
+
+  Register(int32 application_id);
+  
+  // asks if cache exists
+  HasCache(string cache_id) => (bool exists);
+  
+  // Open a cache
+  OpenCache(string cache_id) => (int32 result);
+
+  // Deletes a cache.
+  DeleteCache(string cache_id) => (bool success);
+  
+  // Deletes a cache entry.
+  DeleteEntry(string cache_id, string request) => (bool success);
+
+  // Add Entry, copying data
+  PutEntry(string cache_id, string request, blink.mojom.DataElement data) => (bool success);
+
+  PutEntryBlob(string cache_id, string request, blink.mojom.SerializedBlob blob) => (bool success);
+  
+  // Requests cache names.
+  RequestCacheNames(string securityOrigin) => (array<Cache> caches);
+  
+  // Fetches cache entry.
+  RequestCachedResponse(string cache_id, string request_url, bool base64_encoded) => (CachedResponse response);
+  
+  RequestEntries(string cache_id, int32 skipCount, int32 pageSize) => (array<DataEntry> cache_data_entries, bool has_more);
+
+};
+
+// ApplicationCache
+              
+interface ApplicationCacheInterface {
+
+  Register(int32 application_id);
+  // Enables application cache domain notifications.
+  Enable();
+
+  // Returns relevant application cache data for the document in given frame.
+  GetApplicationCacheForFrame(string frameId) => (ApplicationCache application_cache);
+
+  GetFramesWithManifests() => (array<FrameWithManifest> frame_ids);
+
+  // Returns manifest URL for document in the given frame.
+  GetManifestForFrame(string frame_id) => (string manifest_url);
+};
+
+interface ApplicationCacheClient {
+  OnApplicationCacheStatusUpdated(string frame_id, string manifest_url, int32 status);
+  OnNetworkStateUpdated(bool is_now_online);
+};
+
+/// Animation
+interface AnimationInterface {
+
+  Register(int32 application_id);
+
+  // Disables animation domain notifications.
+  Disable();
+
+  // Enables animation domain notifications.
+  Enable();
+
+  // Returns the current time of the an animation.
+  GetCurrentTime(string id) => (int32 current_time);
+
+  // Gets the playback rate of the document timeline.
+  GetPlaybackRate() => (int32 playback_rate);
+
+  // Releases a set of animations to no longer be manipulated.
+  ReleaseAnimations(array<string> animations);
+
+  // Gets the remote object of the Animation.
+  //ResolveAnimation(string animation_id) => (RemoteObject remote_object);
+  ResolveAnimation(string animation_id) => (Animation animation);
+
+  // Seek a set of animations to a particular time within each animation.
+  SeekAnimations(array<string> animations, int32 current_time);
+
+  // Sets the paused state of a set of animations.
+  SetPaused(array<string> animations, bool paused);
+
+  // Sets the playback rate of the document timeline.
+  SetPlaybackRate(int32 playback_rate);
+
+  // Sets the timing of an animation node.
+  SetTiming(string animation_id, int32 duration, int32 delay);
+};
+
+interface AnimationClient {
+  // Event for when an animation has been cancelled.
+  OnAnimationCanceled(string id);
+
+  // Event for each animation that has been created.
+  OnAnimationCreated(string id);
+
+  // Event for animation that has been started.
+  OnAnimationStarted(Animation animation);
+};
+
+
+interface Accessibility {
+  Register(int32 application_id);
+  // Fetches the accessibility node and partial accessibility tree for this DOM node, if it exists.
+  GetPartialAXTree(string? node_id, int32 backend_node_id, string? object_id, bool fetch_relatives) => (array<AXNode> nodes);
+};

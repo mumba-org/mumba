@@ -1,0 +1,91 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+import("//lib/testing/test.gni")
+
+source_set("lib") {
+  sources = [
+    # These interfaces are shared between iOS and other platforms to minimize
+    # the amount of iddef'ing necessary to handle the fact that iOS does not
+    # support ServiceProcessLauncher.
+    "service_process_launcher_delegate.h",
+    "service_process_launcher_factory.h",
+  ]
+
+  if (!is_ios) {
+    sources += [
+      # iOS does not support launching services in their own processes.
+      "service_process_launcher.cc",
+      "service_process_launcher.h",
+    ]
+  }
+
+  deps = [
+    "//lib/base:base_static",
+    "//lib/base:i18n",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/runner:init",
+    "//lib/services/service_manager/runner/common",
+    "//lib/services/service_manager/sandbox",
+  ]
+
+  public_deps = [
+    "//lib/base",
+    "//lib/mojo/edk",
+    "//lib/mojo/public/cpp/system",
+  ]
+
+  if (is_linux && !is_android) {
+    deps += [ "//lib/sandbox/linux:sandbox_services" ]
+  }
+
+  if (!is_ios) {
+    deps += [ "//lib/services/service_manager/public/cpp/standalone_service" ]
+  }
+}
+
+if (!is_ios) {
+  # The below targets rely on the host_test_service service binary. Service
+  # binaries are not supported on iOS.
+  source_set("unittests") {
+    # testonly = true
+    sources = [
+      "service_process_launcher_unittest.cc",
+    ]
+
+    deps = [
+      ":lib",
+      "//lib/base",
+      "//lib/base/test:test_support",
+      "//lib/mojo/edk",
+      "//lib/services/service_manager",
+      "//lib/services/service_manager/runner:init",
+      "//lib/services/service_manager/runner/common",
+      "//lib/testing/gtest",
+    ]
+
+    data_deps = [
+      ":host_test_service",
+    ]
+  }
+
+  service("host_test_service") {
+    sources = [
+      "host_test_service_main.cc",
+    ]
+
+    deps = [
+      "//lib/mojo/public/cpp/system",
+      "//lib/services/service_manager/public/cpp/standalone_service:main",
+    ]
+  }
+
+  service_manifest("host_test_service_manifest") {
+    name = "host_test_service"
+    source = "host_test_service_manifest.json"
+  }
+}

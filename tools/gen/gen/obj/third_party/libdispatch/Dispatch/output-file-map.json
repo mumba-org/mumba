@@ -1,0 +1,59 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/master.swiftdeps"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Block.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Block.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Block.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Block.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Block~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Data.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Data.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Data.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Data.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Data~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Dispatch.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Dispatch.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Dispatch.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Dispatch.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Dispatch~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/IO.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/IO.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/IO.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/IO.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/IO~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Private.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Private.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Private.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Private.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Private~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Queue.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Queue.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Queue.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Queue.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Queue~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Source.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Source.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Source.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Source.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Source~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Time.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Time.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Time.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Time.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Time~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/third_party/libdispatch/src/swift/Wrapper.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Wrapper.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Wrapper.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Wrapper.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/third_party/libdispatch/Dispatch/Wrapper~partial.swiftmodule"
+   }
+}

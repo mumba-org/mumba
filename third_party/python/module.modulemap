@@ -1,0 +1,4 @@
+module CPython [extern_c] {
+    umbrella header "PythonShim.h"
+    export *
+}

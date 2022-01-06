@@ -1,0 +1,132 @@
+{
+  "name": "application",
+  "display_name": "Application",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "host": [
+          "common.mojom.Child",
+          "common.mojom.ChildControl",
+          "common.mojom.ChildHistogramFetcher",
+          "common.mojom.ChildHistogramFetcherFactory",
+          "common.mojom.ResourceUsageReporter",
+          "common.mojom.ImageDownloader",
+          "common.mojom.FrameInputHandler",
+          "common.mojom.FullscreenVideoElementHandler",
+          "common.mojom.MediaStreamDeviceObserver",
+          "common.mojom.Widget",
+          "common.mojom.EmbeddedWorkerInstanceClient",
+          "common.mojom.EmbeddedWorkerSetup",
+          "IPC.mojom.ChannelBootstrap",
+          "service_manager.mojom.ServiceFactory",
+          // mumba: add them here instead of 'navigator'
+          "blink.mojom.InstallationService",
+          "blink.mojom.ManifestManager",
+          "blink.mojom.MediaDevicesListener",
+          "blink.mojom.TextSuggestionBackend",
+          "viz.mojom.InputTargetClient",
+          "automation.AnimationInterface",
+          "automation.Page",
+          "automation.Overlay",
+          "automation.ServiceWorker",
+          "automation.Storage",
+          "automation.Tethering",
+          "automation.Network",
+          "automation.LayerTree",
+          "automation.Headless",
+          "automation.DOMStorage",
+          "automation.DatabaseInterface",
+          "automation.Emulation",
+          "automation.DOM",
+          "automation.CSS",
+          "automation.ApplicationCache"
+        ],
+        "service_manager:service_factory": [
+          "service_manager.mojom.ServiceFactory"
+        ]
+      },
+      "requires": {
+        "*": [ "app" ],
+        "device": [
+          "device:power_monitor",
+          "device:time_zone_monitor"
+        ],
+        "host": [
+          "application",
+          "automation.AnimationClient",
+          "automation.PageClient",
+          "automation.OverlayClient",
+          "automation.ServiceWorkerClient",
+          "automation.StorageClient",
+          "automation.TetheringClient",
+          "automation.NetworkClient",
+          "automation.LayerTreeClient",
+          "automation.HeadlessClient",
+          "automation.DOMStorageClient",
+          "automation.DatabaseClient",
+          "automation.EmulationClient",
+          "automation.DOMClient",
+          "automation.CSSClient",
+          "automation.ApplicationCacheClient",
+          "blink.mojom.CacheStorage"
+        ],
+        "metrics": [
+          "url_keyed_metrics"
+        ],
+        "tracing": [ "app", "tracing" ],
+        "ui": [
+          "discardable_memory",
+          "gpu_client"
+        ]
+      }
+    },
+    "navigation:frame": {
+      "provides": {
+        "host": [
+          "blink.mojom.AppBannerController",
+          "blink.mojom.EngagementClient",
+          "blink.mojom.InstallationService",
+          "blink.mojom.ManifestManager",
+          "blink.mojom.MediaDevicesListener",
+          "blink.mojom.TextSuggestionBackend",
+          "common.mojom.ImageDownloader",
+          "common.mojom.FrameInputHandler",
+          "common.mojom.FullscreenVideoElementHandler",
+          "common.mojom.MediaStreamDeviceObserver",
+          "common.mojom.Widget",
+          "viz.mojom.InputTargetClient"
+        ]
+      },
+      "requires": {
+        "host": [ "application" ]
+      }
+    },
+    "navigation:dedicated_worker": {
+      "requires": {
+        "host": [ "application" ]
+      }
+    },
+    "navigation:service_worker": {
+      "requires": {
+        "host": [ "application" ]
+      }
+    },
+    "navigation:shared_worker": {
+      "requires": {
+        "host": [ "application" ]
+      }
+    }
+  },
+  "required_files" : {
+    "v8_natives_data" : [
+      {
+        "path": "natives_blob.bin",
+        "platform": "linux"
+      },
+      {
+        "path": "assets/natives_blob.bin",
+        "platform": "android"
+      }
+    ]
+  }
+}

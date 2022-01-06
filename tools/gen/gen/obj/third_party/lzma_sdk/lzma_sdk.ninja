@@ -1,0 +1,32 @@
+defines = -D_7ZIP_ST -D_7Z_NO_METHODS_FILTERS -D_LZMA_PROB32 -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/lzma_sdk
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -Wno-self-assign
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = lzma_sdk
+target_out_dir = obj/third_party/lzma_sdk
+target_output_name = liblzma_sdk
+
+build obj/third_party/lzma_sdk/lzma_sdk/7zAlloc.o: cc ../../../third_party/lzma_sdk/7zAlloc.c
+build obj/third_party/lzma_sdk/lzma_sdk/7zArcIn.o: cc ../../../third_party/lzma_sdk/7zArcIn.c
+build obj/third_party/lzma_sdk/lzma_sdk/7zBuf.o: cc ../../../third_party/lzma_sdk/7zBuf.c
+build obj/third_party/lzma_sdk/lzma_sdk/7zCrc.o: cc ../../../third_party/lzma_sdk/7zCrc.c
+build obj/third_party/lzma_sdk/lzma_sdk/7zCrcOpt.o: cc ../../../third_party/lzma_sdk/7zCrcOpt.c
+build obj/third_party/lzma_sdk/lzma_sdk/7zDec.o: cc ../../../third_party/lzma_sdk/7zDec.c
+build obj/third_party/lzma_sdk/lzma_sdk/7zFile.o: cc ../../../third_party/lzma_sdk/7zFile.c
+build obj/third_party/lzma_sdk/lzma_sdk/7zStream.o: cc ../../../third_party/lzma_sdk/7zStream.c
+build obj/third_party/lzma_sdk/lzma_sdk/Alloc.o: cc ../../../third_party/lzma_sdk/Alloc.c
+build obj/third_party/lzma_sdk/lzma_sdk/Bcj2.o: cc ../../../third_party/lzma_sdk/Bcj2.c
+build obj/third_party/lzma_sdk/lzma_sdk/Bra.o: cc ../../../third_party/lzma_sdk/Bra.c
+build obj/third_party/lzma_sdk/lzma_sdk/Bra86.o: cc ../../../third_party/lzma_sdk/Bra86.c
+build obj/third_party/lzma_sdk/lzma_sdk/CpuArch.o: cc ../../../third_party/lzma_sdk/CpuArch.c
+build obj/third_party/lzma_sdk/lzma_sdk/Delta.o: cc ../../../third_party/lzma_sdk/Delta.c
+build obj/third_party/lzma_sdk/lzma_sdk/LzFind.o: cc ../../../third_party/lzma_sdk/LzFind.c
+build obj/third_party/lzma_sdk/lzma_sdk/Lzma2Dec.o: cc ../../../third_party/lzma_sdk/Lzma2Dec.c
+build obj/third_party/lzma_sdk/lzma_sdk/LzmaDec.o: cc ../../../third_party/lzma_sdk/LzmaDec.c
+build obj/third_party/lzma_sdk/lzma_sdk/LzmaEnc.o: cc ../../../third_party/lzma_sdk/LzmaEnc.c
+build obj/third_party/lzma_sdk/lzma_sdk/LzmaLib.o: cc ../../../third_party/lzma_sdk/LzmaLib.c
+
+build obj/third_party/lzma_sdk/liblzma_sdk.a: alink obj/third_party/lzma_sdk/lzma_sdk/7zAlloc.o obj/third_party/lzma_sdk/lzma_sdk/7zArcIn.o obj/third_party/lzma_sdk/lzma_sdk/7zBuf.o obj/third_party/lzma_sdk/lzma_sdk/7zCrc.o obj/third_party/lzma_sdk/lzma_sdk/7zCrcOpt.o obj/third_party/lzma_sdk/lzma_sdk/7zDec.o obj/third_party/lzma_sdk/lzma_sdk/7zFile.o obj/third_party/lzma_sdk/lzma_sdk/7zStream.o obj/third_party/lzma_sdk/lzma_sdk/Alloc.o obj/third_party/lzma_sdk/lzma_sdk/Bcj2.o obj/third_party/lzma_sdk/lzma_sdk/Bra.o obj/third_party/lzma_sdk/lzma_sdk/Bra86.o obj/third_party/lzma_sdk/lzma_sdk/CpuArch.o obj/third_party/lzma_sdk/lzma_sdk/Delta.o obj/third_party/lzma_sdk/lzma_sdk/LzFind.o obj/third_party/lzma_sdk/lzma_sdk/Lzma2Dec.o obj/third_party/lzma_sdk/lzma_sdk/LzmaDec.o obj/third_party/lzma_sdk/lzma_sdk/LzmaEnc.o obj/third_party/lzma_sdk/lzma_sdk/LzmaLib.o
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/lzma_sdk

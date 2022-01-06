@@ -1,0 +1,11 @@
+{
+  "name": "io",
+  "display_name": "IO Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "io" : [ "automation.IO" ]
+      }
+    }
+  }
+}

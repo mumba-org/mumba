@@ -1,0 +1,11 @@
+{
+  "name": "tethering",
+  "display_name": "Tethering Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "storage" : [ "automation.Tethering" ]
+      }
+    }
+  }
+}

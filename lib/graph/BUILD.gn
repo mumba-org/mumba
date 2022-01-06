@@ -1,0 +1,49 @@
+import("//build_overrides/build.gni")
+
+config("lemongraph_warnings") {
+  cflags = []
+  if (is_clang) {
+    #cflags += [ "-Wno-sign-compare" ]
+    #cflags += [ "-Wno-writable-strings" ]
+    #cflags += [ "-Wno-sometimes-uninitialized" ]
+    cflags += [ "-Wno-unused-function" ]
+    #cflags += [ "-Wno-deprecated-register" ]
+    #cflags += [ "-Wno-unused-value" ]
+    #cflags += [ "-Wno-implicit-function-declaration" ]
+    #cflags += [ "-Wno-int-conversion" ]
+    #cflags += [ "-Wno-string-conversion" ]
+    #cflags += [ "-Wno-uninitialized" ]
+    cflags += [ "-Wno-enum-conversion" ]
+  }
+}
+
+component("graph") { 
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    ":lemongraph_warnings"
+  ]
+  public_deps = [
+    "//third_party/zlib"
+  ]
+  sources = [
+    "db.c",
+    "db.h",
+    "lemongraph-cffi.c",
+    "lemongraph.c",
+    "lemongraph.h",
+    "lmdb.h",
+    "mdb.c",
+    #"mdb_copy.c",
+    #"mdb_drop.c",
+    #"mdb_dump.c",
+    #"mdb_load.c",
+    #"mdb_stat.c",
+    "midl.c",
+    "midl.h",
+  ]
+
+  defines = [
+    "_DEFAULT_SOURCE"
+  ]
+}

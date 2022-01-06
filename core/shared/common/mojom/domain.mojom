@@ -1,0 +1,85 @@
+// Copyright 2020 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/mojom/objects.mojom";
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/url/mojom/url.mojom";
+import "lib/net/interfaces/ip_address.mojom";
+import "lib/services/network/public/mojom/network_param.mojom";
+import "lib/services/service_manager/public/mojom/service.mojom";
+
+enum DomainStatusCode {
+  kDOM_STATUS_OK = 0,
+  kDOM_STATUS_ERR_FAILED,
+  kDOM_STATUS_ERR_NOT_FOUND,
+};
+
+enum DomainNodeState {
+  kDOM_NODE_INIT = 0,
+  kDOM_NODE_IDLE,
+  kDOM_NODE_DOWNLOADING,
+  kDOM_NODE_SEEDING,
+  kDOM_NODE_OFFLINE,
+};
+
+enum DomainServiceState {
+  kDOM_SERVICE_INIT = 0,
+  kDOM_SERVICE_STARTING,
+  kDOM_SERVICE_STARTED,
+  kDOM_SERVICE_STOPPING,
+  kDOM_SERVICE_STOPPED,
+  kDOM_SERVICE_ERROR,
+};
+
+struct DomainNode {
+  int32 id;
+  string uuid;
+  DomainNodeState state;
+  network.mojom.HostPortPair ip_port_pair;
+};
+
+// struct DomainService {
+//   int32 id;
+//   string uuid;
+//   string name;
+//   string version;
+//   DomainServiceState state;
+//   network.mojom.HostPortPair ip_port_pair;
+// };
+
+struct DomainInfo {
+  int32 id;
+  string name;
+  string uuid;
+  DomainState state;
+};
+
+interface Domain {
+  GetInfo() => (DomainInfo info);
+  GetState() => (DomainState state);
+  //AddNode(DomainNode node) => (DomainStatusCode status, int32 id);
+  //GetNode(int32 id) => (DomainStatusCode status, DomainNode? node);
+  //RemoveNode(int32 id) => (DomainStatusCode status);
+  //ListNodes() => (array<DomainNode> nodes);
+  //AddService(DomainService service) => (DomainStatusCode status, int32 id);
+  //GetService(int32 id) => (DomainStatusCode status, DomainService? service);
+  //RemoveService(int32 id) => (DomainStatusCode status);
+  //ListServices() => (array<DomainService> services);
+  // from former AppHost
+  CreateEmbedderDomainService(service_manager.mojom.Service& service_request);
+  GetHandle() => (DomainHandle info);
+  Shutdown();
+};
+
+interface DomainManager {
+  GetDomainCount() => (uint32 count);
+  GetDomainInfo(string name) => (DomainStatusCode status, DomainInfo? info);
+  ListDomainInfos() => (array<DomainInfo> infos);
+};
+
+interface DomainHost {
+  ShutdownRequest();
+};

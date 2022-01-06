@@ -1,0 +1,4 @@
+FIXME: We need a "ShareBackend" where the torrent transport is only one of the possible implementations
+       but for now is "hardcoded" into the Share and its the only usable protocol for it now
+
+Note that the backend must be used on runtime, as one share might use torrent, other http or ipfs

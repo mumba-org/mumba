@@ -1,0 +1,11 @@
+{
+  "name": "indexed_db",
+  "display_name": "IndexedDB Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "indexed_db" : [ "automation.IndexedDB" ]
+      }
+    }
+  }
+}

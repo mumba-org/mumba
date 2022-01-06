@@ -1,0 +1,198 @@
+// Copyright 2017 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include "core/host/ui/fullscreen_control/fullscreen_control_host.h"
+
+#include "base/bind.h"
+#include "base/callback.h"
+#include "base/time/time.h"
+#include "build/build_config.h"
+#include "core/host/ui/exclusive_access_bubble_views.h"
+#include "core/host/ui/dock.h"
+#include "core/host/ui/dock_window.h"
+#include "core/host/ui/fullscreen_control/fullscreen_control_view.h"
+//#include "chrome/common/channel_info.h"
+//#include "chrome/common/chrome_features.h"
+//#include "components/version_info/channel.h"
+#include "ui/events/event.h"
+#include "ui/events/event_constants.h"
+#include "ui/events/keycodes/keyboard_codes.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/views/view.h"
+
+namespace host {
+
+namespace {
+
+// +----------------------------+
+// |         +-------+          |
+// |         |Control|          |
+// |         +-------+          |
+// |                            | <-- Control.bottom * kExitHeightScaleFactor
+// |          Screen            |       Buffer for mouse moves or pointer events
+// |                            |       before closing the fullscreen exit
+// |                            |       control.
+// +----------------------------+
+constexpr float kExitHeightScaleFactor = 1.5f;
+
+// +----------------------------+
+// |                            |
+// |                            |
+// |                            | <-- kShowFullscreenExitControlHeight
+// |          Screen            |       If a mouse move or pointer event is
+// |                            |       above this line, show the fullscreen
+// |                            |       exit control.
+// |                            |
+// +----------------------------+
+constexpr float kShowFullscreenExitControlHeight = 3.f;
+
+// Time to wait to hide the popup when it is triggered by touch input.
+constexpr base::TimeDelta kTouchPopupTimeout = base::TimeDelta::FromSeconds(5);
+
+// Time to wait before showing the popup when the escape key is held.
+constexpr base::TimeDelta kKeyPressPopupDelay = base::TimeDelta::FromSeconds(1);
+
+}  // namespace
+
+FullscreenControlHost::FullscreenControlHost(DockWindow* dock_window,
+                                             views::View* host_view)
+    : dock_window_(dock_window),
+      fullscreen_control_popup_(
+          dock_window->GetBubbleParentView(),
+          base::Bind(&DockWindow::ExitFullscreen,
+                     base::Unretained(dock_window)),
+          base::Bind(&FullscreenControlHost::OnVisibilityChanged,
+                     base::Unretained(this))) {}
+
+FullscreenControlHost::~FullscreenControlHost() = default;
+
+// static
+bool FullscreenControlHost::IsFullscreenExitUIEnabled() {
+#if defined(OS_MACOSX)
+  // Exit UI is unnecessary, since Mac reveals the top chrome when the cursor
+  // moves to the top of the screen.
+  return false;
+#else
+  //return chrome::GetChannel() == version_info::Channel::CANARY ||
+  //       chrome::GetChannel() == version_info::Channel::DEV ||
+  //       base::FeatureList::IsEnabled(features::kFullscreenExitUI);
+  return true;
+#endif
+}
+
+void FullscreenControlHost::OnKeyEvent(ui::KeyEvent* event) {
+  if (event->key_code() != ui::VKEY_ESCAPE ||
+      (input_entry_method_ != InputEntryMethod::NOT_ACTIVE &&
+       input_entry_method_ != InputEntryMethod::KEYBOARD)) {
+    return;
+  }
+
+  // Note: This logic handles the UI feedback element used when holding down the
+  // esc key, however the logic for exiting fullscreen is handled by the
+  // KeyboardLockController class.
+  if (event->type() == ui::ET_KEY_PRESSED &&
+      !key_press_delay_timer_.IsRunning() &&
+      dock_window_->dock()
+          ->exclusive_access_manager()
+          ->keyboard_lock_controller()
+          ->RequiresPressAndHoldEscToExit()) {
+    key_press_delay_timer_.Start(
+        FROM_HERE, kKeyPressPopupDelay,
+        base::Bind(&FullscreenControlHost::ShowForInputEntryMethod,
+                   base::Unretained(this), InputEntryMethod::KEYBOARD));
+  } else if (event->type() == ui::ET_KEY_RELEASED) {
+    key_press_delay_timer_.Stop();
+    if (IsVisible() && input_entry_method_ == InputEntryMethod::KEYBOARD)
+      Hide(true);
+  }
+}
+
+void FullscreenControlHost::OnMouseEvent(ui::MouseEvent* event) {
+  if (event->type() != ui::ET_MOUSE_MOVED ||
+      fullscreen_control_popup_.IsAnimating() ||
+      (input_entry_method_ != InputEntryMethod::NOT_ACTIVE &&
+       input_entry_method_ != InputEntryMethod::MOUSE)) {
+    return;
+  }
+
+  if (IsExitUiNeeded()) {
+    if (IsVisible()) {
+      float control_bottom = static_cast<float>(
+          fullscreen_control_popup_.GetFinalBounds().bottom());
+      float y_limit = control_bottom * kExitHeightScaleFactor;
+      if (event->y() >= y_limit)
+        Hide(true);
+    } else {
+      if (event->y() <= kShowFullscreenExitControlHeight)
+        ShowForInputEntryMethod(InputEntryMethod::MOUSE);
+    }
+  } else if (IsVisible()) {
+    Hide(true);
+  }
+}
+
+void FullscreenControlHost::OnTouchEvent(ui::TouchEvent* event) {
+  if (input_entry_method_ != InputEntryMethod::TOUCH)
+    return;
+
+  DCHECK(IsVisible());
+
+  // Hide the popup if the popup is showing and the user touches outside of the
+  // popup.
+  if (event->type() == ui::ET_TOUCH_PRESSED &&
+      !fullscreen_control_popup_.IsAnimating()) {
+    Hide(true);
+  } else if (event->type() == ui::ET_TOUCH_RELEASED) {
+    touch_timeout_timer_.Start(
+        FROM_HERE, kTouchPopupTimeout,
+        base::Bind(&FullscreenControlHost::OnTouchPopupTimeout,
+                   base::Unretained(this)));
+  }
+}
+
+void FullscreenControlHost::OnGestureEvent(ui::GestureEvent* event) {
+  if (event->type() == ui::ET_GESTURE_LONG_PRESS && IsExitUiNeeded() &&
+      !IsVisible()) {
+    ShowForInputEntryMethod(InputEntryMethod::TOUCH);
+  }
+}
+
+void FullscreenControlHost::Hide(bool animate) {
+  fullscreen_control_popup_.Hide(animate);
+}
+
+bool FullscreenControlHost::IsVisible() const {
+  return fullscreen_control_popup_.IsVisible();
+}
+
+void FullscreenControlHost::ShowForInputEntryMethod(
+    InputEntryMethod input_entry_method) {
+  input_entry_method_ = input_entry_method;
+  auto* bubble = dock_window_->exclusive_access_bubble();
+  if (bubble)
+    bubble->HideImmediately();
+  fullscreen_control_popup_.Show(dock_window_->GetClientAreaBoundsInScreen());
+}
+
+void FullscreenControlHost::OnVisibilityChanged() {
+  if (!IsVisible())
+    input_entry_method_ = InputEntryMethod::NOT_ACTIVE;
+
+  if (on_popup_visibility_changed_)
+    std::move(on_popup_visibility_changed_).Run();
+}
+
+void FullscreenControlHost::OnTouchPopupTimeout() {
+  if (IsVisible() && !fullscreen_control_popup_.IsAnimating() &&
+      input_entry_method_ == InputEntryMethod::TOUCH) {
+    Hide(true);
+  }
+}
+
+bool FullscreenControlHost::IsExitUiNeeded() {
+  return dock_window_->IsFullscreen() &&
+         dock_window_->ShouldHideUIForFullscreen();
+}
+
+}

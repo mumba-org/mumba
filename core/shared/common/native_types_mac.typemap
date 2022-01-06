@@ -1,0 +1,35 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+mojom = "//core/shared/common/native_types.mojom"
+os_whitelist = [ "mac" ]
+public_headers = [
+  "//third_party/blink/public/platform/web_scrollbar_buttons_placement.h",
+  "//third_party/blink/public/platform/mac/web_scrollbar_theme.h",
+]
+traits_headers = [ "//core/shared/common/view_messages.h" ]
+deps = [
+  # NOTE: These dependencies are here to satisfy gn check because
+  # common_param_traits_macros.h and/or view_messages.h include their headers.
+  # Although the mojo bindings target is configured to allow direct circular
+  # includes from //content/common and //content/public/common, this isn't a
+  # transitive allowance, so those targets' own public_deps aren't included in
+  # the set of implied dependencies.
+  "//lib/cc/ipc",
+  "//lib/media",
+  "//lib/media/base/ipc",
+  "//lib/net",
+  "//third_party/blink/public:blink_headers",
+  "//kit/cpp/ui/accessibility",
+  "//lib/ui/base/ime:text_input_types",
+  "//lib/ui/gfx/ipc",
+  "//lib/ui/gfx/ipc/color",
+  "//lib/ui/gfx/ipc/skia",
+  "//lib/ui/surface",
+  "//lib/url/ipc:url_ipc",
+]
+type_mappings = [
+  "common.mojom.ScrollerStyle=::blink::ScrollerStyle",
+  "common.mojom.ScrollbarButtonsPlacement=::blink::WebScrollbarButtonsPlacement",
+]

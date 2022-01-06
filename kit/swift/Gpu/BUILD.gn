@@ -1,0 +1,30 @@
+swift_static("Gpu") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+    "//kit/swift/PosixShim",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/Graphics",
+    "//kit/swift/Platform",
+    "//kit/swift/GL"
+  ]
+  sources = [
+    "Sources/ContextSupport.swift",
+    "Sources/GLES2Implementation.swift",
+    "Sources/GLES2Interface.swift",
+    "Sources/GLES2.swift",
+    "Sources/GpuCapabilities.swift",
+    "Sources/GpuErrors.swift",
+    "Sources/GpuMemoryBufferManager.swift",
+    "Sources/Gpu.swift",
+    "Sources/GpuSurface.swift", 
+    "Sources/ImageFactory.swift",
+    "Sources/InProcessCommandBufferService.swift",
+    "Sources/Mailbox.swift",
+    "Sources/SyncToken.swift",
+    "Sources/TestGpuMemoryBufferManager.swift",
+    "Sources/TestImageFactory.swift",
+    "Sources/Utils.swift",
+    "Sources/SurfaceHandle.swift"
+  ]
+}

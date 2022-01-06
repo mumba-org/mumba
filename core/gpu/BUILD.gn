@@ -1,0 +1,151 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/jumbo.gni")
+import("//build/config/ui.gni")
+import("//lib/gpu/vulkan/features.gni")
+import("//lib/media/media_options.gni")
+import("//lib/ui/ozone/ozone.gni")
+
+# See //content/BUILD.gn for how this works.
+group("gpu") {
+  visibility = [ 
+    "//core/*",
+     "//mumba:shell_dependencies",
+     "//runtime/HostShims:*"
+  ]  # This is an internal content API.
+
+  if (is_component_build) {
+    public_deps = [
+      #"//core",
+      ":gpu_sources",
+    ]
+  } else {
+    public_deps = [
+      ":gpu_sources",
+    ]
+  }
+}
+
+if (is_component_build) {
+  link_target_type = "jumbo_source_set"
+} else {
+  link_target_type = "jumbo_static_library"
+}
+
+target(link_target_type, "gpu_sources") {
+  # This is an internal content API. Code outside of the content "component"
+  # (like content/test and content/shell) should depend on ":gpu" above.
+  visibility = [ 
+    "//core/*",
+    "//mumba:shell_dependencies"
+  ]
+
+  sources = [
+    "content_gpu_client_impl.cc",
+    "content_gpu_client_impl.h",
+    "content_gpu_client.cc",
+    "content_gpu_client.h",
+    "gpu_child_thread.cc",
+    "gpu_child_thread.h",
+    "gpu_main.cc",
+    "gpu_process.cc",
+    "gpu_process.h",
+    "gpu_sandbox_hook_linux.cc",
+    "gpu_sandbox_hook_linux.h",
+    "gpu_service_factory.cc",
+    "gpu_service_factory.h",
+    "in_process_gpu_thread.cc",
+    "in_process_gpu_thread.h",
+  ]
+
+  configs += [ "//core:core_implementation" ]
+
+  defines = [
+    "CONTENT_IMPLEMENTATION=1"
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/base/third_party/dynamic_annotations",
+    "//lib/components/tracing",
+    "//lib/components/viz/service",
+    #"//content/child",
+    "//core/common",
+    #"//core/common:mojo_bindings",
+    "//core/shared/common:export",
+    "//core/shared/common:common_shared",
+    "//core/shared/common:mojo_bindings",
+    #"//content/public/child:child_sources",
+    #"//core/common:common_sources",
+    "//lib/gpu:gpu",
+    "//lib/gpu/ipc/common:command_buffer_traits",
+    "//lib/gpu/ipc/common:gpu_preferences_util",
+    "//lib/gpu/ipc/service",
+    "//lib/ipc",
+    "//lib/media:media_buildflags",
+    "//lib/media/gpu",
+    "//lib/media/mojo:buildflags",
+
+    # TODO(jrummell): As //media/gpu/ipc/service is a source_set in a
+    # component build, determine if it should not be included here.
+    # http://crbug.com/702833.
+    "//lib/components/viz/service/main",
+    "//lib/media/gpu/ipc/service",
+    "//lib/media/mojo/clients:clients",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/shape_detection:lib",
+    "//lib/services/shape_detection/public/mojom",
+    "//lib/services/viz/privileged/interfaces",
+    "//lib/skia",
+    "//third_party/angle:angle_gpu_info_util",
+    "//lib/ui/gfx/ipc",
+    "//lib/ui/gl",
+    "//lib/ui/gl/init",
+    "//lib/ui/latency/ipc",
+  ]
+
+  if (is_android) {
+    deps += [ "//lib/media" ]
+  }
+
+  if (mojo_media_host == "gpu") {
+    deps += [ "//lib/media/mojo/services" ]
+  }
+
+  if (is_win) {
+    configs += [
+      "//third_party/khronos:khronos_headers",
+      "//third_party/wtl:wtl_includes",
+    ]
+    libs = [ "setupapi.lib" ]
+    deps += [ "//lib/sandbox" ]
+  }
+
+  if (is_linux || is_mac) {
+    deps += [ "//lib/sandbox" ]
+  }
+
+  if (use_x11) {
+    deps += [
+      "//lib/ui/events/platform/x11",
+      "//lib/ui/gfx/x",
+    ]
+  }
+
+  if (use_ozone) {
+    deps += [ "//lib/ui/ozone" ]
+  }
+
+  if (enable_vulkan) {
+    deps += [ "//lib/gpu/vulkan" ]
+  }
+
+  # Use DRI on desktop Linux builds.
+  if (current_cpu != "s390x" && current_cpu != "ppc64" && is_desktop_linux &&
+      (!is_chromecast || is_cast_desktop_build)) {
+    configs += [ "//build/config/linux/dri" ]
+  }
+}

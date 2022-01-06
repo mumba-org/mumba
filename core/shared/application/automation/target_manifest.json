@@ -1,0 +1,11 @@
+{
+  "name": "target",
+  "display_name": "Target Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "storage" : [ "automation.Target" ]
+      }
+    }
+  }
+}

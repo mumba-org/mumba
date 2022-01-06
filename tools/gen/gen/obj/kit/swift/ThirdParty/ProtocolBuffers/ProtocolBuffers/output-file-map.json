@@ -1,0 +1,143 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/AbstractMessage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/AbstractMessage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/AbstractMessage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/AbstractMessage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/AbstractMessage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/CodedInputStream.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedInputStream.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedInputStream.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedInputStream.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedInputStream~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/CodedOutputStream.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedOutputStream.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedOutputStream.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedOutputStream.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/CodedOutputStream~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/ConcreateExtensionField.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ConcreateExtensionField.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ConcreateExtensionField.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ConcreateExtensionField.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ConcreateExtensionField~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/ExtendableMessage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtendableMessage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtendableMessage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtendableMessage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtendableMessage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/ExtensionRegistry.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtensionRegistry.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtensionRegistry.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtensionRegistry.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/ExtensionRegistry~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Field.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Field.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Field.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Field.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Field~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/GeneratedMessage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/GeneratedMessage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/GeneratedMessage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/GeneratedMessage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/GeneratedMessage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Any.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Any.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Any.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Any.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Any.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Api.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Api.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Api.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Api.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Api.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Descriptor.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Descriptor.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Descriptor.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Descriptor.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Descriptor.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Duration.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Duration.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Duration.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Duration.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Duration.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Empty.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Empty.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Empty.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Empty.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Empty.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.FieldMask.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.FieldMask.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.FieldMask.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.FieldMask.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.FieldMask.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.SourceContext.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SourceContext.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SourceContext.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SourceContext.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SourceContext.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Struct.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Struct.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Struct.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Struct.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Struct.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.SwiftDescriptor.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SwiftDescriptor.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SwiftDescriptor.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SwiftDescriptor.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.SwiftDescriptor.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Timestamp.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Timestamp.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Timestamp.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Timestamp.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Timestamp.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Type.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Type.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Type.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Type.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Type.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/Google.Protobuf.Wrappers.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Wrappers.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Wrappers.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Wrappers.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/Google.Protobuf.Wrappers.proto~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/RingBuffer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/RingBuffer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/RingBuffer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/RingBuffer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/RingBuffer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/UnknownFieldSet.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/UnknownFieldSet.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/UnknownFieldSet.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/UnknownFieldSet.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/UnknownFieldSet~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/ThirdParty/ProtocolBuffers/Source/WireFormat.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/WireFormat.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/WireFormat.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/WireFormat.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/ThirdParty/ProtocolBuffers/ProtocolBuffers/WireFormat~partial.swiftmodule"
+   }
+}

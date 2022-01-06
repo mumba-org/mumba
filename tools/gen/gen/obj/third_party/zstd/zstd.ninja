@@ -1,0 +1,36 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../../third_party/zstd/lib -I../../../third_party/zstd/lib/common -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -Wall -Werror -Wextra -Wimplicit-fallthrough -Wthread-safety -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = zstd
+target_out_dir = obj/third_party/zstd
+target_output_name = libzstd
+
+build obj/third_party/zstd/zstd/entropy_common.o: cc ../../../third_party/zstd/lib/common/entropy_common.c
+build obj/third_party/zstd/zstd/fse_decompress.o: cc ../../../third_party/zstd/lib/common/fse_decompress.c
+build obj/third_party/zstd/zstd/threading.o: cc ../../../third_party/zstd/lib/common/threading.c
+build obj/third_party/zstd/zstd/pool.o: cc ../../../third_party/zstd/lib/common/pool.c
+build obj/third_party/zstd/zstd/zstd_common.o: cc ../../../third_party/zstd/lib/common/zstd_common.c
+build obj/third_party/zstd/zstd/error_private.o: cc ../../../third_party/zstd/lib/common/error_private.c
+build obj/third_party/zstd/zstd/xxhash.o: cc ../../../third_party/zstd/lib/common/xxhash.c
+build obj/third_party/zstd/zstd/fse_compress.o: cc ../../../third_party/zstd/lib/compress/fse_compress.c
+build obj/third_party/zstd/zstd/huf_compress.o: cc ../../../third_party/zstd/lib/compress/huf_compress.c
+build obj/third_party/zstd/zstd/zstd_compress.o: cc ../../../third_party/zstd/lib/compress/zstd_compress.c
+build obj/third_party/zstd/zstd/zstdmt_compress.o: cc ../../../third_party/zstd/lib/compress/zstdmt_compress.c
+build obj/third_party/zstd/zstd/zstd_fast.o: cc ../../../third_party/zstd/lib/compress/zstd_fast.c
+build obj/third_party/zstd/zstd/zstd_double_fast.o: cc ../../../third_party/zstd/lib/compress/zstd_double_fast.c
+build obj/third_party/zstd/zstd/zstd_lazy.o: cc ../../../third_party/zstd/lib/compress/zstd_lazy.c
+build obj/third_party/zstd/zstd/zstd_opt.o: cc ../../../third_party/zstd/lib/compress/zstd_opt.c
+build obj/third_party/zstd/zstd/zstd_ldm.o: cc ../../../third_party/zstd/lib/compress/zstd_ldm.c
+build obj/third_party/zstd/zstd/huf_decompress.o: cc ../../../third_party/zstd/lib/decompress/huf_decompress.c
+build obj/third_party/zstd/zstd/zstd_decompress.o: cc ../../../third_party/zstd/lib/decompress/zstd_decompress.c
+build obj/third_party/zstd/zstd/cover.o: cc ../../../third_party/zstd/lib/dictBuilder/cover.c
+build obj/third_party/zstd/zstd/divsufsort.o: cc ../../../third_party/zstd/lib/dictBuilder/divsufsort.c
+build obj/third_party/zstd/zstd/zdict.o: cc ../../../third_party/zstd/lib/dictBuilder/zdict.c
+build obj/third_party/zstd/zstd/zbuff_common.o: cc ../../../third_party/zstd/lib/deprecated/zbuff_common.c
+build obj/third_party/zstd/zstd/zbuff_compress.o: cc ../../../third_party/zstd/lib/deprecated/zbuff_compress.c
+
+build obj/third_party/zstd/libzstd.a: alink obj/third_party/zstd/zstd/entropy_common.o obj/third_party/zstd/zstd/fse_decompress.o obj/third_party/zstd/zstd/threading.o obj/third_party/zstd/zstd/pool.o obj/third_party/zstd/zstd/zstd_common.o obj/third_party/zstd/zstd/error_private.o obj/third_party/zstd/zstd/xxhash.o obj/third_party/zstd/zstd/fse_compress.o obj/third_party/zstd/zstd/huf_compress.o obj/third_party/zstd/zstd/zstd_compress.o obj/third_party/zstd/zstd/zstdmt_compress.o obj/third_party/zstd/zstd/zstd_fast.o obj/third_party/zstd/zstd/zstd_double_fast.o obj/third_party/zstd/zstd/zstd_lazy.o obj/third_party/zstd/zstd/zstd_opt.o obj/third_party/zstd/zstd/zstd_ldm.o obj/third_party/zstd/zstd/huf_decompress.o obj/third_party/zstd/zstd/zstd_decompress.o obj/third_party/zstd/zstd/cover.o obj/third_party/zstd/zstd/divsufsort.o obj/third_party/zstd/zstd/zdict.o obj/third_party/zstd/zstd/zbuff_common.o obj/third_party/zstd/zstd/zbuff_compress.o
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/zstd

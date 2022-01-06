@@ -1,0 +1,64 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+import("//lib/testing/test.gni")
+
+group("common") {
+  public_deps = [
+    ":common_custom_types",
+  ]
+}
+
+mojom("common_custom_types") {
+  sources = [
+    "values.mojom",
+  ]
+
+  public_deps = [
+    "//lib/mojo/public/mojom/base",
+  ]
+}
+
+mojom("test_common_custom_types") {
+  sources = [
+    "test_common_custom_types.mojom",
+  ]
+  public_deps = [
+    ":common_custom_types",
+  ]
+}
+
+test("mojo_common_unittests") {
+  deps = [
+    ":common",
+    ":common_custom_types",
+    ":test_common_custom_types",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/mojo/edk/test:run_all_unittests",
+    "//lib/mojo/edk/test:test_support",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/mojo/public/cpp/platform",
+    "//lib/mojo/public/cpp/test_support:test_utils",
+    "//lib/testing/gtest",
+    "//lib/url",
+  ]
+
+  sources = [
+    "common_custom_types_unittest.cc",
+  ]
+}
+
+source_set("values_struct_traits") {
+  sources = [
+    "values_struct_traits.cc",
+    "values_struct_traits.h",
+  ]
+  public_deps = [
+    ":common_custom_types_shared_cpp_sources",
+    "//lib/base",
+    "//lib/mojo/public/cpp/bindings:bindings",
+  ]
+}

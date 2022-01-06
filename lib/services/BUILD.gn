@@ -1,0 +1,191 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/tools/test/service_test.gni")
+import("//lib/testing/test.gni")
+import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+
+# One Big Target for services to register their unit test sources. This exists
+# to avoid having to maintain a separate test binary for every service.
+#
+# To add tests for a new service, please define a "tests" source_set in the
+# service subdirectory and add it as a dependency here. If your unit tests
+# use the ServiceTest framework, you must also include corresponding catalog
+# entries in the "services_unittests_catalog" target below.
+service_test("services_unittests") {
+  # If your service does not run on iOS, its tests should go in the !iOS
+  # section below. If you are unsure, contact blundell@chromium.org.
+  deps = [
+    "//lib/services/identity:tests",
+    "//lib/services/metrics/public/cpp:tests",
+    "//lib/services/network:tests",
+    "//lib/services/network/public/cpp:tests",
+  ]
+
+  if (!is_ios) {
+    deps += [
+      "//lib/services/audio:tests",
+      "//lib/services/data_decoder:tests",
+      "//lib/services/device:tests",
+      #"//lib/services/preferences:tests",
+      "//lib/services/proxy_resolver:tests",
+      "//lib/services/resource_coordinator:tests",
+      "//lib/services/shape_detection:tests",
+      "//lib/services/tracing:tests",
+      "//lib/services/viz",
+      "//lib/services/viz/privileged/interfaces:unit_tests",
+      "//lib/services/viz/public/cpp/compositing:tests",
+    ]
+  }
+
+  if (use_aura) {
+    deps += [
+      "//lib/services/ui/clipboard:tests",
+      "//lib/services/ui/ime:tests",
+      "//lib/services/ui/input_devices:tests",
+      "//lib/services/ui/public/cpp/tests",
+      "//lib/services/ui/public/interfaces:tests",
+      "//lib/services/ui/ws2:tests",
+    ]
+
+    if (is_linux && !is_chromeos) {
+      deps += [ "//lib/services/ui/demo:tests" ]
+    }
+
+    if (use_ozone || (!is_chromeos && !is_mac && !is_ios)) {
+      deps += [ "//lib/services/ui/ws:tests" ]
+    }
+  }
+
+  if (is_android) {
+    deps += [
+      "//lib/services/data_decoder/public/cpp/android:safe_json_java",
+      "//lib/services/device:java",
+
+      # Some tests make network requests.
+      "//lib/net/android:net_java",
+    ]
+
+    # Some tests need to initialize V8.
+    if (use_v8_context_snapshot) {
+      deps += [ "//tools/v8_context_snapshot:v8_context_snapshot_assets" ]
+    } else {
+      deps += [ "//v8:v8_external_startup_data_assets" ]
+    }
+  }
+
+  if (!is_android && !is_ios) {
+    # NOTE: We do not currently support standalone service binaries on Android
+    # or iOS, so any tests which use the ServiceTest framework to connect to
+    # standalone services must be added here.
+    deps += [ "//lib/services/video_capture:tests" ]
+  }
+
+  if (is_chromeos) {
+    deps += [ "//lib/services/ui/display:tests" ]
+  }
+
+  test_runner = "//lib/services/test:run_all_service_tests"
+
+  catalog = ":services_unittests_catalog"
+}
+
+catalog("services_unittests_catalog") {
+  # testonly = true
+
+  # The division between "all platforms" and "!iOS" here needs to match that
+  # for the main deps list in the services_unittests target above.
+  catalog_deps = [
+    "//lib/services/identity:tests_catalog",
+    "//lib/services/network:tests_catalog",
+  ]
+
+  if (!is_ios) {
+    catalog_deps += [
+      "//lib/services/audio:tests_catalog",
+      "//lib/services/device:tests_catalog",
+     # "//lib/services/preferences:tests_catalog",
+      "//lib/services/resource_coordinator:tests_catalog",
+      "//lib/services/tracing:tests_catalog",
+      "//lib/services/video_capture:tests_catalog",
+      "//lib/services/viz:tests_catalog",
+    ]
+  }
+
+  if (use_aura) {
+    catalog_deps += [
+      "//lib/services/ui/clipboard:tests_catalog",
+      "//lib/services/ui/ime:tests_catalog",
+      "//lib/services/ui/ws2:tests_catalog",
+    ]
+
+    if (is_linux && !is_chromeos) {
+      catalog_deps += [ "//lib/services/ui/demo:tests_catalog" ]
+    }
+
+    if (use_ozone || (!is_chromeos && !is_ios)) {
+      catalog_deps += [ "//lib/services/ui/ws:tests_catalog" ]
+    }
+  }
+}
+
+if (is_android) {
+  junit_binary("service_junit_tests") {
+    java_files = [
+      "device/generic_sensor/android/junit/src/org/chromium/device/sensors/PlatformSensorAndProviderTest.java",
+      "device/nfc/android/junit/src/org/chromium/device/nfc/NFCTest.java",
+      "shape_detection/android/junit/src/org/chromium/shape_detection/BitmapUtilsTest.java",
+    ]
+    deps = [
+      "$google_play_services_package:google_play_services_base_java",
+      "$google_play_services_package:google_play_services_basement_java",
+      "$google_play_services_package:google_play_services_vision_common_java",
+      "$google_play_services_package:google_play_services_vision_java",
+      "//lib/base:base_java",
+      "//lib/base:base_java_test_support",
+      "//lib/base:base_junit_test_support",
+      "//lib/mojo/public/java:bindings_java",
+      "//lib/mojo/public/java:system_java",
+      "//lib/services/device/generic_sensor:java",
+      "//lib/services/device/nfc/android:java",
+      "//lib/services/device/public/java:nfc_java",
+      "//lib/services/device/public/mojom:generic_sensor_java",
+      "//lib/services/device/public/mojom:mojom_java",
+      "//lib/services/shape_detection:shape_detection_java",
+      "//lib/skia/public/interfaces:interfaces_java",
+      "//third_party/android_tools:android_support_annotations_java",
+    ]
+  }
+
+  android_library("service_javatests") {
+    # testonly = true
+    java_files = [
+      "shape_detection/android/javatests/src/org/chromium/shape_detection/BarcodeDetectionImplTest.java",
+      "shape_detection/android/javatests/src/org/chromium/shape_detection/FaceDetectionImplTest.java",
+      "shape_detection/android/javatests/src/org/chromium/shape_detection/TestUtils.java",
+      "shape_detection/android/javatests/src/org/chromium/shape_detection/TextDetectionImplTest.java",
+    ]
+    deps = [
+      "$google_play_services_package:google_play_services_base_java",
+      "$google_play_services_package:google_play_services_basement_java",
+      "$google_play_services_package:google_play_services_vision_common_java",
+      "$google_play_services_package:google_play_services_vision_java",
+      "//lib/base:base_java",
+      "//lib/base:base_java_test_support",
+      "//lib/mojo/public/java:base_java",
+      "//lib/mojo/public/java:bindings_java",
+      "//lib/services/shape_detection:shape_detection_java",
+      "//lib/services/shape_detection/public/mojom:mojom_java",
+      "//lib/skia/public/interfaces:interfaces_java",
+      "//third_party/android_support_test_runner:runner_java",
+      "//third_party/junit",
+      "//lib/ui/gfx/geometry/mojo:mojo_java",
+    ]
+    data = [
+      "test/data/",
+    ]
+  }
+}

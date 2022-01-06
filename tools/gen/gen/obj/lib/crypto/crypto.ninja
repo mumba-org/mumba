@@ -1,0 +1,36 @@
+defines = -DCRYPTO_IMPLEMENTATION -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_32 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_26 -DBORINGSSL_SHARED_LIBRARY
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/boringssl/src/include
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -Wall -Werror -Wextra -Wimplicit-fallthrough -Wthread-safety -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/include/glib-2.0 -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu/glib-2.0/include -Wno-header-guard -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/include/nss -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/include/nspr
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = crypto
+target_out_dir = obj/lib/crypto
+target_output_name = libcrcrypto
+
+build obj/lib/crypto/crypto.inputdeps.stamp: stamp obj/lib/base/anchor_functions_buildflags.stamp obj/lib/base/build_date.stamp obj/lib/base/cfi_buildflags.stamp obj/lib/base/debugging_buildflags.stamp obj/lib/base/partition_alloc_buildflags.stamp obj/lib/base/protected_memory_buildflags.stamp obj/lib/base/synchronization_buildflags.stamp obj/lib/base/allocator/buildflags.stamp
+build obj/lib/crypto/crypto/aead.o: cxx ../../../lib/crypto/aead.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/ec_private_key.o: cxx ../../../lib/crypto/ec_private_key.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/ec_signature_creator.o: cxx ../../../lib/crypto/ec_signature_creator.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/ec_signature_creator_impl.o: cxx ../../../lib/crypto/ec_signature_creator_impl.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/encryptor.o: cxx ../../../lib/crypto/encryptor.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/hkdf.o: cxx ../../../lib/crypto/hkdf.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/hmac.o: cxx ../../../lib/crypto/hmac.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/nss_key_util.o: cxx ../../../lib/crypto/nss_key_util.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/nss_util.o: cxx ../../../lib/crypto/nss_util.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/openssl_util.o: cxx ../../../lib/crypto/openssl_util.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/p224.o: cxx ../../../lib/crypto/p224.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/p224_spake.o: cxx ../../../lib/crypto/p224_spake.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/random.o: cxx ../../../lib/crypto/random.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/rsa_private_key.o: cxx ../../../lib/crypto/rsa_private_key.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/secure_hash.o: cxx ../../../lib/crypto/secure_hash.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/secure_util.o: cxx ../../../lib/crypto/secure_util.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/sha2.o: cxx ../../../lib/crypto/sha2.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/signature_creator.o: cxx ../../../lib/crypto/signature_creator.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/signature_verifier.o: cxx ../../../lib/crypto/signature_verifier.cc || obj/lib/crypto/crypto.inputdeps.stamp
+build obj/lib/crypto/crypto/symmetric_key.o: cxx ../../../lib/crypto/symmetric_key.cc || obj/lib/crypto/crypto.inputdeps.stamp
+
+build ./libcrcrypto.so ./libcrcrypto.so.TOC: solink obj/lib/crypto/crypto/aead.o obj/lib/crypto/crypto/ec_private_key.o obj/lib/crypto/crypto/ec_signature_creator.o obj/lib/crypto/crypto/ec_signature_creator_impl.o obj/lib/crypto/crypto/encryptor.o obj/lib/crypto/crypto/hkdf.o obj/lib/crypto/crypto/hmac.o obj/lib/crypto/crypto/nss_key_util.o obj/lib/crypto/crypto/nss_util.o obj/lib/crypto/crypto/openssl_util.o obj/lib/crypto/crypto/p224.o obj/lib/crypto/crypto/p224_spake.o obj/lib/crypto/crypto/random.o obj/lib/crypto/crypto/rsa_private_key.o obj/lib/crypto/crypto/secure_hash.o obj/lib/crypto/crypto/secure_util.o obj/lib/crypto/crypto/sha2.o obj/lib/crypto/crypto/signature_creator.o obj/lib/crypto/crypto/signature_verifier.o obj/lib/crypto/crypto/symmetric_key.o obj/lib/base/third_party/dynamic_annotations/libdynamic_annotations.a | ./libboringssl.so.TOC ./libbase.so.TOC ./libc++.so.TOC || obj/lib/crypto/platform.stamp obj/build/config/exe_and_shlib_deps.stamp
+  ldflags = -fPIC -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -Wl,-z,defs -Wl,--no-as-needed -lpthread -Wl,--as-needed -fuse-ld=lld -Wl,--icf=all -m64 -Werror -Wl,-O2 -Wl,--gc-sections -nostdlib++ --sysroot=../../../build/linux/debian_sid_amd64-sysroot -L../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Wl,--export-dynamic
+  libs = -ldl -lpthread -lrt -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 -lglib-2.0 -lnss3 -lnssutil3 -lsmime3 -lplds4 -lplc4 -lnspr4
+  output_extension = .so
+  output_dir = .
+  solibs = ./libboringssl.so ./libbase.so ./libc++.so

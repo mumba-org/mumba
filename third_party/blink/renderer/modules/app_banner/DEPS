@@ -1,0 +1,4 @@
+include_rules = [
+    "+lib/mojo/public/cpp/bindings/binding.h",
+    "+lib/mojo/public/cpp/bindings/strong_binding.h",
+]

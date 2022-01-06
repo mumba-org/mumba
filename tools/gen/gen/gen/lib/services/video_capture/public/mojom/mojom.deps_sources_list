@@ -1,0 +1,5 @@
+gen/lib/services/video_capture/public/mojom/mojom.sources_list
+gen/lib/media/capture/mojom/image_capture.sources_list
+gen/lib/media/capture/mojom/video_capture.sources_list
+gen/lib/media/mojo/interfaces/interfaces.sources_list
+gen/lib/ui/gfx/geometry/mojo/mojo.sources_list

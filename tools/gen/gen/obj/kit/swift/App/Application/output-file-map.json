@@ -1,0 +1,29 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Application/Application.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Application.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Application.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Application.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Application~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Application/ApplicationErrors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/ApplicationErrors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/ApplicationErrors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/ApplicationErrors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/ApplicationErrors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Application/Bundle.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Bundle.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Bundle.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Bundle.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/Bundle~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Application/EventMessage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/EventMessage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/EventMessage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/EventMessage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Application/EventMessage~partial.swiftmodule"
+   }
+}

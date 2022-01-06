@@ -1,0 +1,338 @@
+declare_args() {
+    support_bundle = true
+    support_pack = true
+    use_validation_parser = false
+}
+
+component("msix") {
+  configs -= [ 
+    "//build/config/compiler:chromium_code",
+  ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    "//build/config/compiler:exceptions",
+  ]
+  sources = [
+    "src/inc/public/AppxPackaging.hpp",
+    "src/inc/public/MsixErrors.hpp",
+    "src/inc/public/MSIXWindows.hpp",
+    "src/inc/shared/ComHelper.hpp",
+    "src/inc/shared/Exceptions.hpp",
+    "src/inc/shared/StreamBase.hpp",
+    "src/inc/shared/TimeHelpers.hpp",
+    "src/inc/internal/Applicability.hpp",
+    "src/inc/internal/AppxBlockMapObject.hpp",
+    "src/inc/internal/AppxBlockMapWriter.hpp",
+    "src/inc/internal/AppxBundleManifest.hpp",
+    "src/inc/internal/AppxBundleWriter.hpp",
+    "src/inc/internal/AppxFactory.hpp",
+    "src/inc/internal/AppxFile.hpp",
+    "src/inc/internal/AppxManifestObject.hpp",
+    "src/inc/internal/AppxManifestValidation.hpp",
+    "src/inc/internal/AppxPackageInfo.hpp",
+    "src/inc/internal/AppxPackageObject.hpp",
+    "src/inc/internal/AppxPackageWriter.hpp",
+    "src/inc/internal/AppxSignature.hpp",
+    "src/inc/internal/BlockMapStream.hpp",
+    "src/inc/internal/BundleManifestWriter.hpp",
+    "src/inc/internal/BundleValidationHelper.hpp",
+    "src/inc/internal/BundleWriterHelper.hpp",
+    "src/inc/internal/ContentType.hpp",
+    "src/inc/internal/ContentTypeWriter.hpp",
+    "src/inc/internal/Crypto.hpp",
+    "src/inc/internal/DeflateStream.hpp",
+    "src/inc/internal/DirectoryObject.hpp",
+    "src/inc/internal/Encoding.hpp",
+    "src/inc/internal/Enumerators.hpp",
+    "src/inc/internal/FileNameValidation.hpp",
+    "src/inc/internal/FileStream.hpp",
+    "src/inc/internal/HashStream.hpp",
+    "src/inc/internal/ICompressionObject.hpp",
+    "src/inc/internal/InflateStream.hpp",
+    "src/inc/internal/IXml.hpp",
+    "src/inc/internal/Log.hpp",
+    "src/inc/internal/MappingFileParser.hpp",
+    "src/inc/internal/MSIXFactory.hpp",
+    "src/inc/internal/MsixFeatureSelector.hpp",
+    "src/inc/internal/ObjectBase.hpp",
+    "src/inc/internal/RangeStream.hpp",
+    "src/inc/internal/ScopeExit.hpp",
+    "src/inc/internal/SignatureValidator.hpp",
+    "src/inc/internal/StorageObject.hpp",
+    "src/inc/internal/StreamHelper.hpp",
+    "src/inc/internal/StringHelper.hpp",
+    "src/inc/internal/StringStream.hpp",
+    "src/inc/internal/UnicodeConversion.hpp",
+    "src/inc/internal/VectorStream.hpp",
+    "src/inc/internal/VerifierObject.hpp",
+    "src/inc/internal/VersionHelpers.hpp",
+    "src/inc/internal/XmlWriter.hpp",
+    "src/inc/internal/ZipFileStream.hpp",
+    "src/inc/internal/ZipObject.hpp",
+    "src/inc/internal/ZipObjectReader.hpp",
+    "src/inc/internal/ZipObjectWriter.hpp",
+    "src/msix/common/AppxFactory.cpp",
+    "src/msix/common/AppxManifestObject.cpp",
+    "src/msix/common/AppxManifestValidation.cpp",
+    "src/msix/common/AppxPackageInfo.cpp",
+    "src/msix/common/Encoding.cpp",
+    "src/msix/common/Exceptions.cpp",
+    "src/msix/common/FileNameValidation.cpp",
+    "src/msix/common/IXml.cpp",
+    "src/msix/common/MSIXResource.cpp",
+    "src/msix/common/Log.cpp",
+    "src/msix/common/TimeHelpers.cpp",
+    "src/msix/common/UnicodeConversion.cpp",
+    "src/msix/common/ZipObject.cpp",
+    "src/msix/pack/AppxBlockMapWriter.cpp",
+    "src/msix/pack/AppxBundleWriter.cpp",
+    "src/msix/pack/AppxPackageWriter.cpp",
+    "src/msix/pack/BundleManifestWriter.cpp",
+    "src/msix/pack/BundleValidationHelper.cpp",
+    "src/msix/pack/BundleWriterHelper.cpp",
+    "src/msix/pack/ContentType.cpp",
+    "src/msix/pack/ContentTypeWriter.cpp",
+    "src/msix/pack/DeflateStream.cpp",
+    "src/msix/pack/MappingFileParser.cpp",
+    "src/msix/pack/VersionHelpers.cpp",
+    "src/msix/pack/XmlWriter.cpp",
+    "src/msix/pack/ZipObjectWriter.cpp",
+    "src/msix/unpack/ApplicabilityCommon.cpp",
+    "src/msix/unpack/AppxPackageObject.cpp",
+    "src/msix/unpack/AppxSignature.cpp",
+    "src/msix/unpack/InflateStream.cpp",
+    "src/msix/unpack/ZipObjectReader.cpp",
+    "src/msix/PAL/DataCompression/Zlib/CompressionObject.cpp",
+    "src/msix/msix.cpp"
+  ]
+  defines = []
+  #  "XERCES_TMPLSINC"
+  #]
+  if (support_bundle) {
+    defines += [ "BUNDLE_SUPPORT=1" ]
+    sources += [
+      "src/msix/unpack/AppxBlockMapObject.cpp",
+      "src/msix/unpack/AppxBundleManifest.cpp",
+    ]
+  }
+  if (use_validation_parser) {
+    defines += ["VALIDATING=1"]
+  } else {
+    defines += ["VALIDATING=0"]
+  }
+  if (support_pack) {
+    defines += ["MSIX_PACK=1"]
+  }
+
+  deps = [
+    "//lib/base",
+    "//third_party/zlib",
+    "//buildtools/third_party/libc++",
+  ]
+
+  include_dirs = [
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+    "lib/xerces/src",
+  ]
+
+  cflags = [
+    "-Wno-ignored-qualifiers",
+    "-Wno-unused-function",
+    "-Wno-missing-braces",
+    "-Wno-pessimizing-move",
+    "-Wno-reorder-ctor"
+  ]
+
+  if (is_win) {
+    defines += [
+      "USING_CRYPT32=1",
+      "USING_MSXML=1"
+    ]
+    sources += [
+      "src/msix/PAL/FileSystem/Win32/DirectoryObject.cpp",
+      "src/msix/PAL/Applicability/Win32/Applicability.cpp",
+      "src/msix/PAL/XML/msxml6/XmlObject.cpp",
+      "src/msix/PAL/Crypto/Win32/Crypto.cpp",
+      "src/msix/PAL/Signature/Win32/SignatureValidator.cpp"
+    ]
+    libs = [
+      "bcrypt.lib",
+      "crypt32.lib",
+      "wintrust.lib",
+      "runtimeobject.lib", 
+      "delayimp.lib"
+    ]
+  }
+  if (is_linux) {
+    defines += [
+      "LINUX"
+    ]
+    sources += [
+      "src/msix/PAL/Applicability/Linux/Applicability.cpp",
+      #"src/msix/PAL/XML/libxml/XmlObject.cpp",
+      "src/msix/PAL/XML/xerces-c/XmlObject.cpp",
+    ]
+    deps += [
+      "lib/xerces"
+    ]
+  }
+  if (is_posix) {
+    sources += [
+      "src/msix/PAL/FileSystem/POSIX/DirectoryObject.cpp",
+      "src/msix/PAL/Crypto/OpenSSL/Crypto.cpp",
+      "src/msix/PAL/Signature/OpenSSL/SignatureValidator.cpp",
+    ]
+    deps += [
+      "//third_party/libxml",
+      "//third_party/boringssl"
+    ]
+  }
+
+  #libs = [
+  #]
+}
+
+executable("bundle_sample") {
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "sample/inc",
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "sample/BundleSample/BundleSample.cpp"
+  ]
+}
+
+executable("pack_sample") {
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "sample/inc",
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "sample/PackSample/PackSample.cpp"
+  ]
+}
+
+executable("extract_contents") {
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "sample/inc",
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "sample/ExtractContentsSample/ExtractContentsSample.cpp"
+  ]
+}
+
+executable("override_language") {
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "sample/inc",
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "sample/OverrideLanguageSample/OverrideLanguageSample.cpp"
+  ]
+}
+
+executable("unbundle") {
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "sample/inc",
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "sample/Bundle/Unbundle.cpp"
+  ]
+}
+
+executable("bundle") {
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "sample/inc",
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "sample/Bundle/Bundle.cpp"
+  ]
+}
+
+executable("override_stream") {
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "sample/inc",
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "sample/OverrideStreamSample/OverrideStreamSample.cpp"
+  ]
+}
+
+executable("makemsix") {
+  configs -= [ 
+    "//build/config/compiler:chromium_code",
+  ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    "//build/config/compiler:exceptions",
+  ]
+  deps = [
+    ":msix",
+    "//buildtools/third_party/libc++"
+  ]
+  include_dirs = [ 
+    "src/inc",
+    "src/inc/public",
+    "src/inc/internal",
+    "src/inc/shared",
+  ]
+  sources = [
+    "src/makemsix/main.cpp"
+  ]
+}

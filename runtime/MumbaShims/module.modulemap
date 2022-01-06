@@ -1,0 +1,103 @@
+module MumbaShims [extern_c] [system] {
+    textual header "Globals.h"
+    link "mumba_kit"
+    link "Xext"
+    link "Xrender"
+    link "X11"
+    link "Xi"
+    link "Xrandr"
+    module MumbaApplicationShims {
+        header "ApplicationShims.h"
+        export *
+    }
+    module MumbaSkiaShims {
+        header "SkiaShims.h"
+        export *
+    }
+    module MumbaBundleShims {
+        header "BundleShims.h"
+        export *
+    }
+    module MumbaEngineShims {
+        header "EngineShims.h"
+        export *
+    }
+    module MumbaChannelRegistryShims {
+        header "ChannelRegistryShims.h"
+        export *
+    }
+    module MumbaRouteRegistryShims {
+        header "RouteRegistryShims.h"
+        export *
+    }
+    module MumbaServiceRegistryShims {
+        header "ServiceRegistryShims.h"
+        export *
+    }
+    module MumbaStorageShims {
+        header "StorageShims.h"
+        export *
+    }
+    module MumbaCompositorShims {
+        header "CompositorShims.h"
+        export *
+    }
+    module MumbaCoreShims {
+        header "CoreShims.h"
+        export *
+    }
+    module MumbaGpuShims {
+        header "GpuShims.h"
+        export *
+    }
+    module MumbaIPCShims {
+        header "IPCShims.h"
+        export *
+    }
+    module MumbaX11Shims {
+        //umbrella "/usr/lib/x86_64-linux-gnu/glib-2.0/include/"
+        header "X11Shims.h"
+        export *
+    }
+    module MumbaICUShims {
+        header "ICUShims.h"
+        export *
+    }
+    module MumbaWebShims {
+        header "WebShims.h"
+        export *
+    }
+    module MumbaNetShims {
+        header "NetShims.h"
+        export *
+    }
+    module MumbaJSShims {
+        header "JavascriptShims.h"
+        export *
+    }
+    module MumbaPDFShims {
+        header "PDFShims.h"
+        export *
+    }
+    module MumbaHarfBuzzShims {
+        header "HarfBuzzShims.h"
+        export *
+    }
+    module MumbaCronetShims {
+        header "cronet_c.h"
+        export *
+    }
+    module MumbaRpcShims {
+        header "grpc/cgrpc.h"
+        export *
+    }
+    module MumbaModpb64Shims {
+        header "modp_b64.h"
+        export *
+    }
+
+    module MumbaSQLiteShims {
+        header "sqlite.h"
+        export *
+    }
+}

@@ -1,0 +1,39 @@
+defines = -DNINJA_PYTHON=\"python\" -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_32 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_26
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/include/glib-2.0 -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu/glib-2.0/include
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = builder
+target_out_dir = obj/lib/builder
+target_output_name = libbuilder
+
+build obj/lib/builder/builder.inputdeps.stamp: stamp obj/lib/base/anchor_functions_buildflags.stamp obj/lib/base/build_date.stamp obj/lib/base/cfi_buildflags.stamp obj/lib/base/debugging_buildflags.stamp obj/lib/base/partition_alloc_buildflags.stamp obj/lib/base/protected_memory_buildflags.stamp obj/lib/base/synchronization_buildflags.stamp obj/lib/base/allocator/buildflags.stamp
+build obj/lib/builder/builder/browse.o: cxx ../../../lib/builder/browse.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/build.o: cxx ../../../lib/builder/build.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/build_log.o: cxx ../../../lib/builder/build_log.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/clean.o: cxx ../../../lib/builder/clean.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/clparser.o: cxx ../../../lib/builder/clparser.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/debug_flags.o: cxx ../../../lib/builder/debug_flags.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/depfile_parser.o: cxx ../../../lib/builder/depfile_parser.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/deps_log.o: cxx ../../../lib/builder/deps_log.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/disk_interface.o: cxx ../../../lib/builder/disk_interface.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/edit_distance.o: cxx ../../../lib/builder/edit_distance.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/eval_env.o: cxx ../../../lib/builder/eval_env.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/getopt.o: cc ../../../lib/builder/getopt.c || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/graph.o: cxx ../../../lib/builder/graph.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/graphviz.o: cxx ../../../lib/builder/graphviz.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/lexer.o: cxx ../../../lib/builder/lexer.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/line_printer.o: cxx ../../../lib/builder/line_printer.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/manifest_parser.o: cxx ../../../lib/builder/manifest_parser.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/metrics.o: cxx ../../../lib/builder/metrics.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/state.o: cxx ../../../lib/builder/state.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/subprocess-posix.o: cxx ../../../lib/builder/subprocess-posix.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/util.o: cxx ../../../lib/builder/util.cc || obj/lib/builder/builder.inputdeps.stamp
+build obj/lib/builder/builder/version.o: cxx ../../../lib/builder/version.cc || obj/lib/builder/builder.inputdeps.stamp
+
+build ./libbuilder.so ./libbuilder.so.TOC: solink obj/lib/builder/builder/browse.o obj/lib/builder/builder/build.o obj/lib/builder/builder/build_log.o obj/lib/builder/builder/clean.o obj/lib/builder/builder/clparser.o obj/lib/builder/builder/debug_flags.o obj/lib/builder/builder/depfile_parser.o obj/lib/builder/builder/deps_log.o obj/lib/builder/builder/disk_interface.o obj/lib/builder/builder/edit_distance.o obj/lib/builder/builder/eval_env.o obj/lib/builder/builder/getopt.o obj/lib/builder/builder/graph.o obj/lib/builder/builder/graphviz.o obj/lib/builder/builder/lexer.o obj/lib/builder/builder/line_printer.o obj/lib/builder/builder/manifest_parser.o obj/lib/builder/builder/metrics.o obj/lib/builder/builder/state.o obj/lib/builder/builder/subprocess-posix.o obj/lib/builder/builder/util.o obj/lib/builder/builder/version.o | ./libbase.so.TOC ./libc++.so.TOC || obj/build/config/exe_and_shlib_deps.stamp
+  ldflags = -fPIC -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -Wl,-z,defs -Wl,--no-as-needed -lpthread -Wl,--as-needed -fuse-ld=lld -Wl,--icf=all -m64 -Wl,-O2 -Wl,--gc-sections -nostdlib++ --sysroot=../../../build/linux/debian_sid_amd64-sysroot -L../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Werror -Wl,--export-dynamic
+  libs = -ldl -lpthread -lrt -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 -lglib-2.0
+  output_extension = .so
+  output_dir = .
+  solibs = ./libbase.so ./libc++.so

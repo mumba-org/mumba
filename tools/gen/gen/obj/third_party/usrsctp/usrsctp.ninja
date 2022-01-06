@@ -1,0 +1,36 @@
+defines = -DSCTP_PROCESS_LEVEL_LOCKS -DSCTP_SIMPLE_ALLOCATOR -DSCTP_USE_OPENSSL_SHA1 -D__Userspace__ -D__Userspace_os_Linux -D_GNU_SOURCE -DNON_WINDOWS_DEFINE -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DBORINGSSL_SHARED_LIBRARY
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/usrsctp/usrsctplib/usrsctplib -I../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet -I../../../third_party/boringssl/src/include
+cflags = -UINET -UINET6 -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -Wno-incompatible-pointer-types -Wno-unused-function -Wno-deprecated-declarations
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = usrsctp
+target_out_dir = obj/third_party/usrsctp
+target_output_name = libusrsctp
+
+build obj/third_party/usrsctp/usrsctp/sctp_asconf.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_asconf.c
+build obj/third_party/usrsctp/usrsctp/sctp_auth.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_auth.c
+build obj/third_party/usrsctp/usrsctp/sctp_bsd_addr.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_bsd_addr.c
+build obj/third_party/usrsctp/usrsctp/sctp_callout.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_callout.c
+build obj/third_party/usrsctp/usrsctp/sctp_cc_functions.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_cc_functions.c
+build obj/third_party/usrsctp/usrsctp/sctp_crc32.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_crc32.c
+build obj/third_party/usrsctp/usrsctp/sctp_indata.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_indata.c
+build obj/third_party/usrsctp/usrsctp/sctp_input.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_input.c
+build obj/third_party/usrsctp/usrsctp/sctp_output.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_output.c
+build obj/third_party/usrsctp/usrsctp/sctp_pcb.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_pcb.c
+build obj/third_party/usrsctp/usrsctp/sctp_peeloff.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_peeloff.c
+build obj/third_party/usrsctp/usrsctp/sctp_sha1.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_sha1.c
+build obj/third_party/usrsctp/usrsctp/sctp_ss_functions.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_ss_functions.c
+build obj/third_party/usrsctp/usrsctp/sctp_sysctl.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_sysctl.c
+build obj/third_party/usrsctp/usrsctp/sctp_timer.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_timer.c
+build obj/third_party/usrsctp/usrsctp/sctp_userspace.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_userspace.c
+build obj/third_party/usrsctp/usrsctp/sctp_usrreq.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctp_usrreq.c
+build obj/third_party/usrsctp/usrsctp/sctputil.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet/sctputil.c
+build obj/third_party/usrsctp/usrsctp/sctp6_usrreq.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/netinet6/sctp6_usrreq.c
+build obj/third_party/usrsctp/usrsctp/user_environment.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/user_environment.c
+build obj/third_party/usrsctp/usrsctp/user_mbuf.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/user_mbuf.c
+build obj/third_party/usrsctp/usrsctp/user_recv_thread.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/user_recv_thread.c
+build obj/third_party/usrsctp/usrsctp/user_socket.o: cc ../../../third_party/usrsctp/usrsctplib/usrsctplib/user_socket.c
+
+build obj/third_party/usrsctp/libusrsctp.a: alink obj/third_party/usrsctp/usrsctp/sctp_asconf.o obj/third_party/usrsctp/usrsctp/sctp_auth.o obj/third_party/usrsctp/usrsctp/sctp_bsd_addr.o obj/third_party/usrsctp/usrsctp/sctp_callout.o obj/third_party/usrsctp/usrsctp/sctp_cc_functions.o obj/third_party/usrsctp/usrsctp/sctp_crc32.o obj/third_party/usrsctp/usrsctp/sctp_indata.o obj/third_party/usrsctp/usrsctp/sctp_input.o obj/third_party/usrsctp/usrsctp/sctp_output.o obj/third_party/usrsctp/usrsctp/sctp_pcb.o obj/third_party/usrsctp/usrsctp/sctp_peeloff.o obj/third_party/usrsctp/usrsctp/sctp_sha1.o obj/third_party/usrsctp/usrsctp/sctp_ss_functions.o obj/third_party/usrsctp/usrsctp/sctp_sysctl.o obj/third_party/usrsctp/usrsctp/sctp_timer.o obj/third_party/usrsctp/usrsctp/sctp_userspace.o obj/third_party/usrsctp/usrsctp/sctp_usrreq.o obj/third_party/usrsctp/usrsctp/sctputil.o obj/third_party/usrsctp/usrsctp/sctp6_usrreq.o obj/third_party/usrsctp/usrsctp/user_environment.o obj/third_party/usrsctp/usrsctp/user_mbuf.o obj/third_party/usrsctp/usrsctp/user_recv_thread.o obj/third_party/usrsctp/usrsctp/user_socket.o || ./libboringssl.so.TOC
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/usrsctp

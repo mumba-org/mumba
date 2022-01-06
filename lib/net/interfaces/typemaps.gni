@@ -1,0 +1,11 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+typemaps = [
+  "//lib/net/interfaces/address_family.typemap",
+  "//lib/net/interfaces/address_list.typemap",
+  "//lib/net/interfaces/host_resolver.typemap",
+  "//lib/net/interfaces/ip_address.typemap",
+  "//lib/net/interfaces/ip_endpoint.typemap",
+]

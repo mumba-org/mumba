@@ -1,0 +1,6 @@
+buildconfig = "//build/config/BUILDCONFIG.gn"
+secondary_source = "//build/secondary/"
+
+default_args = {
+  use_cxx17 = true
+}

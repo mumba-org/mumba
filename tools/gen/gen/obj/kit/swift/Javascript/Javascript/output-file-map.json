@@ -1,0 +1,47 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/Javascript/Sources/JsContext.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsContext.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsContext.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsContext.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsContext~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Javascript/Sources/JsDebug.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsDebug.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsDebug.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsDebug.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsDebug~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Javascript/Sources/JsEngine.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsEngine.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsEngine.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsEngine.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsEngine~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Javascript/Sources/JsError.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsError.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsError.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsError.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsError~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Javascript/Sources/JsModule.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsModule.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsModule.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsModule.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsModule~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Javascript/Sources/JsObject.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsObject.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsObject.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsObject.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsObject~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Javascript/Sources/JsScript.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsScript.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsScript.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsScript.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Javascript/Javascript/JsScript~partial.swiftmodule"
+   }
+}

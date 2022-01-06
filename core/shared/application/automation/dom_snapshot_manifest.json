@@ -1,0 +1,11 @@
+{
+  "name": "dom_snapshot",
+  "display_name": "DOM Snapshot Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "dom_snapshot" : [ "automation.DOMSnapshot" ]
+      }
+    }
+  }
+}

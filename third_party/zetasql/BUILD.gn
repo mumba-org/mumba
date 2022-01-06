@@ -1,0 +1,717 @@
+import("//build_overrides/build.gni")
+import("//third_party/protobuf/proto_library.gni")
+
+zetasql_parser_output_dir = "$root_gen_dir/third_party/zetasql/parser"
+rel_zetasql_parser_gen_dir = rebase_path(zetasql_parser_output_dir, root_build_dir)
+#zetasql_resolved_ast_output_dir = "$root_gen_dir/third_party/zetasql/resolved_ast"
+#zetasql_proto_output_dir = "$root_gen_dir/third_party/zetasql/proto"
+zetasql_proto_gen_import_dir = "$root_gen_dir/third_party"
+zetasql_proto_import_dir = rebase_path("//third_party", root_build_dir)
+zetasql_root_dir = rebase_path("//")
+
+if (host_os == "win") {
+  #gperf_exe = rebase_path("//third_party/gperf/bin/gperf.exe", root_build_dir)
+  bison_exe = rebase_path("//third_party/bison/bin/bison.exe", root_build_dir)
+  flex_exe = rebase_path("//third_party/flex/bin/flex.exe", root_build_dir)
+} else {
+  #gperf_exe = "gperf"
+  bison_exe = "bison"
+  flex_exe = "flex"
+}
+
+component("zetasql") {
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+        "//build/config/compiler:no_chromium_code",
+        #"//build/config/compiler:rtti"
+    ]
+    deps = [
+      ":analyzer",
+      ":base",
+      ":common",
+      ":parser",
+      ":public",
+      ":resolved_ast_proto",
+      ":resolved_ast_generated",
+      ":resolved_ast",
+      ":bison_parser_generated",
+      ":flex_lexer_generated",
+      ":generate_bison_keyword_token_codes_inc",
+      "//lib/base",
+      "//third_party/zlib",
+      "//third_party/zstd",
+      "//third_party/icu",
+      "//third_party/re2",
+    ]
+
+    public_deps = [
+      ":protobuf",
+      "//third_party/abseil-cpp/absl/base",
+      "//third_party/abseil-cpp/absl/base:core_headers",
+      "//third_party/abseil-cpp/absl/container:flat_hash_map",
+      "//third_party/abseil-cpp/absl/container:flat_hash_set",
+      "//third_party/abseil-cpp/absl/container:node_hash_set",
+      "//third_party/abseil-cpp/absl/hash",
+      "//third_party/abseil-cpp/absl/memory",
+      "//third_party/abseil-cpp/absl/strings",
+      "//third_party/abseil-cpp/absl/strings:internal",
+      "//third_party/abseil-cpp/absl/strings:str_format_internal",
+      "//third_party/abseil-cpp/absl/time",
+      "//third_party/abseil-cpp/absl/types:optional",
+      "//third_party/abseil-cpp/absl/types:span",
+      "//third_party/abseil-cpp/absl/types:variant",
+    ]
+
+    include_dirs = [
+      "//third_party",
+      zetasql_proto_gen_import_dir
+    ]
+
+    public_configs = [
+      ":proto_config"
+    ]
+
+    cflags_cc = [
+       "-Wno-sign-compare",
+       "-Wno-implicit-int-float-conversion",
+       "-Wno-final-dtor-non-final-class"
+    ]
+}
+
+source_set("analyzer") {
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+        "//build/config/compiler:no_chromium_code",
+        #"//build/config/compiler:rtti"
+    ]
+    deps = [
+        ":protobuf",
+        ":resolved_ast_enums_proto",
+        ":resolved_ast_generated",
+        "//third_party/abseil-cpp/absl/base",
+        "//third_party/abseil-cpp/absl/base:core_headers",
+    ]
+    include_dirs = [
+      "//third_party",
+      zetasql_proto_gen_import_dir,
+      "//lib/testing/gtest/include",
+    ]
+    cflags = [
+       "-Wno-sign-compare",
+       "-Wno-deprecated-declarations"
+    ]
+    sources = [
+        "analyzer/analytic_function_resolver.cc",
+        "analyzer/analyzer.cc",
+        "analyzer/column_cycle_detector.cc",
+        "analyzer/expr_resolver_helper.cc",
+        "analyzer/function_resolver.cc",
+        "analyzer/literal_remover.cc",
+        "analyzer/name_scope.cc",
+        "analyzer/query_resolver_helper.cc",
+        "analyzer/resolver.cc",
+        "analyzer/resolver_common_inl.h",
+        "analyzer/resolver_dml.cc",
+        "analyzer/resolver_expr.cc",
+        "analyzer/resolver_query.cc",
+        "analyzer/resolver_stmt.cc",
+        "analyzer/table_name_resolver.cc",
+        "analyzer/analytic_function_resolver.h",
+        "analyzer/column_cycle_detector.h",
+        "analyzer/expr_resolver_helper.h",
+        "analyzer/function_resolver.h",
+        "analyzer/name_scope.h",
+        "analyzer/query_resolver_helper.h",
+        "analyzer/resolver.h",
+        "analyzer/table_name_resolver.h",
+        "public/analyzer.h",
+    ]
+}
+
+source_set("base") {
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+        "//build/config/compiler:no_chromium_code",
+    ]
+    deps = [
+        ":protobuf",
+        "//third_party/abseil-cpp/absl/base",
+        "//third_party/abseil-cpp/absl/base:core_headers",
+    ]
+    include_dirs = [
+      "//third_party",
+      "//lib/testing/gtest/include",
+      zetasql_proto_gen_import_dir
+    ]
+    cflags = [
+       "-Wno-sign-compare",
+    ]
+    sources = [
+        "base/arena.h",
+        "base/arena_allocator.h",
+        "base/atomic_sequence_num.h",
+        "base/logging.h",
+        "base/varsetter.h",
+        "base/logging.cc",
+        "base/logging.h",
+        "base/arena.cc",
+        "base/arena.h",
+        "base/arena_allocator.h",
+        "base/source_location.h",
+        "base/endian.h",
+        "base/unaligned_access.h",
+        "base/canonical_errors.cc",
+        "base/status.cc",
+        "base/status_builder.cc",
+        "base/status_payload.cc",
+        "base/statusor.cc",
+        "base/canonical_errors.h",
+        "base/status.h",
+        "base/status_builder.h",
+        "base/status_macros.h",
+        "base/status_payload.h",
+        "base/statusor.h",
+        "base/statusor_internals.h",
+        "base/enum_utils.h",
+        "base/ret_check.cc",
+        "base/map_traits.h",
+        "base/map_util.h",
+        "base/no_destructor.h",
+        "base/ret_check.h",
+        "base/stl_util.h",
+        "base/mathutil.cc",
+        "base/mathutil.h",
+        "base/mathlimits.cc",
+        "base/mathlimits.h",
+        "base/bits.cc",
+        "base/bits.h",
+        "base/case.cc",
+        "base/case.h",
+        "base/path.cc",
+        "base/path.h",
+        "base/cleanup.h",
+        "base/time_proto_util.cc",
+        "base/time_proto_util.h",
+        "base/string_numbers.cc",
+        "base/string_numbers.h",
+        "base/compressed_tuple.h",
+        "base/front_binder.h",
+        "base/invoke.h",
+        "base/bind_front.h",
+        "base/simple_reference_counted.h",
+    ]
+}
+
+source_set("common") {
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+        "//build/config/compiler:no_chromium_code",
+    ]
+    deps = [   
+        ":protobuf",
+        "//third_party/abseil-cpp/absl/base",
+        "//third_party/abseil-cpp/absl/base:core_headers",
+        "//third_party/icu",
+    ]
+    include_dirs = [
+      "//third_party",
+      "//lib/testing/gtest/include",
+      zetasql_proto_gen_import_dir
+    ]
+    cflags = [
+       "-Wno-sign-compare",
+    ]
+    sources = [
+        "common/status_payload_utils.cc",
+        "common/status_payload_utils.h",
+        "common/errors.cc",
+        "common/errors.h",
+        "common/string_util.h",
+        "common/utf_util.cc",
+        "common/utf_util.h",
+        "common/proto_helper.cc",
+        "common/proto_helper.h",
+        "common/float_margin.h",
+        "common/internal_value.h",
+    ]
+}
+
+#action("gen_parser_extra_files") {
+#  script = "parser/gen_extra_files.sh"
+#  sources = [
+#    "parser/parse_tree.h",
+#  ]
+#  outputs = [
+#    zetasql_root_dir + "third_party/zetasql/parser/parse_tree_visitor.h",
+#    zetasql_root_dir + "third_party/zetasql/parser/parse_tree_decls.h",
+#    zetasql_root_dir + "third_party/zetasql/parser/parse_tree_accept_methods.inc",
+#  ]
+#  args = rebase_path(sources, root_build_dir) + rebase_path(outputs, root_build_dir)
+#}
+
+
+source_set("parser") {
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+        "//build/config/compiler:no_chromium_code",
+        #"//build/config/compiler:rtti",
+        "//build/config/compiler:exceptions", # bison
+    ]
+    include_dirs = [
+      "//third_party",
+      "//lib/testing/gtest/include",
+      zetasql_proto_gen_import_dir,
+      zetasql_parser_output_dir
+    ]
+    #if (current_os == "linux") {
+    #  include_dirs += [
+    #    "/usr/include"
+    #  ]
+    #}
+    deps = [
+      #":gen_parser_extra_files",
+      ":bison_parser_generated",
+      ":flex_lexer_generated",
+      ":protobuf",
+       "//third_party/abseil-cpp/absl/base",
+       "//third_party/abseil-cpp/absl/base:core_headers",
+       "//third_party/re2",
+       "//third_party/icu",
+    ]
+    cflags = [
+       "-Wno-sign-compare",
+       "-Wno-deprecated-declarations"
+    ]
+    sources = [
+        "parser/bison_parser.cc",
+        "parser/bison_parser.h",
+        "parser/bison_parser_mode.h",
+        "parser/flex_tokenizer.cc",
+        "parser/flex_tokenizer.h",
+        "parser/parser.cc",
+        "parser/unparser.cc",
+        "parser/ast_node_kind.h",
+        "parser/parse_tree.h",
+        "parser/parse_tree_decls.h",
+        "parser/parse_tree_errors.h",
+        "parser/parse_tree_visitor.h",
+        "parser/parser.h",
+        "parser/unparser.h",
+
+        # bison generated. see how its done
+        "$zetasql_parser_output_dir/bison_parser.bison.cc",
+        "$zetasql_parser_output_dir/flex_tokenizer.flex.cc",
+        "$zetasql_parser_output_dir/bison_parser.bison.hh",
+        "$zetasql_parser_output_dir/location.hh",
+        "$zetasql_parser_output_dir/position.hh",
+        "$zetasql_parser_output_dir/stack.hh",
+        "parser/parse_tree.cc",
+        "parser/parse_tree_accept_methods.inc",
+        "parser/parse_tree_errors.cc",
+        "parser/ast_node_kind.h",
+        "parser/parse_tree.h",
+        "parser/parse_tree_decls.h",
+        "parser/parse_tree_errors.h",
+        "parser/parse_tree_visitor.h",
+        "parser/keywords.cc",
+        "parser/keywords.h",
+    ]
+}
+
+action_foreach("bison_parser_generated") {
+  script = "build/scripts/rule_bison.py"
+  sources = [
+    "parser/bison_parser.y",
+  ]
+  outputs = [
+    zetasql_parser_output_dir + "/{{source_name_part}}.bison.hh",
+    zetasql_parser_output_dir + "/{{source_name_part}}.bison.cc",
+    zetasql_parser_output_dir + "/location.hh",
+    zetasql_parser_output_dir + "/position.hh",
+    zetasql_parser_output_dir + "/stack.hh",
+  ]
+  args = [
+    "{{source}}",
+    rel_zetasql_parser_gen_dir,
+    bison_exe,
+  ]
+  if (is_mac && !use_system_xcode) {
+    args += [ hermetic_xcode_path ]
+  }
+}
+
+action_foreach("flex_lexer_generated") {
+  script = "build/scripts/rule_flex.py"
+  sources = [
+    "parser/flex_tokenizer.l",
+  ]
+  outputs = [
+    zetasql_parser_output_dir + "/{{source_name_part}}.flex.cc",
+  ]
+  args = [
+    "{{source}}",
+    rel_zetasql_parser_gen_dir,
+    flex_exe,
+  ]
+}
+
+action("generate_bison_keyword_token_codes_inc") {
+  deps = [":bison_parser_generated"]
+  script = "build/scripts/generate_bison_keyword_token_codes.py"
+  sources = [
+    zetasql_parser_output_dir + "/bison_parser.bison.hh",
+  ]
+  outputs = [
+    zetasql_parser_output_dir + "/bison_keyword_token_codes.inc",
+  ]
+  print(rebase_path(zetasql_parser_output_dir))
+  args = [
+    rebase_path(zetasql_parser_output_dir),
+    "bison_parser.bison.hh",
+    "bison_keyword_token_codes.inc"
+  ]
+}
+
+
+#genrule(
+#    name = "generate_bison_keyword_token_codes_inc",
+#    srcs = ["bison_parser.bison.h"],
+#    outs = ["bison_keyword_token_codes.inc"],
+#    cmd = "grep '    KW_.* = ' $(location bison_parser.bison.h) > $@",
+#)
+
+#genlex(
+#    name = "flex_tokenizer_generated",
+#    src = "flex_tokenizer.l",
+#    out = "flex_tokenizer.flex.cc",
+#    includes = [
+#        "bison_parser.bison.h",
+#    ],
+#)
+
+#genyacc(
+#    name = "bison_parser_generated",
+#    src = "bison_parser.y",
+#    extra_outs = [
+#        "location.hh",
+#        "position.hh",
+#        "stack.hh",
+#    ],
+#    header_out = "bison_parser.bison.h",
+#    source_out = "bison_parser.bison.cc",
+#)
+
+source_set("public") {
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+        "//build/config/compiler:no_chromium_code",
+        #"//build/config/compiler:rtti",
+    ]
+    deps = [
+        ":protobuf",
+        ":resolved_ast",
+        "//third_party/abseil-cpp/absl/base",
+        "//third_party/abseil-cpp/absl/base:core_headers",
+        "//third_party/abseil-cpp/absl/strings",
+        "//third_party/abseil-cpp/absl/strings:internal",
+        "//third_party/abseil-cpp/absl/strings:str_format_internal",
+        "//third_party/icu",
+        "//third_party/protobuf:protobuf_lite",
+    ]
+    include_dirs = [
+      "//third_party",
+      zetasql_proto_gen_import_dir,
+      "//lib/testing/gtest/include"
+    ]
+    cflags = [
+       "-Wno-sign-compare",
+       "-Wno-deprecated-declarations"
+    ]
+    sources = [
+        "public/functions/util.cc",
+        "public/functions/util.h",
+        "public/functions/convert_internal.h",
+        "public/functions/convert.cc",
+        "public/functions/convert.h",
+        "public/functions/convert_proto.cc",
+        "public/functions/convert_proto.h",
+        "public/functions/convert_string.cc",
+        "public/functions/convert_string.h",
+        "public/functions/arithmetics_internal.h",
+        "public/functions/arithmetics.h",
+        "public/functions/date_time_util_internal.cc",
+        "public/functions/date_time_util_internal.h",
+        "public/functions/date_time_util.cc",
+        "public/functions/date_time_util.h",
+        "public/type.cc",
+        "public/type.h",
+        "public/convert_type_to_proto.cc",
+        "public/convert_type_to_proto.h",
+        "public/catalog.cc",
+        "public/catalog.h",
+        "public/cycle_detector.cc",
+        "public/cycle_detector.h",
+        "public/civil_time.cc",
+        "public/civil_time.h",
+        "public/simple_catalog.cc",
+        "public/simple_catalog.h",
+        "public/table_from_proto.cc",
+        "public/table_from_proto.h",
+        "public/cast.cc",
+        "public/cast.h",
+        "public/coercer.cc",
+        "public/coercer.h",
+        "public/numeric_value.cc",
+        "public/numeric_value.h",
+        "public/numeric_value.inc",
+        "public/proto_util.cc",
+        "public/proto_util.h",
+        "public/value.cc",
+        "public/value_inl.h",
+        "public/value.h",
+        "public/error_helpers.cc",
+        "public/error_helpers.h",
+        "public/proto_value_conversion.cc",
+        "public/proto_value_conversion.h",
+        "public/signature_match_result.cc",
+        "public/signature_match_result.h",
+        "public/strings.cc",
+        "public/strings.h",
+        "public/builtin_function.cc",
+        "public/builtin_function.h",
+        "public/function.cc",
+        "public/function.h",
+        "public/function_signature.cc",
+        "public/function_signature.h",
+        "public/input_argument_type.cc",
+        "public/input_argument_type.h",
+        "public/procedure.cc",
+        "public/procedure.h",
+        "public/table_valued_function.cc",
+        "public/table_valued_function.h",
+        "public/sql_function.cc",
+        "public/sql_function.h",
+        "public/templated_sql_function.cc",
+        "public/templated_sql_function.h",
+        "public/sql_tvf.cc",
+        "public/sql_tvf.h",
+        "public/templated_sql_tvf.cc",
+        "public/templated_sql_tvf.h",
+        "public/constant.h",
+        "public/parse_resume_location.h",
+        "public/parse_location.cc",
+        "public/parse_location.h",
+        "public/parse_helpers.cc",
+        "public/parse_tokens.cc",
+        "public/parse_helpers.h",
+        "public/parse_tokens.h",
+        "public/language_options.cc",
+        "public/language_options.h",
+        "public/analyzer.h",
+        "public/evaluator_table_iterator.h",
+        "public/id_string.cc",
+        "public/id_string.h"
+    ]
+}
+
+action_foreach("resolved_ast_generated") {
+  deps = [ 
+    ":protobuf"
+  ]
+  script = "resolved_ast/gen_resolved_ast.py"
+  sources = [
+    "resolved_ast/resolved_ast.cc.template",
+    "resolved_ast/resolved_ast.h.template",
+    "resolved_ast/resolved_ast_deep_copy_visitor.cc.template",
+    "resolved_ast/resolved_ast_deep_copy_visitor.h.template",
+    "resolved_ast/resolved_ast_visitor.h.template",
+    "resolved_ast/resolved_node_kind.h.template",
+  ]
+  outputs = [
+    zetasql_root_dir + "third_party/zetasql/resolved_ast/{{source_name_part}}"
+  ]
+  args = [
+    zetasql_root_dir + "third_party/zetasql/resolved_ast/{{source_name_part}}.template",
+    zetasql_root_dir + "third_party/zetasql/resolved_ast/{{source_name_part}}"
+  ]
+}
+
+action_foreach("resolved_ast_proto_generated") {
+  #deps = [ 
+  #  ":protobuf"
+  #]
+  public_deps = [
+    ":copy_resolved_ast_enums_proto",
+    "//third_party/protobuf:protobuf_lite"
+  ]
+  script = "resolved_ast/gen_resolved_ast.py"
+  sources = [
+    "resolved_ast/resolved_node_kind.proto.template",
+    "resolved_ast/resolved_ast.proto.template",
+  ]
+  outputs = [
+    zetasql_root_dir + "third_party/zetasql/proto/{{source_name_part}}",
+  ]
+  args = [
+    zetasql_root_dir + "third_party/zetasql/resolved_ast/{{source_name_part}}.template",
+    zetasql_root_dir + "third_party/zetasql/proto/{{source_name_part}}"
+  ]
+}
+
+source_set("resolved_ast") {
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [
+        "//build/config/compiler:no_chromium_code",
+        #"//build/config/compiler:rtti"
+    ]
+    include_dirs = [
+      "//third_party",
+      zetasql_proto_gen_import_dir,
+      "//lib/testing/gtest/include",
+    ]
+    public_deps = [
+      ":resolved_ast_generated",
+      ":resolved_ast_proto_generated"
+    ]
+    deps = [
+      ":protobuf",
+      "//third_party/abseil-cpp/absl/base",
+      "//third_party/abseil-cpp/absl/base:core_headers",
+    ]
+    cflags = [
+       "-Wno-sign-compare",
+    ]
+    sources = [
+       # generated stuf
+       zetasql_root_dir + "third_party/zetasql/resolved_ast/resolved_ast.cc",
+       zetasql_root_dir + "third_party/zetasql/resolved_ast/resolved_ast_deep_copy_visitor.cc",
+       zetasql_root_dir + "third_party/zetasql/resolved_ast/resolved_ast.h",
+       zetasql_root_dir + "third_party/zetasql/resolved_ast/resolved_ast_deep_copy_visitor.h",
+       zetasql_root_dir + "third_party/zetasql/resolved_ast/resolved_ast_visitor.h",
+       zetasql_root_dir + "third_party/zetasql/resolved_ast/resolved_node_kind.h",
+       # end generated stuf
+       "resolved_ast/make_node_vector_internal.h",
+       "resolved_ast/make_node_vector.h",
+       "resolved_ast/validator.cc",
+       "resolved_ast/validator.h",
+       "resolved_ast/query_expression.cc",
+       "resolved_ast/query_expression.h",
+       "resolved_ast/sql_builder.cc",
+       "resolved_ast/sql_builder.h",
+       "resolved_ast/resolved_ast_helper.cc",
+       "resolved_ast/resolved_ast_helper.h",
+       "resolved_ast/resolved_column.cc",
+       "resolved_ast/resolved_column.h",
+       "resolved_ast/resolved_node.cc", 
+       "resolved_ast/resolved_node.h",
+    ]
+}
+
+config("proto_config") {
+  include_dirs = [ 
+    "//third_party",
+    zetasql_proto_gen_import_dir,
+    "//lib/testing/gtest/include",
+  ]
+}
+
+group("protobuf") {
+    public_deps = [
+      ":proto",
+      "//third_party/protobuf:protobuf_lite",
+    ]
+}
+
+proto_library("proto") {
+    #use_protobuf_full = true
+    #import_dirs = [
+    #  zetasql_proto_gen_import_dir       
+    #]
+    deps = [
+      ":core_proto",
+      ":resolved_ast_proto",
+    ]
+    import_dirs = [
+      "//third_party/zetasql/proto",
+      "$zetasql_proto_import_dir/protobuf/src"
+    ]
+    sources = [
+      "proto/internal_error_location.proto",
+      "proto/simple_catalog.proto",
+      "proto/simple_table.proto",
+      "proto/simple_constant.proto",
+      "proto/wire_format_annotation.proto",
+      "proto/datetime.proto",
+      "proto/date.proto",
+      "proto/latlng.proto",
+      "proto/timeofday.proto",
+      "proto/normalize_mode.proto"
+    ]
+}
+
+proto_library("resolved_ast_proto") {
+    #use_protobuf_full = true
+    import_dirs = [
+      "//third_party/zetasql/proto",
+      "$zetasql_proto_import_dir/protobuf/src"
+    ]
+    deps = [
+      ":resolved_ast_proto_generated",
+     # ":core_proto"
+    ]
+    sources = [
+      "proto/resolved_ast.proto",
+      "proto/resolved_node_kind.proto",
+    ]
+}
+
+proto_library("core_proto") {
+    #use_protobuf_full = true
+    import_dirs = [
+      "//third_party/zetasql/proto",
+      "$zetasql_proto_import_dir/protobuf/src"
+    ]
+    deps = [
+      ":resolved_ast_proto_generated",
+    ]
+    sources = [
+      "proto/type_annotation.proto",
+      "proto/type.proto",
+      "proto/function.proto",
+      "proto/deprecation_warning.proto",
+      "proto/error_location.proto",
+      "proto/public_function.proto",
+      "proto/options.proto",
+      "proto/serialization.proto",
+      "proto/builtin_function.proto",
+      "proto/public_options.proto",
+      "proto/parse_location_range.proto",
+      "proto/parse_resume_location.proto",
+      "proto/value.proto",
+    ]
+}
+
+proto_library("resolved_ast_enums_proto") {
+    #use_protobuf_full = true
+    #import_dirs = [
+    #  zetasql_proto_gen_import_dir       
+    #]
+    #deps = [
+    #  ":resolved_ast_proto_generated",
+    #]
+    import_dirs = [
+      "//third_party/zetasql/proto",
+      "$zetasql_proto_import_dir/protobuf/src"
+    ]
+    sources = [
+      "proto/resolved_ast_enums.proto"
+    ]
+}
+
+copy("copy_resolved_ast_enums_proto") {
+  deps = [
+    ":resolved_ast_enums_proto_gen",
+  ]
+  sources = [ "$root_build_dir/pyproto/third_party/zetasql/proto/resolved_ast_enums_pb2.py" ]
+  outputs = [ "//third_party/zetasql/resolved_ast/resolved_ast_enums_pb2.py" ]
+}

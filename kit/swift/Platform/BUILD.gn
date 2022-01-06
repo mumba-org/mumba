@@ -1,0 +1,16 @@
+swift_static("Platform") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+    "//kit/swift/PosixShim",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/Graphics"
+  ]
+  sources = [
+    "Sources/PlatformCursor.swift",
+    "Sources/PlatformErrors.swift",
+    "Sources/PlatformEvent.swift",
+    "Sources/Platform.swift",
+    "Sources/PlatformWindow.swift",
+  ]
+}

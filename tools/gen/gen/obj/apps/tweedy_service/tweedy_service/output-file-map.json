@@ -1,0 +1,17 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/master.swiftdeps"
+   },
+   "/workspace/jabberwock/apps/tweedy_service/Sources/Engine/TweedyContext.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyContext.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyContext.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyContext.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyContext~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/apps/tweedy_service/Sources/Engine/TweedyProvider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyProvider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyProvider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyProvider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/tweedy_service/TweedyProvider~partial.swiftmodule"
+   }
+}

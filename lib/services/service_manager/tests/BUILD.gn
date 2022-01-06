@@ -1,0 +1,80 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/tools/test/service_test.gni")
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+import("//lib/testing/test.gni")
+
+group("tests") {
+  # testonly = true
+  deps = [
+    ":service_manager_unittests",
+  ]
+}
+
+service_test("service_manager_unittests") {
+  catalog = ":service_manager_unittests_catalog"
+
+  sources = [
+    "test_support_unittest.cc",
+  ]
+
+  deps = [
+    ":interfaces",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/mojo/edk",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/mojo/public/cpp/system",
+    "//lib/services/catalog:lib",
+    "//lib/services/catalog:unittests",
+    "//lib/services/service_manager",
+    "//lib/services/service_manager/background:lib",
+    "//lib/services/service_manager/background/tests:unittests",
+    "//lib/services/service_manager/embedder:unittests",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/cpp/test:test_support",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/service_manager/runner/host:unittests",
+    "//lib/services/service_manager/tests/connect",
+    "//lib/services/service_manager/tests/lifecycle",
+    "//lib/services/service_manager/tests/sandbox",
+    "//lib/services/service_manager/tests/service_manager",
+    "//lib/services/service_manager/tests/shutdown",
+    "//lib/testing/gtest",
+  ]
+}
+
+mojom("interfaces") {
+  sources = [
+    "test.mojom",
+  ]
+}
+
+source_set("util") {
+  sources = [
+    "util.cc",
+    "util.h",
+  ]
+  deps = [
+    "//lib/base",
+    "//lib/base:base_static",
+    "//lib/mojo/edk",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/service_manager/runner/common",
+  ]
+}
+
+catalog("service_manager_unittests_catalog") {
+  catalog_deps = [
+    "//lib/services/service_manager/background/tests:catalog",
+    "//lib/services/service_manager/tests/connect:catalog",
+    "//lib/services/service_manager/tests/lifecycle:catalog",
+    "//lib/services/service_manager/tests/service_manager:catalog",
+    "//lib/services/service_manager/tests/shutdown:catalog",
+  ]
+}

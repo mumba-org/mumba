@@ -1,0 +1,44 @@
+swift_executable("tweedy_app") {
+  deps = [
+    "//apps/tweedy/resources/proto:TweedyApi",
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+    "//kit/swift/Graphics",
+    "//kit/swift/Data",
+    "//kit/swift/Channel",
+    "//kit/swift/App:Application",
+    "//kit/swift/Compositor",
+    "//kit/swift/Gpu",
+    "//kit/swift/X11",
+    "//kit/swift/Platform",
+    "//kit/swift/App:Text",
+    "//kit/swift/GL",
+    "//kit/swift/App:UI",
+    "//kit/swift/_C",
+    "//kit/swift/Media",
+    "//kit/swift/PDF",
+    "//kit/swift/Web",
+    "//kit/swift/Net",
+    "//kit/swift/Engine",
+    "//kit/swift/Service",
+    "//kit/swift/Channel",
+    "//kit/swift/Javascript",
+    "//kit/swift/PosixShim",
+    "//kit/swift/Route",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/ThirdParty/icu4c:icuuc",
+    "//kit/swift/ThirdParty/icu4c:icui18n",
+    "//kit/swift/ThirdParty/ProtocolBuffers",
+    "//kit/swift/ThirdParty/CGRPCZlib",
+    #"//third_party/pytorch",
+  ]
+  sources = [
+    "Sources/TweedyMain.swift",
+  ]
+  ldflags = [
+    "-licudataswift",
+    "-licui18nswift",
+    "-licuucswift",
+    "-lffi"
+  ]
+}

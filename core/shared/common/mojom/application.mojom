@@ -1,0 +1,343 @@
+// Copyright 2019 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/resource_type.mojom";
+import "core/shared/common/window_container_type.mojom";
+import "core/shared/common/mojom/application_types.mojom";
+import "core/shared/common/native_types.mojom";
+import "core/shared/common/page_state.mojom";
+import "core/shared/common/service_worker/controller_service_worker.mojom";
+import "core/shared/common/input/input_handler.mojom";
+import "core/shared/common/url_loader_factory_bundle.mojom";
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/time.mojom";
+import "lib/mojo/public/interfaces/bindings/native_struct.mojom";
+import "lib/mojo/public/mojom/base/text_direction.mojom";
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/unguessable_token.mojom";
+import "lib/ui/base/mojo/window_open_disposition.mojom";
+import "lib/ui/gfx/geometry/mojo/geometry.mojom";
+import "lib/ui/gfx/range/mojo/range.mojom";
+import "lib/ui/latency/mojo/latency_info.mojom";
+import "lib/url/mojom/url.mojom";
+import "lib/services/network/public/mojom/network_types.mojom";
+import "lib/services/service_manager/public/mojom/service.mojom";
+import "lib/services/service_manager/public/mojom/interface_provider.mojom";
+import "lib/services/viz/privileged/interfaces/compositing/display_private.mojom";
+import "lib/services/viz/privileged/interfaces/compositing/external_begin_frame_controller.mojom";
+import "lib/services/viz/privileged/interfaces/compositing/frame_sink_video_capture.mojom";
+import "lib/services/viz/privileged/interfaces/compositing/renderer_settings.mojom";
+import "lib/services/viz/public/interfaces/compositing/compositor_frame_sink.mojom";
+import "lib/services/viz/public/interfaces/compositing/copy_output_request.mojom";
+import "lib/services/viz/public/interfaces/compositing/frame_sink_id.mojom";
+import "lib/services/viz/public/interfaces/compositing/local_surface_id.mojom";
+import "lib/services/viz/public/interfaces/compositing/surface_id.mojom";
+import "lib/services/viz/public/interfaces/compositing/surface_info.mojom";
+import "lib/services/ui/public/interfaces/ime/ime.mojom";
+import "lib/skia/public/interfaces/bitmap.mojom";
+import "third_party/blink/public/platform/referrer.mojom";
+import "third_party/blink/public/web/commit_result.mojom";
+import "third_party/blink/public/web/window_features.mojom";
+
+const string kNavigation_FrameSpec = "navigation:frame";
+
+
+// An opaque handle that keeps alive the associated render process even after
+// the frame is detached. Used by resource requests with "keepalive" specified.
+interface KeepAliveHandle {};
+
+// the application process
+interface Application {
+
+  CreateEmbedderApplicationService(service_manager.mojom.Service& service_request);
+
+  GetHandle() => (ApplicationInstance info);
+
+  // Avoid using "CreateWindow" for Windows
+  CreateNewWindow(CreateNewWindowParams params);
+
+};
+
+// the app process host => host
+interface ApplicationHost {
+  ShutdownRequest();
+};
+
+// the virtual manager => shell 
+interface ApplicationManagerClient {
+  ClientApplicationGetIcon(string scheme) => (string icon_url);
+  ClientApplicationGetState(string scheme, int32 id) => (ApplicationState state);
+  ClientApplicationLaunch(
+    int32 id, 
+    string url, 
+    int32 window_mode,
+    gfx.mojom.Rect initial_bounds,
+    ui.mojom.WindowOpenDisposition window_open_disposition,
+    bool fullscreen,
+    bool headless) => (ApplicationStatus status, ApplicationInstance info);
+  ClientApplicationClose(string scheme, int32 id) => (ApplicationStatus status);
+  ClientApplicationTerminate(string scheme, int32 id) => (ApplicationStatus status);
+  ClientApplicationActivate(string scheme, int32 id) => (ApplicationStatus status);
+  ClientRegisterApplications(array<ApplicationInfo> apps);
+};
+
+// the host process endpoint
+interface ApplicationManagerHost {
+  ApplicationLaunch(ApplicationInstance info) => (ApplicationStatus status);
+  ApplicationTerminate(string scheme, int32 id) => (ApplicationStatus status);
+  ApplicationActivate(string scheme, int32 id) => (ApplicationStatus status);
+  ApplicationClose(string scheme, int32 id) => (ApplicationStatus status);
+};
+
+interface ApplicationWindow {
+    SetPageScale(float page_scale_factor);
+    SetInitialFocus(bool reverse);
+    UpdateTargetURLAck();
+    UpdateWebPreferences(WebPreferences preferences);
+    //EnumerateDirectoryResponse();
+    ClosePage();
+    MoveOrResizeStarted();
+    SetBackgroundOpaque(bool opaque);
+    EnablePreferredSizeChangedMode();
+    DisableScrollbarsForSmallWindows(gfx.mojom.Size disable_scrollbar_size_limit);
+    SetRendererPrefs(RendererPreferences prefs);
+    MediaPlayerActionAt(gfx.mojom.Point location, common.mojom.WebMediaPlayerAction action);
+    SetActive(bool active);
+    ForceRedraw(ui.mojom.LatencyInfo latency_info);
+    SelectWordAroundCaret();
+    UpdateWindowScreenRect(gfx.mojom.Rect window_screen_rect);
+    SetZoomLevel(double zoom_level);
+    PageWasHidden();
+    PageWasShown();
+    SetHistoryOffsetAndLength(int32 history_offset, int32 history_length);
+    AudioStateChanged(bool is_audio_playing);
+    PausePageScheduledTasks(bool pause);
+    UpdateScreenInfo(ScreenInfo screen_info);
+    FreezePage();
+    ShowContextMenu(MenuSourceType type, gfx.mojom.Point location);
+    Close();
+    SetFocusedWindow();
+    SynchronizeVisualProperties(VisualProperties params);
+    WasHidden();
+    WasShown(bool needs_repainting, ui.mojom.LatencyInfo latency_info);
+    Repaint(gfx.mojom.Size size);
+    SetTextDirection(mojo_base.mojom.TextDirection direction);
+    MoveAck();
+    LockMouseAck(bool succeeded);
+    MouseLockLost();
+    UpdateScreenRects(gfx.mojom.Rect view_screen_rect, gfx.mojom.Rect window_screen_rect);
+    SetViewportIntersection(gfx.mojom.Rect intersection, gfx.mojom.Rect visible_rect);
+    SetIsInert(bool inert);
+    UpdateRenderThrottlingStatus(bool is_throttled, bool subtree_throttled);
+    DragTargetDragEnter(array<DropDataMetadata> drop_data,
+                        gfx.mojom.PointF client_pt,
+                        gfx.mojom.PointF screen_pt,
+                        // blink.mojom.WebDragOperationsMask ops_allowed,
+                        DragOperationsMask ops_allowed,
+                        int32 key_modifiers);
+    DragTargetDragOver(gfx.mojom.PointF client_pt,
+                       gfx.mojom.PointF screen_pt,
+                       // blink.mojom.WebDragOperationsMask ops_allowed,
+                       DragOperationsMask ops_allowed,
+                       int32 key_modifiers);
+    DragTargetDragLeave(gfx.mojom.PointF client_point, gfx.mojom.PointF screen_point);
+    DragTargetDrop(DropData drop_data,
+                   gfx.mojom.PointF client_pt,
+                   gfx.mojom.PointF screen_pt,
+                   int32 key_modifiers);
+    DragSourceEnded(gfx.mojom.PointF client_pt,
+                    gfx.mojom.PointF screen_pt,
+                    DragOperation drag_operations);
+                    //blink.mojom.WebDragOperation drag_operations);
+    DragSourceSystemDragEnded();
+    SetupWindowInputHandler(WindowInputHandler& request, WindowInputHandlerHost host);
+    SwapOut(int32 window_id, bool is_loading);
+    // Requests the web application info from the application.
+    GetWebApplicationInfo() => (WebApplicationInfo web_application_info);
+
+    // new messages here
+
+    IntrinsicSizingInfoOfChildChanged(
+      gfx.mojom.SizeF size,
+      gfx.mojom.SizeF aspect_ratio, 
+      bool has_width, 
+      bool has_height);
+    BeforeUnload(bool is_reload);
+    ViewChanged(viz.mojom.FrameSinkId? frame_sink_id);
+    SetChildFrameSurface(viz.mojom.SurfaceInfo surface_info);
+    ChildFrameProcessGone();
+    SwapIn();
+    FrameDelete();
+    Stop();
+    DroppedNavigation();
+    DidStartLoading();
+    DidStopLoading();
+    Collapse(bool collapsed);
+    WillEnterFullscreen();
+    EnableAutoResize(gfx.mojom.Size min_size, gfx.mojom.Size max_size);
+    DisableAutoResize();
+    ContextMenuClosed();
+    CustomContextMenuAction(uint32 action);
+    VisualStateRequest(uint64 id);
+    DispatchLoad();
+    Reload(bool bypass_cache);
+    ReloadLoFiImages();
+    //SetAccessibilityMode(ui.mojom.AXMode mode); //ui::AXMode);
+    SnapshotAccessibilityTree();
+    UpdateOpener(int32 opener_routing_id);
+    SetFocusedFrame();
+    CheckCompleted();
+    PostMessageEvent();
+    NotifyUserActivation();
+    DidUpdateOrigin(url.mojom.Url origin);
+    CopyImageAt(float x, float y);
+    SaveImageAt(float x, float y);
+    ScrollRectToVisible(gfx.mojom.Rect rect_to_scroll);//, blink.mojom.WebScrollIntoViewParams params);
+    TextSurroundingSelectionRequest(uint32 max_length);
+    AdvanceFocus(FocusType type, int32 source_routing_id);
+    AdvanceFocusInForm(FocusType type);
+    Find(int32 request_id, mojo_base.mojom.String16 search_text, FindOptions options);
+    ClearActiveFindMatch();
+    StopFinding(StopFindAction action);
+    ClearFocusedElement();
+    SetOverlayRoutingToken(mojo_base.mojom.UnguessableToken token);
+    GetInterfaceProvider(service_manager.mojom.InterfaceProvider& interfaces);
+    CommitNavigation(CommitNavigationParams params, URLLoaderFactoryBundle? subresource_loader_factories, ControllerServiceWorkerInfo? controller_service_worker);
+    CommitSameDocumentNavigation(CommitNavigationParams params, URLLoaderFactoryBundle? subresource_loader_factories, ControllerServiceWorkerInfo? controller_service_worker) => (blink.mojom.CommitResult commit_result);
+    CommitFailedNavigation();
+    OnNetworkConnectionChanged(NetworkConnectionType connection_type,
+                               double max_bandwidth_mbps);
+
+};
+
+interface ApplicationWindowHost {
+  IssueKeepAliveHandle(KeepAliveHandle& keep_alive_handle);
+  ApplicationProcessGone(int32 status, int32 exit_code);
+  HittestData(viz.mojom.SurfaceId surface_id, bool ignored_for_hittest);
+  Close();
+  // Unlike Close() answer to a host Close message received
+  CloseAck();
+  UpdateScreenRectsAck();
+  RequestMove(gfx.mojom.Rect position);
+  SetTooltipText(mojo_base.mojom.String16 text, mojo_base.mojom.TextDirection direction);
+  ResizeOrRepaintACK(gfx.mojom.Size view_size, int32 flags, viz.mojom.LocalSurfaceId? local_surface_id);
+  SetCursor(WebCursor cursor);
+  AutoscrollStart(gfx.mojom.PointF start);
+  AutoscrollFling(gfx.mojom.Vector2dF velocity);
+  AutoscrollEnd();
+  TextInputStateChanged(TextInputState text_input_state);
+  LockMouse(bool user_gesture, bool privileged);
+  UnlockMouse();
+  SelectionBoundsChanged(SelectionBoundsParams params);
+  FocusedNodeTouched(bool editable);
+  StartDragging(DropData drop_data,
+                //blink.mojom.WebDragOperationsMask ops_allowed,
+                DragOperationsMask ops_allowed,
+                skia.mojom.Bitmap image,
+                gfx.mojom.Vector2d image_offset,
+                DragEventSourceInfo event_info);
+  //UpdateDragCursor(blink.mojom.WebDragOperation drag_operation);
+  UpdateDragCursor(DragOperation drag_operation);
+  FrameSwapMessagesReceived(uint32 frame_token);//, array<mojo.native.SerializedHandle>? messages);
+  // was:  FrameSwapMessagesReceived(uint32 frame_token, array<IPC::Message> messages);
+  ShowWindow(int32 route_id, gfx.mojom.Rect initial_rect);
+  ShowFullscreenWindow(int32 route_id);
+  UpdateTargetURL(string url);
+  DocumentAvailableInMainFrame(bool uses_temporary_zoom_level);
+  DidContentsPreferredSizeChange(gfx.mojom.Size pref_size);
+  RouteCloseEvent();
+  TakeFocus(bool reverse);
+  ClosePageACK();
+  Focus();
+
+  // frame host
+  [Sync] CreateNewWindowOnHost(CreateNewWindowParams params)
+      => (CreateNewWindowStatus status, CreateNewWindowReply? reply);
+  DidCommitProvisionalLoad(
+      DidCommitProvisionalLoadParams params,
+      service_manager.mojom.InterfaceProvider&? interface_provider_request);
+  DidCommitSameDocumentNavigation(
+      DidCommitProvisionalLoadParams params);
+  // this probably will not stay, but we are experimenting with it
+  BeginNavigation(string url);
+      //CommonNavigationParams common_params,
+      //BeginNavigationParams begin_params);
+  //SubresourceResponseStarted(url.mojom.Url url, uint32 cert_status);
+  //ResourceLoadComplete(ResourceLoadInfo url_load_info);
+  DidChangeName(string name, string unique_name);
+  FrameSizeChanged(gfx.mojom.Size size);
+  OnUpdatePictureInPictureSurfaceId(
+      viz.mojom.SurfaceId surface_id,
+      gfx.mojom.Size natural_size);
+  OnExitPictureInPicture();
+  // TODO: remove this. SwapOutAck already cover the same scenario (with proper spelling)
+  OnSwappedOut();
+  SwapOutAck();
+  SelectWordAroundCaretAck(bool did_select, int32 start, int32 end);
+
+  // new messages
+
+  Detach(int32 id);
+  FrameFocused();
+  DidStartProvisionalLoad(url.mojom.Url url,
+                          array<url.mojom.Url> redirect_chain,
+                          mojo_base.mojom.TimeTicks navigation_start);
+  DidFailProvisionalLoadWithError(
+    int32 error_code,
+    mojo_base.mojom.String16 error_description,
+    url.mojom.Url url);
+  DidFinishDocumentLoad();
+  DidFailLoadWithError(url.mojom.Url url,
+                       int32 error_code,
+                       mojo_base.mojom.String16 error_description);
+  DidStartLoading(bool to_different_document);
+  DidStopLoading();
+  UpdateState(common.mojom.PageState state);
+  DidChangeLoadProgress(double load_progress);
+  OpenURL(url.mojom.Url url);
+  DidFinishLoad(url.mojom.Url url);
+  DocumentOnLoadCompleted(mojo_base.mojom.TimeTicks timestamp);
+  DidAccessInitialDocument();
+  UpdateTitle(mojo_base.mojom.String16 title, mojo_base.mojom.TextDirection direction);
+  BeforeUnloadAck(bool proceed, mojo_base.mojom.TimeTicks start_time,
+    mojo_base.mojom.TimeTicks end_time);
+  SynchronizeVisualProperties(
+    viz.mojom.SurfaceId surface_id,
+    common.mojom.ScreenInfo screen_info,
+    bool auto_resize_enabled,
+    gfx.mojom.Size min_size_for_auto_resize,
+    gfx.mojom.Size max_size_for_auto_resize,
+    gfx.mojom.Rect screen_space_rect,
+    gfx.mojom.Size local_frame_size,
+    int32 capture_sequence_number);
+  UpdateViewportIntersection(gfx.mojom.Rect viewport_intersection, gfx.mojom.Rect compositor_visible_rect);
+  VisibilityChanged(bool visible);
+  // repeated as in Window, but this one comes from frame messages and goes to FrameHost
+  UpdateRenderThrottlingStatus(bool is_throttled, bool subtree_throttled);
+  SetHasReceivedUserGesture();
+  SetHasReceivedUserGestureBeforeNavigation(bool value);
+  ContextMenu();//ContextMenuParams params);
+  SelectionChanged(mojo_base.mojom.String16 selection, uint32 offset, gfx.mojom.Range range);
+  VisualStateResponse(uint64 id);
+  EnterFullscreen();
+  ExitFullscreen();
+  DispatchLoad();
+  CheckCompleted();
+  UpdateFaviconURL(array<url.mojom.Url> favicons);
+  ScrollRectToVisibleInParentFrame(gfx.mojom.Rect rect_to_scroll);//,
+                                   //blink.mojom.WebScrollIntoViewParams properties);
+  FrameDidCallFocus();
+  TextSurroundingSelectionResponse(
+    mojo_base.mojom.String16 content, 
+    uint32 start_offset, 
+    uint32 end_offset);
+  DidChangeOpener(int32 opener);
+  WindowCreatedAck();
+  LayerTreeFrameSinkInitialized();
+  RequestOverlayRoutingToken();
+
+  [Sync] GenerateRoutingID() => (int32 routing_id);
+};

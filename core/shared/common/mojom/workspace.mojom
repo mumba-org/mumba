@@ -1,0 +1,17 @@
+// Copyright 2019 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/mojom/objects.mojom";
+
+interface WorkspaceManagerClient {
+  Noop();
+};
+
+interface WorkspaceManagerHost {
+  WorkspaceList() => (array<WorkspaceHandle> handles);
+  GetCurrentWorkspaceName() => (string name);
+  GetCurrentWorkspacePath() => (string path);
+};

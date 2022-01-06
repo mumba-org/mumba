@@ -1,0 +1,176 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/jumbo.gni")
+import("//build/config/ui.gni")
+import("//lib/testing/test.gni")
+
+jumbo_component("wm") {
+  include_dirs = [
+    "//kit/cpp",
+    "$root_gen_dir/kit/cpp/"
+  ]
+  sources = [
+    "core/accelerator_delegate.h",
+    "core/accelerator_filter.cc",
+    "core/accelerator_filter.h",
+    "core/base_focus_rules.cc",
+    "core/base_focus_rules.h",
+    "core/capture_controller.cc",
+    "core/capture_controller.h",
+    "core/compound_event_filter.cc",
+    "core/compound_event_filter.h",
+    "core/coordinate_conversion.cc",
+    "core/coordinate_conversion.h",
+    "core/cursor_manager.cc",
+    "core/cursor_manager.h",
+    "core/default_activation_client.cc",
+    "core/default_activation_client.h",
+    "core/default_screen_position_client.cc",
+    "core/default_screen_position_client.h",
+    "core/easy_resize_window_targeter.cc",
+    "core/easy_resize_window_targeter.h",
+    "core/focus_controller.cc",
+    "core/focus_controller.h",
+    "core/focus_rules.h",
+    "core/native_cursor_manager.h",
+    "core/native_cursor_manager_delegate.h",
+    "core/shadow_controller.cc",
+    "core/shadow_controller.h",
+    "core/shadow_controller_delegate.h",
+    "core/shadow_types.cc",
+    "core/shadow_types.h",
+    "core/transient_window_controller.cc",
+    "core/transient_window_controller.h",
+    "core/transient_window_manager.cc",
+    "core/transient_window_manager.h",
+    "core/transient_window_observer.h",
+    "core/transient_window_stacking_client.cc",
+    "core/transient_window_stacking_client.h",
+    "core/visibility_controller.cc",
+    "core/visibility_controller.h",
+    "core/window_animations.cc",
+    "core/window_animations.h",
+    "core/window_modality_controller.cc",
+    "core/window_modality_controller.h",
+    "core/window_properties.cc",
+    "core/window_properties.h",
+    "core/window_util.cc",
+    "core/window_util.h",
+    "core/wm_core_export.h",
+    "core/wm_core_switches.cc",
+    "core/wm_core_switches.h",
+    "core/wm_state.cc",
+    "core/wm_state.h",
+  ]
+
+  configs += [ "//build/config:precompiled_headers" ]
+  defines = [ "WM_CORE_IMPLEMENTATION" ]
+
+  deps = [
+    "//lib/base",
+    "//lib/services/ui/public/interfaces",
+    "//lib/skia",
+    "//lib/ui/base",
+    "//lib/ui/base/ime",
+    "//lib/ui/display",
+    "//lib/ui/events",
+    "//lib/ui/events:events_base",
+    "//lib/ui/events/devices",
+    "//lib/ui/events/platform",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/animation",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/resources",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/wm/public",
+    "//kit/cpp/ui/compositor",
+    "//kit/cpp/ui/compositor_extra"
+  ]
+
+  if (use_x11) {
+    configs += [ "//build/config/linux:x11" ]
+    deps += [ "//lib/ui/events/devices/x11" ]
+  }
+
+  if (is_chromeos) {
+    sources += [
+      "core/ime_util_chromeos.cc",
+      "core/ime_util_chromeos.h",
+    ]
+  }
+}
+
+static_library("test_support") {
+  #testonly = true
+  sources = [
+    "test/testing_cursor_client_observer.cc",
+    "test/testing_cursor_client_observer.h",
+    "test/wm_test_helper.cc",
+    "test/wm_test_helper.h",
+  ]
+
+  deps = [
+    ":wm",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/ui/public/cpp/input_devices",
+    "//lib/services/ui/public/interfaces",
+    "//lib/skia",
+    "//lib/ui/base",
+    "//lib/ui/base/ime",
+    "//lib/ui/events",
+    "//lib/ui/events:events_base",
+    "//kit/cpp/ui/aura",
+    "//kit/cpp/ui/aura:test_support",
+  ]
+}
+
+test("wm_unittests") {
+  sources = [
+    "core/capture_controller_unittest.cc",
+    "core/compound_event_filter_unittest.cc",
+    "core/coordinate_conversion_unittest.cc",
+    "core/cursor_manager_unittest.cc",
+    "core/easy_resize_window_targeter_unittest.cc",
+    "core/focus_controller_unittest.cc",
+    "core/shadow_controller_unittest.cc",
+    "core/transient_window_manager_unittest.cc",
+    "core/transient_window_stacking_client_unittest.cc",
+    "core/visibility_controller_unittest.cc",
+    "core/window_animations_unittest.cc",
+    "core/window_util_unittest.cc",
+    "test/run_all_unittests.cc",
+  ]
+
+  deps = [
+    ":test_support",
+    ":wm",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/mojo/edk",
+    "//lib/skia",
+    "//lib/testing/gtest",
+    "//lib/ui/base:test_support",
+    "//lib/ui/base/ime",
+    "//kit/cpp/ui/compositor:test_support",
+    "//kit/cpp/ui/compositor_extra",
+    "//lib/ui/events:test_support",
+    "//lib/ui/events/platform",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/animation",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/gl:test_support",
+    "//lib/ui/resources",
+    "//kit/cpp/ui/wm/public",
+    "//kit/cpp/ui/aura:test_support",
+  ]
+
+  data_deps = [
+    "//lib/ui/resources:ui_test_pak_data",
+  ]
+
+  if (is_chromeos) {
+    sources += [ "core/ime_util_chromeos_unittest.cc" ]
+  }
+}

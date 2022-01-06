@@ -1,0 +1,41 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Net/AddressList.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/AddressList.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/AddressList.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/AddressList.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/AddressList~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Net/Buffer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Buffer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Buffer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Buffer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Buffer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Net/CompletionCallback.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/CompletionCallback.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/CompletionCallback.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/CompletionCallback.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/CompletionCallback~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Net/Filestream.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Filestream.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Filestream.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Filestream.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/Filestream~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Net/IPEndPoint.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/IPEndPoint.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/IPEndPoint.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/IPEndPoint.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/IPEndPoint~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Net/URLSession.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/URLSession.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/URLSession.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/URLSession.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Net/URLSession~partial.swiftmodule"
+   }
+}

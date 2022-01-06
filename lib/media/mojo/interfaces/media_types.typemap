@@ -1,0 +1,56 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+mojom = "//lib/media/mojo/interfaces/media_types.mojom"
+
+public_headers = [
+  "//lib/media/base/audio_codecs.h",
+  "//lib/media/base/buffering_state.h",
+  "//lib/media/base/channel_layout.h",
+  "//lib/media/base/decode_status.h",
+  "//lib/media/base/decrypt_config.h",
+  "//lib/media/base/encryption_pattern.h",
+  "//lib/media/base/encryption_scheme.h",
+  "//lib/media/base/hdr_metadata.h",
+  "//lib/media/base/media_log_event.h",
+  "//lib/media/base/output_device_info.h",
+  "//lib/media/base/pipeline_status.h",
+  "//lib/media/base/sample_format.h",
+  "//lib/media/base/subsample_entry.h",
+  "//lib/media/base/video_codecs.h",
+  "//lib/media/base/video_rotation.h",
+  "//lib/media/base/video_types.h",
+  "//lib/media/base/watch_time_keys.h",
+]
+
+traits_headers = [ "//media/base/ipc/media_param_traits_macros.h" ]
+
+public_deps = [
+  "//lib/media",
+]
+
+deps = [
+  "//lib/media/base/ipc",
+]
+
+type_mappings = [
+  "media.mojom.AudioCodec=media::AudioCodec",
+  "media.mojom.BufferingState=media::BufferingState",
+  "media.mojom.ChannelLayout=media::ChannelLayout",
+  "media.mojom.ColorSpace=media::ColorSpace",
+  "media.mojom.DecodeStatus=media::DecodeStatus",
+  "media.mojom.EncryptionMode=media::EncryptionMode",
+  "media.mojom.EncryptionScheme.CipherMode=media::EncryptionScheme::CipherMode",
+  "media.mojom.MediaLogEvent=media::MediaLogEvent",
+  "media.mojom.OutputDeviceStatus=media::OutputDeviceStatus",
+  "media.mojom.PipelineStatus=media::PipelineStatus",
+  "media.mojom.SampleFormat=media::SampleFormat",
+  "media.mojom.SubsampleEntry=media::SubsampleEntry",
+  "media.mojom.VideoCodec=media::VideoCodec",
+  "media.mojom.VideoCodecProfile=media::VideoCodecProfile",
+  "media.mojom.VideoPixelFormat=media::VideoPixelFormat",
+  "media.mojom.VideoRotation=media::VideoRotation",
+  "media.mojom.WatchTimeKey=media::WatchTimeKey",
+  "media.mojom.EncryptionPattern=media::EncryptionPattern",
+]

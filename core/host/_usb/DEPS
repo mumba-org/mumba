@@ -1,0 +1,6 @@
+include_rules = [
+  "+core/host/ui",
+  "+components/bubble",
+  "+device/base",
+  "+device/usb",
+]

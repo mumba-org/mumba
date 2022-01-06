@@ -1,0 +1,43 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/ots/include -I../../../third_party/brotli/include -I../../../third_party/woff2/include -I../../../third_party/zlib
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -Wall -Werror -Wextra -Wimplicit-fallthrough -Wthread-safety -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = ots
+target_out_dir = obj/third_party/ots
+target_output_name = libots
+
+build obj/third_party/ots/ots/cff.o: cxx ../../../third_party/ots/src/cff.cc
+build obj/third_party/ots/ots/cff_type2_charstring.o: cxx ../../../third_party/ots/src/cff_type2_charstring.cc
+build obj/third_party/ots/ots/cmap.o: cxx ../../../third_party/ots/src/cmap.cc
+build obj/third_party/ots/ots/cvt.o: cxx ../../../third_party/ots/src/cvt.cc
+build obj/third_party/ots/ots/fpgm.o: cxx ../../../third_party/ots/src/fpgm.cc
+build obj/third_party/ots/ots/gasp.o: cxx ../../../third_party/ots/src/gasp.cc
+build obj/third_party/ots/ots/gdef.o: cxx ../../../third_party/ots/src/gdef.cc
+build obj/third_party/ots/ots/glyf.o: cxx ../../../third_party/ots/src/glyf.cc
+build obj/third_party/ots/ots/gpos.o: cxx ../../../third_party/ots/src/gpos.cc
+build obj/third_party/ots/ots/gsub.o: cxx ../../../third_party/ots/src/gsub.cc
+build obj/third_party/ots/ots/hdmx.o: cxx ../../../third_party/ots/src/hdmx.cc
+build obj/third_party/ots/ots/head.o: cxx ../../../third_party/ots/src/head.cc
+build obj/third_party/ots/ots/hhea.o: cxx ../../../third_party/ots/src/hhea.cc
+build obj/third_party/ots/ots/hmtx.o: cxx ../../../third_party/ots/src/hmtx.cc
+build obj/third_party/ots/ots/kern.o: cxx ../../../third_party/ots/src/kern.cc
+build obj/third_party/ots/ots/layout.o: cxx ../../../third_party/ots/src/layout.cc
+build obj/third_party/ots/ots/loca.o: cxx ../../../third_party/ots/src/loca.cc
+build obj/third_party/ots/ots/ltsh.o: cxx ../../../third_party/ots/src/ltsh.cc
+build obj/third_party/ots/ots/math.o: cxx ../../../third_party/ots/src/math.cc
+build obj/third_party/ots/ots/maxp.o: cxx ../../../third_party/ots/src/maxp.cc
+build obj/third_party/ots/ots/metrics.o: cxx ../../../third_party/ots/src/metrics.cc
+build obj/third_party/ots/ots/name.o: cxx ../../../third_party/ots/src/name.cc
+build obj/third_party/ots/ots/os2.o: cxx ../../../third_party/ots/src/os2.cc
+build obj/third_party/ots/ots/ots.o: cxx ../../../third_party/ots/src/ots.cc
+build obj/third_party/ots/ots/post.o: cxx ../../../third_party/ots/src/post.cc
+build obj/third_party/ots/ots/prep.o: cxx ../../../third_party/ots/src/prep.cc
+build obj/third_party/ots/ots/vdmx.o: cxx ../../../third_party/ots/src/vdmx.cc
+build obj/third_party/ots/ots/vhea.o: cxx ../../../third_party/ots/src/vhea.cc
+build obj/third_party/ots/ots/vmtx.o: cxx ../../../third_party/ots/src/vmtx.cc
+build obj/third_party/ots/ots/vorg.o: cxx ../../../third_party/ots/src/vorg.cc
+
+build obj/third_party/ots/libots.a: alink obj/third_party/ots/ots/cff.o obj/third_party/ots/ots/cff_type2_charstring.o obj/third_party/ots/ots/cmap.o obj/third_party/ots/ots/cvt.o obj/third_party/ots/ots/fpgm.o obj/third_party/ots/ots/gasp.o obj/third_party/ots/ots/gdef.o obj/third_party/ots/ots/glyf.o obj/third_party/ots/ots/gpos.o obj/third_party/ots/ots/gsub.o obj/third_party/ots/ots/hdmx.o obj/third_party/ots/ots/head.o obj/third_party/ots/ots/hhea.o obj/third_party/ots/ots/hmtx.o obj/third_party/ots/ots/kern.o obj/third_party/ots/ots/layout.o obj/third_party/ots/ots/loca.o obj/third_party/ots/ots/ltsh.o obj/third_party/ots/ots/math.o obj/third_party/ots/ots/maxp.o obj/third_party/ots/ots/metrics.o obj/third_party/ots/ots/name.o obj/third_party/ots/ots/os2.o obj/third_party/ots/ots/ots.o obj/third_party/ots/ots/post.o obj/third_party/ots/ots/prep.o obj/third_party/ots/ots/vdmx.o obj/third_party/ots/ots/vhea.o obj/third_party/ots/ots/vmtx.o obj/third_party/ots/ots/vorg.o || obj/third_party/brotli/libdec.a obj/third_party/woff2/libwoff2_dec.a obj/third_party/zlib/libchrome_zlib.a obj/third_party/brotli/headers.stamp obj/third_party/brotli/libcommon.a obj/third_party/zlib/zlib_crc32_simd.stamp obj/third_party/zlib/zlib_adler32_simd.stamp obj/third_party/zlib/zlib_inflate_chunk_simd.stamp obj/third_party/zlib/libzlib_x86_simd.a
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/ots

@@ -1,0 +1,30 @@
+swift_static("ProtocolBuffers") {
+  #testonly = true
+  output_name = "protobuf_swift"
+  sources = [
+    "Source/AbstractMessage.swift",
+    "Source/CodedInputStream.swift",
+    "Source/CodedOutputStream.swift",
+    "Source/ConcreateExtensionField.swift",
+    "Source/ExtendableMessage.swift",
+    "Source/ExtensionRegistry.swift",
+    "Source/Field.swift",
+    "Source/GeneratedMessage.swift",
+    "Source/Google.Protobuf.Any.proto.swift",
+    "Source/Google.Protobuf.Api.proto.swift",
+    "Source/Google.Protobuf.Descriptor.proto.swift",
+    "Source/Google.Protobuf.Duration.proto.swift",
+    "Source/Google.Protobuf.Empty.proto.swift",
+    "Source/Google.Protobuf.FieldMask.proto.swift",
+    "Source/Google.Protobuf.SourceContext.proto.swift",
+    "Source/Google.Protobuf.Struct.proto.swift",
+    "Source/Google.Protobuf.SwiftDescriptor.proto.swift",
+    "Source/Google.Protobuf.Timestamp.proto.swift",
+    "Source/Google.Protobuf.Type.proto.swift",
+    "Source/Google.Protobuf.Wrappers.proto.swift",
+    "Source/ProtocolBuffers.h",
+    "Source/RingBuffer.swift",
+    "Source/UnknownFieldSet.swift",
+    "Source/WireFormat.swift"
+  ]
+}

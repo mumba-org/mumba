@@ -1,0 +1,4 @@
+gen/lib/services/network/public/mojom/udp_socket_interface.sources_list
+gen/lib/services/network/public/mojom/mutable_network_traffic_annotation_interface.sources_list
+gen/lib/mojo/public/mojom/base/read_only_buffer.sources_list
+gen/lib/net/interfaces/interfaces.sources_list

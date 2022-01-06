@@ -1,0 +1,35 @@
+defines = -DHAVE_A_OUT_H -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../../third_party/breakpad/breakpad/src -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize
+cflags_cc = -std=gnu++14 -fno-exceptions -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden -frtti
+label_name = dump_syms
+target_out_dir = obj/third_party/breakpad
+target_output_name = dump_syms
+
+build obj/third_party/breakpad/dump_syms/bytereader.o: cxx ../../../third_party/breakpad/breakpad/src/common/dwarf/bytereader.cc
+build obj/third_party/breakpad/dump_syms/dwarf2diehandler.o: cxx ../../../third_party/breakpad/breakpad/src/common/dwarf/dwarf2diehandler.cc
+build obj/third_party/breakpad/dump_syms/dwarf2reader.o: cxx ../../../third_party/breakpad/breakpad/src/common/dwarf/dwarf2reader.cc
+build obj/third_party/breakpad/dump_syms/elf_reader.o: cxx ../../../third_party/breakpad/breakpad/src/common/dwarf/elf_reader.cc
+build obj/third_party/breakpad/dump_syms/dwarf_cfi_to_module.o: cxx ../../../third_party/breakpad/breakpad/src/common/dwarf_cfi_to_module.cc
+build obj/third_party/breakpad/dump_syms/dwarf_cu_to_module.o: cxx ../../../third_party/breakpad/breakpad/src/common/dwarf_cu_to_module.cc
+build obj/third_party/breakpad/dump_syms/dwarf_line_to_module.o: cxx ../../../third_party/breakpad/breakpad/src/common/dwarf_line_to_module.cc
+build obj/third_party/breakpad/dump_syms/language.o: cxx ../../../third_party/breakpad/breakpad/src/common/language.cc
+build obj/third_party/breakpad/dump_syms/crc32.o: cxx ../../../third_party/breakpad/breakpad/src/common/linux/crc32.cc
+build obj/third_party/breakpad/dump_syms/dump_symbols.o: cxx ../../../third_party/breakpad/breakpad/src/common/linux/dump_symbols.cc
+build obj/third_party/breakpad/dump_syms/elf_symbols_to_module.o: cxx ../../../third_party/breakpad/breakpad/src/common/linux/elf_symbols_to_module.cc
+build obj/third_party/breakpad/dump_syms/elfutils.o: cxx ../../../third_party/breakpad/breakpad/src/common/linux/elfutils.cc
+build obj/third_party/breakpad/dump_syms/file_id.o: cxx ../../../third_party/breakpad/breakpad/src/common/linux/file_id.cc
+build obj/third_party/breakpad/dump_syms/linux_libc_support.o: cxx ../../../third_party/breakpad/breakpad/src/common/linux/linux_libc_support.cc
+build obj/third_party/breakpad/dump_syms/memory_mapped_file.o: cxx ../../../third_party/breakpad/breakpad/src/common/linux/memory_mapped_file.cc
+build obj/third_party/breakpad/dump_syms/module.o: cxx ../../../third_party/breakpad/breakpad/src/common/module.cc
+build obj/third_party/breakpad/dump_syms/path_helper.o: cxx ../../../third_party/breakpad/breakpad/src/common/path_helper.cc
+build obj/third_party/breakpad/dump_syms/stabs_reader.o: cxx ../../../third_party/breakpad/breakpad/src/common/stabs_reader.cc
+build obj/third_party/breakpad/dump_syms/stabs_to_module.o: cxx ../../../third_party/breakpad/breakpad/src/common/stabs_to_module.cc
+build obj/third_party/breakpad/dump_syms/dump_syms.o: cxx ../../../third_party/breakpad/breakpad/src/tools/linux/dump_syms/dump_syms.cc
+
+build ./dump_syms: link obj/third_party/breakpad/dump_syms/bytereader.o obj/third_party/breakpad/dump_syms/dwarf2diehandler.o obj/third_party/breakpad/dump_syms/dwarf2reader.o obj/third_party/breakpad/dump_syms/elf_reader.o obj/third_party/breakpad/dump_syms/dwarf_cfi_to_module.o obj/third_party/breakpad/dump_syms/dwarf_cu_to_module.o obj/third_party/breakpad/dump_syms/dwarf_line_to_module.o obj/third_party/breakpad/dump_syms/language.o obj/third_party/breakpad/dump_syms/crc32.o obj/third_party/breakpad/dump_syms/dump_symbols.o obj/third_party/breakpad/dump_syms/elf_symbols_to_module.o obj/third_party/breakpad/dump_syms/elfutils.o obj/third_party/breakpad/dump_syms/file_id.o obj/third_party/breakpad/dump_syms/linux_libc_support.o obj/third_party/breakpad/dump_syms/memory_mapped_file.o obj/third_party/breakpad/dump_syms/module.o obj/third_party/breakpad/dump_syms/path_helper.o obj/third_party/breakpad/dump_syms/stabs_reader.o obj/third_party/breakpad/dump_syms/stabs_to_module.o obj/third_party/breakpad/dump_syms/dump_syms.o | ./libc++.so.TOC || obj/build/config/exe_and_shlib_deps.stamp
+  ldflags = -fPIC -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -Wl,-z,defs -Wl,--no-as-needed -lpthread -Wl,--as-needed -fuse-ld=lld -Wl,--icf=all -m64 -Wl,-O2 -Wl,--gc-sections -nostdlib++ --sysroot=../../../build/linux/debian_sid_amd64-sysroot -L../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/local/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/lib/x86_64-linux-gnu -L../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Wl,-rpath-link=../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu -Wl,-rpath-link=. -Wl,--disable-new-dtags -Wl,-rpath=\$$ORIGIN/. -Wl,-rpath-link=. -Werror
+  libs = -ldl -lpthread -lrt
+  output_extension = 
+  output_dir = .
+  solibs = ./libc++.so

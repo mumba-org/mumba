@@ -1,0 +1,40 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/testing/test.gni")
+
+source_set("lib") {
+  sources = [
+    "test_ime_application.cc",
+    "test_ime_application.h",
+    "test_ime_driver.cc",
+    "test_ime_driver.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/ui/public/interfaces",
+  ]
+}
+
+service("test_ime_driver") {
+  sources = [
+    "main.cc",
+  ]
+
+  deps = [
+    ":lib",
+    "//lib/base",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/ui/public/interfaces",
+  ]
+}
+
+service_manifest("manifest") {
+  name = "test_ime_driver"
+  source = "manifest.json"
+}

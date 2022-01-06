@@ -1,0 +1,11 @@
+{
+  "name": "cache_storage",
+  "display_name": "Cache Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "cache_storage" : [ "automation.Cache" ]
+      }
+    }
+  }
+}

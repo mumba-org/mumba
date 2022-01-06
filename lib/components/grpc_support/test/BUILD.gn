@@ -1,0 +1,26 @@
+source_set("unit_tests") {
+  # testonly = true
+  sources = [
+    "get_stream_engine.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/components/grpc_support",
+    "//lib/components/grpc_support:bidirectional_stream_unittest",
+    "//lib/net",
+    "//lib/net:test_support",
+  ]
+}
+
+source_set("get_stream_engine_header") {
+  # testonly = true
+  sources = [
+    "get_stream_engine.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/net",
+  ]
+}

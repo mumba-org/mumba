@@ -1,0 +1,725 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Accelerator.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Accelerator.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Accelerator.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Accelerator.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Accelerator~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Bitmap.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Bitmap.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Bitmap.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Bitmap.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Bitmap~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/BlendMode.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BlendMode.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BlendMode.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BlendMode.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BlendMode~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Box.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Box.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Box.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Box.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Box~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/BreakIterator.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakIterator.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakIterator.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakIterator.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakIterator~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/BreakList.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakList.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakList.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakList.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BreakList~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/BufferTypes.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BufferTypes.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BufferTypes.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BufferTypes.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/BufferTypes~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Canvas.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Canvas.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Canvas.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Canvas.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Canvas~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Clip.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Clip.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Clip.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Clip.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Clip~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Color.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Color.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Color.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Color.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Color~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ColorFilter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorFilter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorFilter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorFilter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorFilter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ColorPalette.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorPalette.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorPalette.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorPalette.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorPalette~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ColorSpace.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorSpace.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorSpace.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorSpace.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorSpace~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ColorUtils.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorUtils.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorUtils.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorUtils.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ColorUtils~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Colors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Colors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Colors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Colors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Colors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/CubicBezier.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/CubicBezier.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/CubicBezier.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/CubicBezier.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/CubicBezier~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Cursor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Cursor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Cursor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Cursor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Cursor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Device.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Device.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Device.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Device.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Device~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Display.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Display.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Display.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Display.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Display~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DisplayItem.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItem.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItem.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItem.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItem~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DisplayItemList.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItemList.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItemList.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItemList.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayItemList~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DisplayObserver.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayObserver.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayObserver.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayObserver.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DisplayObserver~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DomCode.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomCode.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomCode.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomCode.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomCode~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DomKey.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomKey.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomKey.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomKey.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DomKey~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DrawFilter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawFilter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawFilter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawFilter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawFilter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DrawLooper.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawLooper.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawLooper.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawLooper.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DrawLooper~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Drawable.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Drawable.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Drawable.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Drawable.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Drawable~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/DropData.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DropData.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DropData.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DropData.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/DropData~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Event.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Event.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Event.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Event.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Event~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventDispatcher.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventDispatcher.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventDispatcher.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventDispatcher.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventDispatcher~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventHandler.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventHandler.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventHandler.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventHandler.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventHandler~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventProcessor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventProcessor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventProcessor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventProcessor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventProcessor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventRewriter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventRewriter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventRewriter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventRewriter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventRewriter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventSink.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSink.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSink.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSink.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSink~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventSource.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSource.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSource.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSource.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventSource~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventTarget.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTarget.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTarget.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTarget.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTarget~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/EventTargeter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTargeter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTargeter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTargeter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/EventTargeter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Font.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Font.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Font.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Font.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Font~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/FontList.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/FontList.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/FontList.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/FontList.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/FontList~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLContext.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLContext.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLContext.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLContext.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLContext~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLImage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLImage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLImage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLImage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLImage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLShareGroup.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLShareGroup.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLShareGroup.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLShareGroup.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLShareGroup~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLSurface.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLSurface.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLSurface.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLSurface.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLSurface~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLXContext.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXContext.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXContext.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXContext.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXContext~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLXImage.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXImage.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXImage.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXImage.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXImage~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLXSurface.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXSurface.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXSurface.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXSurface.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXSurface~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GLXVSyncProvider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXVSyncProvider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXVSyncProvider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXVSyncProvider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GLXVSyncProvider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Gesture.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gesture.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gesture.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gesture.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gesture~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Gfx.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gfx.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gfx.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gfx.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Gfx~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GpuMemoryBufferHandle.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuMemoryBufferHandle.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuMemoryBufferHandle.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuMemoryBufferHandle.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuMemoryBufferHandle~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GpuPreference.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuPreference.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuPreference.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuPreference.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GpuPreference~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GrContext.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrContext.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrContext.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrContext.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrContext~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/GrGLInterface.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrGLInterface.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrGLInterface.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrGLInterface.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/GrGLInterface~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Harfbuzz.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Harfbuzz.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Harfbuzz.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Harfbuzz.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Harfbuzz~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Image.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Image.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Image.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Image.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Image~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ImageCodec.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageCodec.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageCodec.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageCodec.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageCodec~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ImageProvider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageProvider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageProvider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageProvider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageProvider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ImageUtils.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageUtils.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageUtils.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageUtils.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ImageUtils~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Insets.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Insets.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Insets.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Insets.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Insets~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/InterpolatedTransform.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/InterpolatedTransform.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/InterpolatedTransform.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/InterpolatedTransform.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/InterpolatedTransform~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/KeyboardCode.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/KeyboardCode.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/KeyboardCode.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/KeyboardCode.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/KeyboardCode~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/LatencyInfo.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/LatencyInfo.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/LatencyInfo.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/LatencyInfo.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/LatencyInfo~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/MaskFilter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/MaskFilter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/MaskFilter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/MaskFilter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/MaskFilter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Mat.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Mat.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Mat.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Mat.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Mat~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/NineImagePainter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/NineImagePainter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/NineImagePainter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/NineImagePainter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/NineImagePainter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/OSExchangeData.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OSExchangeData.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OSExchangeData.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OSExchangeData.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OSExchangeData~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/OverlayTransform.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OverlayTransform.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OverlayTransform.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OverlayTransform.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/OverlayTransform~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PNGCodec.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PNGCodec.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PNGCodec.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PNGCodec.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PNGCodec~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Paint.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Paint.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Paint.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Paint.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Paint~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PaintCanvas.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintCanvas.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintCanvas.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintCanvas.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintCanvas~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PaintFilter.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFilter.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFilter.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFilter.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFilter~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PaintFlags.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFlags.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFlags.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFlags.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintFlags~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PaintRecord.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintRecord.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintRecord.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintRecord.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintRecord~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PaintShader.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintShader.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintShader.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintShader.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintShader~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PaintTextBlob.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintTextBlob.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintTextBlob.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintTextBlob.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintTextBlob~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PaintVectorIcon.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintVectorIcon.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintVectorIcon.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintVectorIcon.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PaintVectorIcon~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Path.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Path.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Path.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Path.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Path~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PathEffect.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PathEffect.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PathEffect.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PathEffect.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PathEffect~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Picture.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Picture.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Picture.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Picture.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Picture~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PixelFormat.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PixelFormat.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PixelFormat.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PixelFormat.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PixelFormat~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PlatformFonts.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlatformFonts.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlatformFonts.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlatformFonts.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlatformFonts~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/PlaybackParams.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlaybackParams.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlaybackParams.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlaybackParams.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/PlaybackParams~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Point.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Point.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Point.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Point.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Point~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Quaternion.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Quaternion.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Quaternion.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Quaternion.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Quaternion~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/RRect.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RRect.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RRect.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RRect.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RRect~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/RecordPaintCanvas.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RecordPaintCanvas.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RecordPaintCanvas.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RecordPaintCanvas.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RecordPaintCanvas~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Rect.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Rect.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Rect.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Rect.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Rect~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Region.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Region.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Region.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Region.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Region~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/RenderText.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RenderText.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RenderText.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RenderText.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/RenderText~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Scalar.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scalar.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scalar.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scalar.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scalar~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ScopedCanvas.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScopedCanvas.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScopedCanvas.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScopedCanvas.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScopedCanvas~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Screen.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Screen.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Screen.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Screen.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Screen~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ScreenInfo.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScreenInfo.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScreenInfo.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScreenInfo.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ScreenInfo~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Scroll.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scroll.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scroll.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scroll.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Scroll~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/SelectionBound.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionBound.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionBound.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionBound.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionBound~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/SelectionModel.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionModel.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionModel.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionModel.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SelectionModel~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Shader.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Shader.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Shader.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Shader.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Shader~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/ShadowValue.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ShadowValue.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ShadowValue.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ShadowValue.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/ShadowValue~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Size.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Size.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Size.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Size.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Size~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/SkiaCanvas.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaCanvas.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaCanvas.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaCanvas.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaCanvas~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/SkiaPaintCanvas.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaPaintCanvas.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaPaintCanvas.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaPaintCanvas.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaPaintCanvas~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/SkiaShader.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaShader.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaShader.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaShader.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SkiaShader~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/SrcRectConstraint.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SrcRectConstraint.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SrcRectConstraint.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SrcRectConstraint.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SrcRectConstraint~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/SwapResult.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SwapResult.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SwapResult.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SwapResult.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/SwapResult~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/TextConstants.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextConstants.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextConstants.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextConstants.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextConstants~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/TextElider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextElider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextElider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextElider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextElider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/TextLineBreaker.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextLineBreaker.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextLineBreaker.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextLineBreaker.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextLineBreaker~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/TextRange.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRange.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRange.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRange.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRange~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/TextRenderer.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRenderer.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRenderer.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRenderer.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRenderer~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/TextRun.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRun.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRun.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRun.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextRun~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/TextUtils.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextUtils.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextUtils.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextUtils.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/TextUtils~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Touch.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Touch.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Touch.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Touch.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Touch~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Transform.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Transform.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Transform.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Transform.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Transform~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Tween.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Tween.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Tween.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Tween.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Tween~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Typeface.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Typeface.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Typeface.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Typeface.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Typeface~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/VSyncProvider.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VSyncProvider.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VSyncProvider.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VSyncProvider.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VSyncProvider~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Vec.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vec.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vec.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vec.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vec~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/VectorIcons.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VectorIcons.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VectorIcons.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VectorIcons.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/VectorIcons~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Vertex.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vertex.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vertex.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vertex.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Vertex~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/Graphics/Sources/Widget.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Widget.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Widget.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Widget.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/Graphics/Graphics/Widget~partial.swiftmodule"
+   }
+}

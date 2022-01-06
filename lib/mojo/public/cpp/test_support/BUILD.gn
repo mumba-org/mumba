@@ -1,0 +1,20 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+static_library("test_utils") {
+  # testonly = true
+
+  sources = [
+    "lib/test_support.cc",
+    "lib/test_utils.cc",
+    "test_utils.h",
+  ]
+
+  deps = [
+    "//lib/mojo/public/c/test_support",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/mojo/public/cpp/system",
+    "//lib/testing/gtest",
+  ]
+}

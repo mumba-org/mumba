@@ -1,0 +1,5 @@
+Api service is a wrapper of a rpc service and a share with its peers
+
+The idea is that the share serves as a social contract between peers serving the same service
+once a peer accept serving a giving service it shares the 'social contract' and are visible
+to as a peer for that particular service

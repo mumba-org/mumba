@@ -1,0 +1,11 @@
+{
+  "name": "page",
+  "display_name": "Page Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "page" : [ "automation.Page" ]
+      }
+    }
+  }
+}

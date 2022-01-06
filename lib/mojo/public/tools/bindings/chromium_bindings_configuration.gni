@@ -1,0 +1,79 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+_typemap_imports = [
+  #"//ash/public/interfaces/typemaps.gni",
+  #"//chrome/common/extensions/typemaps.gni",
+ # "//chrome/common/importer/typemaps.gni",
+  #"//chrome/common/media_router/mojo/typemaps.gni",
+ # "//chrome/typemaps.gni",
+ # "//chromeos/services/device_sync/public/mojom/typemaps.gni",
+  #"//components/arc/common/typemaps.gni",
+  "//lib/components/metrics/public/cpp/typemaps.gni",
+ # "//components/sync/mojo/typemaps.gni",
+  "//lib/components/typemaps.gni",
+  "//core/shared/common/bluetooth/typemaps.gni",
+ # "//content/common/indexed_db/typemaps.gni",
+ # "//content/common/presentation/typemaps.gni",
+  "//core/shared/common/typemaps.gni",
+ # "//content/public/common/typemaps.gni",
+  "//lib/device/bluetooth/public/mojom/typemaps.gni",
+  "//lib/device/bluetooth/public/mojom/test/typemaps.gni",
+  "//lib/device/gamepad/public/mojom/typemaps.gni",
+  "//lib/gpu/ipc/common/typemaps.gni",
+  "//lib/media/capture/mojom/typemaps.gni",
+  "//lib/media/mojo/interfaces/typemaps.gni",
+  "//lib/mojo/common/typemaps.gni",
+  "//lib/mojo/public/cpp/base/typemaps.gni",
+  "//lib/mojo/public/cpp/bindings/tests/chromium_typemaps.gni",
+  "//lib/net/interfaces/typemaps.gni",
+  "//lib/sandbox/mac/mojom/typemaps.gni",
+  "//lib/services/audio/public/cpp/typemaps.gni",
+  "//lib/services/device/public/mojom/typemaps.gni",
+#  "//lib/services/identity/public/cpp/typemaps.gni",
+  "//lib/services/network/public/cpp/typemaps.gni",
+ # "//lib/services/preferences/public/cpp/typemaps.gni",
+  "//lib/services/proxy_resolver/public/cpp/typemaps.gni",
+  "//lib/services/resource_coordinator/public/cpp/typemaps.gni",
+  "//lib/services/service_manager/public/cpp/typemaps.gni",
+  "//lib/services/ui/public/interfaces/cursor/typemaps.gni",
+  "//lib/services/ui/public/interfaces/ime/typemaps.gni",
+  "//lib/services/viz/privileged/cpp/typemaps.gni",
+  "//lib/services/viz/privileged/interfaces/compositing/typemaps.gni",
+  "//lib/services/viz/public/cpp/compositing/typemaps.gni",
+  "//lib/skia/public/interfaces/typemaps.gni",
+  "//third_party/blink/common/typemaps.gni",
+  "//third_party/blink/public/public_typemaps.gni",
+  "//kit/cpp/ui/accessibility/mojom/typemaps.gni",
+  "//lib/ui/base/mojo/typemaps.gni",
+  "//lib/ui/display/mojo/typemaps.gni",
+  "//lib/ui/events/devices/mojo/typemaps.gni",
+  "//lib/ui/events/mojo/typemaps.gni",
+  "//lib/ui/gfx/typemaps.gni",
+  "//lib/ui/latency/mojo/typemaps.gni",
+  "//lib/ui/ozone/public/interfaces/typemaps.gni",
+  #"//lib/ui/message_center/public/mojo/typemaps.gni",
+  "//lib/url/mojom/typemaps.gni",
+]
+
+_typemaps = []
+foreach(typemap_import, _typemap_imports) {
+  # Avoid reassignment error by assigning to empty scope first.
+  _imported = {
+  }
+  _imported = read_file(typemap_import, "scope")
+  _typemaps += _imported.typemaps
+}
+
+typemaps = []
+foreach(typemap, _typemaps) {
+  typemaps += [
+    {
+      filename = typemap
+      config = read_file(typemap, "scope")
+    },
+  ]
+}
+
+component_macro_suffix = ""

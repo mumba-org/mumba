@@ -1,0 +1,11 @@
+{
+  "name": "system_info",
+  "display_name": "System Info Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "storage" : [ "automation.SystemInfo" ]
+      }
+    }
+  }
+}

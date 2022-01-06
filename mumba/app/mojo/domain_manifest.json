@@ -1,0 +1,63 @@
+{
+  "name": "domain",
+  "display_name": "Domain",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "host": [
+          "common.mojom.Child",
+          "common.mojom.ChildControl",
+          "common.mojom.ChildHistogramFetcher",
+          "common.mojom.ChildHistogramFetcherFactory",
+          "common.mojom.ResourceUsageReporter",
+          "IPC.mojom.ChannelBootstrap",
+          "service_manager.mojom.ServiceFactory",
+          "common.mojom.Domain",
+          "common.mojom.DeviceDispatcher",
+          "common.mojom.ModuleDispatcher",
+          "common.mojom.StorageDispatcher",
+          "common.mojom.ServiceDispatcher",
+          "common.mojom.PersonaManager",
+          "common.mojom.WindowManager",
+          "common.mojom.EmbeddedWorkerInstanceClient",
+          "automation.AnimationClient",
+          "automation.PageClient",
+          "automation.OverlayClient",
+          "automation.ServiceWorkerClient",
+          "automation.StorageClient",
+          "automation.TetheringClient",
+          "automation.NetworkClient",
+          "automation.LayerTreeClient",
+          "automation.HeadlessClient",
+          "automation.DOMStorageClient",
+          "automation.DatabaseClient",
+          "automation.EmulationClient",
+          "automation.DOMClient",
+          "automation.CSSClient",
+          "automation.ApplicationCacheClient"
+        ],
+        "service_manager:service_factory": [
+          "service_manager.mojom.ServiceFactory"
+        ]
+      },
+      "requires": {
+        "*": [ "app" ],
+        "host": [
+          "domain",
+          "blink.mojom.CacheStorage"
+        ],
+        "device": [
+          "device:power_monitor",
+          "device:time_zone_monitor"
+        ],
+        "metrics": [
+          "url_keyed_metrics"
+        ],
+        "ui": [
+          "discardable_memory",
+          "gpu_client"
+        ]
+      }
+    }
+  }
+}

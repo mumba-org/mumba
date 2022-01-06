@@ -1,0 +1,16 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+typemaps = [
+  "//lib/gpu/ipc/common/capabilities.typemap",
+  "//lib/gpu/ipc/common/gpu_feature_info.typemap",
+  "//lib/gpu/ipc/common/gpu_info.typemap",
+  "//lib/gpu/ipc/common/gpu_preferences.typemap",
+  "//lib/gpu/ipc/common/dx_diag_node.typemap",
+  "//lib/gpu/ipc/common/mailbox.typemap",
+  "//lib/gpu/ipc/common/mailbox_holder.typemap",
+  "//lib/gpu/ipc/common/memory_stats.typemap",
+  "//lib/gpu/ipc/common/surface_handle.typemap",
+  "//lib/gpu/ipc/common/sync_token.typemap",
+]

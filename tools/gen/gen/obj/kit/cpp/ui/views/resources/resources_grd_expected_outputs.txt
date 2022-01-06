@@ -1,0 +1,6 @@
+gen/kit/cpp/ui/views/resources/grit/views_resources.h
+gen/kit/cpp/ui/views/resources/grit/views_resources_map.cc
+gen/kit/cpp/ui/views/resources/grit/views_resources_map.h
+gen/kit/cpp/ui/views/resources/views_resources_100_percent.pak
+gen/kit/cpp/ui/views/resources/views_resources_200_percent.pak
+gen/kit/cpp/ui/views/resources/views_resources_300_percent.pak

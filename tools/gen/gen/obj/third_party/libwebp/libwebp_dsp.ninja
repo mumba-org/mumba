@@ -1,0 +1,50 @@
+defines = -DWEBP_HAVE_SSE2 -DWEBP_HAVE_SSE41 -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DWEBP_NEAR_LOSSLESS=0 -DWEBP_DISABLE_STATS -DWEBP_REDUCE_SIZE -DWEBP_REDUCE_CSP -DWEBP_EXTERN=extern
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/libwebp -I../../../third_party/libwebp/src
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -Wno-incompatible-pointer-types
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = libwebp_dsp
+target_out_dir = obj/third_party/libwebp
+target_output_name = libwebp_dsp
+
+build obj/third_party/libwebp/libwebp_dsp/alpha_processing.o: cc ../../../third_party/libwebp/src/dsp/alpha_processing.c
+build obj/third_party/libwebp/libwebp_dsp/alpha_processing_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/alpha_processing_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/cost.o: cc ../../../third_party/libwebp/src/dsp/cost.c
+build obj/third_party/libwebp/libwebp_dsp/cost_mips32.o: cc ../../../third_party/libwebp/src/dsp/cost_mips32.c
+build obj/third_party/libwebp/libwebp_dsp/cost_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/cost_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/cpu.o: cc ../../../third_party/libwebp/src/dsp/cpu.c
+build obj/third_party/libwebp/libwebp_dsp/dec.o: cc ../../../third_party/libwebp/src/dsp/dec.c
+build obj/third_party/libwebp/libwebp_dsp/dec_clip_tables.o: cc ../../../third_party/libwebp/src/dsp/dec_clip_tables.c
+build obj/third_party/libwebp/libwebp_dsp/dec_mips32.o: cc ../../../third_party/libwebp/src/dsp/dec_mips32.c
+build obj/third_party/libwebp/libwebp_dsp/dec_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/dec_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/dec_msa.o: cc ../../../third_party/libwebp/src/dsp/dec_msa.c
+build obj/third_party/libwebp/libwebp_dsp/enc.o: cc ../../../third_party/libwebp/src/dsp/enc.c
+build obj/third_party/libwebp/libwebp_dsp/enc_avx2.o: cc ../../../third_party/libwebp/src/dsp/enc_avx2.c
+build obj/third_party/libwebp/libwebp_dsp/enc_mips32.o: cc ../../../third_party/libwebp/src/dsp/enc_mips32.c
+build obj/third_party/libwebp/libwebp_dsp/enc_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/enc_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/enc_msa.o: cc ../../../third_party/libwebp/src/dsp/enc_msa.c
+build obj/third_party/libwebp/libwebp_dsp/filters.o: cc ../../../third_party/libwebp/src/dsp/filters.c
+build obj/third_party/libwebp/libwebp_dsp/filters_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/filters_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/filters_msa.o: cc ../../../third_party/libwebp/src/dsp/filters_msa.c
+build obj/third_party/libwebp/libwebp_dsp/lossless.o: cc ../../../third_party/libwebp/src/dsp/lossless.c
+build obj/third_party/libwebp/libwebp_dsp/lossless_enc.o: cc ../../../third_party/libwebp/src/dsp/lossless_enc.c
+build obj/third_party/libwebp/libwebp_dsp/lossless_enc_mips32.o: cc ../../../third_party/libwebp/src/dsp/lossless_enc_mips32.c
+build obj/third_party/libwebp/libwebp_dsp/lossless_enc_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/lossless_enc_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/lossless_enc_msa.o: cc ../../../third_party/libwebp/src/dsp/lossless_enc_msa.c
+build obj/third_party/libwebp/libwebp_dsp/lossless_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/lossless_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/lossless_msa.o: cc ../../../third_party/libwebp/src/dsp/lossless_msa.c
+build obj/third_party/libwebp/libwebp_dsp/rescaler.o: cc ../../../third_party/libwebp/src/dsp/rescaler.c
+build obj/third_party/libwebp/libwebp_dsp/rescaler_mips32.o: cc ../../../third_party/libwebp/src/dsp/rescaler_mips32.c
+build obj/third_party/libwebp/libwebp_dsp/rescaler_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/rescaler_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/rescaler_msa.o: cc ../../../third_party/libwebp/src/dsp/rescaler_msa.c
+build obj/third_party/libwebp/libwebp_dsp/ssim.o: cc ../../../third_party/libwebp/src/dsp/ssim.c
+build obj/third_party/libwebp/libwebp_dsp/upsampling.o: cc ../../../third_party/libwebp/src/dsp/upsampling.c
+build obj/third_party/libwebp/libwebp_dsp/upsampling_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/upsampling_mips_dsp_r2.c
+build obj/third_party/libwebp/libwebp_dsp/upsampling_msa.o: cc ../../../third_party/libwebp/src/dsp/upsampling_msa.c
+build obj/third_party/libwebp/libwebp_dsp/yuv.o: cc ../../../third_party/libwebp/src/dsp/yuv.c
+build obj/third_party/libwebp/libwebp_dsp/yuv_mips32.o: cc ../../../third_party/libwebp/src/dsp/yuv_mips32.c
+build obj/third_party/libwebp/libwebp_dsp/yuv_mips_dsp_r2.o: cc ../../../third_party/libwebp/src/dsp/yuv_mips_dsp_r2.c
+
+build obj/third_party/libwebp/libwebp_dsp.a: alink obj/third_party/libwebp/libwebp_dsp/alpha_processing.o obj/third_party/libwebp/libwebp_dsp/alpha_processing_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/cost.o obj/third_party/libwebp/libwebp_dsp/cost_mips32.o obj/third_party/libwebp/libwebp_dsp/cost_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/cpu.o obj/third_party/libwebp/libwebp_dsp/dec.o obj/third_party/libwebp/libwebp_dsp/dec_clip_tables.o obj/third_party/libwebp/libwebp_dsp/dec_mips32.o obj/third_party/libwebp/libwebp_dsp/dec_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/dec_msa.o obj/third_party/libwebp/libwebp_dsp/enc.o obj/third_party/libwebp/libwebp_dsp/enc_avx2.o obj/third_party/libwebp/libwebp_dsp/enc_mips32.o obj/third_party/libwebp/libwebp_dsp/enc_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/enc_msa.o obj/third_party/libwebp/libwebp_dsp/filters.o obj/third_party/libwebp/libwebp_dsp/filters_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/filters_msa.o obj/third_party/libwebp/libwebp_dsp/lossless.o obj/third_party/libwebp/libwebp_dsp/lossless_enc.o obj/third_party/libwebp/libwebp_dsp/lossless_enc_mips32.o obj/third_party/libwebp/libwebp_dsp/lossless_enc_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/lossless_enc_msa.o obj/third_party/libwebp/libwebp_dsp/lossless_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/lossless_msa.o obj/third_party/libwebp/libwebp_dsp/rescaler.o obj/third_party/libwebp/libwebp_dsp/rescaler_mips32.o obj/third_party/libwebp/libwebp_dsp/rescaler_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/rescaler_msa.o obj/third_party/libwebp/libwebp_dsp/ssim.o obj/third_party/libwebp/libwebp_dsp/upsampling.o obj/third_party/libwebp/libwebp_dsp/upsampling_mips_dsp_r2.o obj/third_party/libwebp/libwebp_dsp/upsampling_msa.o obj/third_party/libwebp/libwebp_dsp/yuv.o obj/third_party/libwebp/libwebp_dsp/yuv_mips32.o obj/third_party/libwebp/libwebp_dsp/yuv_mips_dsp_r2.o || obj/third_party/libwebp/libwebp_dsp_sse2.a obj/third_party/libwebp/libwebp_dsp_sse41.a obj/third_party/libwebp/libwebp_utils.a obj/third_party/libwebp/libwebp_webp.stamp
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/libwebp

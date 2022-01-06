@@ -1,0 +1,62 @@
+defines = -D_HAS_EXCEPTIONS=0 -DNOMINMAX -D_GNU_SOURCE -DHAVE_CONFIG_H -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../../lib/rpc/third_party/c-ares -I../../../lib/rpc/third_party/c-ares/config_linux -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -Wall -Werror -Wextra -Wimplicit-fallthrough -Wthread-safety -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = ares
+target_out_dir = obj/lib/rpc
+target_output_name = libares
+
+build obj/lib/rpc/ares/ares__close_sockets.o: cc ../../../lib/rpc/third_party/c-ares/ares__close_sockets.c
+build obj/lib/rpc/ares/ares__get_hostent.o: cc ../../../lib/rpc/third_party/c-ares/ares__get_hostent.c
+build obj/lib/rpc/ares/ares__read_line.o: cc ../../../lib/rpc/third_party/c-ares/ares__read_line.c
+build obj/lib/rpc/ares/ares__timeval.o: cc ../../../lib/rpc/third_party/c-ares/ares__timeval.c
+build obj/lib/rpc/ares/ares_cancel.o: cc ../../../lib/rpc/third_party/c-ares/ares_cancel.c
+build obj/lib/rpc/ares/ares_create_query.o: cc ../../../lib/rpc/third_party/c-ares/ares_create_query.c
+build obj/lib/rpc/ares/ares_data.o: cc ../../../lib/rpc/third_party/c-ares/ares_data.c
+build obj/lib/rpc/ares/ares_destroy.o: cc ../../../lib/rpc/third_party/c-ares/ares_destroy.c
+build obj/lib/rpc/ares/ares_expand_name.o: cc ../../../lib/rpc/third_party/c-ares/ares_expand_name.c
+build obj/lib/rpc/ares/ares_expand_string.o: cc ../../../lib/rpc/third_party/c-ares/ares_expand_string.c
+build obj/lib/rpc/ares/ares_fds.o: cc ../../../lib/rpc/third_party/c-ares/ares_fds.c
+build obj/lib/rpc/ares/ares_free_hostent.o: cc ../../../lib/rpc/third_party/c-ares/ares_free_hostent.c
+build obj/lib/rpc/ares/ares_free_string.o: cc ../../../lib/rpc/third_party/c-ares/ares_free_string.c
+build obj/lib/rpc/ares/ares_getenv.o: cc ../../../lib/rpc/third_party/c-ares/ares_getenv.c
+build obj/lib/rpc/ares/ares_gethostbyaddr.o: cc ../../../lib/rpc/third_party/c-ares/ares_gethostbyaddr.c
+build obj/lib/rpc/ares/ares_gethostbyname.o: cc ../../../lib/rpc/third_party/c-ares/ares_gethostbyname.c
+build obj/lib/rpc/ares/ares_getnameinfo.o: cc ../../../lib/rpc/third_party/c-ares/ares_getnameinfo.c
+build obj/lib/rpc/ares/ares_getopt.o: cc ../../../lib/rpc/third_party/c-ares/ares_getopt.c
+build obj/lib/rpc/ares/ares_getsock.o: cc ../../../lib/rpc/third_party/c-ares/ares_getsock.c
+build obj/lib/rpc/ares/ares_init.o: cc ../../../lib/rpc/third_party/c-ares/ares_init.c
+build obj/lib/rpc/ares/ares_library_init.o: cc ../../../lib/rpc/third_party/c-ares/ares_library_init.c
+build obj/lib/rpc/ares/ares_llist.o: cc ../../../lib/rpc/third_party/c-ares/ares_llist.c
+build obj/lib/rpc/ares/ares_mkquery.o: cc ../../../lib/rpc/third_party/c-ares/ares_mkquery.c
+build obj/lib/rpc/ares/ares_nowarn.o: cc ../../../lib/rpc/third_party/c-ares/ares_nowarn.c
+build obj/lib/rpc/ares/ares_options.o: cc ../../../lib/rpc/third_party/c-ares/ares_options.c
+build obj/lib/rpc/ares/ares_parse_a_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_a_reply.c
+build obj/lib/rpc/ares/ares_parse_aaaa_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_aaaa_reply.c
+build obj/lib/rpc/ares/ares_parse_mx_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_mx_reply.c
+build obj/lib/rpc/ares/ares_parse_naptr_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_naptr_reply.c
+build obj/lib/rpc/ares/ares_parse_ns_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_ns_reply.c
+build obj/lib/rpc/ares/ares_parse_ptr_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_ptr_reply.c
+build obj/lib/rpc/ares/ares_parse_soa_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_soa_reply.c
+build obj/lib/rpc/ares/ares_parse_srv_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_srv_reply.c
+build obj/lib/rpc/ares/ares_parse_txt_reply.o: cc ../../../lib/rpc/third_party/c-ares/ares_parse_txt_reply.c
+build obj/lib/rpc/ares/ares_platform.o: cc ../../../lib/rpc/third_party/c-ares/ares_platform.c
+build obj/lib/rpc/ares/ares_process.o: cc ../../../lib/rpc/third_party/c-ares/ares_process.c
+build obj/lib/rpc/ares/ares_query.o: cc ../../../lib/rpc/third_party/c-ares/ares_query.c
+build obj/lib/rpc/ares/ares_search.o: cc ../../../lib/rpc/third_party/c-ares/ares_search.c
+build obj/lib/rpc/ares/ares_send.o: cc ../../../lib/rpc/third_party/c-ares/ares_send.c
+build obj/lib/rpc/ares/ares_strcasecmp.o: cc ../../../lib/rpc/third_party/c-ares/ares_strcasecmp.c
+build obj/lib/rpc/ares/ares_strdup.o: cc ../../../lib/rpc/third_party/c-ares/ares_strdup.c
+build obj/lib/rpc/ares/ares_strerror.o: cc ../../../lib/rpc/third_party/c-ares/ares_strerror.c
+build obj/lib/rpc/ares/ares_timeout.o: cc ../../../lib/rpc/third_party/c-ares/ares_timeout.c
+build obj/lib/rpc/ares/ares_version.o: cc ../../../lib/rpc/third_party/c-ares/ares_version.c
+build obj/lib/rpc/ares/ares_writev.o: cc ../../../lib/rpc/third_party/c-ares/ares_writev.c
+build obj/lib/rpc/ares/bitncmp.o: cc ../../../lib/rpc/third_party/c-ares/bitncmp.c
+build obj/lib/rpc/ares/inet_net_pton.o: cc ../../../lib/rpc/third_party/c-ares/inet_net_pton.c
+build obj/lib/rpc/ares/inet_ntop.o: cc ../../../lib/rpc/third_party/c-ares/inet_ntop.c
+build obj/lib/rpc/ares/windows_port.o: cc ../../../lib/rpc/third_party/c-ares/windows_port.c
+
+build obj/lib/rpc/libares.a: alink obj/lib/rpc/ares/ares__close_sockets.o obj/lib/rpc/ares/ares__get_hostent.o obj/lib/rpc/ares/ares__read_line.o obj/lib/rpc/ares/ares__timeval.o obj/lib/rpc/ares/ares_cancel.o obj/lib/rpc/ares/ares_create_query.o obj/lib/rpc/ares/ares_data.o obj/lib/rpc/ares/ares_destroy.o obj/lib/rpc/ares/ares_expand_name.o obj/lib/rpc/ares/ares_expand_string.o obj/lib/rpc/ares/ares_fds.o obj/lib/rpc/ares/ares_free_hostent.o obj/lib/rpc/ares/ares_free_string.o obj/lib/rpc/ares/ares_getenv.o obj/lib/rpc/ares/ares_gethostbyaddr.o obj/lib/rpc/ares/ares_gethostbyname.o obj/lib/rpc/ares/ares_getnameinfo.o obj/lib/rpc/ares/ares_getopt.o obj/lib/rpc/ares/ares_getsock.o obj/lib/rpc/ares/ares_init.o obj/lib/rpc/ares/ares_library_init.o obj/lib/rpc/ares/ares_llist.o obj/lib/rpc/ares/ares_mkquery.o obj/lib/rpc/ares/ares_nowarn.o obj/lib/rpc/ares/ares_options.o obj/lib/rpc/ares/ares_parse_a_reply.o obj/lib/rpc/ares/ares_parse_aaaa_reply.o obj/lib/rpc/ares/ares_parse_mx_reply.o obj/lib/rpc/ares/ares_parse_naptr_reply.o obj/lib/rpc/ares/ares_parse_ns_reply.o obj/lib/rpc/ares/ares_parse_ptr_reply.o obj/lib/rpc/ares/ares_parse_soa_reply.o obj/lib/rpc/ares/ares_parse_srv_reply.o obj/lib/rpc/ares/ares_parse_txt_reply.o obj/lib/rpc/ares/ares_platform.o obj/lib/rpc/ares/ares_process.o obj/lib/rpc/ares/ares_query.o obj/lib/rpc/ares/ares_search.o obj/lib/rpc/ares/ares_send.o obj/lib/rpc/ares/ares_strcasecmp.o obj/lib/rpc/ares/ares_strdup.o obj/lib/rpc/ares/ares_strerror.o obj/lib/rpc/ares/ares_timeout.o obj/lib/rpc/ares/ares_version.o obj/lib/rpc/ares/ares_writev.o obj/lib/rpc/ares/bitncmp.o obj/lib/rpc/ares/inet_net_pton.o obj/lib/rpc/ares/inet_ntop.o obj/lib/rpc/ares/windows_port.o
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/lib/rpc

@@ -1,0 +1,135 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_32 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_26
+include_dirs = -I../../../tools -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/jsoncpp/overrides/include -I../../../third_party/jsoncpp/source/include
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -Wall -Werror -Wextra -Wimplicit-fallthrough -Wthread-safety -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/include/glib-2.0 -isystem../../../build/linux/debian_sid_amd64-sysroot/usr/lib/x86_64-linux-gnu/glib-2.0/include
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = gen
+target_out_dir = obj/tools/gen
+target_output_name = libgen
+
+build obj/tools/gen/gen.inputdeps.stamp: stamp obj/lib/base/anchor_functions_buildflags.stamp obj/lib/base/build_date.stamp obj/lib/base/cfi_buildflags.stamp obj/lib/base/debugging_buildflags.stamp obj/lib/base/partition_alloc_buildflags.stamp obj/lib/base/protected_memory_buildflags.stamp obj/lib/base/synchronization_buildflags.stamp obj/lib/base/allocator/buildflags.stamp
+build obj/tools/gen/gen/action_target_generator.o: cxx ../../../tools/gen/action_target_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/action_values.o: cxx ../../../tools/gen/action_values.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/analyzer.o: cxx ../../../tools/gen/analyzer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/args.o: cxx ../../../tools/gen/args.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/binary_target_generator.o: cxx ../../../tools/gen/binary_target_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/build_settings.o: cxx ../../../tools/gen/build_settings.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/builder.o: cxx ../../../tools/gen/builder.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/builder_record.o: cxx ../../../tools/gen/builder_record.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/bundle_data.o: cxx ../../../tools/gen/bundle_data.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/bundle_data_target_generator.o: cxx ../../../tools/gen/bundle_data_target_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/bundle_file_rule.o: cxx ../../../tools/gen/bundle_file_rule.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/c_include_iterator.o: cxx ../../../tools/gen/c_include_iterator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_analyze.o: cxx ../../../tools/gen/command_analyze.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_args.o: cxx ../../../tools/gen/command_args.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_check.o: cxx ../../../tools/gen/command_check.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_clean.o: cxx ../../../tools/gen/command_clean.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_desc.o: cxx ../../../tools/gen/command_desc.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_format.o: cxx ../../../tools/gen/command_format.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_gen.o: cxx ../../../tools/gen/command_gen.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_help.o: cxx ../../../tools/gen/command_help.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_ls.o: cxx ../../../tools/gen/command_ls.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_path.o: cxx ../../../tools/gen/command_path.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/command_refs.o: cxx ../../../tools/gen/command_refs.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/commands.o: cxx ../../../tools/gen/commands.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/config.o: cxx ../../../tools/gen/config.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/config_values.o: cxx ../../../tools/gen/config_values.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/config_values_extractors.o: cxx ../../../tools/gen/config_values_extractors.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/config_values_generator.o: cxx ../../../tools/gen/config_values_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/copy_target_generator.o: cxx ../../../tools/gen/copy_target_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/create_bundle_target_generator.o: cxx ../../../tools/gen/create_bundle_target_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/deps_iterator.o: cxx ../../../tools/gen/deps_iterator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/desc_builder.o: cxx ../../../tools/gen/desc_builder.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/eclipse_writer.o: cxx ../../../tools/gen/eclipse_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/err.o: cxx ../../../tools/gen/err.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/escape.o: cxx ../../../tools/gen/escape.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/exec_process.o: cxx ../../../tools/gen/exec_process.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/filesystem_utils.o: cxx ../../../tools/gen/filesystem_utils.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_exec_script.o: cxx ../../../tools/gen/function_exec_script.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_foreach.o: cxx ../../../tools/gen/function_foreach.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_forward_variables_from.o: cxx ../../../tools/gen/function_forward_variables_from.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_get_label_info.o: cxx ../../../tools/gen/function_get_label_info.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_get_path_info.o: cxx ../../../tools/gen/function_get_path_info.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_get_target_outputs.o: cxx ../../../tools/gen/function_get_target_outputs.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_process_file_template.o: cxx ../../../tools/gen/function_process_file_template.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_read_file.o: cxx ../../../tools/gen/function_read_file.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_rebase_path.o: cxx ../../../tools/gen/function_rebase_path.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_set_default_toolchain.o: cxx ../../../tools/gen/function_set_default_toolchain.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_set_defaults.o: cxx ../../../tools/gen/function_set_defaults.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_template.o: cxx ../../../tools/gen/function_template.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_toolchain.o: cxx ../../../tools/gen/function_toolchain.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/function_write_file.o: cxx ../../../tools/gen/function_write_file.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/functions.o: cxx ../../../tools/gen/functions.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/functions_target.o: cxx ../../../tools/gen/functions_target.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/group_target_generator.o: cxx ../../../tools/gen/group_target_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/header_checker.o: cxx ../../../tools/gen/header_checker.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/import_manager.o: cxx ../../../tools/gen/import_manager.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/inherited_libraries.o: cxx ../../../tools/gen/inherited_libraries.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/input_conversion.o: cxx ../../../tools/gen/input_conversion.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/input_file.o: cxx ../../../tools/gen/input_file.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/input_file_manager.o: cxx ../../../tools/gen/input_file_manager.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/item.o: cxx ../../../tools/gen/item.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/json_project_writer.o: cxx ../../../tools/gen/json_project_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/label.o: cxx ../../../tools/gen/label.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/label_pattern.o: cxx ../../../tools/gen/label_pattern.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/lib_file.o: cxx ../../../tools/gen/lib_file.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/loader.o: cxx ../../../tools/gen/loader.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/location.o: cxx ../../../tools/gen/location.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_action_target_writer.o: cxx ../../../tools/gen/ninja_action_target_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_binary_target_writer.o: cxx ../../../tools/gen/ninja_binary_target_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_build_writer.o: cxx ../../../tools/gen/ninja_build_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_bundle_data_target_writer.o: cxx ../../../tools/gen/ninja_bundle_data_target_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_copy_target_writer.o: cxx ../../../tools/gen/ninja_copy_target_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_create_bundle_target_writer.o: cxx ../../../tools/gen/ninja_create_bundle_target_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_group_target_writer.o: cxx ../../../tools/gen/ninja_group_target_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_target_writer.o: cxx ../../../tools/gen/ninja_target_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_toolchain_writer.o: cxx ../../../tools/gen/ninja_toolchain_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_utils.o: cxx ../../../tools/gen/ninja_utils.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/ninja_writer.o: cxx ../../../tools/gen/ninja_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/operators.o: cxx ../../../tools/gen/operators.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/output_file.o: cxx ../../../tools/gen/output_file.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/parse_node_value_adapter.o: cxx ../../../tools/gen/parse_node_value_adapter.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/parse_tree.o: cxx ../../../tools/gen/parse_tree.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/parser.o: cxx ../../../tools/gen/parser.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/path_output.o: cxx ../../../tools/gen/path_output.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/pattern.o: cxx ../../../tools/gen/pattern.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/pool.o: cxx ../../../tools/gen/pool.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/qt_creator_writer.o: cxx ../../../tools/gen/qt_creator_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/runtime_deps.o: cxx ../../../tools/gen/runtime_deps.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/scheduler.o: cxx ../../../tools/gen/scheduler.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/scope.o: cxx ../../../tools/gen/scope.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/scope_per_file_provider.o: cxx ../../../tools/gen/scope_per_file_provider.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/settings.o: cxx ../../../tools/gen/settings.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/setup.o: cxx ../../../tools/gen/setup.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/source_dir.o: cxx ../../../tools/gen/source_dir.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/source_file.o: cxx ../../../tools/gen/source_file.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/source_file_type.o: cxx ../../../tools/gen/source_file_type.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/standard_out.o: cxx ../../../tools/gen/standard_out.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/string_utils.o: cxx ../../../tools/gen/string_utils.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/substitution_list.o: cxx ../../../tools/gen/substitution_list.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/substitution_pattern.o: cxx ../../../tools/gen/substitution_pattern.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/substitution_type.o: cxx ../../../tools/gen/substitution_type.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/substitution_writer.o: cxx ../../../tools/gen/substitution_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/switches.o: cxx ../../../tools/gen/switches.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/swift_output_map_writer.o: cxx ../../../tools/gen/swift_output_map_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/target.o: cxx ../../../tools/gen/target.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/target_generator.o: cxx ../../../tools/gen/target_generator.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/template.o: cxx ../../../tools/gen/template.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/token.o: cxx ../../../tools/gen/token.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/tokenizer.o: cxx ../../../tools/gen/tokenizer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/tool.o: cxx ../../../tools/gen/tool.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/toolchain.o: cxx ../../../tools/gen/toolchain.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/trace.o: cxx ../../../tools/gen/trace.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/value.o: cxx ../../../tools/gen/value.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/value_extractors.o: cxx ../../../tools/gen/value_extractors.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/variables.o: cxx ../../../tools/gen/variables.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/visibility.o: cxx ../../../tools/gen/visibility.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/visual_studio_utils.o: cxx ../../../tools/gen/visual_studio_utils.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/visual_studio_writer.o: cxx ../../../tools/gen/visual_studio_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/xcode_object.o: cxx ../../../tools/gen/xcode_object.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/xcode_writer.o: cxx ../../../tools/gen/xcode_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+build obj/tools/gen/gen/xml_element_writer.o: cxx ../../../tools/gen/xml_element_writer.cc || obj/tools/gen/gen.inputdeps.stamp
+
+build obj/tools/gen/libgen.a: alink obj/tools/gen/gen/action_target_generator.o obj/tools/gen/gen/action_values.o obj/tools/gen/gen/analyzer.o obj/tools/gen/gen/args.o obj/tools/gen/gen/binary_target_generator.o obj/tools/gen/gen/build_settings.o obj/tools/gen/gen/builder.o obj/tools/gen/gen/builder_record.o obj/tools/gen/gen/bundle_data.o obj/tools/gen/gen/bundle_data_target_generator.o obj/tools/gen/gen/bundle_file_rule.o obj/tools/gen/gen/c_include_iterator.o obj/tools/gen/gen/command_analyze.o obj/tools/gen/gen/command_args.o obj/tools/gen/gen/command_check.o obj/tools/gen/gen/command_clean.o obj/tools/gen/gen/command_desc.o obj/tools/gen/gen/command_format.o obj/tools/gen/gen/command_gen.o obj/tools/gen/gen/command_help.o obj/tools/gen/gen/command_ls.o obj/tools/gen/gen/command_path.o obj/tools/gen/gen/command_refs.o obj/tools/gen/gen/commands.o obj/tools/gen/gen/config.o obj/tools/gen/gen/config_values.o obj/tools/gen/gen/config_values_extractors.o obj/tools/gen/gen/config_values_generator.o obj/tools/gen/gen/copy_target_generator.o obj/tools/gen/gen/create_bundle_target_generator.o obj/tools/gen/gen/deps_iterator.o obj/tools/gen/gen/desc_builder.o obj/tools/gen/gen/eclipse_writer.o obj/tools/gen/gen/err.o obj/tools/gen/gen/escape.o obj/tools/gen/gen/exec_process.o obj/tools/gen/gen/filesystem_utils.o obj/tools/gen/gen/function_exec_script.o obj/tools/gen/gen/function_foreach.o obj/tools/gen/gen/function_forward_variables_from.o obj/tools/gen/gen/function_get_label_info.o obj/tools/gen/gen/function_get_path_info.o obj/tools/gen/gen/function_get_target_outputs.o obj/tools/gen/gen/function_process_file_template.o obj/tools/gen/gen/function_read_file.o obj/tools/gen/gen/function_rebase_path.o obj/tools/gen/gen/function_set_default_toolchain.o obj/tools/gen/gen/function_set_defaults.o obj/tools/gen/gen/function_template.o obj/tools/gen/gen/function_toolchain.o obj/tools/gen/gen/function_write_file.o obj/tools/gen/gen/functions.o obj/tools/gen/gen/functions_target.o obj/tools/gen/gen/group_target_generator.o obj/tools/gen/gen/header_checker.o obj/tools/gen/gen/import_manager.o obj/tools/gen/gen/inherited_libraries.o obj/tools/gen/gen/input_conversion.o obj/tools/gen/gen/input_file.o obj/tools/gen/gen/input_file_manager.o obj/tools/gen/gen/item.o obj/tools/gen/gen/json_project_writer.o obj/tools/gen/gen/label.o obj/tools/gen/gen/label_pattern.o obj/tools/gen/gen/lib_file.o obj/tools/gen/gen/loader.o obj/tools/gen/gen/location.o obj/tools/gen/gen/ninja_action_target_writer.o obj/tools/gen/gen/ninja_binary_target_writer.o obj/tools/gen/gen/ninja_build_writer.o obj/tools/gen/gen/ninja_bundle_data_target_writer.o obj/tools/gen/gen/ninja_copy_target_writer.o obj/tools/gen/gen/ninja_create_bundle_target_writer.o obj/tools/gen/gen/ninja_group_target_writer.o obj/tools/gen/gen/ninja_target_writer.o obj/tools/gen/gen/ninja_toolchain_writer.o obj/tools/gen/gen/ninja_utils.o obj/tools/gen/gen/ninja_writer.o obj/tools/gen/gen/operators.o obj/tools/gen/gen/output_file.o obj/tools/gen/gen/parse_node_value_adapter.o obj/tools/gen/gen/parse_tree.o obj/tools/gen/gen/parser.o obj/tools/gen/gen/path_output.o obj/tools/gen/gen/pattern.o obj/tools/gen/gen/pool.o obj/tools/gen/gen/qt_creator_writer.o obj/tools/gen/gen/runtime_deps.o obj/tools/gen/gen/scheduler.o obj/tools/gen/gen/scope.o obj/tools/gen/gen/scope_per_file_provider.o obj/tools/gen/gen/settings.o obj/tools/gen/gen/setup.o obj/tools/gen/gen/source_dir.o obj/tools/gen/gen/source_file.o obj/tools/gen/gen/source_file_type.o obj/tools/gen/gen/standard_out.o obj/tools/gen/gen/string_utils.o obj/tools/gen/gen/substitution_list.o obj/tools/gen/gen/substitution_pattern.o obj/tools/gen/gen/substitution_type.o obj/tools/gen/gen/substitution_writer.o obj/tools/gen/gen/switches.o obj/tools/gen/gen/swift_output_map_writer.o obj/tools/gen/gen/target.o obj/tools/gen/gen/target_generator.o obj/tools/gen/gen/template.o obj/tools/gen/gen/token.o obj/tools/gen/gen/tokenizer.o obj/tools/gen/gen/tool.o obj/tools/gen/gen/toolchain.o obj/tools/gen/gen/trace.o obj/tools/gen/gen/value.o obj/tools/gen/gen/value_extractors.o obj/tools/gen/gen/variables.o obj/tools/gen/gen/visibility.o obj/tools/gen/gen/visual_studio_utils.o obj/tools/gen/gen/visual_studio_writer.o obj/tools/gen/gen/xcode_object.o obj/tools/gen/gen/xcode_writer.o obj/tools/gen/gen/xml_element_writer.o || ./libbase.so.TOC obj/lib/base/third_party/dynamic_annotations/libdynamic_annotations.a obj/third_party/jsoncpp/jsoncpp.stamp
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/tools/gen

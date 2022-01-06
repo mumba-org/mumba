@@ -1,0 +1,35 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/re2/src
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize
+cflags_cc = -std=gnu++14 -fno-exceptions -fno-rtti -nostdinc++ -isystem../../../buildtools/third_party/libc++/trunk/include -isystem../../../buildtools/third_party/libc++abi/trunk/include --sysroot=../../../build/linux/debian_sid_amd64-sysroot -fvisibility-inlines-hidden
+label_name = re2
+target_out_dir = obj/third_party/re2
+target_output_name = libre2
+
+build obj/third_party/re2/re2/bitstate.o: cxx ../../../third_party/re2/src/re2/bitstate.cc
+build obj/third_party/re2/re2/compile.o: cxx ../../../third_party/re2/src/re2/compile.cc
+build obj/third_party/re2/re2/dfa.o: cxx ../../../third_party/re2/src/re2/dfa.cc
+build obj/third_party/re2/re2/filtered_re2.o: cxx ../../../third_party/re2/src/re2/filtered_re2.cc
+build obj/third_party/re2/re2/mimics_pcre.o: cxx ../../../third_party/re2/src/re2/mimics_pcre.cc
+build obj/third_party/re2/re2/nfa.o: cxx ../../../third_party/re2/src/re2/nfa.cc
+build obj/third_party/re2/re2/onepass.o: cxx ../../../third_party/re2/src/re2/onepass.cc
+build obj/third_party/re2/re2/parse.o: cxx ../../../third_party/re2/src/re2/parse.cc
+build obj/third_party/re2/re2/perl_groups.o: cxx ../../../third_party/re2/src/re2/perl_groups.cc
+build obj/third_party/re2/re2/prefilter.o: cxx ../../../third_party/re2/src/re2/prefilter.cc
+build obj/third_party/re2/re2/prefilter_tree.o: cxx ../../../third_party/re2/src/re2/prefilter_tree.cc
+build obj/third_party/re2/re2/prog.o: cxx ../../../third_party/re2/src/re2/prog.cc
+build obj/third_party/re2/re2/re2.o: cxx ../../../third_party/re2/src/re2/re2.cc
+build obj/third_party/re2/re2/regexp.o: cxx ../../../third_party/re2/src/re2/regexp.cc
+build obj/third_party/re2/re2/set.o: cxx ../../../third_party/re2/src/re2/set.cc
+build obj/third_party/re2/re2/simplify.o: cxx ../../../third_party/re2/src/re2/simplify.cc
+build obj/third_party/re2/re2/stringpiece.o: cxx ../../../third_party/re2/src/re2/stringpiece.cc
+build obj/third_party/re2/re2/tostring.o: cxx ../../../third_party/re2/src/re2/tostring.cc
+build obj/third_party/re2/re2/unicode_casefold.o: cxx ../../../third_party/re2/src/re2/unicode_casefold.cc
+build obj/third_party/re2/re2/unicode_groups.o: cxx ../../../third_party/re2/src/re2/unicode_groups.cc
+build obj/third_party/re2/re2/rune.o: cxx ../../../third_party/re2/src/util/rune.cc
+build obj/third_party/re2/re2/strutil.o: cxx ../../../third_party/re2/src/util/strutil.cc
+
+build obj/third_party/re2/libre2.a: alink obj/third_party/re2/re2/bitstate.o obj/third_party/re2/re2/compile.o obj/third_party/re2/re2/dfa.o obj/third_party/re2/re2/filtered_re2.o obj/third_party/re2/re2/mimics_pcre.o obj/third_party/re2/re2/nfa.o obj/third_party/re2/re2/onepass.o obj/third_party/re2/re2/parse.o obj/third_party/re2/re2/perl_groups.o obj/third_party/re2/re2/prefilter.o obj/third_party/re2/re2/prefilter_tree.o obj/third_party/re2/re2/prog.o obj/third_party/re2/re2/re2.o obj/third_party/re2/re2/regexp.o obj/third_party/re2/re2/set.o obj/third_party/re2/re2/simplify.o obj/third_party/re2/re2/stringpiece.o obj/third_party/re2/re2/tostring.o obj/third_party/re2/re2/unicode_casefold.o obj/third_party/re2/re2/unicode_groups.o obj/third_party/re2/re2/rune.o obj/third_party/re2/re2/strutil.o
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/re2

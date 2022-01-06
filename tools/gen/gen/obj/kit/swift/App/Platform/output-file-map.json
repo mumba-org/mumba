@@ -1,0 +1,35 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Platform/Platform.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/Platform.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/Platform.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/Platform.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/Platform~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Platform/PlatformCursor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformCursor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformCursor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformCursor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformCursor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Platform/PlatformErrors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformErrors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformErrors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformErrors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformErrors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Platform/PlatformEvent.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformEvent.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformEvent.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformEvent.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformEvent~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Platform/PlatformWindow.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformWindow.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformWindow.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformWindow.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Platform/PlatformWindow~partial.swiftmodule"
+   }
+}

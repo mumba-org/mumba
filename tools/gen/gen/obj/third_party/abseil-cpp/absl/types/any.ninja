@@ -1,0 +1,8 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/abseil-cpp
+label_name = any
+target_out_dir = obj/third_party/abseil-cpp/absl/types
+target_output_name = any
+
+
+build obj/third_party/abseil-cpp/absl/types/any.stamp: stamp || obj/third_party/abseil-cpp/absl/types/bad_any_cast.stamp obj/third_party/abseil-cpp/absl/base/config.stamp obj/third_party/abseil-cpp/absl/base/core_headers.stamp obj/third_party/abseil-cpp/absl/meta/type_traits.stamp obj/third_party/abseil-cpp/absl/utility/utility.stamp obj/third_party/abseil-cpp/absl/types/bad_any_cast_impl.stamp obj/third_party/abseil-cpp/absl/base/base.stamp obj/third_party/abseil-cpp/absl/base/base_internal.stamp obj/third_party/abseil-cpp/absl/base/dynamic_annotations.stamp obj/third_party/abseil-cpp/absl/base/spinlock_wait.stamp

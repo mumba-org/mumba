@@ -1,0 +1,7 @@
+/workspace/source/libtorrent/build/CMakeFiles/rebuild_cache.dir
+/workspace/source/libtorrent/build/CMakeFiles/install.dir
+/workspace/source/libtorrent/build/CMakeFiles/list_install_components.dir
+/workspace/source/libtorrent/build/CMakeFiles/torrent-rasterbar.dir
+/workspace/source/libtorrent/build/CMakeFiles/install/strip.dir
+/workspace/source/libtorrent/build/CMakeFiles/install/local.dir
+/workspace/source/libtorrent/build/CMakeFiles/edit_cache.dir

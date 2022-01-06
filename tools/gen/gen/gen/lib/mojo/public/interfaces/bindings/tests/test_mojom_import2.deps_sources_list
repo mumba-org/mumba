@@ -1,0 +1,3 @@
+gen/lib/mojo/public/interfaces/bindings/tests/test_mojom_import2.sources_list
+gen/lib/mojo/public/interfaces/bindings/tests/test_mojom_import.sources_list
+gen/lib/mojo/public/interfaces/bindings/tests/test_mojom_import_wrapper_wrapper.sources_list

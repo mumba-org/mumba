@@ -1,0 +1,107 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/ContextSupport.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ContextSupport.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ContextSupport.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ContextSupport.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ContextSupport~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/GLES2.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/GLES2Implementation.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Implementation.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Implementation.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Implementation.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Implementation~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/GLES2Interface.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Interface.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Interface.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Interface.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GLES2Interface~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/Gpu.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Gpu.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Gpu.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Gpu.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Gpu~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/GpuCapabilities.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuCapabilities.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuCapabilities.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuCapabilities.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuCapabilities~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/GpuErrors.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuErrors.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuErrors.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuErrors.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuErrors~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/GpuMemoryBufferManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuMemoryBufferManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuMemoryBufferManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuMemoryBufferManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuMemoryBufferManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/GpuSurface.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuSurface.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuSurface.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuSurface.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/GpuSurface~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/ImageFactory.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ImageFactory.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ImageFactory.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ImageFactory.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/ImageFactory~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/InProcessCommandBufferService.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/InProcessCommandBufferService.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/InProcessCommandBufferService.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/InProcessCommandBufferService.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/InProcessCommandBufferService~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/Mailbox.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Mailbox.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Mailbox.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Mailbox.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Mailbox~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/SurfaceHandle.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SurfaceHandle.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SurfaceHandle.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SurfaceHandle.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SurfaceHandle~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/SyncToken.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SyncToken.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SyncToken.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SyncToken.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/SyncToken~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/TestGpuMemoryBufferManager.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestGpuMemoryBufferManager.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestGpuMemoryBufferManager.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestGpuMemoryBufferManager.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestGpuMemoryBufferManager~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/TestImageFactory.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestImageFactory.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestImageFactory.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestImageFactory.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/TestImageFactory~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/Gpu/Utils.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Utils.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Utils.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Utils.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/Gpu/Utils~partial.swiftmodule"
+   }
+}

@@ -1,0 +1,3 @@
+gen/lib/ui/base/accelerators/mojo/interfaces.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list
+gen/lib/ui/events/mojo/interfaces.sources_list

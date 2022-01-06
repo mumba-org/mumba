@@ -1,0 +1,3 @@
+gen/lib/ipc/mojom.sources_list
+gen/lib/mojo/public/interfaces/bindings/bindings.sources_list
+gen/lib/mojo/public/mojom/base/read_only_buffer.sources_list

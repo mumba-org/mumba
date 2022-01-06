@@ -1,0 +1,2 @@
+gen/lib/services/tracing/public/mojom/mojom.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list

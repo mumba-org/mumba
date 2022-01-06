@@ -1,0 +1,59 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+import("//lib/testing/test.gni")
+
+group("all") {
+  # testonly = true
+  deps = [
+    ":service_manager",
+    "//lib/services/service_manager/background",
+    "//lib/services/service_manager/standalone",
+  ]
+
+  if (!is_ios) {
+    deps += [
+      # These tests heavily rely on service binaries, which are not supported on
+      # iOS.
+      "//lib/services/service_manager/tests",
+    ]
+  }
+}
+
+source_set("service_manager") {
+  sources = [
+    "connect_params.cc",
+    "connect_params.h",
+    "connect_util.cc",
+    "connect_util.h",
+    "service_manager.cc",
+    "service_manager.h",
+    "service_overrides.cc",
+    "service_overrides.h",
+    "switches.cc",
+    "switches.h",
+  ]
+
+  deps = [
+    "//lib/base/third_party/dynamic_annotations",
+  ]
+
+  public_deps = [
+    "//lib/base",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/services/catalog:lib",
+    "//lib/services/catalog/public/mojom:constants",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/service_manager/runner/host:lib",
+    "//lib/services/service_manager/sandbox",
+  ]
+}
+
+service_manifest("manifest") {
+  name = "service_manager"
+  source = "manifest.json"
+}

@@ -1,0 +1,11 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/TweedyApi/master.swiftdeps"
+   },
+   "/workspace/jabberwock/tools/gen/gen/gen/apps/tweedy_service/Sources/Api/Tweedy.proto.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/TweedyApi/Tweedy.proto.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/TweedyApi/Tweedy.proto.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/TweedyApi/Tweedy.proto.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/apps/tweedy_service/TweedyApi/Tweedy.proto~partial.swiftmodule"
+   }
+}

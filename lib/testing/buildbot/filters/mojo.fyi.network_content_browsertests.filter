@@ -1,0 +1,75 @@
+# http://crbug.com/715640
+-ServiceWorkerBrowserTest.FetchPageWithSaveData
+-ServiceWorkerBrowserTest.ImportsBustMemcache
+-ServiceWorkerBrowserTest.Reload
+-ServiceWorkerBrowserTest.ResponseFromHTTPSServiceWorkerIsMarkedAsSecure
+-ServiceWorkerBrowserTest.ResponseFromHTTPServiceWorkerIsNotMarkedAsSecure
+-ServiceWorkerNavigationPreloadTest.CanceledByInterceptor
+-ServiceWorkerNavigationPreloadTest.RespondWithNavigationPreloadWithMimeSniffing
+-ServiceWorkerV8CodeCacheForCacheStorageTest.V8CacheOnCacheStorage
+-ServiceWorkerVersionBrowserTest.ServiceWorkerScriptHeader
+
+# ServiceWorker restart needs to read installed scripts.
+# https://crbug.com/756312
+-ServiceWorkerVersionBrowserV8CacheTest.Restart
+
+# http://crbug.com/721398
+-ClearSiteDataThrottleBrowserTest.CacheIntegrationTest
+-ClearSiteDataThrottleBrowserTest.CookiesIntegrationTest
+-ClearSiteDataThrottleBrowserTest.Credentials
+-ClearSiteDataThrottleBrowserTest.CredentialsOnRedirect
+-ClearSiteDataThrottleBrowserTest.RedirectNavigation
+-ClearSiteDataThrottleBrowserTest.RedirectResourceLoad
+-ClearSiteDataThrottleBrowserTest.SecureAndInsecureResourceLoad
+-ClearSiteDataThrottleBrowserTest.ServiceWorker
+-ClearSiteDataThrottleBrowserTest.StorageServiceWorkersIntegrationTest
+-ClearSiteDataThrottleBrowserTest.Types
+
+# http://crbug.com/820060
+-PreviewsStateBrowserTest.ShouldEnableLoFiModeNavigateBackThenForward
+-PreviewsStateBrowserTest.ShouldEnableLoFiModeOff
+-PreviewsStateBrowserTest.ShouldEnableLoFiModeOn
+-PreviewsStateBrowserTest.ShouldEnableLoFiModeReload
+-PreviewsStateBrowserTest.ShouldEnableLoFiModeReloadDisableLoFi
+
+-AsyncResourceHandlerBrowserTest/AsyncResourceHandlerBrowserTest.UploadProgress*
+-GetUserMediaVideoCaptureBrowserTest.RecoverFromCrashInVideoCaptureProcess
+-IsolatedDevToolsProtocolTest.ControlNavigationsChildFrames
+-NavigationHandleImplBrowserTest.ErrorCodeOnRedirect
+-NavigationHandleImplBrowserTest.RedirectToRendererDebugUrl
+-RenderViewBrowserTest.ConfirmCacheInformationPlumbed
+-WebContentsImplBrowserTest.DownloadImage_Deny_FileImage
+
+# services/network/url_loader.cc should handle failure in
+# URLLoaderImpl::OnResponseBodyStreamRead(). Note this is flaky, so it will pass
+# sometimes.
+-SRC_ClearKey/EncryptedMediaTest.FrameSizeChangeVideo/0
+
+# Cross-origin request to file:// URL should be blocked. crbug.com/759230
+-BrowserSideNavigationBrowserDisableWebSecurityTest.ValidateBaseUrlForDataUrl
+
+# Cross-origin read blocking (CORB) needs to be implemented in the network
+# service.
+# https://crbug.com/786505 (cross site document blocking)
+# https://crbug.com/792546 (cross site document blocking in network service)
+-CrossSiteDocumentBlockingBaseTest.BlockDocumentsByDefault
+-CrossSiteDocumentBlockingTest.BlockDocuments
+-CrossSiteDocumentBlockingTest.BlockHeaders
+-CrossSiteDocumentBlockingTest.BlockRequestFromErrorPage
+-CrossSiteDocumentBlockingIsolatedOriginTest.BlockDocumentsFromIsolatedOrigin
+-CrossSiteDocumentBlockingTest.RangeRequest
+-CrossSiteDocumentBlockingServiceWorkerTest.NoNetwork
+-CrossSiteDocumentBlockingServiceWorkerTest.NetworkToServiceWorkerResponse
+
+# Flakes on Android.
+# http://crbug.com/827318
+-RenderThreadImplBrowserTest.NonResourceDispatchIPCTasksDontGoThroughScheduler
+
+# Network service path needs some way to update the per-WebContents load state.
+# http://crbug.com/819663.
+-WebContentsImplBrowserTest.UpdateLoadState
+
+# https://crbug.com/808759
+-DownloadContentTest.DownloadAttributeBlobURL
+
+# NOTE: before adding new exclusions, please reach out to network-service-dev@.

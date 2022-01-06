@@ -1,0 +1,32 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/ui.gni")
+import("//lib/testing/test.gni")
+
+source_set("tests") {
+  # testonly = true
+
+  sources = [
+    "gpu_unittest.cc",
+    "property_type_converters_unittest.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/mojo/edk",
+    "//lib/mojo/public/cpp/system",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/ui/public/cpp",
+    "//lib/testing/gtest",
+    "//lib/ui/gfx:test_support",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/gfx/geometry/mojo",
+  ]
+
+  if (use_x11) {
+    deps += [ "//lib/ui/gfx/x" ]
+  }
+}

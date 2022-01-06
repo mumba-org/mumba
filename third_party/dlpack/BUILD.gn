@@ -1,0 +1,28 @@
+import("//build_overrides/build.gni")
+
+source_set("dlpack") {
+  configs -= [ 
+    "//build/config/compiler:chromium_code",
+  ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    "//build/config/compiler:exceptions",
+    #"//build/config/compiler:rtti"
+  ]
+  include_dirs = [
+    "include",
+  ]
+  deps = [ 
+   "//buildtools/third_party/libc++",
+  ]
+  defines = [
+    "MSHADOW_IN_CXX11",
+  ]
+  cflags_cc = [
+    "-std=gnu++17",
+    "-Wno-sign-compare",
+    "-Wno-unused-local-typedef",
+    "-Wno-macro-redefined"
+  ]
+  sources = []
+}

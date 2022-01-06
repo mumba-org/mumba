@@ -1,0 +1,49 @@
+import("//build_overrides/build.gni")
+
+static_library("dmlc-core") {
+  configs -= [ 
+    "//build/config/compiler:chromium_code",
+  ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    "//build/config/compiler:exceptions",
+    #"//build/config/compiler:rtti"
+  ]
+  include_dirs = [
+    "include",
+  ]
+  deps = [ 
+   "//buildtools/third_party/libc++",
+   "//lib/base"
+  ]
+  defines = [
+    "DMLC_MODERN_THREAD_LOCAL=0",
+    "DMLC_LOG_STACK_TRACE_SIZE=0",
+    "DMLC_USE_CXX11",
+    "DMLC_STRICT_CXX11",
+    "DMLC_USE_CXX14",
+    "DMLC_ENABLE_RTTI=1"
+  ]
+  cflags_cc = [
+    "-std=gnu++17",
+    "-Wno-sign-compare",
+    "-Wno-unused-local-typedef",
+    "-Wno-macro-redefined"
+  ]
+  sources = [
+    "src/io/line_split.cc",
+    "src/io/recordio_split.cc",
+    "src/io/indexed_recordio_split.cc",
+    "src/io/input_split_base.cc",
+    "src/io/filesys.cc",
+    #"src/io/hdfs_filesys.cc",
+    #"src/io/s3_filesys.cc",
+    #"src/io/azure_filesys.cc",
+    "src/io/local_filesys.cc",
+    "src/io.cc",
+    "src/data.cc",
+    "src/recordio.cc",
+    "src/config.cc",
+    "src/json.cc",
+  ]
+}

@@ -1,0 +1,72 @@
+// Copyright 2020 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// https://github.com/WICG/web-codecs
+
+enum ColorSpaceMatrixID {
+  "RGB",
+  "BT709",
+  "FCC",
+  "BT470BG",
+  "SMPTE170M",
+  "SMPTE240M",
+  "YCOCG",
+  "BT2020_NCL",
+  "BT2020_CL",
+  "YDZDX",
+};
+
+enum ColorSpacePrimaryID {
+  "BT709",
+  "BT470M",
+  "BT470BG",
+  "SMPTE170M",
+  "SMPTE240M",
+  "FILM",
+  "BT2020",
+  "SMPTEST428_1",
+  "SMPTEST431_2",
+  "SMPTEST432_1",
+  "EBU_3213_E",
+};
+
+enum ColorSpaceRangeID {
+  // Limited Rec.709 color range.
+  "LIMITED",
+
+  // Full RGB color range.
+  "FULL",
+
+  // Range is defined by TransferID/MatrixID.
+  "DERIVED",
+};
+
+enum ColorSpaceTransferID {
+  "BT709",
+  "GAMMA22",
+  "GAMMA28",
+  "SMPTE170M",
+  "SMPTE240M",
+  "LINEAR",
+  "LOG",
+  "LOG_SQRT",
+  "IEC61966_2_4",
+  "BT1361_ECG",
+  "IEC61966_2_1",
+  "BT2020_10",
+  "BT2020_12",
+  "SMPTEST2084",
+  "SMPTEST428_1",
+};
+
+// Described in ISO 23001-8:2016
+// See also: https://source.chromium.org/chromium/chromium/src/+/master:media/base/video_color_space.h
+dictionary VideoColorSpace {
+  ColorSpacePrimaryID? primaryID;
+  ColorSpaceTransferID? transferID;
+  ColorSpaceMatrixID? matrixID;
+  ColorSpaceRangeID? rangeID;
+
+  // TODO(sandersd): custom primary/matrix support.
+};

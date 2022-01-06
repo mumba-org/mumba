@@ -1,0 +1,9 @@
+// Copyright (c) 2015 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+public enum SwapResult : Int32 {
+  case Ack                = 0
+  case Failed             = 1
+  case NakRecreateBuffers = 2
+}

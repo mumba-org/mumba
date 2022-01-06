@@ -1,0 +1,29 @@
+{
+   "" : {
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/master.swiftdeps"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/_C/Compositor.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Compositor.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Compositor.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Compositor.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Compositor~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/_C/Pdf.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Pdf.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Pdf.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Pdf.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Pdf~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/_C/Skia.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Skia.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Skia.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Skia.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/Skia~partial.swiftmodule"
+   },
+   "/workspace/jabberwock/kit/swift/App/Sources/_C/X11.swift" : {
+      "dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/X11.d",
+      "object" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/X11.o",
+      "swift-dependencies" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/X11.swiftdeps",
+      "swiftmodule" : "/workspace/jabberwock/tools/gen/gen/obj/kit/swift/App/_C/X11~partial.swiftmodule"
+   }
+}

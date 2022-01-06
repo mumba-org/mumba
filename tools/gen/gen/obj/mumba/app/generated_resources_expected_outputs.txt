@@ -1,0 +1,2 @@
+gen/jabberwock/grit/generated_resources.h
+gen/jabberwock/generated_resources_en-US.pak

@@ -1,0 +1,381 @@
+import("//build/config/mumba_build.gni")
+import("//build/config/compiler/compiler.gni")
+import("//build/config/compiler/pgo/pgo.gni")
+import("//build/config/features.gni")
+import("//build/config/linux/pangocairo/pangocairo.gni")
+import("//build/config/locales.gni")
+import("//build/config/sanitizers/sanitizers.gni")
+import("//build/config/ui.gni")
+import("//build/config/win/console_app.gni")
+import("//build/config/win/manifest.gni")
+import("//build/toolchain/toolchain.gni")
+import("//mumba/mumba_paks.gni")
+import("//mumba/features.gni")
+import("//mumba/process_version_rc_template.gni")
+import("//lib/media/media_options.gni")
+import("//third_party/blink/public/public_features.gni")
+import("//tools/resources/generate_resource_whitelist.gni")
+import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+import("//lib/ui/gl/features.gni")
+import("//v8/gni/v8.gni")
+
+if (is_android) {
+  import("//build/config/android/rules.gni")
+} else if (is_linux) {
+  import("//build/linux/extract_symbols.gni")
+} else if (is_mac) {
+  import("//build/compiled_action.gni")
+  import("//build/config/mac/rules.gni")
+  import("//build/config/mac/symbols.gni")
+  import("//build/mac/tweak_info_plist.gni")
+  import("//build/util/branding.gni")
+  import("//build/util/version.gni")
+  #import("//lib/media/cdm/library_cdm/cdm_paths.gni")
+  import("//third_party/icu/config.gni")
+}
+
+if (!is_android && !is_mac) {
+  group("mumba") {
+    public_deps = [
+      ":mumba_initial",
+    ]
+    data_deps = [
+      ":mumba_initial",
+    ]
+    if (is_win) {
+    #  public_deps += [ ":reorder_imports" ]
+    }
+  }
+
+  template("mumba_binary") {
+    executable(target_name) {
+      output_name = invoker.output_name
+      sources = invoker.sources
+      if (defined(invoker.deps)) {
+        deps = invoker.deps
+      } else {
+        deps = []
+      }
+      if (defined(invoker.data)) {
+        data = invoker.data
+      } else {
+        data = []
+      }
+
+      if (!is_win || is_clang) {
+        # Normally, we need to pass specific flags to the linker to
+        # create an executable that gathers profile data. However, when
+        # using MSVC, we need to make sure we *don't* pass /GENPROFILE
+        # when linking without generating any code, or else the linker
+        # will give us fatal error LNK1264. So we add the PGO flags
+        # on all configurations, execpt MSVC on Windows.
+        configs += [ "//build/config/compiler/pgo:default_pgo_flags" ]
+      }
+
+      # Because the sources list varies so significantly per-platform, generally
+      # each platform lists its own files rather than relying on filtering or
+      # removing unused files.
+      sources += [ "app/mumba_exe_resource.h" ]
+      defines = []
+      public_deps = []
+      deps += [
+        "//build/config:exe_and_shlib_deps",
+        "//lib/rlz/buildflags",
+       # "//lib/printing/buildflags",
+      ]
+
+      data += [ "$root_out_dir/resources.pak" ]
+      if (is_linux || is_win) {
+        data += [
+          "$root_out_dir/mumba_100_percent.pak",
+          "$root_out_dir/locales/en-US.pak",
+          "$root_out_dir/locales/fr.pak",
+        ]
+      }
+
+      data_deps = []
+
+      if (is_win) {
+        #sources += [
+          #"app/mumba_bin.rc",
+          #"app/mumba_bin_load_config_win.cc",
+          #"app/mumba_bin_win.cc",
+          #"app/mumba_watcher_client_win.cc",
+          #"app/mumba_watcher_client_win.h",
+          #"app/mumba_watcher_command_line_win.cc",
+          #"app/mumba_watcher_command_line_win.h",
+          #"app/main_dll_loader_win.cc",
+          #"app/main_dll_loader_win.h",
+          #"core/common/crash_keys.cc",
+          #"core/common/crash_keys.h",
+        #]
+
+        deps += [
+          ":shell_dependencies",
+          ":mumba_dll",
+          #":mumba",
+          #":mumba_exe_version",
+         # ":copy_first_run",
+          #":file_pre_reader",
+          #":visual_elements_resources",
+          "//lib/base",
+          "//mumba/app/version_assembly:chrome_exe_manifest",
+          "//core/common:constants",
+          #"//mumba/common:metrics_constants_util_win",
+          #"//mumba/install_static:secondary_module",
+         # "//mumba/installer/util:with_no_strings",
+          "//lib/mumba_elf",
+          "//lib/components/crash/content/app:run_as_crashpad_handler",
+          "//lib/components/crash/core/common",
+          "//lib/crypto",
+          "//lib/sandbox",
+          "//lib/services/service_manager/sandbox",
+          "//third_party/breakpad:breakpad_handler",
+          "//third_party/breakpad:breakpad_sender",
+        ]
+        data_deps = [
+          "//mumba/app/version_assembly:version_assembly_manifest",
+          "//mumba/notification_helper",
+        ]
+
+        if (win_console_app) {
+          defines += [ "WIN_CONSOLE_APP" ]
+        } else {
+          # Set /SUBSYSTEM:WINDOWS for chrome.exe itself, unless a console build
+          # has been requested.
+          configs -= [ "//build/config/win:console" ]
+          configs += [ "//build/config/win:windowed" ]
+        }
+
+        ldflags = [
+          "/DELAYLOAD:dbghelp.dll",
+          "/DELAYLOAD:dwmapi.dll",
+          "/DELAYLOAD:uxtheme.dll",
+          "/DELAYLOAD:ole32.dll",
+          "/DELAYLOAD:oleaut32.dll",
+        ]
+
+        if (current_cpu == "x64") {
+          # Increase the initial stack size. The default is 1MB, this is 2MB.
+          ldflags += [ "/STACK:2097152" ]
+        }
+      }
+
+      if (is_linux) {
+        sources += [
+          "app/mumba_dll_resource.h",
+          #"app/mumba_main.cc",
+          #"app/mumba_main_delegate.cc",
+          #"app/mumba_main_delegate.h",
+        ]
+
+        deps += [
+          # On Linux, link the dependencies (libraries) that make up actual
+          # Chromium functionality directly into the executable.
+          ":shell_dependencies",
+          #":child_dependencies",
+
+          # Needed to use the master_preferences functions
+          "//mumba/installer/util:with_no_strings",
+          #"//content/public/app:both",
+          #"//content/public/common:service_names",
+
+          # For headless mode.
+          #"//headless:headless_shell_lib",
+          "//lib/services/service_manager/embedder",
+        ]
+
+        public_deps = [
+          ":xdg_mime",  # Needs to be public for installer to consume files.
+          #"//mumba/core/common:buildflags",
+        ]
+
+        ldflags = [ 
+            "-pie",
+            "-luuid",
+            "-ferror-limit=0",
+        ]
+
+        # Chrome OS debug builds for arm need to pass --long-plt to the linker.
+        # See https://bugs.chromium.org/p/chromium/issues/detail?id=583532
+        if (is_chromeos && is_debug && target_cpu == "arm") {
+          ldflags += [ "-Wl,--long-plt" ]
+        }
+
+        if (is_desktop_linux && !is_component_build && !using_sanitizer) {
+          version_script = "//build/linux/mumba.map"
+          inputs = [
+            version_script,
+          ]
+          ldflags += [ "-Wl,--version-script=" +
+                       rebase_path(version_script, root_build_dir) ]
+        }
+
+        if (use_x11) {
+          configs += [
+            "//build/config/linux:x11",
+            "//build/config/linux:xext",
+          ]
+        }
+        #if (enable_mus) {
+        #  deps += [ "//mash/common" ]
+        #}
+      }
+
+      #if (is_chromeos) {
+      #  data_deps += [ "//mojo/edk:mojo_core" ]
+      #}
+
+      # These files are used by the installer so we need a public dep.
+      public_deps += [ ":packed_resources" ]
+
+      # Only ChromeOS has precompiled Flash that needs to get copied to the output
+      # directory. On other platforms, Flash is either component-updated only or
+      # not supported at all.
+      #if (is_chromeos) {
+      #  deps += [ "//third_party/adobe/flash:flapper_binaries" ]
+      #}
+
+      # ChromeOS by design is safe to have rpath=$ORIGIN. This simplifies shared
+      # library usage.
+      #if (is_chromeos && !is_component_build) {
+      #  configs += [ "//build/config/gcc:rpath_for_built_shared_libraries" ]
+     # }
+
+      data_deps += [
+       # "//chrome/browser/resources/media/mei_preload:component",
+        #"//third_party/widevine/cdm",
+      ]
+
+      #if (is_multi_dll_chrome) {
+      #  defines += [ "CHROME_MULTIPLE_DLL" ]
+      #  data_deps += [ ":chrome_child" ]
+      #}
+    }
+  }
+  mumba_binary("mumba_initial") {
+    if (is_win) {
+      output_name = "initialexe/mumba"
+    } else {
+      output_name = "mumba"
+    }
+
+    sources = [ "app/mumba_bin.cc" ]
+  }
+} # if (!is_android && !is_mac) 
+
+if (is_linux) {
+  copy("xdg_mime") {
+    sources = [
+      "//mumba/app/theme/product_logo_48.png",
+      "//mumba/tools/build/linux/mumba-wrapper",
+      "//third_party/xdg-utils/scripts/xdg-mime",
+      "//third_party/xdg-utils/scripts/xdg-settings",
+    ]
+    outputs = [
+      "$root_out_dir/{{source_file_part}}",
+    ]
+  }
+}
+
+group("shell_dependencies") {
+  public_deps = [
+    "//core/domain",
+    "//core/gpu",
+    "//core/common",
+    "//core/utility",
+    "//lib/storage/common",
+    "//runtime/HostShims",
+    "//kit/cpp/launcher",
+    "//third_party/libtorrent",
+  ]
+}
+
+group("strings") {
+  public_deps = [
+    "//mumba/app:content_strings",
+    "//mumba/app:generated_resources",
+    "//mumba/app/resources:locale_settings",
+  ]
+}
+
+mumba_paks("packed_resources") {
+  if (is_mac) {
+    output_dir = "$root_gen_dir/repack"
+    copy_data_to_bundle = true
+  } else {
+    output_dir = root_out_dir
+  }
+}
+
+executable("mumba_build") {
+  sources = [
+    "app/mumba_build_bin.cc"
+  ]
+  deps = [
+    "//runtime/ToolShims:mumba-build",
+    #"//third_party/xcbuild"
+  ]
+  ldflags = [
+ #   "-lc",
+ #   "-lpthread",
+ #   "-lm",
+ #   "-lrt",
+    #"-licuuc",
+    #"-licudata",
+    #"-licui18n",
+    #"-lBlocksRuntime",
+ #   "-ldispatch",
+    #"-lbsd",
+    #"-lBlocksRuntime",
+    #"-lcurl",
+    #"-lxml2"
+  ]
+}
+
+executable("mumba_bundle") {
+  sources = [
+    "app/mumba_bundle_bin.cc"
+  ]
+  deps = [
+    "//lib/base",
+    "//lib/storage",
+    "//buildtools/third_party/libc++",
+    #"//third_party/zlib/google:zip"
+    "//third_party/msix"
+  ]
+}
+
+executable("mumba_repl") {
+  sources = [
+    "app/mumba_repl_bin.cc"
+  ]
+  deps = [
+    "//runtime/ToolShims:mumba-repl"
+  ]
+}
+
+executable("mumba_gen") {
+  sources = [
+    "app/mumba_gen_bin.cc"
+  ]
+  deps = [
+    "//runtime/ToolShims:mumba-gen"
+  ]
+}
+
+#executable("mumba_install") {
+#  sources = [
+#    "app/mumba_install_bin.cc"
+#  ]
+#  deps = [
+#    "//runtime/ToolShims:mumba-install"
+#  ]
+#}
+
+group("mumba_apps") {
+  testonly = true
+  public_deps = [
+    "//apps/tweedy:tweedy_bundle",
+  ]
+}

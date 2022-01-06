@@ -1,0 +1,4 @@
+gen/lib/services/file/public/mojom/mojom.sources_list
+gen/lib/components/services/filesystem/public/interfaces/interfaces.sources_list
+gen/lib/services/file/public/mojom/constants.sources_list
+gen/lib/mojo/public/mojom/base/base.sources_list

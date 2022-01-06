@@ -1,0 +1,22 @@
+swift_static("PDF") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+    "//kit/swift/PosixShim",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/Graphics",
+    "//kit/swift/_C",
+  ]
+  sources = [
+    "Sources/PDFBitmap.swift",
+    "Sources/PDFBookmark.swift",
+    "Sources/PDFDocument.swift",
+    "Sources/PDFElement.swift",
+    "Sources/PDFLink.swift",
+    "Sources/PDFPage.swift",
+    "Sources/PDFReader.swift",
+    "Sources/PDFRenderer.swift",
+    "Sources/PDFRuntime.swift",
+    "Sources/PDFWriter.swift",
+  ]
+}

@@ -1,0 +1,233 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+#import("//lib/components/nacl/features.gni")
+import("//lib/media/media_options.gni")
+import("//lib/remoting/build/config/remoting_build.gni")
+
+group("remoting_all") {
+  # testonly = true
+
+  deps = [
+    ":remoting_unittests",
+    "//lib/remoting/test:chromoting_test_driver",
+    "//lib/remoting/webapp:browser_test_resources",
+    "//lib/remoting/webapp:unit_tests",
+  ]
+
+  if ((is_linux && !is_chromeos) || is_win || is_mac) {
+    deps += [ "//lib/remoting/webapp" ]
+  }
+
+  if (is_win) {
+    deps += [
+      "//lib/remoting:remoting_breakpad_tester",
+      "//lib/remoting/host/win:all",
+    ]
+
+    if (is_chrome_branded) {
+      deps += [ "//lib/remoting/host:remoting_host_installation" ]
+    }
+  }
+
+  if (is_android) {
+    deps += [
+      "//lib/remoting/android:remoting_apk",
+      "//lib/remoting/android:remoting_test_apk",
+    ]
+  }
+
+  if (is_ios) {
+    deps += [
+      "//lib/remoting/ios:all",
+      "//lib/remoting/ios:ios_remoting_unittests",
+    ]
+  }
+
+  if (enable_remoting_host) {
+    deps += [
+      "//lib/remoting:remoting_perftests",
+      "//lib/remoting/host",
+    ]
+
+    if (!is_chromeos && !is_android) {
+      deps += [
+        "//lib/remoting/host:remoting_native_messaging_manifests",
+        "//lib/remoting/host:remoting_start_host",
+        "//lib/remoting/host/it2me:remote_assistance_host",
+      ]
+
+      if (is_win) {
+        deps += [ "//lib/remoting/host/it2me:remote_assistance_host_uiaccess" ]
+      }
+    }
+
+    if (is_win || (!is_chromeos && !is_android && !is_ios)) {
+      deps += [ "//lib/remoting/host:remoting_native_messaging_host" ]
+    }
+
+    if (is_linux && !is_chromeos) {
+      deps += [
+        "//lib/remoting/host/linux:remoting_dev_me2me_host",
+        "//lib/remoting/host/linux:remoting_user_session",
+      ]
+    }
+  }
+
+  if (enable_me2me_host) {
+    deps += [ "//lib/remoting/host:remoting_me2me_host" ]
+#    if (is_chrome_branded) {
+      deps += [ "//lib/remoting/host:remoting_me2me_host_archive" ]
+ #   }
+  }
+}
+
+if (is_win) {
+  executable("remoting_breakpad_tester") {
+    deps = [
+      "//lib/base",
+      "//build/win:default_exe_manifest",
+      "//lib/remoting/host",
+    ]
+
+    libs = []
+
+    configs += [ "//build/config/compiler:wexit_time_destructors" ]
+
+    sources = [
+      "tools/breakpad_tester_win.cc",
+    ]
+
+    if (is_win) {
+      libs += [
+        "rpcrt4.lib",
+        "wtsapi32.lib",
+      ]
+    }
+  }
+}
+
+group("test_support") {
+  # testonly = true
+
+  deps = [
+    "//lib/base",
+    "//lib/net",
+    "//lib/remoting/base:test_support",
+    "//lib/remoting/client",
+    "//lib/remoting/codec:decoder",
+    "//lib/remoting/codec:encoder",
+    "//lib/remoting/protocol:test_support",
+    "//lib/remoting/resources",
+    "//lib/remoting/signaling:test_support",
+    "//lib/remoting/test:test_support",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+  ]
+
+  #if (!is_ios) {
+    #deps += [ "//lib/components/policy/core/browser:test_support" ]
+  #}
+
+  if (enable_remoting_host) {
+    deps += [ "//lib/remoting/host:test_support" ]
+  }
+}
+
+test("remoting_unittests") {
+  defines = []
+  libs = []
+
+  configs += [
+    "//lib/remoting/build/config:version",
+
+    # TODO(jschuh): crbug.com/167187 fix size_t to int truncations.
+    "//build/config/compiler:no_size_t_to_int_warning",
+  ]
+
+  deps = [
+    ":test_support",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    #"//lib/google_apis",
+    "//lib/remoting/base:unit_tests",
+    "//lib/remoting/client:unit_tests",
+    "//lib/remoting/client/audio:unit_tests",
+    "//lib/remoting/client/display:unit_tests",
+    "//lib/remoting/client/input:unit_tests",
+    "//lib/remoting/client/ui:unit_tests",
+    "//lib/remoting/protocol:unit_tests",
+    "//lib/remoting/signaling:unit_tests",
+    "//lib/remoting/test:unit_tests",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+  ]
+
+  if (enable_remoting_host) {
+    deps += [
+      "//lib/remoting/codec:unit_tests",
+      "//lib/remoting/host:unit_tests",
+      "//lib/ui/gfx",
+    ]
+  }
+
+  if (enable_webrtc) {
+    deps += [ "//third_party/webrtc_overrides:init_webrtc" ]
+  }
+
+  if (is_android) {
+    deps += [ "//lib/net/android:net_java" ]
+
+    libs += [ "android" ]
+  }
+
+  if (is_win) {
+    defines += [ "_ALT_NO_EXCEPTIONS" ]
+
+    libs += [
+      "comctl32.lib",
+      "rpcrt4.lib",
+      "wtsapi32.lib",
+    ]
+  }
+}
+
+if (enable_remoting_host) {
+  test("remoting_perftests") {
+    defines = []
+    libs = []
+
+    sources = [
+      "test/codec_perftest.cc",
+      "test/protocol_perftest.cc",
+    ]
+
+    configs += [ "//lib/remoting/build/config:version" ]
+
+    deps = [
+      ":test_support",
+      "//lib/base",
+      "//lib/base/test:run_all_unittests",
+      "//lib/base/test:test_support",
+      "//lib/net:test_support",
+      "//lib/remoting/base",
+      "//lib/testing/gtest",
+      "//third_party/webrtc/modules/desktop_capture",
+      "//third_party/webrtc_overrides",
+    ]
+
+    if (enable_webrtc) {
+      deps += [ "//third_party/webrtc_overrides:init_webrtc" ]
+    }
+
+    if (is_win) {
+      defines += [ "_ALT_NO_EXCEPTIONS" ]
+
+      libs += [
+        "rpcrt4.lib",
+        "wtsapi32.lib",
+      ]
+    }
+  }
+}

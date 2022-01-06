@@ -1,0 +1,11 @@
+{
+  "name": "database",
+  "display_name": "Database Service",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "provides": {
+        "database" : [ "automation.DatabaseInterface" ]
+      }
+    }
+  }
+}

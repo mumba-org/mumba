@@ -1,0 +1,27 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../../third_party/boringssl/src/include -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp
+asmflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -std=gnu11 -m64 -march=x86-64 -g0 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = boringssl_asm
+target_out_dir = obj/third_party/boringssl
+target_output_name = boringssl_asm
+
+build obj/third_party/boringssl/boringssl_asm/chacha-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/chacha/chacha-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/aes128gcmsiv-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/cipher_extra/aes128gcmsiv-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/chacha20_poly1305_x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/cipher_extra/chacha20_poly1305_x86_64.S
+build obj/third_party/boringssl/boringssl_asm/aes-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/aes-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/aesni-gcm-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/aesni-gcm-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/aesni-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/aesni-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/bsaes-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/bsaes-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/ghash-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/ghash-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/md5-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/md5-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/p256-x86_64-asm.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/p256-x86_64-asm.S
+build obj/third_party/boringssl/boringssl_asm/rdrand-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/rdrand-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/rsaz-avx2.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/rsaz-avx2.S
+build obj/third_party/boringssl/boringssl_asm/sha1-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/sha1-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/sha256-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/sha256-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/sha512-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/sha512-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/vpaes-x86_64.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/vpaes-x86_64.S
+build obj/third_party/boringssl/boringssl_asm/x86_64-mont.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/x86_64-mont.S
+build obj/third_party/boringssl/boringssl_asm/x86_64-mont5.o: asm ../../../third_party/boringssl/linux-x86_64/crypto/fipsmodule/x86_64-mont5.S
+
+build obj/third_party/boringssl/boringssl_asm.stamp: stamp obj/third_party/boringssl/boringssl_asm/chacha-x86_64.o obj/third_party/boringssl/boringssl_asm/aes128gcmsiv-x86_64.o obj/third_party/boringssl/boringssl_asm/chacha20_poly1305_x86_64.o obj/third_party/boringssl/boringssl_asm/aes-x86_64.o obj/third_party/boringssl/boringssl_asm/aesni-gcm-x86_64.o obj/third_party/boringssl/boringssl_asm/aesni-x86_64.o obj/third_party/boringssl/boringssl_asm/bsaes-x86_64.o obj/third_party/boringssl/boringssl_asm/ghash-x86_64.o obj/third_party/boringssl/boringssl_asm/md5-x86_64.o obj/third_party/boringssl/boringssl_asm/p256-x86_64-asm.o obj/third_party/boringssl/boringssl_asm/rdrand-x86_64.o obj/third_party/boringssl/boringssl_asm/rsaz-avx2.o obj/third_party/boringssl/boringssl_asm/sha1-x86_64.o obj/third_party/boringssl/boringssl_asm/sha256-x86_64.o obj/third_party/boringssl/boringssl_asm/sha512-x86_64.o obj/third_party/boringssl/boringssl_asm/vpaes-x86_64.o obj/third_party/boringssl/boringssl_asm/x86_64-mont.o obj/third_party/boringssl/boringssl_asm/x86_64-mont5.o

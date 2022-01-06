@@ -1,0 +1,32 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=4e7db513b0faeea8fb410f70c9909e8736f5c0ab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0 -DLIBXSLT_STATIC -DU_USING_ICU_NAMESPACE=0 -DU_ENABLE_DYLOAD=0 -DUSE_CHROMIUM_ICU=1 -DICU_UTIL_DATA_IMPL=ICU_UTIL_DATA_FILE -DUCHAR_TYPE=uint16_t
+include_dirs = -I../../../third_party/libxslt/linux -I../../.. -I../../../lib -I../../../kit/cpp -Igen -Igen/lib -Igen/kit/cpp -I../../../third_party/libxslt/src -I../../../third_party/libxml/src/include -I../../../third_party/libxml/linux/include -I../../../third_party/icu/source/common -I../../../third_party/icu/source/i18n
+cflags = -fno-strict-aliasing -fmerge-all-constants --param=ssp-buffer-size=4 -fstack-protector -Wno-builtin-macro-redefined -D__DATE__= -D__TIME__= -D__TIMESTAMP__= -funwind-tables -fPIC -pipe -B../../../third_party/binutils/Linux_x64/Release/bin -pthread -fcolor-diagnostics -Xclang -mllvm -Xclang -instcombine-lower-dbg-declare=0 -Xclang -mllvm -Xclang -fast-isel-sink-local-values=1 -no-canonical-prefixes -m64 -march=x86-64 -O2 -fno-ident -fdata-sections -ffunction-sections -fno-omit-frame-pointer -g0 -fvisibility=hidden -Wheader-hygiene -Wstring-conversion -Wtautological-overlap-compare -Werror -Wall -Wno-unused-variable -Wno-missing-field-initializers -Wno-unused-parameter -Wno-c++11-narrowing -Wno-covered-switch-default -Wno-unneeded-internal-declaration -Wno-inconsistent-missing-override -Wno-undefined-var-template -Wno-nonportable-include-path -Wno-address-of-packed-member -Wno-unused-lambda-capture -Wno-user-defined-warnings -Wno-enum-compare-switch -Wno-null-pointer-arithmetic -Wno-ignored-pragma-optimize -Wno-pointer-sign -Wno-unused-function -DLIBXML_STATIC=
+cflags_c = -std=gnu11 --sysroot=../../../build/linux/debian_sid_amd64-sysroot
+label_name = libxslt
+target_out_dir = obj/third_party/libxslt
+target_output_name = libxslt
+
+build obj/third_party/libxslt/libxslt/attributes.o: cc ../../../third_party/libxslt/src/libxslt/attributes.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/attrvt.o: cc ../../../third_party/libxslt/src/libxslt/attrvt.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/documents.o: cc ../../../third_party/libxslt/src/libxslt/documents.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/extensions.o: cc ../../../third_party/libxslt/src/libxslt/extensions.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/extra.o: cc ../../../third_party/libxslt/src/libxslt/extra.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/functions.o: cc ../../../third_party/libxslt/src/libxslt/functions.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/imports.o: cc ../../../third_party/libxslt/src/libxslt/imports.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/keys.o: cc ../../../third_party/libxslt/src/libxslt/keys.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/namespaces.o: cc ../../../third_party/libxslt/src/libxslt/namespaces.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/numbers.o: cc ../../../third_party/libxslt/src/libxslt/numbers.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/pattern.o: cc ../../../third_party/libxslt/src/libxslt/pattern.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/preproc.o: cc ../../../third_party/libxslt/src/libxslt/preproc.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/security.o: cc ../../../third_party/libxslt/src/libxslt/security.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/templates.o: cc ../../../third_party/libxslt/src/libxslt/templates.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/transform.o: cc ../../../third_party/libxslt/src/libxslt/transform.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/variables.o: cc ../../../third_party/libxslt/src/libxslt/variables.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/xslt.o: cc ../../../third_party/libxslt/src/libxslt/xslt.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/xsltlocale.o: cc ../../../third_party/libxslt/src/libxslt/xsltlocale.c || obj/third_party/icu/icudata.stamp
+build obj/third_party/libxslt/libxslt/xsltutils.o: cc ../../../third_party/libxslt/src/libxslt/xsltutils.c || obj/third_party/icu/icudata.stamp
+
+build obj/third_party/libxslt/libxslt.a: alink obj/third_party/libxslt/libxslt/attributes.o obj/third_party/libxslt/libxslt/attrvt.o obj/third_party/libxslt/libxslt/documents.o obj/third_party/libxslt/libxslt/extensions.o obj/third_party/libxslt/libxslt/extra.o obj/third_party/libxslt/libxslt/functions.o obj/third_party/libxslt/libxslt/imports.o obj/third_party/libxslt/libxslt/keys.o obj/third_party/libxslt/libxslt/namespaces.o obj/third_party/libxslt/libxslt/numbers.o obj/third_party/libxslt/libxslt/pattern.o obj/third_party/libxslt/libxslt/preproc.o obj/third_party/libxslt/libxslt/security.o obj/third_party/libxslt/libxslt/templates.o obj/third_party/libxslt/libxslt/transform.o obj/third_party/libxslt/libxslt/variables.o obj/third_party/libxslt/libxslt/xslt.o obj/third_party/libxslt/libxslt/xsltlocale.o obj/third_party/libxslt/libxslt/xsltutils.o || obj/third_party/libxml/libxml2.a ./libicuuc.so.TOC obj/third_party/zlib/libchrome_zlib.a obj/third_party/zlib/zlib_crc32_simd.stamp obj/third_party/zlib/zlib_adler32_simd.stamp obj/third_party/zlib/zlib_inflate_chunk_simd.stamp obj/third_party/zlib/libzlib_x86_simd.a
+  arflags = -T
+  output_extension = .a
+  output_dir = obj/third_party/libxslt

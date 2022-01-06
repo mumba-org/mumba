@@ -1,0 +1,65 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/testing/test.gni")
+
+# Only depend on this target if you're trying to implement a custom service
+# test runner.
+source_set("common_initialization") {
+  # testonly = true
+
+  sources = [
+    "common_initialization.cc",
+    "common_initialization.h",
+    "service_test_catalog.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/mojo/edk",
+    "//lib/services/catalog:lib",
+    "//lib/services/service_manager/background:lib",
+  ]
+
+  if (is_android) {
+    deps += [ "//lib/mojo/android:libsystem_java" ]
+  }
+  if (!is_ios) {
+    deps += [ "//lib/services/service_manager/public/cpp/standalone_service" ]
+  }
+}
+
+# NOTE: Don't depend on this target directly. Instead use the service_test
+# template from //services/service_manager/public/tools/test/service_test.gni.
+source_set("run_all_service_tests") {
+  # testonly = true
+
+  sources = [
+    "run_all_service_tests.cc",
+  ]
+
+  deps = [
+    ":common_initialization",
+    "//lib/base",
+    "//lib/base/test:test_support",
+  ]
+}
+
+source_set("test_support") {
+  sources = [
+    "test_connector_factory.cc",
+    "test_connector_factory.h",
+  ]
+
+  public_deps = [
+    "//lib/base",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+  ]
+
+  deps = [
+    "//lib/mojo/public/cpp/bindings",
+  ]
+}

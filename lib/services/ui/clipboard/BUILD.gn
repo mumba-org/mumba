@@ -1,0 +1,56 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/services/service_manager/public/tools/test/service_test.gni")
+import("//lib/testing/test.gni")
+
+source_set("lib") {
+  sources = [
+    "clipboard_impl.cc",
+    "clipboard_impl.h",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/mojo/common",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/ui/public/interfaces",
+  ]
+}
+
+source_set("tests") {
+  # testonly = true
+
+  sources = [
+    "clipboard_unittest.cc",
+  ]
+
+  deps = [
+    "//lib/base",
+    "//lib/mojo/common",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/cpp:service_test_support",
+    "//lib/services/ui/public/interfaces",
+  ]
+
+  data_deps = [
+    ":lib",
+    "//lib/services/ui",
+  ]
+}
+
+service_manifest("unittest_manifest") {
+  name = "clipboard_unittests"
+  source = "test_manifest.json"
+}
+
+catalog("tests_catalog") {
+  # testonly = true
+  embedded_services = [ ":unittest_manifest" ]
+  standalone_services = [ "//lib/services/ui:manifest" ]
+}

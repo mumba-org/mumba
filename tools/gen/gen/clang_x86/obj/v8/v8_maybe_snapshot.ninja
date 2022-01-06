@@ -1,0 +1,9 @@
+defines = -DV8_DEPRECATION_WARNINGS -DUSE_UDEV -DUSE_AURA=1 -DUSE_GLIB=1 -DUSE_NSS_CERTS=1 -DUSE_X11=1 -DFULL_SAFE_BROWSING -DSAFE_BROWSING_CSD -DSAFE_BROWSING_DB_LOCAL -DCHROMIUM_BUILD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -DCR_CLANG_REVISION=\"330570-1\" -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DCOMPONENT_BUILD -DCR_LIBCXX_REVISION=329375 -DCR_LIBCXXABI_REVISION=329629 -DCR_SYSROOT_HASH=b8639749e2b561a7462d7e7978ca74ee4044bdab -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED=0
+include_dirs = -I../../.. -I../../../lib -I../../../kit/cpp -Iclang_x86/gen -Iclang_x86/gen/lib -Iclang_x86/gen/kit/cpp
+label_name = v8_maybe_snapshot
+target_out_dir = clang_x86/obj/v8
+target_output_name = v8_maybe_snapshot
+
+build clang_x86/obj/v8/v8_maybe_snapshot.inputdeps.stamp: clang_x86_stamp clang_x86/obj/third_party/icu/icudata.stamp clang_x86/obj/v8/js2c.stamp clang_x86/obj/v8/js2c_experimental_extras.stamp clang_x86/obj/v8/js2c_extras.stamp clang_x86/obj/v8/natives_blob.stamp clang_x86/obj/v8/run_mksnapshot_default.stamp clang_x86/obj/v8/run_torque.stamp clang_x86/obj/v8/v8_dump_build_config.stamp clang_x86/obj/v8/src/inspector/inspector_injected_script.stamp clang_x86/obj/v8/src/inspector/protocol_compatibility.stamp clang_x86/obj/v8/src/inspector/protocol_generated_sources.stamp
+
+build clang_x86/obj/v8/v8_maybe_snapshot.stamp: clang_x86_stamp || clang_x86/obj/v8/v8_external_snapshot.stamp clang_x86/obj/v8/v8_base.stamp clang_x86/libicui18n.so.TOC clang_x86/libicuuc.so.TOC clang_x86/obj/v8/v8_headers.stamp clang_x86/obj/v8/v8_version.stamp clang_x86/libv8_libbase.so.TOC clang_x86/obj/v8/v8_libsampler.stamp clang_x86/obj/v8/src/inspector/inspector.stamp

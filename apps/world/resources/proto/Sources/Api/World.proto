@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package world;
+
+message VersionInfo {
+  string version = 1;
+}
+
+// The World service definition.
+service World {
+  rpc Version(VersionInfo) returns (VersionInfo);
+}

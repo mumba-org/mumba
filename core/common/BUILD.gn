@@ -1,0 +1,380 @@
+# Copyright 2018 Mumba. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/features.gni")
+import("//build/config/sysroot.gni")
+import("//build/config/ui.gni")
+import("//build/buildflag_header.gni")
+import("//build/config/jumbo.gni")
+import("//core/common/zygote_features.gni")
+import("//lib/media/media_options.gni")
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+import("//lib/ipc/features.gni")
+import("//third_party/webrtc/webrtc.gni")
+import("//tools/ipc_fuzzer/ipc_fuzzer.gni")
+import("//third_party/protobuf/proto_library.gni")
+
+config("sqlite_warnings") {
+  cflags = []
+  if (is_clang) {
+    cflags += [ "-Wno-sign-compare" ]
+    cflags += [ "-Wno-writable-strings" ]
+    cflags += [ "-Wno-sometimes-uninitialized" ]
+    cflags += [ "-Wno-unused-function" ]
+    cflags += [ "-Wno-deprecated-register" ]
+    cflags += [ "-Wno-unused-value" ]
+  }
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+
+  flags = [
+    #"USE_EXTERNAL_POPUP_MENU=$use_external_popup_menu",
+   # "ALLOW_CRITICAL_MEMORY_PRESSURE_HANDLING_IN_FOREGROUND=$allow_critical_memory_pressure_handling_in_foreground",
+  ]
+}
+
+buildflag_header("zygote_buildflags") {
+  header = "zygote_buildflags.h"
+  flags = [ "USE_ZYGOTE_HANDLE=$use_zygote_handle" ]
+}
+
+component("common") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+    #"//build/config/compiler:no_rtti",
+  ]
+  configs = []
+  configs = default_compiler_configs
+  defines = [
+    "CONTENT_IMPLEMENTATION=1"
+  ]
+  include_dirs = [
+    "//kit/cpp",
+    "$root_gen_dir/kit/cpp/"
+  ]
+  sources = [
+    "all_messages.h",
+    "android/gin_java_bridge_errors.cc",
+    "android/gin_java_bridge_errors.h",
+    "android/gin_java_bridge_value.cc",
+    "android/gin_java_bridge_value.h",
+    "android/hash_set.cc",
+    "android/hash_set.h",
+    "android/media_metadata_android.cc",
+    "android/media_metadata_android.h",
+    "android/sync_compositor_statics.cc",
+    "android/sync_compositor_statics.h",
+    "android/use_zoom_for_dsf_policy_android.cc",
+   # "block/block.cc",
+   # "block/block.h",
+   # "block/block_builder.cc",
+   # "block/block_builder.h",
+   # "block/block_expression.cc",
+   # "block/block_expression.h",
+   # "block/block_opcode.h",
+   # "block/block_parser.cc",
+   # "block/block_parser.h",
+   # "block/block_file.cc",
+   # "block/block_file.h",
+   # "block/character_stream.cc",
+   # "block/character_stream.h",
+   # "block/message.cc",
+   # "block/message.h",
+   # "block/scan_util.h",
+   # "block/scanner.cc",
+   # "block/scanner.h",
+   # "block/tokens.cc",
+   # "block/tokens.h",
+   # "block/vector.h",
+    #"bundle/bundle_file.cc",
+    #"bundle/bundle_file.h",
+    #"bundle/data_pack.cc",
+    #"bundle/data_pack.h",
+    #"bundle/resource_handle.h",
+   # "data/data_arena.cc",
+   # "data/data_arena.h",
+   # "data/data_atom.cc",
+   # "data/data_atom.h",
+   # "data/data_common.cc",
+   # "data/data_common.h",
+   # "data/data_memory.cc",
+   # "data/data_memory.h",
+   # "data/data_serializer.cc",
+   # "data/data_serializer.h",
+   # "data/data_source.h",
+   # "data/data_stream.cc",
+   # "data/data_stream.h",
+   # "data/data_table.cc",
+   # "data/data_table.h",
+   # "data/data_types.h",
+   # "data/result_set.h",
+   # "query/query_decoder.cc",
+   # "query/query_decoder.h",
+   # "query/query_encoder.cc",
+   # "query/query_encoder.h",
+    "application_messages.h",
+    "batch_messages.h",
+    "client_messages.h",
+    "common_message_generator.cc",
+    "common_message_generator.h",
+    "common_param_traits.cc",
+    "common_param_traits.h",
+    "common_param_traits_macros.h",
+    "constants.cc",
+    "constants.h",
+    "content_constants.cc",
+    "content_constants.h",
+    "content_constants_internal.cc",
+    "content_ipc_logging.h",
+    "content_ipc_logging.cc",
+    "shell_info.h",
+    "shell_status_code.h",
+    "content_security_policy_header.cc",
+    "content_security_policy_header.h",
+    "common_data.cc",
+    "common_data.h",
+    "env_vars.h",
+    "env_vars.cc",
+    "font_config_ipc_linux.cc",
+    "font_config_ipc_linux.h",
+    "font_list.cc",
+    "font_list.h",
+    "font_list_android.cc",
+    "font_list_fontconfig.cc",
+    "font_list_mac.mm",
+    "font_list_win.cc",
+    "font_loader_dispatcher_mac.cc",
+    "font_loader_dispatcher_mac.h",
+    "file_descriptor_info.h",
+    "file_descriptor_info_impl.cc",
+    "file_descriptor_info_impl.h",
+    "fixed_received_data.cc",
+    "fixed_received_data.h",
+    "gin_java_bridge_messages.h",
+    "in_process_child_thread_params.cc",
+    "in_process_child_thread_params.h",
+    "mac/attributed_string_coder.h",
+    "mac/attributed_string_coder.mm",
+    "mac/font_loader.h",
+    "mac/font_loader.mm",
+    "manifest_share_target_util.cc",
+    "manifest_share_target_util.h",
+    "manifest_util.cc",
+    "manifest_util.h",
+    "main_params.h",
+    "media/video_capture.h",
+    "protocol/compound_buffer.cc",
+    "protocol/compound_buffer.h",
+    "protocol/message_channel_factory.h",
+    "protocol/message_decoder.cc",
+    "protocol/message_decoder.h",
+    "protocol/message_pipe.h",
+    "protocol/message_reader.cc",
+    "protocol/message_reader.h",
+    "protocol/message_serialization.cc",
+    "protocol/message_serialization.h",
+    "protocol/peer_datagram_socket.h",
+    "protocol/peer_stream_socket.h",
+    "page_type.h",
+    "pref_names.cc",
+    "pref_names.h",
+    "process_launcher_delegate.cc",
+    "process_launcher_delegate.h",
+    "process_type.cc",
+    "process_type.h",
+    "request_peer.h",
+    "resource_messages.h",
+    "result_code.h",
+    "request_codes.cc",
+    "request_codes.h",
+    "sandbox_init_linux.cc",
+    "sandbox_init_mac.cc",
+    "sandbox_init_win.cc",
+    "shared_data.cc",
+    "shared_data.h",
+    "sandboxed_process_launcher_delegate.cc",
+    "sandboxed_process_launcher_delegate.h",
+    "status.h",
+    "send_zygote_child_ping_linux.cc",
+    "send_zygote_child_ping_linux.h",
+    "task_scheduler.cc",
+    "task_scheduler.h",
+    "text_input_client_messages.h",
+    "text_input_state.cc",
+    "text_input_state.h",
+    "utility_messages.h",
+    "command_messages.h",
+    "view_message_enums.h",
+    "view_messages.h",
+    "zygote_fork_delegate_linux.h",
+  ]
+  
+  public_deps = [
+    ":proto_lite",
+    "//core/shared/common:mojom",
+    ":zygote_buildflags",
+    "//lib/gpu/ipc/client:client",
+    "//lib/ipc",
+    "//lib/ui/events/blink",
+    "//lib/ui/events/mojo:interfaces",
+    "//lib/services/service_manager/public/mojom:mojom_blink",
+    "//kit/cpp/ui/accessibility",
+    "//lib/services/network:network_service",
+    "//lib/services/network/public/mojom",
+    "//lib/storage:storage_common",
+  ] 
+  deps = [
+    "//core/shared/common:common_shared",
+    "//core/shared/common:export",
+    "//mumba/app/resources:resources",
+    "//mumba/app:content_strings",
+    "//lib/base:base",
+    "//lib/components/discardable_memory/common",
+    "//lib/ipc",
+    "//lib/mojo/edk",
+    "//lib/mojo/public/cpp/system",
+    "//lib/mojo/public/mojom/base",
+    "//lib/mojo/public/cpp/bindings",
+    "//lib/mojo/public/cpp/bindings:wtf_support",
+    "//lib/net",
+    "//lib/sandbox",
+    "//lib/sandbox:sandbox_buildflags",
+    "//lib/services/device/public/mojom:constants",
+    "//lib/services/service_manager/sandbox",
+    "//lib/services/network:network_service",
+    "//lib/services/network/public/cpp",
+    "//lib/services/network/public/mojom",
+    "//lib/services/resource_coordinator/public/cpp:resource_coordinator_cpp",
+    "//lib/services/service_manager",
+    "//lib/services/service_manager/embedder",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/service_manager/runner/common",
+    "//lib/skia",
+    "//lib/ui/gfx",
+    "//lib/ui/gfx/geometry",
+    "//lib/ui/events/mojo:interfaces",
+    "//lib/url",
+    "//lib/url/ipc:url_ipc",
+    "//third_party/boringssl",
+    "//third_party/icu",
+    "//third_party/protobuf:protobuf_lite"  
+  ]
+
+  if (is_android && use_seccomp_bpf) {
+    set_sources_assignment_filter([])
+    sources += [
+      "//lib/services/service_manager/sandbox/linux/bpf_base_policy_linux.cc",
+      "//lib/services/service_manager/sandbox/linux/bpf_base_policy_linux.h",
+    ]
+    set_sources_assignment_filter(sources_assignment_filter)
+  }
+
+  if (is_mac) {
+    deps += [ "//lib/sandbox/mac:seatbelt" ]
+  }
+
+  if (is_android) {
+    deps += [
+      "//core/android:common_aidl",
+      "//core/android:jni",
+    ]
+
+    libs += [ "android" ]
+  }
+
+  if (enable_webrtc) {
+    sources += [
+      "p2p_messages.h",
+      "p2p_socket_type.h",
+    ]
+    deps += [
+      "//third_party/webrtc/rtc_base:rtc_base",
+      "//third_party/webrtc_overrides",
+    ]
+  }
+
+  if (is_linux) {
+    deps += [ "//third_party/fontconfig" ]
+  }
+
+  if (is_mac || is_win || is_android || is_fuchsia) {
+    sources -= [ "font_list_fontconfig.cc" ]
+  }
+
+  if (is_mac) {
+    deps += [ "//lib/media/gpu" ]
+  }
+
+  if (enable_ipc_fuzzer) {
+    configs += [ "//tools/ipc_fuzzer:ipc_fuzzer_config" ]
+    sources += [
+      "external_ipc_dumper.cc",
+      "external_ipc_dumper.h",
+    ]
+  }
+
+  if (is_fuchsia) {
+    sources += [
+      "font_list_fuchsia.cc",
+      "sandbox_policy_fuchsia.cc",
+      "sandbox_policy_fuchsia.h",
+    ]
+  }
+  if (use_zygote_handle) {
+    sources += [ "zygote_handle.h" ]
+  }
+
+}
+
+
+# This target allows other targets to depend on result_codes.h which is a
+# header-only dependency, without bringing in all of content.
+source_set("result_codes") {
+  sources = [
+    "result_codes.h",
+  ]
+}
+
+# This target allows other targets to depend on content_descriptors.h which is
+# a header-only dependency, without bringing in all of content.
+source_set("content_descriptors") {
+  sources = [
+    "content_descriptors.h",
+  ]
+
+  # The header uses V8_USE_EXTERNAL_STARTUP_DATA.
+  #public_configs = [ "//v8:external_startup_data" ]
+
+  deps = [
+    "//lib/ipc",
+  ]
+}
+
+source_set("content_descriptor_keys") {
+  sources = [
+    "content_descriptor_keys.cc",
+    "content_descriptor_keys.h",
+  ]
+}
+
+group("proto_lite") {
+    public_deps = [
+      ":proto",
+      "//third_party/protobuf:protobuf_lite",
+    ]
+}
+
+proto_library("proto") {
+    sources = [
+      "proto/objects.proto",
+      "proto/control.proto",
+      "proto/event.proto",
+      "proto/internal.proto",
+      "proto/mux.proto",
+    ]
+}

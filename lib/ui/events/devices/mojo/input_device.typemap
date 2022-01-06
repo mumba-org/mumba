@@ -1,0 +1,28 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+mojom = "//lib/ui/events/devices/mojo/input_devices.mojom"
+public_headers = [
+  "//ui/events/devices/input_device.h",
+  "//ui/events/devices/stylus_state.h",
+  "//ui/events/devices/touchscreen_device.h",
+]
+traits_headers = [ "//lib/ui/events/devices/mojo/input_device_struct_traits.h" ]
+sources = [
+  "//lib/ui/events/devices/mojo/input_device_struct_traits.cc",
+]
+public_deps = [
+  "//lib/ui/events/devices",
+]
+deps = [
+  "//lib/ui/gfx/geometry",
+  "//lib/ui/gfx/geometry/mojo:struct_traits",
+]
+
+type_mappings = [
+  "ui.mojom.InputDeviceType=ui::InputDeviceType",
+  "ui.mojom.InputDevice=ui::InputDevice",
+  "ui.mojom.StylusState=ui::StylusState",
+  "ui.mojom.TouchscreenDevice=ui::TouchscreenDevice",
+]

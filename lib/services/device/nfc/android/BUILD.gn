@@ -1,0 +1,31 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/android/config.gni")
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  visibility = [
+    "//lib/services:*",
+    "//lib/services/device:*",
+  ]
+  java_files = [
+    "java/src/org/chromium/device/nfc/InvalidNfcMessageException.java",
+    "java/src/org/chromium/device/nfc/NfcProviderImpl.java",
+    "java/src/org/chromium/device/nfc/NfcImpl.java",
+    "java/src/org/chromium/device/nfc/NfcMessageValidator.java",
+    "java/src/org/chromium/device/nfc/NfcTagHandler.java",
+    "java/src/org/chromium/device/nfc/NfcTypeConverter.java",
+  ]
+
+  deps = [
+    "//lib/base:base_java",
+    "//lib/mojo/public/java:bindings_java",
+    "//lib/mojo/public/java:system_java",
+    "//lib/services/device/public/java:nfc_java",
+    "//lib/services/device/public/mojom:mojom_java",
+    "//lib/services/service_manager/public/java:service_manager_java",
+    "//lib/services/service_manager/public/mojom:mojom_java",
+  ]
+}

@@ -1,0 +1,77 @@
+# Copyright 2018 Mutante. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build_overrides/build.gni")
+
+component("builder") {
+  if (is_clang) {
+    configs -= [ "//build/config/clang:find_bad_constructs"]
+    configs -= [ "//build/config/clang:extra_warnings" ]
+  }
+
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+  ]
+  sources = [
+    "browse.cc",
+    "browse.h",
+    "browse_py.h",
+    "build.cc",
+    "build.h",
+    "build_log.cc",
+    "build_log.h",
+    "clean.cc",
+    "clean.h",
+    "clparser.cc",
+    "clparser.h",
+    "debug_flags.cc",
+    "debug_flags.h",
+    "depfile_parser.cc",
+    "depfile_parser.h",
+    "deps_log.cc",
+    "deps_log.h",
+    "disk_interface.cc",
+    "disk_interface.h",
+    "edit_distance.cc",
+    "edit_distance.h",
+    "eval_env.cc",
+    "eval_env.h",
+    "exit_status.h",
+    "getopt.c",
+    "getopt.h",
+    "graph.cc",
+    "graph.h",
+    "graphviz.cc",
+    "graphviz.h",
+    "hash_map.h",
+    "includes_normalize.h",
+    "lexer.cc",
+    "lexer.h",
+    "line_printer.cc",
+    "line_printer.h",
+    "manifest_parser.cc",
+    "manifest_parser.h",
+    "metrics.cc",
+    "metrics.h",
+    "state.cc",
+    "state.h",
+    "string_piece.h",
+    "subprocess.h",
+    "subprocess-posix.cc",
+    "timestamp.h",
+    "util.cc",
+    "util.h",
+    "version.cc",
+    "version.h",
+  ]
+
+  deps = [
+    "//lib/base",
+  ]
+  defines = [
+    "NINJA_PYTHON=\"python\"",
+  ]
+
+}

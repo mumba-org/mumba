@@ -1,0 +1,14 @@
+static_library("PosixShim") {
+  sources = [
+   "src/c-atomics.c",
+   "src/posix_shim.cc",
+   "module.modulemap"
+  ]
+
+  if (is_linux) {
+    sources += [
+      "src/shim.c",
+      "src/posix_shim_linux.cc",
+    ]
+  }
+}

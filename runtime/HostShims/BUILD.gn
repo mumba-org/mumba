@@ -1,0 +1,48 @@
+# Copyright 2018 Mumba. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+component("HostShims") {
+  sources = [
+    "Globals.h",
+    "HostShims.cc",
+    "HostShims.h",
+    "ProcessMainRunner.cc",
+    "ProcessMainRunner.h",
+    "mumba_service_manager_main_delegate.h",
+    "mumba_service_manager_main_delegate.cc",
+    "shell_crash_reporter_client.cc",
+    "shell_crash_reporter_client.h"
+  ]
+  defines = [ 
+    "COMPONENT_BUILD=1",
+    "CONTENT_IMPLEMENTATION=1"
+  ]
+  deps = [
+    "//lib/base", 
+    "//lib/ipc",
+    "//lib/storage/common",
+    #"//core/modules/shared:shell_shared",
+    "//lib/components/crash/content/app",
+    #"//lib/components/crash/content/app:test_support",
+    "//lib/components/crash/content/browser",
+    "//lib/components/crash/core/common:crash_key",
+    "//lib/services/service_manager",
+    "//lib/services/service_manager/embedder",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/service_manager/public/mojom",
+    "//lib/services/service_manager/runner/common",
+    "//lib/media/mojo/interfaces",
+    "//lib/services/tracing",
+    "//lib/components/tracing",
+    "//lib/components/tracing:startup_tracing",
+    "//core/utility",
+    "//core/gpu",
+    "//core/shared/common:common_shared",
+    "//core/common",
+    "//core/domain",
+    "//core/host",
+    "//third_party/webrtc_overrides:init_webrtc",
+    "//third_party/crashpad/crashpad/handler:crashpad_handler"
+  ]
+}

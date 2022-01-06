@@ -1,0 +1,262 @@
+// Copyright 2019 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "core/shared/common/mojom/objects.mojom";
+
+enum StorageType {
+  kRaw = 0,
+  kData,
+  kFile,
+};
+
+// not the usual mojo, but instead of designing objects
+// we rather create a simple C like interface with only 
+// one state, the context
+
+struct StorageParameters {
+  string shell_name;
+};
+
+struct StorageContext {
+  uint32 id;
+};
+
+enum ShareEventType {
+  kMetadataChanged = 0,
+  kDataContentChanged,
+  kFileContentChanged,
+};
+
+struct ShareEvent {
+  ShareEventType type;
+};
+
+struct ShareStorageEntry {
+  string name;
+  string path;
+  string content_type;
+  int32 offset;
+  int64 size;
+  int32 blocks;
+  int32 start_block;
+  int32 end_block;
+  int64 created_time;
+};
+
+enum InfoKind {
+  kRAW = 0,
+  kDATA,
+  kFILE
+};
+
+enum InfoState {
+  kNONE = 0,
+  kCHECKING,
+  kDOWNLOADING_META,
+  kDOWNLOADING,
+  kFINISHED,
+  kSEEDING,
+  kERROR
+};
+
+struct ShareInfo {
+  string uuid;
+  string path;
+  InfoKind kind;
+  InfoState state;
+  string root_hash;
+  int64 size;
+  int32 blocks;
+  int32 block_size;
+  int64 created_time;
+  int32 entry_count;
+  array<ShareStorageEntry> entries;
+};
+
+enum Seek {
+  EQ = 0,
+  LT = 1,
+  LE = 2,
+  GT = 3,
+  GE = 4
+};
+
+enum Order {
+  ANY = 0,
+  ASC = 1,
+  DESC = 3
+};
+
+interface DataCursor {
+  IsValid() => (bool valid);
+  [sync]
+  First() => (int32 r);
+  [sync]
+  Last() => (int32 r);
+  [sync]
+  Previous() => (int32 r);
+  [sync]
+  Next() => (int32 r);
+  SeekTo(array<uint8> key, Seek seek) => (int32 r, bool match);
+  DataSize() => (int32 r, int64 size);
+  Count() => (int32 r, int64 items);
+  GetData() => (int32 r, array<uint8> data);
+  GetKeyValue() => (int32 r, KeyValue kv);
+  Get(array<uint8> key) => (int32 r, KeyValue kv);
+  [sync]
+  Insert(KeyValue kv) => (int32 r);
+  [sync]
+  Delete() => (int32 r);
+  [sync]
+  Commit() => (int32 r);
+  [sync]
+  Rollback() => (int32 r);
+};
+
+interface FileCursor {
+  IsValid() => (bool valid);
+  [sync]
+  First() => (int32 r);
+  [sync]
+  Last() => (int32 r);
+  [sync]
+  Previous() => (int32 r);
+  [sync]
+  Next() => (int32 r);
+  SeekTo(array<uint8> key, Seek seek) => (int32 r, bool match);
+  GetSize() => (int32 r, int64 size);
+  Count() => (int32 r, int64 items);
+  Read(int32 offset, int32 size) => (int32 r, array<uint8> data);
+  [sync]
+  Write(int32 offset, int32 size, array<uint8> data) => (int32 r, int32 written);
+  [sync]
+  Delete() => (int32 r);
+};
+
+interface StorageDispatcher {
+  // context
+  OnContextDestroy(uint32 context_id, DomainStatus status);
+
+  // shares
+  OnShareCreate(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareAdd(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareOpen(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareClose(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareDelete(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareRead(uint32 context_id, int32 req, string tid, DomainStatus status, int64 bytes_readed);
+  OnShareWrite(uint32 context_id, int32 req, string tid, DomainStatus status, int64 bytes_written);
+  OnSharePaused(uint32 context_id, int32 req, string tid);
+  OnShareResumed(uint32 context_id, int32 req, string tid);
+  OnShareChecked(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnSharePieceComplete(uint32 context_id, int32 req, string tid, uint32 piece_offset);
+  OnShareFileComplete(uint32 context_id, int32 req, string tid, int32 file_offset);
+  OnShareDownloading(uint32 context_id, int32 req, string tid);
+  OnShareComplete(uint32 context_id, int32 req, string tid);
+  OnShareSeeding(uint32 context_id, int32 req, string tid);
+  OnShareShare(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareUnshare(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareSubscribe(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareUnsubscribe(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnShareEvent(uint32 context_id, int32 req, string tid, ShareEvent event);
+
+  OnShareDHTAnnounceReply(uint32 context_id, int32 req, string tid, int32 peers);
+  OnShareMetadataReceived(uint32 context_id, int32 req, string tid);
+  OnShareMetadataError(uint32 context_id, int32 req, string tid, int32 error); 
+  OnSharePieceReadError(uint32 context_id, int32 req, string tid, int32 piece, int32 error);
+  OnSharePiecePass(uint32 context_id, int32 req, string tid, int32 piece);
+  OnSharePieceFailed(uint32 context_id, int32 req, string tid, int32 piece);
+  OnSharePieceRead(uint32 context_id, int32 req, string tid, int32 piece, int64 offset, int64 size, int64 block_size, int32 result);
+  OnSharePieceWrite(uint32 context_id, int32 req, string tid, int32 piece, int64 offset, int64 size, int64 block_size, int32 result);
+  OnSharePieceHashFailed(uint32 context_id, int32 req, string tid, int32 piece);
+  OnShareCheckingFiles(uint32 context_id, int32 req, string tid);
+  OnShareDownloadingMetadata(uint32 context_id, int32 req, string tid);
+  OnShareFileRenamed(uint32 context_id, int32 req, string tid, int32 file_offset, string name, int32 error);
+
+  // files
+  OnFileCreate(uint32 context_id, int32 req, string tid, string file, DomainStatus status);
+  OnFileAdd(uint32 context_id, int32 req, string tid, string file, DomainStatus status);
+  OnFileOpen(uint32 context_id, int32 req, string tid, string file, DomainStatus status);
+  OnFileDelete(uint32 context_id, int32 req, string tid, string file, DomainStatus status);
+  OnFileReadOnce(uint32 context_id, int32 req, string tid, string file, DomainStatus status, int64 bytes_readed, handle<shared_buffer> data);
+  OnFileRead(uint32 context_id, int32 req, string tid, string file, DomainStatus status, int64 bytes_written);
+  OnFileWrite(uint32 context_id, int32 req, string tid, string file, DomainStatus status, int64 bytes_written);
+  OnFileWriteOnce(uint32 context_id, int32 req, string tid, string file, DomainStatus status, int64 bytes_written);
+  OnFileClose(uint32 context_id, int32 req, string tid, string file, DomainStatus status);
+  OnFileRename(uint32 context_id, int32 req, string tid, string file, DomainStatus status);
+
+  // data
+  OnDataClose(uint32 context_id, int32 req, string tid, DomainStatus status);  
+  OnDataDrop(uint32 context_id, int32 req, string tid, DomainStatus status);
+  OnDataCreateKeyspace(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status);
+  OnDataDeleteKeyspace(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status);
+  OnDataListKeyspaces(uint32 context_id, int32 req, string tid, DomainStatus status, array<string> keyspaces);
+  OnDataPut(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status, int64 wrote);
+  OnDataGet(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status, int64 wrote);
+  OnDataGetOnce(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status, int64 readed, handle<shared_buffer> data);
+  OnDataGetFailed(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status);
+  OnDataDelete(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status);
+  OnDataDeleteAll(uint32 context_id, int32 req, string tid, string keyspace, DomainStatus status);
+  
+  OnIndexResolveId(uint32 context_id, int32 req, string address, string resolved_uuid, DomainStatus status);
+  
+};
+
+interface StorageDispatcherHost {
+  [Sync] ContextCreate(StorageParameters params) => (StorageContext context);
+  ContextDestroy(uint32 context_id);
+
+  StorageGetAllocatedSize(uint32 context_id, int32 req) => (uint32 context_id, int32 req, int64 size);
+  StorageListShares(uint32 context_id, int32 req) => (uint32 context_id, int32 req, array<ShareInfo> infos);
+  StorageListShareEntries(uint32 context_id, int32 req, string tid) => (uint32 context_id, int32 req, array<ShareStorageEntry> entries);
+
+  // share
+  ShareCreateWithPath(uint32 context_id, int32 req, StorageType type, string name, array<string> keyspaces, string source_path);
+  ShareCreateWithInfohash(uint32 context_id, int32 req, StorageType type, string name, array<string> keyspaces, string infohash);
+  ShareAdd(uint32 context_id, int32 req, string tid, string url);
+  ShareOpen(uint32 context_id, int32 req, StorageType type, string tid, bool create_if_not_exists);
+  ShareExists(uint32 context_id, int32 req, string tid) => (bool exist);
+  ShareRead(uint32 context_id, int32 req, string tid, int64 offset, int64 size, handle<shared_buffer> data);
+  ShareWrite(uint32 context_id, int32 req, string tid, int64 offset, int64 size, handle<shared_buffer> data);
+  ShareClose(uint32 context_id, int32 req, string tid);
+  ShareDelete(uint32 context_id, int32 req, string tid);
+  ShareShare(uint32 context_id, int32 req, string tid);
+  ShareUnshare(uint32 context_id, int32 req, string tid);
+  ShareSubscribe(uint32 context_id, int32 req, string tid);
+  ShareUnsubscribe(uint32 context_id, int32 req, string tid);
+  
+  // file
+  FileCreate(uint32 context_id, int32 req, string tid, string file);
+  FileAdd(uint32 context_id, int32 req, string tid, string file, string path);
+  FileOpen(uint32 context_id, int32 req, string tid, string file);
+  FileDelete(uint32 context_id, int32 req, string tid, string file);
+  FileRename(uint32 context_id, int32 req, string tid, string input, string output);
+  FileReadOnce(uint32 context_id, int32 req, string tid, string file, int64 offset, int64 size);
+  FileRead(uint32 context_id, int32 req, string tid, string file, int64 offset, int64 size, handle<shared_buffer> data);
+  FileWrite(uint32 context_id, int32 req, string tid, string file, int64 offset, int64 size, handle<shared_buffer> data);
+  FileWriteOnce(uint32 context_id, int32 req, string tid, string file, int64 offset, int64 size, array<uint8> data);
+  FileClose(uint32 context_id, int32 req, string tid, string file);
+  FileList(uint32 context_id, int32 req, string tid) => (uint32 context_id, int32 req, array<ShareStorageEntry> entries);
+
+  // database
+  DataClose(uint32 context_id, int32 req, string tid);
+  DataDrop(uint32 context_id, int32 req, string tid);
+  DataCreateKeyspace(uint32 context_id, int32 req, string tid, string keyspace);
+  DataDeleteKeyspace(uint32 context_id, int32 req, string tid, string keyspace);
+  DataListKeyspaces(uint32 context_id, int32 req, string tid);
+  DataPut(uint32 context_id, int32 req, string tid, string keyspace, string key, int64 size, handle<shared_buffer> data);
+  DataGet(uint32 context_id, int32 req, string tid, string keyspace, string key, int64 size, handle<shared_buffer> data);
+  DataGetOnce(uint32 context_id, int32 req, string tid, string keyspace, string key);
+  DataDelete(uint32 context_id, int32 req, string tid, string keyspace, string key);
+  DataDeleteAll(uint32 context_id, int32 req, string tid, string keyspace);
+
+  [sync]
+  DataCreateCursor(uint32 context_id, int32 req, string tid, string keyspace, Order order, bool write) => (DataCursor? cursor);
+
+  // index
+  IndexResolveId(uint32 context_id, int32 req, string address);
+
+  // todo: where is the cursor?
+};

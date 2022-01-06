@@ -1,0 +1,162 @@
+# Copyright 2018 Mumba. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/mumba_build.gni")
+import("//build/config/features.gni")
+import("//lib/services/service_manager/public/cpp/service.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/mojo/public/tools/bindings/mojom.gni")
+import("//lib/media/media_options.gni")
+import("//third_party/protobuf/proto_library.gni")
+
+component("mumba-repl") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+    #"//build/config/compiler:no_rtti",
+  ]
+  configs = []
+  configs = default_compiler_configs  
+  sources = [
+    "ReplShims.cc",
+    "ReplShims.h",
+    "linenoise.c",
+    "linenoise.h"
+  ]
+  include_dirs = [
+  ]
+  deps = [
+    "//lib/base",
+    #"//lib/db",
+    #"//lib/data",
+    "//lib/crypto",
+    "//lib/ipc",
+    #"//lib/graphql",
+    "//core/common",
+    "//lib/mojo/edk",
+    "//lib/mojo/public/cpp/system",
+    "//lib/mojo/public/cpp/platform",
+    "//third_party/zlib",
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}
+
+component("mumba-build") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+    #"//build/config/compiler:no_rtti",
+  ]
+  configs = []
+  configs = default_compiler_configs  
+  sources = [
+    "BuildShims.cc",
+    "BuildShims.h",
+  ]
+  #include_dirs = [
+  #]
+  deps = [
+    "//lib/base",
+    "//lib/storage",
+ #   "//lib/db",
+ #   "//lib/data",
+    "//lib/crypto",
+    "//lib/builder",
+    #"//third_party/xcbuild",
+    #"//third_party/CoreFoundation",
+    #"//third_party/libdispatch",
+    "//third_party/zlib",
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}
+
+component("mumba-gen") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+    #"//build/config/compiler:no_rtti",
+  ]
+  configs = []
+  configs = default_compiler_configs  
+  sources = [
+    "GenShims.cc",
+    "GenShims.h",
+  ]
+  include_dirs = [
+    "//tools"
+  ]
+  deps = [
+    "//lib/base",
+   # "//lib/bundle",
+   # "//lib/db",
+   # "//lib/data",
+    "//lib/crypto",
+    "//tools/gen",
+   # "//third_party/zlib",
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}
+
+component("mumba-pack") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+    #"//build/config/compiler:no_rtti",
+  ]
+  configs = []
+  configs = default_compiler_configs  
+  sources = [
+    "PackShims.cc",
+    "PackShims.h",
+  ]
+  include_dirs = [
+  ]
+  deps = [
+    "//lib/base",
+    "//lib/storage",
+   # "//lib/db",
+   # "//lib/data",
+    "//lib/crypto",
+    #"//third_party/libgit2",
+    "//third_party/zlib",
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}
+
+component("mumba-install") {
+  default_compiler_configs -= [
+    "//build/config/clang:find_bad_constructs",
+    "//build/config/clang:extra_warnings",
+    #"//build/config/compiler:no_rtti",
+  ]
+  configs = []
+  configs = default_compiler_configs  
+  sources = [
+    "InstallShims.cc",
+    "InstallShims.h"
+  ]
+  include_dirs = [
+  ]
+  deps = [
+    "//lib/base",
+    "//lib/crypto",
+    "//lib/ipc",
+    "//core/common",
+    "//lib/mojo/edk",
+    "//lib/mojo/public/cpp/system",
+    "//lib/mojo/public/cpp/platform",
+    #"//third_party/zlib",
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}

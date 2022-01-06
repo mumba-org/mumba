@@ -1,0 +1,36 @@
+# Copyright 2015 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+static_library("mus") {
+  visibility = [ "//core/shared/application/*" ]
+
+  sources = [
+    "mus_embedded_frame.cc",
+    "mus_embedded_frame.h",
+    "mus_embedded_frame_delegate.h",
+    "application_window_tree_client_factory.cc",
+    "application_window_tree_client_factory.h",
+    "application_window_tree_client.cc",
+    "application_window_tree_client.h",
+  ]
+
+  #configs += [ "//content:content_implementation" ]
+
+  deps = [
+    "//lib/base",
+    "//lib/cc",
+    "//lib/components/viz/client",
+    "//core/shared/common",
+    "//lib/media/mojo/interfaces:remoting",
+    "//lib/mojo/common",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/services/ui/public/cpp",
+    "//lib/services/ui/public/interfaces",
+    "//third_party/blink/public:blink",
+    "//lib/ui/events:events",
+    "//lib/ui/events:events_base",
+    "//lib/ui/events/blink",
+    "//lib/ui/gfx/geometry/mojo",
+  ]
+}

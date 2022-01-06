@@ -1,0 +1,25 @@
+// Copyright (c) 2021 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#ifndef MUMBA_HOST_BUNDLE_MANAGER_OBSERVER_H_
+#define MUMBA_HOST_BUNDLE_MANAGER_OBSERVER_H_
+
+#include <memory>
+
+#include "base/strings/string_piece.h"
+
+namespace host {
+class Bundle;
+
+class BundleManagerObserver {
+public:
+  virtual ~BundleManagerObserver(){}
+  virtual void OnBundlesLoad(int r, int count) {}
+  virtual void OnBundleAdded(Bundle* bundle) {}
+  virtual void OnBundleRemoved(Bundle* bundle) {}
+};
+
+}
+
+#endif

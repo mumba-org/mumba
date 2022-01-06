@@ -1,0 +1,15 @@
+swift_static("Registry") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+  ]
+  if (is_linux) {
+    deps += [
+      "//kit/swift/PosixShim",
+    ]
+  }
+  sources = [
+    "Sources/UrlRegistry.swift",
+    "Sources/ServiceRegistry.swift"
+  ]
+}

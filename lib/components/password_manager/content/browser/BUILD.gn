@@ -1,0 +1,49 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+static_library("browser") {
+  sources = [
+    "bad_message.cc",
+    "bad_message.h",
+    "content_credential_manager.cc",
+    "content_credential_manager.h",
+    "content_password_manager_driver.cc",
+    "content_password_manager_driver.h",
+    "content_password_manager_driver_factory.cc",
+    "content_password_manager_driver_factory.h",
+    "password_manager_internals_service_factory.cc",
+    "password_manager_internals_service_factory.h",
+  ]
+
+  public_deps = [
+    "//lib/base",
+    #"//lib/components/autofill/content/browser",
+    #"//lib/components/autofill/content/common:mojo_interfaces",
+    #"//lib/components/autofill/core/common",
+    "//lib/components/keyed_service/content",
+    "//lib/components/password_manager/core/browser",
+    "//lib/components/password_manager/core/common",
+    "//lib/components/prefs",
+    #"//content/public/browser",
+    "//core/common",
+    "//lib/mojo/public/cpp/system",
+    "//lib/net",
+  ]
+}
+
+source_set("unit_tests") {
+  # testonly = true
+  sources = [
+    "content_password_manager_driver_unittest.cc",
+  ]
+  deps = [
+    ":browser",
+    "//components/autofill/core/browser:test_support",
+    "//components/password_manager/core/browser:test_support",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+  ]
+}

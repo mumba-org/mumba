@@ -1,0 +1,93 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/services/catalog/public/tools/catalog.gni")
+import("//lib/services/service_manager/public/service_manifest.gni")
+import("//lib/testing/test.gni")
+
+service_manifest("manifest") {
+  name = "preferences"
+  source = "manifest.json"
+}
+
+service_manifest("local_state_manifest") {
+  name = "local_state"
+  source = "local_state_manifest.json"
+}
+
+source_set("preferences") {
+  visibility = [
+    ":*",
+    "//lib/services/preferences/public/cpp:service_main",
+  ]
+  deps = [
+    "//lib/components/prefs",
+    "//lib/mojo/common:values_struct_traits",
+    "//lib/services/preferences/public/cpp",
+    "//lib/services/preferences/public/cpp/lib",
+    "//lib/services/preferences/public/mojom",
+    "//lib/services/preferences/tracked",
+    "//lib/services/service_manager/public/cpp",
+  ]
+  sources = [
+    "persistent_pref_store_impl.cc",
+    "persistent_pref_store_impl.h",
+    "pref_store_impl.cc",
+    "pref_store_impl.h",
+    "pref_store_manager_impl.cc",
+    "pref_store_manager_impl.h",
+    "scoped_pref_connection_builder.cc",
+    "scoped_pref_connection_builder.h",
+    "shared_pref_registry.cc",
+    "shared_pref_registry.h",
+  ]
+}
+
+source_set("tests") {
+  # testonly = true
+  deps = [
+    ":preferences",
+    "//lib/base",
+    "//lib/base/test:test_support",
+    "//lib/components/prefs:test_support",
+    "//lib/mojo/public/cpp/bindings:bindings",
+    "//lib/services/preferences/public/cpp",
+    "//lib/services/preferences/public/cpp:service_main",
+    "//lib/services/preferences/public/cpp/tests",
+    "//lib/services/preferences/public/mojom",
+    "//lib/services/preferences/tracked:unit_tests",
+    "//lib/services/service_manager/public/cpp",
+    "//lib/testing/gmock",
+    "//lib/testing/gtest",
+  ]
+  sources = [
+    "persistent_pref_store_impl_unittest.cc",
+    "pref_store_consistency_unittest.cc",
+    "pref_store_impl_unittest.cc",
+    "unittest_common.cc",
+  ]
+  if (!is_ios) {
+    sources += [ "pref_service_factory_unittest.cc" ]
+    deps += [ "//lib/services/service_manager/public/cpp:service_test_support" ]
+  }
+}
+
+service_manifest("unittest_manifest") {
+  name = "prefs_unittests"
+  source = "unittest_manifest.json"
+  packaged_services = [
+    ":manifest",
+    ":unittest_helper_manifest",
+  ]
+}
+
+service_manifest("unittest_helper_manifest") {
+  name = "prefs_unittest_helper"
+  source = "unittest_helper_manifest.json"
+}
+
+catalog("tests_catalog") {
+  # testonly = true
+  embedded_services = [ ":unittest_manifest" ]
+}

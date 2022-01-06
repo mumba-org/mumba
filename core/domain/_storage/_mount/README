@@ -1,0 +1,58 @@
+making room for the upcoming graph, node and edges.
+
+The shell owner will model the behavior for each entry point
+
+(input) -> '/people' (mount context) -> graph -> graph node -> (compute flow) -> (output)
+
+
+(5, 4) -> '/addme' -> (adder graph) -> (9)
+
+
+-- adder graph --
+
+
+-- input --  --transform-- --output--
+ 
+ (a) -----
+ int      |
+          | ---->(fn)---->    (c)
+          |                   int
+ (b) -----
+ int
+
+ This is very simple, but in common cases a flow of 
+ complex data will get in and will get out
+
+ Inputs --
+
+ Can be devices, namespaces, mount entries(routes), IPC, RPC, etc..
+
+ Outputs --
+
+ The same as inputs.. you can save the output in a blob
+ or pass through a IPC concept to deliver the data to a app
+ or you can have a accumulator to make blocks to deliver
+ in bigger pieces the the real output
+
+ Devices - 
+
+ Besides hardware stuff like camera or mic, 
+ can be more high level like 'http device', 'mail device', 'web socket device', etc..
+
+ You can have a http device with a fixed url address and deliver or get things 
+ from there
+
+ (or maybe we can use namespaces for that and let devices only for hardware stuff) -- prob. better
+
+
+Simplificando..
+
+Cada node pode apontar para uma Function Signature do V8 que expressa
+os parametros de entrada e saida
+
+O detalhe é que a entrada e saida sao expressas em 'arrow'.. 
+portanto, uma entrada feita com um buffer arrow é processada e convertida 
+para tipos simples que podem então ser consumidos pelas funções expressas
+em V8
+
+Precisamos de um adaptador tipos arrow -> tipos v8

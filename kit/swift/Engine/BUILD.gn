@@ -1,0 +1,52 @@
+swift_static("Engine") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+    "//kit/swift/Net",
+    "//kit/swift/Data",
+    "//kit/swift/Channel",
+    "//kit/swift/Graphics",
+    "//kit/swift/Javascript",
+    "//kit/swift/Python",
+    "//kit/swift/Service",
+    "//kit/swift/App",
+    "//kit/swift/Route",
+    "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/ThirdParty/ProtocolBuffers",
+    "//kit/swift/ThirdParty/CGRPCZlib"
+  ]
+  public_deps = [
+    "//kit/swift/Web",
+    "//kit/swift/Compositor",
+    "//kit/swift/Gpu",
+    "//kit/swift/GL",
+    "//kit/swift/_C",
+  ]
+  if (is_linux) {
+    deps += [
+      "//kit/swift/PosixShim",
+    ]
+  }
+  sources = [
+    "Sources/Route/RouteBuilder.swift",
+    "Sources/Route/RouteManager.swift",
+    "Sources/Route/Route.swift",
+    "Sources/Application/Automation.swift",
+    "Sources/Application/Application.swift",
+    "Sources/Application/ApplicationEntry.swift",
+    "Sources/Application/ApplicationInstance.swift",
+    "Sources/Application/Page.swift",
+    "Sources/C.swift",
+    #"Sources/DatabaseCursor.swift",
+    #"Sources/Database.swift",
+    #"Sources/Filebase.swift",
+    #"Sources/FilebaseCursor.swift",
+    "Sources/Engine.swift",
+    "Sources/Errors.swift",
+    "Sources/Instance.swift",
+    "Sources/Status.swift",
+    #"Sources/Storage.swift",
+    #"Sources/SharedMemory.swift",
+    #"Sources/Torrent.swift"
+  ]
+}
