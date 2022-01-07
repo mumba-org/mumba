@@ -25,6 +25,10 @@ std::unique_ptr<Bundle> Bundle::Deserialize(net::IOBuffer* buffer, int size) {
   return std::unique_ptr<Bundle>(new Bundle(std::move(bundle_proto)));
 }
 
+Bundle::Bundle(): managed_(false) {
+  id_ = base::UUID::generate();
+}
+
 Bundle::Bundle(const std::string& name, const base::FilePath& path, const std::string& executable_path, const std::string& resources_path):
   path_(path),
   managed_(false) {
@@ -76,6 +80,10 @@ void Bundle::set_executable_path(const std::string& executable_path) {
 
 void Bundle::set_resources_path(const std::string& resources_path) {
   bundle_proto_.set_resources_path(resources_path);
+}
+
+void Bundle::AddPackage(std::unique_ptr<BundlePackage> package) {
+  packages_.push_back(std::move(package));
 }
 
 scoped_refptr<net::IOBufferWithSize> Bundle::Serialize() const {

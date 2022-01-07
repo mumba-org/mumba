@@ -11,10 +11,12 @@
 #include "base/uuid.h"
 #include "base/strings/string_piece.h"
 #include "base/files/file_path.h"
+#include "core/host/bundle/bundle_info.h"
 #include "third_party/msix/src/inc/public/AppxPackaging.hpp"
 
 namespace host {
 class Bundle;
+class BundlePackage;
 
 class BundleUtils {
 public:
@@ -25,6 +27,7 @@ public:
    */
   static std::string GetPackageUnpackPath(const base::FilePath& package);
   static std::unique_ptr<Bundle> CreateBundleFromBundleFile(const base::FilePath& package);
+  static std::unique_ptr<BundlePackage> CreateBundlePackageFromPackageFile(const base::FilePath& package, BundlePackageType type, uint64_t size);
 
 
 private:

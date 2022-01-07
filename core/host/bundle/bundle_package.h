@@ -21,7 +21,15 @@ public:
   static char kClassName[];
   static std::unique_ptr<BundlePackage> Deserialize(net::IOBuffer* buffer, int size);
 
-  BundlePackage(const std::string& name, const std::string& path, BundlePlatform platform);
+  BundlePackage(const std::string& name, 
+                const std::string& path, 
+                BundlePlatform platform,
+                BundleArchitecture arch,
+                BundlePackageType type,
+                uint64_t size);
+
+  BundlePackage(protocol::BundlePackage package_proto);
+
   ~BundlePackage();
 
   const base::UUID& id() const {
@@ -43,12 +51,26 @@ public:
   BundlePackageType type() const;
   void set_type(BundlePackageType type);
 
+  uint64_t size() const;
+  void set_size(uint64_t size);
+
+  bool is_managed() const {
+    return managed_;
+  }
+
+  void set_managed(bool managed) {
+    managed_ = managed;
+  }
+
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
   
 private:
   
   base::UUID id_;
   protocol::BundlePackage package_proto_;
+  // FIXME: should be part of the proto instead
+  uint64_t size_;
+  bool managed_;
 
   DISALLOW_COPY_AND_ASSIGN(BundlePackage);
 };

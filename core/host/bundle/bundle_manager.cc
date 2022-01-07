@@ -156,22 +156,17 @@ void BundleManager::UnpackBundleImpl(const std::string& name, const base::FilePa
 
   // get the unpacked path of the 
   base::FilePath executable_pack_file = src.DirName().AppendASCII(name + "_app-" + storage::GetIdentifierForHostOS() + ".appx");
-  base::FilePath resource_pack_file = src.DirName().AppendASCII(name + "_resources.appx");
   // both app and service packs will resolve to the same directory, so just on of them will do
-  DLOG(ERROR) << "BundleManager::UnpackBundle: GetPackageUnpackPath for executable package at " << executable_pack_file;
   std::string unpacked_exe_dest_str = BundleUtils::GetPackageUnpackPath(executable_pack_file);
-  DLOG(ERROR) << "BundleManager::UnpackBundle: GetPackageUnpackPath(executable) = " << unpacked_exe_dest_str;
   base::FilePath unpacked_exe_dest = dest.AppendASCII(unpacked_exe_dest_str);
-  DLOG(ERROR) << "BundleManager::UnpackBundle: GetPackageUnpackPath for resource package at " << resource_pack_file;
-  std::string unpacked_res_dest_str = BundleUtils::GetPackageUnpackPath(resource_pack_file);
-  DLOG(ERROR) << "BundleManager::UnpackBundle: GetPackageUnpackPath(resources) = " << unpacked_res_dest_str;
   std::string real_name = SanitizeName(name);
   if (!AfterBundleUnpack(real_name, unpacked_exe_dest)) {
     std::move(callback).Run(false);
     return;
   }
 
-  std::unique_ptr<Bundle> bundle_info = std::make_unique<Bundle>(name, executable_pack_file, unpacked_exe_dest_str, unpacked_res_dest_str);
+  std::unique_ptr<Bundle> bundle_info = BundleUtils::CreateBundleFromBundleFile(src);
+  DCHECK(bundle_info);
   model_->AddBundle(std::move(bundle_info));
 
   std::move(callback).Run(true);

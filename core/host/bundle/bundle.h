@@ -14,6 +14,7 @@
 #include "core/host/serializable.h"
 #include "core/common/proto/objects.pb.h"
 #include "core/host/bundle/bundle_info.h"
+#include "core/host/bundle/bundle_package.h"
 #include "core/shared/common/mojom/bundle.mojom.h"
 
 namespace host {
@@ -40,6 +41,7 @@ public:
   // FIXME: We need to have BundlePackage objects, each one with their own directory
   //        and add them to the bundle.  
   Bundle(const std::string& name, const base::FilePath& path, const std::string& executable_path, const std::string& resources_path);
+  Bundle();
   Bundle(protocol::Bundle bundle_proto);
   ~Bundle() override;
 
@@ -73,6 +75,12 @@ public:
     managed_ = managed;
   }
 
+  const std::vector<std::unique_ptr<BundlePackage>>& packages() const {
+    return packages_;
+  }
+
+  void AddPackage(std::unique_ptr<BundlePackage> package);
+
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
 
 private:
@@ -80,7 +88,8 @@ private:
   base::UUID id_;
   protocol::Bundle bundle_proto_;
   base::FilePath path_;
-  //base::FilePath executable_path_;
+  // fixme: should be added to the proto
+  std::vector<std::unique_ptr<BundlePackage>> packages_;
   
   bool managed_;
 

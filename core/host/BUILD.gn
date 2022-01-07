@@ -1152,6 +1152,8 @@ component("host") {
     "cache_storage/cache_storage_scheduler_client.h",
     "bundle/bundle.cc",
     "bundle/bundle.h",
+    "bundle/bundle_package.cc",
+    "bundle/bundle_package.h",
     "bundle/bundle_executable.cc",
     "bundle/bundle_executable.h",
     "bundle/bundle_manager_observer.h",
