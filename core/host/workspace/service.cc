@@ -84,9 +84,7 @@ const std::string& ServiceHandler::fullname() const {
 }
 
 net::RpcServiceMethod* ServiceHandler::GetMethod(const std::string& method_name) const {
-  //DLOG(INFO) << "ServiceHandler::GetMethod"; 
   for (auto it = methods_.begin(); it != methods_.end(); it++) {
-    //DLOG(INFO) << " comparing '" << (*it)->full_method() << "' and '" << method_name << "'";
     if ((*it)->full_method() == method_name) {
       return *it;
     }

@@ -389,7 +389,7 @@ base::FilePath Workspace::GetApplicationExecutablePath(const std::string& domain
   if (!host) {
     return base::FilePath();
   }
-  std::string bundle_path = host->bundle()->executable_path();
+  std::string bundle_path = host->bundle()->application_path();
   std::string application_name = domain_name + "_app";
   AppStorage* app_storage = storage_->app_storage();
   base::FilePath path = app_storage->GetDirectory(host->id());
@@ -611,7 +611,6 @@ HostRpcService* Workspace::CreateService(
     net::RpcTransportType type,
     scoped_refptr<base::SingleThreadTaskRunner> main_runner,
     std::unique_ptr<net::RpcHandler> rpc_handler) {
-  DLOG(INFO) << "Workspace::CreateService: " << container;
   Schema* schema = ResolveSchemaForService(container, service_name);
   if (!schema) {
     DLOG(ERROR) << "Rpc service schema/descriptor for '" << container << "." << service_name << "' not found. " << "It need to ship into the container/shell as a Api";
@@ -683,14 +682,13 @@ void Workspace::InstallSchemaAndLibrariesFromVolumeCheckout(Volume* volume, cons
   Bundle* bundle = volume->bundle();
   DCHECK(bundle);
   std::string resources_path = bundle->resources_path();
-  std::string executable_path = bundle->executable_path();
+  std::string executable_path = bundle->application_path();
   InstallSchemaFromVolumeCheckout(volume, path.AppendASCII(resources_path));
   InstallLibrariesFromVolumeCheckout(volume, path.AppendASCII(executable_path));
 }
 
 void Workspace::InstallSchemaFromVolumeCheckout(Volume* volume, const base::FilePath& path) {
   base::FilePath schema_path = path.AppendASCII("proto");
-  DLOG(INFO) << "InstallSchemaFromVolumeCheckout: looking for protos at " << schema_path;
   base::FileEnumerator schema_files(schema_path, false, base::FileEnumerator::FILES, FILE_PATH_LITERAL("*.proto"));
   for (base::FilePath schema_file = schema_files.Next(); !schema_file.empty(); schema_file = schema_files.Next()) {
     std::string file_content;
@@ -1429,7 +1427,6 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
   if (!volume_storage()->storage_manager()->GetStorage("world")) {
     base::FilePath world_path;
     base::PathService::Get(base::DIR_ASSETS, &world_path); 
-    DLOG(INFO) << "installing world from " << world_path << " ..";
     base::PostTaskWithTraits(
     FROM_HERE,
     { base::MayBlock(),
@@ -1443,9 +1440,9 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
         base::Bind(&Workspace::OnInstallApplicationFromBundle, 
                    this)));
     //InstallApplicationFromBundle("world", IDR_WORLD_APP);
-  } else {
-    DLOG(INFO) << "world already installed, so doing nothing";
-  }
+  } //else {
+  //  DLOG(INFO) << "world already installed, so doing nothing";
+  //}
 
   initialized_ = true;
   initializing_ = false;

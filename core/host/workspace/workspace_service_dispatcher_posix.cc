@@ -366,10 +366,10 @@ void WorkspaceServiceDispatcher::AddServiceHandlers() {
 }
 
 bool WorkspaceServiceDispatcher::InstallPackagedApp() {
-  if (!workspace_->InstallApplicationFromBundle("world", IDR_WORLD_APP)) {
+  //if (!workspace_->InstallApplicationFromBundle("world", IDR_WORLD_APP)) {
     return false;
-  }
-  return true;
+  //}
+  //return true;
 }
 
 }

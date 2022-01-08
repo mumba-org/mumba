@@ -6,11 +6,11 @@
 
 #include <vector>
 
-#include "AppxPackaging.hpp"
-#include "MSIXFactory.hpp"
-#include "ComHelper.hpp"
-#include "Applicability.hpp"
-#include "VerifierObject.hpp"
+#include "third_party/msix/src/inc/public/AppxPackaging.hpp"
+#include "third_party/msix/src/inc/internal/MSIXFactory.hpp"
+#include "third_party/msix/src/inc/shared/ComHelper.hpp"
+#include "third_party/msix/src/inc/internal/Applicability.hpp"
+#include "third_party/msix/src/inc/internal/VerifierObject.hpp"
 
 // {ff82ffcd-747a-4df9-8879-853ab9dd15a1}
 #ifndef WIN32
@@ -39,7 +39,7 @@ public:
     virtual const std::string& GetFileName() = 0;
     virtual const std::vector<MSIX::Bcp47Tag>& GetLanguages() = 0;
     virtual const std::vector<UINT32>& GetScales() = 0;
-    virtual const std::uint64_t GetOffset() = 0;
+    virtual std::uint64_t GetOffset() = 0;
     virtual bool HasQualifiedResources() = 0;
 };
 MSIX_INTERFACE(IAppxBundleManifestPackageInfoInternal, 0x32e6fcf0,0x729b,0x401d,0x9d,0xbc,0xf9,0x27,0xb4,0x94,0xf9,0xaf);
@@ -137,7 +137,7 @@ namespace MSIX {
         const std::string& GetFileName() override { return m_fileName; }
         const std::vector<Bcp47Tag>& GetLanguages() override { return m_languages; }
         const std::vector<UINT32>& GetScales() override { return m_scales; }
-        const std::uint64_t GetOffset() override { return m_offset; }
+        std::uint64_t GetOffset() override { return m_offset; }
         bool HasQualifiedResources() override { return !m_languages.empty() || !m_scales.empty(); }
 
         // IAppxBundleManifestPackageInfoUtf8

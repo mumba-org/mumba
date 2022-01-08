@@ -117,95 +117,95 @@ scoped_refptr<net::IOBufferWithSize> RouteScheme::Serialize() const {
 }
 
 void RouteScheme::OnDHTAnnounceReply(Share* share, int peers) {
-  DLOG(INFO) << "RouteScheme::OnDHTAnnounceReply: " << name_ << " peers: " << peers;
+  //DLOG(INFO) << "RouteScheme::OnDHTAnnounceReply: " << name_ << " peers: " << peers;
 }
 
 void RouteScheme::OnShareMetadataReceived(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareMetadataReceived: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareMetadataReceived: " << name_;
 }
 
 void RouteScheme::OnShareMetadataError(Share* share, int error) {
-  DLOG(INFO) << "RouteScheme::OnShareMetadataError: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareMetadataError: " << name_;
 }
 
 void RouteScheme::OnSharePieceReadError(Share* share, int piece_offset, int error) {
-  DLOG(INFO) << "RouteScheme::OnSharePieceReadError: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePieceReadError: " << name_;
 }
 
 void RouteScheme::OnSharePiecePass(Share* share, int piece_offset) {
-  DLOG(INFO) << "RouteScheme::OnSharePiecePass: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePiecePass: " << name_;
 }
 
 void RouteScheme::OnSharePieceFailed(Share* share, int piece_offset) {
-  DLOG(INFO) << "RouteScheme::OnSharePieceFailed: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePieceFailed: " << name_;
 }
 
 void RouteScheme::OnSharePieceRead(Share* share, int piece, int64_t offset, int64_t size, int64_t block_size, int result) {
-  DLOG(INFO) << "RouteScheme::OnSharePieceRead: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePieceRead: " << name_;
 }
 
 void RouteScheme::OnSharePieceWrite(Share* share, int piece, int64_t offset, int64_t size, int64_t block_size, int result) {
-  DLOG(INFO) << "RouteScheme::OnSharePieceWrite: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePieceWrite: " << name_;
 }
 
 void RouteScheme::OnSharePieceFinished(Share* share, int piece_offset) {
-  DLOG(INFO) << "RouteScheme::OnSharePieceFinished: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePieceFinished: " << name_;
 }
 
 void RouteScheme::OnSharePieceHashFailed(Share* share, int piece_offset) {
-  DLOG(INFO) << "RouteScheme::OnSharePieceHashFailed: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePieceHashFailed: " << name_;
 }
 
 void RouteScheme::OnShareFileCompleted(Share* share, int piece_offset) {
-  DLOG(INFO) << "RouteScheme::OnShareFileCompleted: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareFileCompleted: " << name_;
 }
 
 void RouteScheme::OnShareFinished(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareFinished: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareFinished: " << name_;
 }
 
 void RouteScheme::OnShareDownloading(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareDownloading: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareDownloading: " << name_;
 }
 
 void RouteScheme::OnShareCheckingFiles(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareCheckingFiles: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareCheckingFiles: " << name_;
 }
 
 void RouteScheme::OnShareDownloadingMetadata(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareDownloadingMetadata: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareDownloadingMetadata: " << name_;
 }
 
 void RouteScheme::OnShareSeeding(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareSeeding: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareSeeding: " << name_;
 }
 
 void RouteScheme::OnSharePaused(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnSharePaused: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnSharePaused: " << name_;
 }
 
 void RouteScheme::OnShareResumed(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareResumed: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareResumed: " << name_;
 }
 
 void RouteScheme::OnShareChecked(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareChecked: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareChecked: " << name_;
 }
 
 void RouteScheme::OnShareDeleted(Share* share) {
-  DLOG(INFO) << "RouteScheme::OnShareDeleted: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareDeleted: " << name_;
 }
 
 void RouteScheme::OnShareDeletedError(Share* share, int error) {
-  DLOG(INFO) << "RouteScheme::OnShareDeletedError: " << name_;
+  //DLOG(INFO) << "RouteScheme::OnShareDeletedError: " << name_;
 }
 
 void RouteScheme::OnShareFileRenamed(Share* share, int file_offset, const std::string& name) {
-  DLOG(INFO) << "RouteScheme::OnShareFileRenamed: " << name_; 
+  //DLOG(INFO) << "RouteScheme::OnShareFileRenamed: " << name_; 
 }
 
 void RouteScheme::OnShareFileRenamedError(Share* share, int index, int error) {
-  DLOG(INFO) << "RouteScheme::OnShareFileRenamedError: " << name_; 
+  //DLOG(INFO) << "RouteScheme::OnShareFileRenamedError: " << name_; 
 }
 
 }

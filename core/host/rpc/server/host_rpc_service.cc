@@ -236,7 +236,6 @@ void HostRpcService::Init() {
   const google::protobuf::ServiceDescriptor* plugin_found = nullptr;
   for (size_t i = 0; i < schema()->service_count(); i++) {
     const google::protobuf::ServiceDescriptor* s = schema()->service_at(i);
-    //DLOG(INFO) << "RpcService::Init: comparing '" << name_  << "' and '" << s->name() << "'";
     if (base::EqualsCaseInsensitiveASCII(s->name(), name())) {
       //DLOG(INFO) << "RpcService::Init: ok, found!";
       found = s;

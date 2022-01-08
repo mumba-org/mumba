@@ -123,6 +123,8 @@ void BundleManager::UnpackBundleFromContentsSync(const std::string& name, base::
 }
 
 void BundleManager::UnpackBundleImpl(const std::string& name, const base::FilePath& src, const base::FilePath& dest, base::OnceCallback<void(bool)> callback) {
+  std::string real_name = SanitizeName(name);
+  
   if (!ValidateBundleBeforeUnpack(src)) {
     std::move(callback).Run(false);
     return;
@@ -154,19 +156,16 @@ void BundleManager::UnpackBundleImpl(const std::string& name, const base::FilePa
     return;  
   }
 
-  // get the unpacked path of the 
-  base::FilePath executable_pack_file = src.DirName().AppendASCII(name + "_app-" + storage::GetIdentifierForHostOS() + ".appx");
-  // both app and service packs will resolve to the same directory, so just on of them will do
-  std::string unpacked_exe_dest_str = BundleUtils::GetPackageUnpackPath(executable_pack_file);
-  base::FilePath unpacked_exe_dest = dest.AppendASCII(unpacked_exe_dest_str);
-  std::string real_name = SanitizeName(name);
+  std::unique_ptr<Bundle> bundle_info = BundleUtils::CreateBundleFromBundleFile(src);
+  DCHECK(bundle_info);
+  
+  base::FilePath unpacked_exe_dest = dest.AppendASCII(bundle_info->application_path());
+  
   if (!AfterBundleUnpack(real_name, unpacked_exe_dest)) {
     std::move(callback).Run(false);
     return;
   }
 
-  std::unique_ptr<Bundle> bundle_info = BundleUtils::CreateBundleFromBundleFile(src);
-  DCHECK(bundle_info);
   model_->AddBundle(std::move(bundle_info));
 
   std::move(callback).Run(true);

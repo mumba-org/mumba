@@ -8,9 +8,9 @@
 #include <utility>
 #include <string>
 
-#include "AppxPackaging.hpp"
-#include "ComHelper.hpp"
-#include "Exceptions.hpp"
+#include "third_party/msix/src/inc/public/AppxPackaging.hpp"
+#include "third_party/msix/src/inc/shared/ComHelper.hpp"
+#include "third_party/msix/src/inc/shared/Exceptions.hpp"
 
 namespace MSIX {
 

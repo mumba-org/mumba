@@ -27,16 +27,18 @@ std::unique_ptr<BundlePackage> BundlePackage::Deserialize(net::IOBuffer* buffer,
 
 BundlePackage::BundlePackage(const std::string& name, 
                              const std::string& path, 
+                             const std::string& src_path,
                              BundlePlatform platform,
                              BundleArchitecture arch,
                              BundlePackageType type,
                              uint64_t size):
-                            size_(size),
                             managed_(false) {
   id_ = base::UUID::generate();
   package_proto_.set_uuid(id_.data, 16);
   package_proto_.set_name(name);
   package_proto_.set_path(path);
+  package_proto_.set_size(size);
+  package_proto_.set_src_path(src_path);                          
   package_proto_.set_platform(static_cast<protocol::BundlePlatform>(platform));
   package_proto_.set_arch(static_cast<protocol::BundleArchitecture>(arch));
   package_proto_.set_type(static_cast<protocol::BundlePackageType>(type));
@@ -45,7 +47,6 @@ BundlePackage::BundlePackage(const std::string& name,
 BundlePackage::BundlePackage(protocol::BundlePackage package_proto): 
   id_(reinterpret_cast<const uint8_t *>(package_proto.uuid().data())),
   package_proto_(std::move(package_proto)),
-  size_(0),
   managed_(false) {
 
 }
@@ -68,6 +69,14 @@ const std::string& BundlePackage::path() const {
 
 void BundlePackage::set_path(const std::string& path) {
   package_proto_.set_path(path);
+}
+
+const std::string& BundlePackage::src_path() const {
+  return package_proto_.src_path();
+}
+
+void BundlePackage::set_src_path(const std::string& path) {
+  package_proto_.set_src_path(path);
 }
 
 BundlePlatform BundlePackage::platform() const {
@@ -95,11 +104,11 @@ void BundlePackage::set_type(BundlePackageType type) {
 }
 
 uint64_t BundlePackage::size() const {
-  return size_;
+  return package_proto_.size();
 }
 
 void BundlePackage::set_size(uint64_t size) {
-  size_ = size;
+  package_proto_.set_size(size);
 }
 
 scoped_refptr<net::IOBufferWithSize> BundlePackage::Serialize() const {

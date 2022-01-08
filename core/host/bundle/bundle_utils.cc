@@ -9,10 +9,12 @@
 #include "core/host/bundle/bundle_package.h"
 #include "third_party/msix/src/inc/public/AppxPackaging.hpp"
 #include "third_party/msix/src/inc/shared/ComHelper.hpp"
+#include "third_party/msix/src/inc/internal/AppxBundleManifest.hpp"
 #include "third_party/msix/src/inc/internal/StringStream.hpp"
 #include "third_party/msix/src/inc/internal/VectorStream.hpp"
 #include "third_party/msix/src/inc/internal/AppxPackageObject.hpp"
 #include "third_party/msix/src/inc/internal/ZipObjectReader.hpp"
+#include "third_party/msix/sample/inc/Helpers.hpp"
 
 namespace host {
 
@@ -90,6 +92,20 @@ std::unique_ptr<Bundle> BundleUtils::CreateBundleFromBundleFile(const base::File
     return {};
   }
 
+  if (bundleManifestReader->GetPackageId(&packageId)) {
+    DLOG(INFO) << "bundle manifest reader get package id failed";
+    return {};
+  }
+
+  // MsixSample::Helper::Text<wchar_t> name;
+  // packageId->GetName(&name);
+  
+  // std::string bundle_name;
+  // base::WideToUTF8(name.Get(), wcslen(name.Get()), &bundle_name);
+
+  std::string bundle_path = packageId.As<IAppxManifestPackageIdInternal>()->GetPackageFullName();
+  //std::string bundle_src_path = packageId.As<IAppxBundleManifestPackageInfoInternal>()->GetFileName();
+  std::string bundle_name = packageId.As<IAppxManifestPackageIdInternal>()->GetName();
 
   if (bundleManifestReader->GetPackageInfoItems(&bundleManifestPackageInfoEnumerator) != 0) {
     DLOG(INFO) << "bundle manifest reader GetPackageInfoItems failed";
@@ -108,7 +124,7 @@ std::unique_ptr<Bundle> BundleUtils::CreateBundleFromBundleFile(const base::File
       MSIX::ComPtr<IAppxBundleManifestPackageInfo> bundleManifestPackageInfo;
       bundleManifestPackageInfoEnumerator->GetCurrent(&bundleManifestPackageInfo);
 
-      char* fileName;
+      MsixSample::Helper::Text<char> fileName;
       MSIX::ComPtr<IAppxBundleManifestPackageInfoUtf8> bundleManifestPackageInfoUtf8;
       bundleManifestPackageInfo->QueryInterface(UuidOfImpl<IAppxBundleManifestPackageInfoUtf8>::iid, reinterpret_cast<void**>(&bundleManifestPackageInfoUtf8));
       bundleManifestPackageInfoUtf8->GetFileName(&fileName);
@@ -119,7 +135,7 @@ std::unique_ptr<Bundle> BundleUtils::CreateBundleFromBundleFile(const base::File
       UINT64 size;
       bundleManifestPackageInfo->GetSize(&size);
       
-      bundle_package = BundleUtils::CreateBundlePackageFromPackageFile(package.DirName().AppendASCII(fileName), static_cast<BundlePackageType>(type), size);
+      bundle_package = BundleUtils::CreateBundlePackageFromPackageFile(package.DirName().AppendASCII(fileName.Get()), static_cast<BundlePackageType>(type), size);
       DCHECK(bundle_package);
 
       result->AddPackage(std::move(bundle_package));
@@ -127,6 +143,15 @@ std::unique_ptr<Bundle> BundleUtils::CreateBundleFromBundleFile(const base::File
       bundleManifestPackageInfoEnumerator->MoveNext(&hasCurrent);
   }
 
+  // TODO: add bundle information: name, path, etc
+  bundle_name = base::ToLowerASCII(bundle_name);
+  size_t offset = bundle_name.find_last_of(".");
+  if (offset != std::string::npos) {
+    bundle_name = bundle_name.substr(offset+1);
+  }
+  result->set_name(bundle_name);
+  result->set_path(bundle_path);
+  result->set_src_path(package.BaseName().value());
   return result;
 }
 
@@ -181,18 +206,19 @@ std::unique_ptr<BundlePackage> BundleUtils::CreateBundlePackageFromPackageFile(c
   packageId->GetArchitecture(&architecture);
 
   std::string path = packageId.As<IAppxManifestPackageIdInternal>()->GetPackageFullName();
-  wchar_t* name;
+  //std::string src_path = package_reader.As<IAppxBundleManifestPackageInfoInternal>()->GetFileName();
+  std::string src_path = package.BaseName().value();
+  MsixSample::Helper::Text<wchar_t> name;
   std::wstring input_name;
   base::UTF8ToWide("DisplayName", strlen("DisplayName"), &input_name);
   properties->GetStringValue(input_name.data(), &name);
   std::string name_str;
-  base::WideToUTF8(name, wcslen(name), &name_str);
+  base::WideToUTF8(name.Get(), wcslen(name.Get()), &name_str);
   // the int codes are the same, so this is safe
   BundleArchitecture arch = static_cast<BundleArchitecture>(architecture);
   // FIXME
   BundlePlatform platform = BundlePlatform::LINUX;
-        
-  result = std::make_unique<BundlePackage>(name_str, path, platform, arch, type, size);
+  result = std::make_unique<BundlePackage>(name_str, path, src_path, platform, arch, type, size);
   return result;
 }
 

@@ -15,6 +15,7 @@
 #include "core/host/bundle/bundle_info.h"
 
 namespace host {
+class Bundle;
 
 class BundlePackage : public Serializable {
 public:
@@ -23,6 +24,7 @@ public:
 
   BundlePackage(const std::string& name, 
                 const std::string& path, 
+                const std::string& src_path,
                 BundlePlatform platform,
                 BundleArchitecture arch,
                 BundlePackageType type,
@@ -41,6 +43,9 @@ public:
 
   const std::string& path() const;
   void set_path(const std::string& path);
+
+  const std::string& src_path() const;
+  void set_src_path(const std::string& path);
 
   BundlePlatform platform() const;
   void set_platform(BundlePlatform platform);
@@ -65,11 +70,11 @@ public:
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
   
 private:
-  
+  friend class Bundle;
+
   base::UUID id_;
   protocol::BundlePackage package_proto_;
-  // FIXME: should be part of the proto instead
-  uint64_t size_;
+  
   bool managed_;
 
   DISALLOW_COPY_AND_ASSIGN(BundlePackage);

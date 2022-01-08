@@ -16,7 +16,13 @@
 
 namespace host {
 
+
 const char BundleBuildHandler::kFullname[] = "/mumba.Mumba/BundleBuild";
+const char BundleInfoHandler::kFullname[] = "/mumba.Mumba/BundleInfo";
+const char BundleInstallHandler::kFullname[] = "/mumba.Mumba/BundleInstall";
+const char BundleSignHandler::kFullname[] = "/mumba.Mumba/BundleSign";
+const char BundleUninstallHandler::kFullname[] = "/mumba.Mumba/BundleUninstall";
+const char BundleUpdateHandler::kFullname[] = "/mumba.Mumba/BundleUpdate";
 
 BundleBuildHandler::BundleBuildHandler():
   fullname_(BundleBuildHandler::kFullname) {
@@ -51,8 +57,6 @@ const std::string& BundleBuildHandler::output() const {
   return fullname_;
 }
 
-const char BundleInfoHandler::kFullname[] = "/mumba.Mumba/BundleInfo";
-
 BundleInfoHandler::BundleInfoHandler():
   fullname_(BundleInfoHandler::kFullname) {
 
@@ -85,8 +89,6 @@ const std::string& BundleInfoHandler::output() const {
   // FIXME
   return fullname_;
 }
-
-const char BundleInstallHandler::kFullname[] = "/mumba.Mumba/BundleInstall";
 
 BundleInstallHandler::BundleInstallHandler()://(const scoped_refptr<base::SequencedTaskRunner>& service_worker): 
   fullname_(BundleInstallHandler::kFullname) {//,
@@ -149,8 +151,6 @@ const std::string& BundleInstallHandler::output() const {
   return workspace->application_controller()->install_output();
 }
 
-const char BundleSignHandler::kFullname[] = "/mumba.Mumba/BundleSign";
-
 BundleSignHandler::BundleSignHandler():
   fullname_(BundleSignHandler::kFullname) {
 
@@ -184,8 +184,6 @@ const std::string& BundleSignHandler::output() const {
   return fullname_;
 }
 
-const char BundleUninstallHandler::kFullname[] = "/mumba.Mumba/BundleUninstall";
-
 BundleUninstallHandler::BundleUninstallHandler():
   fullname_(BundleUninstallHandler::kFullname) {
 
@@ -218,8 +216,6 @@ const std::string& BundleUninstallHandler::output() const {
   // FIXME
   return fullname_;
 }
-
-const char BundleUpdateHandler::kFullname[] = "/mumba.Mumba/BundleUpdate";
 
 BundleUpdateHandler::BundleUpdateHandler():
   fullname_(BundleUpdateHandler::kFullname) {

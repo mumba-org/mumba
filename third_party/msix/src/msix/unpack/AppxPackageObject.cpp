@@ -229,8 +229,6 @@ namespace MSIX {
                     auto packageName = bundleInfoInternal->GetFileName();
                     auto packageStream = m_container->GetFile(Encoding::EncodeFileName(packageName));
 
-                    printf("processing package \"%s\" ...\n", packageName.c_str());
-
                     if (packageStream)
                     {   // The package is in the bundle. Verify is not compressed.
                         auto zipStream = packageStream.As<IStreamInternal>();
@@ -259,7 +257,6 @@ namespace MSIX {
                             auto lastSeparator = containerName.find_last_of('/');
                             #endif
                             auto expandedPackageName = containerName.substr(0, lastSeparator + 1) + packageName;
-                            printf("creating file stream on package \"%s\" ...\n", expandedPackageName.c_str());
                             ThrowHrIfFailed(CreateStreamOnFile(const_cast<char*>(expandedPackageName.c_str()), true, &packageStream));
                         }
                         ThrowErrorIfNot(Error::FileNotFound, packageStream, "Package from a flat bundle is not present");
@@ -278,8 +275,6 @@ namespace MSIX {
                     UINT64 size;
                     ThrowHrIfFailed(package->GetSize(&size));
                     
-                    printf("package '%s' size  = %llu => end.u.LowPart = %ul\n", packageName.c_str(), size, end.u.LowPart);
-
                     ThrowErrorIf(Error::AppxManifestSemanticError, end.u.LowPart != size,
                         "Size mistmach of package between AppxManifestBundle.appx and container");
 

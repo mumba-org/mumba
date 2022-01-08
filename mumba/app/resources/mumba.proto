@@ -55,7 +55,7 @@ message ApplicationUnpinRequest {}
 message ApplicationStartRequest {}
 message ApplicationStopRequest {}
 message ApplicationStatusRequest {}
-message FinanceCreateAccountRequest {}
+message MarketCreateAccountRequest {}
 message BatteryInfoRequest {}
 message BlobCreateRequest {}
 message BlobDeleteRequest {}
@@ -69,14 +69,14 @@ message CacheItemReadRequest {}
 message CacheItemRemoveRequest {}
 message CacheItemWriteRequest {}
 message CaptureTakePhotoRequest {}
-message DropBuildRequest {}
-message DropInitRequest {}
-message DropInstallRequest {
+message BundleBuildRequest {}
+message BundleInitRequest {}
+message BundleInstallRequest {
   string url = 1; 
 }
-message DropSignRequest {}
-message DropUninstallRequest {}
-message DropUpdateRequest {}
+message BundleSignRequest {}
+message BundleUninstallRequest {}
+message BundleUpdateRequest {}
 message FetchStartRequest {}
 message FetchCloseRequest {}
 message FilesystemDirectoryGetDirectoryRequest {}
@@ -288,8 +288,8 @@ service Mumba {
   rpc ApplicationStop(ApplicationStopRequest) returns (Response) {}
   rpc ApplicationUnpin(ApplicationUnpinRequest) returns (Response) {}
 
-  // Finance
-  rpc FinanceCreateAccount(FinanceCreateAccountRequest) returns (Response) {}
+  // Market
+  rpc MarketCreateAccount(MarketCreateAccountRequest) returns (Response) {}
   
   // Battery
   rpc BatteryInfo(BatteryInfoRequest) returns (Response) {}
@@ -312,13 +312,13 @@ service Mumba {
   // Capture
   rpc CaptureTakePhoto(CaptureTakePhotoRequest) returns (Response) {}  
 
-  // Drop
-  rpc DropBuild(DropBuildRequest) returns (Response) {}
-  rpc DropInit(DropInitRequest) returns (Response) {}
-  rpc DropInstall(DropInstallRequest) returns (Response) {}
-  rpc DropSign(DropSignRequest) returns (Response) {}
-  rpc DropUninstall(DropUninstallRequest) returns (Response) {}
-  rpc DropUpdate(DropUpdateRequest) returns (Response) {}
+  // Bundle
+  rpc BundleBuild(BundleBuildRequest) returns (Response) {}
+  rpc BundleInit(BundleInitRequest) returns (Response) {}
+  rpc BundleInstall(BundleInstallRequest) returns (Response) {}
+  rpc BundleSign(BundleSignRequest) returns (Response) {}
+  rpc BundleUninstall(BundleUninstallRequest) returns (Response) {}
+  rpc BundleUpdate(BundleUpdateRequest) returns (Response) {}
 
   // Fetch
   rpc FetchStart(FetchStartRequest) returns (Response) {}

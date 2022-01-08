@@ -110,11 +110,6 @@ void VolumeModel::LoadVolumesFromDB(VolumeStorage* storage, BundleManager* bundl
         // even if this is small.. having to heap allocate here is not cool
         scoped_refptr<net::StringIOBuffer> buffer = new net::StringIOBuffer(kv.second.as_string());
         std::unique_ptr<Volume> volume = Volume::Deserialize(volume_store, bundle, buffer.get(), kv.second.size());
-         LOG(INFO) << "bundle binded into volume " << volume->id().to_string() << " :\n" << 
-            " id: " << bundle->id().to_string() << "\n" <<
-            " name: " << bundle->name() << "\n" << 
-            " path: " << bundle->path().value() << "\n" <<
-            " executable_path: " << bundle->executable_path() << "\n";
         if (volume) {
           volume->set_managed(true);
           lock_.Acquire();

@@ -512,7 +512,6 @@ bool ApplicationProcessHost::Init() {
 
   application_root_ = domain_->partition_path();
   application_executable_ = workspace->GetApplicationExecutablePath(application_name_);
-  DLOG(INFO) << "application path resolved to " << application_executable_;
   //loader_task_runner_ = base::CreateSingleThreadTaskRunnerWithTraits(
   //  {base::MayBlock(), 
      //base::WithBaseSyncPrimitives(), 

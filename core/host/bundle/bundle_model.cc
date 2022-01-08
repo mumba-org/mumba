@@ -96,11 +96,6 @@ void BundleModel::AddBundleToDB(Bundle* bundle) {
   scoped_refptr<net::IOBufferWithSize> data = bundle->Serialize();
   if (data) {
     MaybeOpen();
-    LOG(INFO) << "inserting bundle:\n" << 
-      " id: " << bundle->id().to_string() << "\n" <<
-      " name: " << bundle->name() << "\n" << 
-      " path: " << bundle->path().value() << "\n" <<
-      " executable_path: " << bundle->executable_path() << "\n";
     storage::Transaction* trans = db_->Begin(true);
     bool ok = db_->Put(trans, Bundle::kClassName, bundle->name(), base::StringPiece(data->data(), data->size()));
     ok ? trans->Commit() : trans->Rollback();
@@ -135,11 +130,6 @@ void BundleModel::LoadBundlesFromDB(base::Callback<void(int, int)> cb) {
       scoped_refptr<net::StringIOBuffer> buffer = new net::StringIOBuffer(kv.second.as_string());
       std::unique_ptr<Bundle> bundle = Bundle::Deserialize(buffer.get(), kv.second.size());
       if (bundle) {
-        LOG(INFO) << "loaded bundle:\n" << 
-          " id: " << bundle->id().to_string() << "\n" <<
-          " name: " << bundle->name() << "\n" << 
-          " path: " << bundle->path().value() << "\n" <<
-          " executable_path: " << bundle->executable_path() << "\n";
         AddBundleToCache(std::move(bundle));
       } else {
         LOG(ERROR) << "failed to deserialize bundle";

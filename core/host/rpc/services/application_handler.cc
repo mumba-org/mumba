@@ -163,7 +163,7 @@ void ApplicationInstanceCloseHandler::HandleCall(std::vector<char> data, base::C
   //HostThread::PostTask(HostThread::UI, 
   //  FROM_HERE, 
   //  base::BindOnce(&ApplicationInstanceCloseHandler::CloseApplicationOnUI, base::Unretained(this), app_id));
-  DLOG(ERROR) << "application close: closing application " << app_id;
+  //DLOG(ERROR) << "application close: closing application " << app_id;
   CloseApplicationOnUI(app_id, std::move(cb));
 
   delete message;

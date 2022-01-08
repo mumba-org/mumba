@@ -73,7 +73,6 @@
       <include name="IDR_AUTOMATION_TETHERING_MANIFEST" file="${root_gen_dir}/core/shared/application/tethering_manifest.json" use_base_dir="false" type="BINDATA"/>
 
       <include name="IDR_MUMBA_PROTO" file="mumba.proto" use_base_dir="true" type="BINDATA" />
-      <include name="IDR_WORLD_APP" file="/home/fabiok/world.drop" use_base_dir="true" type="BINDATA" />
       <include name="IDR_OBJECTS_PROTO" file="../../../core/common/proto/objects.proto" use_base_dir="true" type="BINDATA" />
    </includes>    
   </release>

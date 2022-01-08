@@ -329,7 +329,6 @@ void RpcServiceContext::ProcessCall(RpcCallState* call) {
   RpcServiceMethod* method = handler()->GetMethod(method_name);
   
   if (!method) {
-    //DLOG(INFO) << "method '" << method_name << "' not found";
     rpc_handler_->HandleRpcSendError(call, 5);
     //RequestCall(call, call->socket);
     DestroyCall(call);
@@ -345,7 +344,6 @@ void RpcServiceContext::ProcessCall(RpcCallState* call) {
     CallStatus* s = static_cast<CallStatus*>(ev.tag);
     switch (ev.type) {
       case GRPC_QUEUE_TIMEOUT: {
-        //DLOG(INFO) << "RpcServer::ProcessCall: GRPC_QUEUE_TIMEOUT";
         //call->timeout_count++;
         //if (call->timeout_count == 3) {
         //printf("\n\ntimeout: %s:%d call id: %d last op: %d last method: %s\n", host_.c_str(), port_, call->id, call->timeout_count, call->last_method.c_str());
@@ -355,12 +353,10 @@ void RpcServiceContext::ProcessCall(RpcCallState* call) {
         continue;
       }
       case GRPC_QUEUE_SHUTDOWN: {
-        //DLOG(INFO) << "ProcessCall: SHUTDOWN";
         shutdown = true;
         break;
       }
       case GRPC_OP_COMPLETE: {
-        //DLOG(INFO) << "RpcServer::ProcessCall: GRPC_OP_COMPLETE";
         if (ev.success != 0) {
           switch((intptr_t)s) {
             case kCALL_BEGIN:
@@ -450,7 +446,6 @@ void RpcServiceContext::RequestCall(RpcCallState* call, RpcSocket* socket) {//(R
     std::unique_ptr<RpcCallState> state = std::make_unique<RpcCallState>();
     RpcCallState* state_ptr = state.get();
     state_ptr->id = call_id_gen_.GetNext() + 1;
-    //DLOG(INFO) << "RpcServiceContext::RequestCall: call id: " << state_ptr->id << " created";
     state_ptr->server = server_;
     if (socket) {
       state_ptr->socket = socket;

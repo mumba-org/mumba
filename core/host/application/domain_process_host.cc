@@ -496,7 +496,7 @@ bool DomainProcessHost::Init(const std::string& name, const base::UUID& id) {
   cmd_line->AppendSwitchASCII(switches::kWorkspaceId, workspace_id);
   cmd_line->AppendSwitchASCII(switches::kDomainUUID, id.to_string());
   cmd_line->AppendSwitchASCII(switches::kDomainName, name);
-  cmd_line->AppendSwitchASCII("bundle-path", bundle->executable_path());
+  cmd_line->AppendSwitchASCII("bundle-path", bundle->application_path());
   cmd_line->AppendSwitchASCII("domain-process-id", base::NumberToString(id_));
   
   cmd_line->CopySwitchesFrom(host_command_line, kSwitchNames,

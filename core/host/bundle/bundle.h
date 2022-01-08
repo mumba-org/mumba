@@ -40,7 +40,7 @@ public:
 
   // FIXME: We need to have BundlePackage objects, each one with their own directory
   //        and add them to the bundle.  
-  Bundle(const std::string& name, const base::FilePath& path, const std::string& executable_path, const std::string& resources_path);
+  Bundle(const std::string& name, const std::string& path, const std::string& executable_path, const std::string& resources_path);
   Bundle();
   Bundle(protocol::Bundle bundle_proto);
   ~Bundle() override;
@@ -50,22 +50,16 @@ public:
   }
 
   const std::string& name() const;
-  
   void set_name(const std::string& name);
 
-  const base::FilePath& path() const {
-    return path_;
-  }
+  const std::string& path() const;
+  void set_path(const std::string& path);
 
-  void set_path(const base::FilePath& path);
+  const std::string& src_path() const;
+  void set_src_path(const std::string& path);
 
-  const std::string& executable_path() const;
-
-  void set_executable_path(const std::string& executable_path);
-
-  const std::string& resources_path() const;
-
-  void set_resources_path(const std::string& resources_path);
+  const std::string& application_path();
+  const std::string& resources_path();
 
   bool is_managed() const {
     return managed_;
@@ -85,9 +79,14 @@ public:
 
 private:
 
+  void ResolvePackages();
+  void ResolveResourcePackage();
+  void ResolveApplicationPackage();
+
+  BundlePackage* resource_package_;
+  BundlePackage* application_package_;
   base::UUID id_;
   protocol::Bundle bundle_proto_;
-  base::FilePath path_;
   // fixme: should be added to the proto
   std::vector<std::unique_ptr<BundlePackage>> packages_;
   

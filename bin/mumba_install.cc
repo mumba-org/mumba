@@ -83,9 +83,9 @@ bool EncodeMessage(
   std::string* out) {
   
   google::protobuf::DynamicMessageFactory factory(descriptor_pool);
-  const google::protobuf::Descriptor* message_descriptor = GetMessageDescriptorNamed(file_descr, "DropInstallRequest");
+  const google::protobuf::Descriptor* message_descriptor = GetMessageDescriptorNamed(file_descr, "BundleInstallRequest");
   if (!message_descriptor) {
-    DLOG(INFO) << "EncodeMessage(Request): failed while trying to find 'DropInstallRequest' in protobuf descriptor";
+    DLOG(INFO) << "EncodeMessage(Request): failed while trying to find 'BundleInstallRequest' in protobuf descriptor";
     return false;
   }
   const google::protobuf::Message* message = factory.GetPrototype(message_descriptor);
@@ -344,7 +344,7 @@ int main(int argc, char** argv) {
   }
  
   grpc_slice host = grpc_slice_from_static_string(full_address.c_str());
-  grpc_slice method = grpc_slice_from_static_string("/mumba.Mumba/DropInstall");
+  grpc_slice method = grpc_slice_from_static_string("/mumba.Mumba/BundleInstall");
 
   grpc_completion_queue* completion_queue = grpc_completion_queue_create_for_pluck(nullptr);
 

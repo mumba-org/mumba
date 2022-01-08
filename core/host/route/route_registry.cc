@@ -879,7 +879,6 @@ storage::Storage* RouteRegistry::GetStorageForSchemeName(const std::string& sche
 }
 
 RouteScheme* RouteRegistry::CreateScheme(storage::Storage* storage, const std::string& scheme_name) {
-  DLOG(INFO) << "RouteRegistry: creating scheme '" << scheme_name << "'";
   ShareManager* share_manager = workspace_->share_manager();
   DomainManager* domain_manager = workspace_->domain_manager();
   const storage_proto::StorageState* storage_state = storage->state();

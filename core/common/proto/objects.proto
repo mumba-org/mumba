@@ -410,14 +410,6 @@ message GraphProperty {
   uint64 id = 6;
 }
 
-message Bundle {
-  bytes uuid = 1;
-  string name = 2;
-  string path = 3;
-  string executable_path = 4;
-  string resources_path = 5;
-}
-
 enum BundlePlatform {
   PLATFORM_WINDOWS = 0;
   PLATFORM_MACOS = 1;
@@ -444,7 +436,21 @@ message BundlePackage {
   bytes uuid = 1;
   string name = 2;
   string path = 3;
-  BundlePlatform platform = 4;
-  BundleArchitecture arch = 5;
-  BundlePackageType type = 6;
+  string src_path = 4;
+  uint64 size = 5;
+  bytes hash = 6;
+  BundlePlatform platform = 7;
+  BundleArchitecture arch = 8;
+  BundlePackageType type = 9;
 }
+
+message Bundle {
+  bytes uuid = 1;
+  string name = 2;
+  string path = 3;
+  string src_path = 4;
+  uint64 size = 5;
+  bytes hash = 6;
+  repeated BundlePackage packages = 7;
+}
+
