@@ -102,17 +102,16 @@ How is this similar/different from
 * Documentation
 
 Building
-------
+-----
 
   We use Chrome's gn for generating ninja build files and then ninja from there.
   Our gn's is a fork from the original which also allow us to build Swift sources
   to build the sdk or applications
 
 Creating your applications
-______
-  
+-----
 
 Distributing your applications
-______
+-----
   
     
