@@ -76,26 +76,30 @@ What you can do with it? What is it for?
     You can use RPC to leverage/bootstrap others low latency protocols like UDP, WebRTC or WebSockets if RPC is not a good fit.
     But having a common ground to form a network of peers with the same api can create wonderful applications 
 
-###Architecture
+Architecture
+-----
 
-###RPC Apis
+RPC Apis
+-----
 
   Every application have a service/daemon process which is always running like a service
   and which is responsible to answer for RPC and Route requests, among any other things
   a running daemon is suitable for.
 
-###Routes
+Routes
+-----
 
-###SDK
+SDK
+-----
 
 How is this similar/different from
 ------
 
-###Electron/Flutter
+* Electron/Flutter
 
-###Android/iOS  
+* Android/iOS  
 
-###Documentation
+* Documentation
 
 Building
 ------
