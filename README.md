@@ -1,42 +1,44 @@
-Mumba - The multi-os p2p application platform based on Chromium
+Mumba 
 ======
+The multi-os p2p application platform based on Chromium
+------
 
 What is it?
 ------
 
-⋅⋅* A full application platform that exposes the web api (and others) to native applications (not wasm based). 
+* A full application platform that exposes the web api (and others) to native applications (not wasm based). 
   Think of it as a mix of a userspace OS + mobile application platform + a browser
 
-⋅⋅* A multiprocess "userspace kernel" that takes care of running and managing applications
+* A multiprocess "userspace kernel" that takes care of running and managing applications
   forming a network of applications.
 
-⋅⋅* Each application have at least a daemon process which serve gRPC api's and 
+* Each application have at least a daemon process which serve gRPC api's and 
   answer for route requests from the UI clients via IPC or RPC
   The daemon process also manage the application launches which are full-blown
   web-based UI applications (in their own processes).
 
-⋅⋅* The web api's are exposed directly to the native application, which is much more powerfull than
+* The web api's are exposed directly to the native application, which is much more powerfull than
   the current Javascript ones given the UI application have direct access to the web frame api
   with the same power as the C++ 'renderer' process in Chrome.
 
-⋅⋅* Multiples native applications SDK's are feasible. The Swift one is ready.
+* Multiples native applications SDK's are feasible. The Swift one is ready.
 
-⋅⋅* Applications are distributed over torrent DHT, with permanent addresses without the need
+* Applications are distributed over torrent DHT, with permanent addresses without the need
   of third-parties for application and data distribution. You can create apps and share them
   right away from your computer.
 
-⋅⋅* Applications will run as if they were native, with executable "frontends" which are shim rpc clients 
+* Applications will run as if they were native, with executable "frontends" which are shim rpc clients 
   which communicate with the mumba's mothership(host process) over RPC and without users even noticing 
   that theres a whole platform managing yours and others applications
 
-⋅⋅* With a central manager process a lot of other things are possible, and thats why we call it 
+* With a central manager process a lot of other things are possible, and thats why we call it 
   "application network", because each application can access public resources from other applications
   on the same host, as with RPC' api's application routes or the automation IPC api.
 
-⋅⋅* With multiple RPC api's exposed in each node, distributed applications that combine the same api's 
+* With multiple RPC api's exposed in each node, distributed applications that combine the same api's 
   in several nodes are possible in a p2p fashion
 
-⋅⋅* A storage layer which can serve a file, key-value and sql database api to the applications
+* A storage layer which can serve a file, key-value and sql database api to the applications
   but that is also distributed over torrent, making all the storage a applications use
   (be it files or databases) available to other nodes in a p2p way.
 
@@ -44,7 +46,7 @@ What is it?
   But new files and databases can be created and shared over after the original storages are being
   seeded over the bit-torrent network
 
-⋅⋅* its meant as a web.next platform. The next step combining the power of browsers and mobile platforms
+* its meant as a web.next platform. The next step combining the power of browsers and mobile platforms
    but with a peer-to-peer distribution process which put the power of creating, distributing, 
    sharing and downloading things back in the hand of everyone.
 
