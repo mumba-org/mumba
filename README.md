@@ -36,7 +36,12 @@ What is it?
   on the same host, as with RPC' api's application routes or the automation IPC api.
 
 * With multiple RPC api's exposed in each node, distributed applications that combine the same api's 
-  in several nodes are possible in a p2p fashion
+  in several nodes are possible in a p2p fashion.
+
+* As applications expose and handle gRPC api's, clients that consume that api
+  can be created with other languages with gRPC libraries like Go or Python. 
+  You wont need to ask permission for the next Twitter or Youtube to create a API for you,
+  you only need the permission from the user of each peer
 
 * A storage layer which can serve a file, key-value and sql database api to the applications
   but that is also distributed over torrent, making all the storage a applications use
@@ -68,11 +73,15 @@ What you can do with it? What is it for?
 ------
   
   A distributed twitter? 
+  
   So, do you mean Mastodon? 
+
   No. Mastodon is federated. this "distributed whatever" can use its own desined gRPC's distributed on every user node
   communicating with them in a p2p fashion. 
     
-  You can create a distributed database, a CRDT editor or a multiplayer game. 
+  You can create a distributed database, a CRDT editor, a multiplayer game or a distributed search engine that can search
+  on each peer's data, with the user permission of course. 
+
   You can use RPC to leverage/bootstrap other low latency protocols like UDP, WebRTC or WebSockets if RPC is not a good fit.
   But having a common ground to form a network of peers with the same api can a wonderful launchpad for distributed application
 
