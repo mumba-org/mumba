@@ -170,7 +170,7 @@ How is this similar/different from
     * You can use the web api's to develop applications
 
   Different: 
-    * The user will have a mumba distribution (or the dev will embedd one as a safety measure),
+    * The user will have a mumba distribution (or the dev will embedd one as a safety measure if the user have none),
       the same way you have a chrome or firefox to open the web.
       
       The user dont need to know about this implementation detail, as him/her will run your application
