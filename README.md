@@ -113,7 +113,8 @@ SDK
 
 Swift
 
-  [kit/swift](https://github.com/mumba-org/mumba/tree/main/kit/swift)
+  Source is at [kit/swift](https://github.com/mumba-org/mumba/tree/main/kit/swift)
+  Documentation is (a TODO)
 
   example UI application code:
 
