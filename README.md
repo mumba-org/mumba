@@ -10,7 +10,8 @@ What is it?
   Think of it as a mix of a userspace OS + mobile application platform + a browser
 
 * A multiprocess "userspace kernel" that takes care of running and managing applications
-  forming a network of applications, where resources can be shared, and they can all be clients of one another.
+  forming a network of applications, where resources can be shared, and where they can all be clients of one another by
+  consuming the public RPC api exposed by each application.
 
   For instance, if the media player application wants to send a email, it can use the mailer application rpc
   api.
