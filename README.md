@@ -122,10 +122,10 @@ How is this similar/different from
 
   Different: 
     * The user will have a mumba distribution (or the dev will embedd one as a safety measure),
-      the same you have a chrome or firefox to open the web.
+      the same way you have a chrome or firefox to open the web.
       
-      The user dont need to know about this impl. detail, as him/her will run your application
-      with your executable (that is just a RPC client that is customized to call the laucher RPC api)
+      The user dont need to know about this implementation detail, as him/her will run your application
+      executable (that is just a RPC client that is customized to call the laucher RPC api). 
       
       With this, there's a manager process and only one GPU process for all apps, 
       this together with the application talking directly with the Webkit API (no javascript) 
@@ -134,6 +134,10 @@ How is this similar/different from
 
     * You will use the web api nativelly, without any Javascript or WebAssembly involved.
       The first SDK is available for Swift (the Javascript api is still there of course if you want to use it).
+
+    * With the service process, your app will still be running even if the user did not launch any UI applications
+      so you can still do some work.. and also define how to handle RPC and Route requests, managing the UI application
+      processes that are eventually launched.
 
 * Mobile Platforms: Android/iOS  
 
