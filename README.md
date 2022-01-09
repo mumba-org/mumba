@@ -79,6 +79,8 @@ What you can do with it? What is it for?
 Architecture
 -----
 
+<img src="docs/process.png">
+
 RPC Apis
 -----
 

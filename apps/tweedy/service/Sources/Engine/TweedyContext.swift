@@ -101,7 +101,7 @@ public class TweedyContext : EngineContext,
     print("TweedyContext.lookupRoute => path:\(path)")
     guard let handler = tweedy?.routes.handler(at: path) else {
       if path == "/hello" {  
-        var greet = GreetingsHandler()
+        var greet = HelloHandler(context: self)//GreetingsHandler()
         greet.path = path
         greet.url = "tweedy:/" + path
         tweedy?.routes.bind(path, greet)
@@ -116,7 +116,7 @@ public class TweedyContext : EngineContext,
     print("TweedyContext.lookupRoute => url: \(url)")
     guard let handler = tweedy?.routes.handler(at: url) else {
       if url == "tweedy://hello" {  
-        var greet = GreetingsHandler()
+        var greet = HelloHandler(context: self) // GreetingsHandler()
         greet.path = url
         greet.url = url
         tweedy?.routes.bind(url, greet)
