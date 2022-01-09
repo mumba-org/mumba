@@ -73,7 +73,7 @@ What you can do with it? What is it for?
 ------
   
   A distributed twitter? 
-  
+
   So, do you mean Mastodon? 
 
   No. Mastodon is federated. this "distributed whatever" can use its own desined gRPC's distributed on every user node
@@ -128,7 +128,8 @@ Swift
 
   example UI application code:
 
-  [tweedy](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/app/Sources/TweedyMain.swift)
+  [tweedy ui sources](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/app/Sources)
+  [tweedy main](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/app/Sources/TweedyMain.swift)
   
   (Caveat: it was my test ground for features, so theres a lot of different stuff in there:
             service workers, offscreen canvas, webgl, media, websockets, paint api, RPC client, etc)
@@ -136,6 +137,13 @@ Swift
   Note: that guy will form the final executable that runs as the renderer. It have access to the web frames
         the same way a C++ renderer process in chrome, and it have access to a lot of events that comes from the 
         webkit side, making it a application with a lot of power and control. (You cant have that with Electron for instance)
+
+  example service code:
+
+  [tweedy service sources](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources)
+  [tweedy context](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources/TweedyContext.swift)
+  [tweedy provider](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources/TweedyProvider.swift)
+  [tweedy handlers](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources/Handlers.swift)
 
 
 How is this similar/different from
