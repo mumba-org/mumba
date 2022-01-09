@@ -111,6 +111,15 @@ Routes
 SDK
 -----
 
+Swift
+
+  [kit/swift](https://github.com/mumba-org/mumba/tree/main/kit/swift)
+
+  example UI application code:
+
+  [tweedy](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/app/Sources/TweedyMain.swift)
+
+
 How is this similar/different from
 ------
 
