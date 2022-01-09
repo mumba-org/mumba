@@ -159,6 +159,8 @@ How is this similar/different from
 
 * Mobile Platforms: Android/iOS  
 
+* Browsers
+
 
 Documentation
 -----
@@ -177,4 +179,5 @@ Creating your applications
 Distributing your applications
 -----
   
-    
+Screenshots and videos
+-----    
