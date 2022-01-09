@@ -129,6 +129,7 @@ Swift
   example UI application code:
 
   [tweedy ui sources](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/app/Sources)
+
   [tweedy main](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/app/Sources/TweedyMain.swift)
   
   (Caveat: it was my test ground for features, so theres a lot of different stuff in there:
@@ -141,9 +142,14 @@ Swift
   example service code:
 
   [tweedy service sources](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources)
+
   [tweedy context](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources/TweedyContext.swift)
+
   [tweedy provider](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources/TweedyProvider.swift)
-  [tweedy handlers](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources/Handlers.swift)
+
+  [tweedy route handlers](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/service/Sources/Handlers.swift)
+
+  (Note: context and provider will merge into the same thing into the future (the service entry point/manager))
 
 
 How is this similar/different from
