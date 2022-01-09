@@ -67,14 +67,17 @@ What is it?
 What you can do with it? What is it for?
 ------
   
-  - A distributed twitter? 
-  - So, do you mean Mastodon? 
-  - No. Mastodon is federated. this "distributed whatever" can use its own desined gRPC's distributed on every user node
-    communicating with them in a p2p fashion. 
+  A distributed twitter? 
+  So, do you mean Mastodon? 
+  No. Mastodon is federated. this "distributed whatever" can use its own desined gRPC's distributed on every user node
+  communicating with them in a p2p fashion. 
     
-    You can create a distributed database with a Raft logic for instanc. A CRDT editor or a multiplayer game.
-    You can use RPC to leverage/bootstrap others low latency protocols like UDP, WebRTC or WebSockets if RPC is not a good fit.
-    But having a common ground to form a network of peers with the same api can create wonderful applications 
+  You can create a distributed database, a CRDT editor or a multiplayer game. 
+  You can use RPC to leverage/bootstrap other low latency protocols like UDP, WebRTC or WebSockets if RPC is not a good fit.
+  But having a common ground to form a network of peers with the same api can a wonderful launchpad for distributed application
+
+  Of course, you can distribute normal local applications or applications that consume and render consuming other apis from the network, it doesnt need to be fancy as a distributed storage application, but the potential is there and you can use it
+  as you grow
 
 Architecture
 -----
