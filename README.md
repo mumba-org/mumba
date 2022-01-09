@@ -10,7 +10,14 @@ What is it?
   Think of it as a mix of a userspace OS + mobile application platform + a browser
 
 * A multiprocess "userspace kernel" that takes care of running and managing applications
-  forming a network of applications.
+  forming a network of applications, where resources can be shared, and they can all be clients of one another.
+
+  For instance, if the media player application wants to send a email, it can use the mailer application rpc
+  api.
+
+  (If Mumba turns to be a hit, as i hope so, a natural outcome is for applications to adhere to common api's for popular things,
+   so a abstract base interface for usual things can be used independently of the real application implementing it
+   and handling it. eg. "Mail Api 0.1" being implemented by the 'MyMail' app)
 
 * Each application have at least a daemon process which serve gRPC api's and 
   answer for route requests from the UI clients via IPC or RPC
