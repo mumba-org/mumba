@@ -114,12 +114,19 @@ SDK
 Swift
 
   Source is at [kit/swift](https://github.com/mumba-org/mumba/tree/main/kit/swift)
-  
+
   Documentation is (a TODO)
 
   example UI application code:
 
   [tweedy](https://github.com/mumba-org/mumba/blob/main/apps/tweedy/app/Sources/TweedyMain.swift)
+  
+  (Caveat: it was my test ground for features, so theres a lot of different stuff in there:
+            service workers, offscreen canvas, webgl, media, websockets, paint api, RPC client, etc)
+
+  Note: that guy will form the final executable that runs as the renderer. It have access to the web frames
+        the same way a C++ renderer process in chrome, and it have access to a lot of events that comes from the 
+        webkit side, making it a application with a lot of power and control. (You cant have that with Electron for instance)
 
 
 How is this similar/different from
