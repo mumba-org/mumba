@@ -114,11 +114,14 @@ SDK
 How is this similar/different from
 ------
 
-* Electron/Flutter
+* Electron
 
-* Android/iOS  
+* Mobile Platforms: Android/iOS  
 
-* Documentation
+
+Documentation
+-----
+
 
 Building
 -----
