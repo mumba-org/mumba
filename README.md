@@ -174,7 +174,8 @@ How is this similar/different from
       the same way you have a chrome or firefox to open the web.
       
       The user dont need to know about this implementation detail, as him/her will run your application
-      executable (that is just a RPC client that is customized to call the laucher RPC api). 
+      executable (that is just a RPC client that is customized to call the laucher RPC api) and your application window
+      will just pop in front of him/her. 
       
       With this, there's a manager process and only one GPU process for all apps, 
       this together with the application talking directly with the Webkit API (no javascript) 
