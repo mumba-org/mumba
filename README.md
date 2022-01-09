@@ -116,6 +116,25 @@ How is this similar/different from
 
 * Electron
 
+  Similar: 
+    * You can build and distribute applications that can run on multiple platforms
+    * You can use the web api's to develop applications
+
+  Different: 
+    * The user will have a mumba distribution (or the dev will embedd one as a safety measure),
+      the same you have a chrome or firefox to open the web.
+      
+      The user dont need to know about this impl. detail, as him/her will run your application
+      with your executable (that is just a RPC client that is customized to call the laucher RPC api)
+      
+      With this, there's a manager process and only one GPU process for all apps, 
+      this together with the application talking directly with the Webkit API (no javascript) 
+      will create a application that is lighter, giving its all reused for other applications
+      that runs on the same umbrella.
+
+    * You will use the web api nativelly, without any Javascript or WebAssembly involved.
+      The first SDK is available for Swift (the Javascript api is still there of course if you want to use it).
+
 * Mobile Platforms: Android/iOS  
 
 
