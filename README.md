@@ -77,7 +77,21 @@ What you can do with it? What is it for?
   But having a common ground to form a network of peers with the same api can a wonderful launchpad for distributed application
 
   Of course, you can distribute normal local applications or applications that consume and render consuming other apis from the network, it doesnt need to be fancy as a distributed storage application, but the potential is there and you can use it
-  as you grow
+  as you grow.
+
+  How do you connect to other peers with the same api? 
+
+  Well, all users of a application share the same torrent (say myapp_v01)
+  all others peers that share and have it fully sinced are probably running the same service.
+
+  Once you get the peers who share the same torrent, there's a SD service that will tell you 
+  if the service is really running and at what port, so you can add it to a list of peers 
+  and use it however you wish according to your goals. You will use Raft? P2P? Gossip?
+
+  For now our SDK will provide forms of peer listing and service discovery informing about the service.
+  With this information, and giving theres a well-known designed API over gRPC, its left to the developers
+  how to proceed. Maybe in the future common forms of forming distributed applications with peers can be aided
+  with the SDK.
 
 Architecture
 -----
