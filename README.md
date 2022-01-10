@@ -27,7 +27,7 @@ What is it?
   The daemon process also manage the application launches which are full-blown
   web-based UI applications (in their own processes).
 
-* The web api's are exposed directly to the native application, which is much more powerfull than
+* The web api's is exposed directly to the native application, which is much more powerfull than
   the current Javascript ones given the UI application have direct access to the web frame api
   with the same power as the C++ 'renderer' process in Chrome.
 
@@ -130,6 +130,7 @@ RPC Apis
 
 Routes
 -----
+  TODO
 
 SDK
 -----
@@ -206,7 +207,22 @@ How is this similar/different from
 
 Documentation
 -----
+  TODO
 
+Ports
+-----
+
+There is a working Linux implementation, but given it's created on top of the Chromium supporting libraries
+its pretty much portable with a little effort. Unfortunatelly making all of this functionality to work is a tour-de-fource
+in itself for a one-man-show, so i was unable to provide the ports, but i hope they will be ready pretty soon
+as i finish other things that are missing (and if im lucky with the help of others).
+
+Things that might be missing when porting to Mac and Windows is the code that interface with the 
+native windowing system. Its mostly a matter of porting the code already in Chromium for those window systems
+and adapting them to this implementation.
+
+As we have a different (yet similar) implementation, not implementing the Chrome's content layer, 
+some adjustments might be needed.
 
 Building
 -----
@@ -217,9 +233,10 @@ Building
 
 Creating your applications
 -----
-
+  TODO
 Distributing your applications
 -----
-  
+  TODO
 Screenshots and videos
 -----    
+  TODO
