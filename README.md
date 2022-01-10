@@ -234,9 +234,11 @@ Building
 Creating your applications
 -----
   TODO
+
 Distributing your applications
 -----
   TODO
+  
 Screenshots and videos
 -----    
   TODO
