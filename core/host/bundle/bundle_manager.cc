@@ -301,7 +301,8 @@ base::FilePath BundleManager::GetOutputPath() const {
 }
 
 void BundleManager::SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback) {
-  bool result = BundleUtils::SignBundle(src, signature);
+  // TODO: not really working yet
+  bool result = false;//BundleUtils::SignBundle(src, signature);
   std::move(callback).Run(result ? net::OK : net::ERR_FAILED);
 }
 
