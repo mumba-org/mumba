@@ -10,6 +10,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task_scheduler/post_task.h"
 #include "core/host/workspace/workspace.h"
+#include "core/host/bundle/bundle_manager.h"
 #include "core/host/application/application_controller.h"
 #include "core/host/host_controller.h"
 #include "core/host/host_main_loop.h"
@@ -165,7 +166,30 @@ base::StringPiece BundleSignHandler::ns() const {
 }
 
 void BundleSignHandler::HandleCall(std::vector<char> data, base::Callback<void(int)> cb) {
-  // FIXME: implement
+  DLOG(INFO) << "BundleSignHandler::HandleCall";
+  std::string str_payload(data.data(), data.size());
+  scoped_refptr<Workspace> workspace = Workspace::GetCurrent();
+  // decode message
+  const google::protobuf::Descriptor* message_descriptor = GetDescriptorFor(workspace, "BundleSignRequest");
+  if (!message_descriptor) {
+    DLOG(INFO) << "protobuf message for 'BundleSignRequest' not found";
+    return;
+  }
+  SchemaRegistry* schema_registry = workspace->schema_registry();
+  google::protobuf::DescriptorPool* descriptor_pool = schema_registry->descriptor_pool();
+  google::protobuf::DynamicMessageFactory factory(descriptor_pool);
+  const google::protobuf::Message* message_descr = factory.GetPrototype(message_descriptor);
+  google::protobuf::Message* message = message_descr->New();
+  message->ParseFromString(str_payload);
+  std::string public_signature = GetStringField(workspace, message, "BundleSignRequest", "public_signature");
+  std::string bundle_path = GetStringField(workspace, message, "BundleSignRequest", "bundle_path");
+  if (!public_signature.empty()) {
+    std::vector<uint8_t> data(public_signature.begin(), public_signature.end());
+    workspace->bundle_manager()->SignBundle(base::FilePath(bundle_path), data, std::move(cb));
+  } else {
+    DLOG(ERROR) << "error signing bundle: public_signature is empty";
+  }
+  delete message;
 }
 
 void BundleSignHandler::Init() {

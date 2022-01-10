@@ -72,12 +72,12 @@
 #include "launcher/dom_storage_get_command.h"
 #include "launcher/dom_storage_remove_command.h"
 #include "launcher/dom_storage_set_command.h"
-#include "launcher/drop_build_command.h"
-#include "launcher/drop_init_command.h"
-#include "launcher/drop_install_command.h"
-#include "launcher/drop_sign_command.h"
-#include "launcher/drop_uninstall_command.h"
-#include "launcher/drop_update_command.h"
+#include "launcher/bundle_build_command.h"
+#include "launcher/bundle_init_command.h"
+#include "launcher/bundle_install_command.h"
+#include "launcher/bundle_sign_command.h"
+#include "launcher/bundle_uninstall_command.h"
+#include "launcher/bundle_update_command.h"
 #include "launcher/fetch_close_command.h"
 #include "launcher/fetch_start_command.h"
 #include "launcher/filesystem_directory_get_directory_command.h"
@@ -328,7 +328,7 @@ CommandCode ApplicationProfile::GetCommandCode(const std::string& name) {
   if (name.find("--") != std::string::npos) {
     return kAPPLICATION_INSTANCE_LAUNCH_COMMAND;
   } else if (name == "install") {
-    return kDROP_INSTALL_COMMAND;
+    return kBUNDLE_INSTALL_COMMAND;
   } else if (name == "launch") {
     return kAPPLICATION_INSTANCE_LAUNCH_COMMAND;
   } else if (name == "start") {
@@ -338,13 +338,13 @@ CommandCode ApplicationProfile::GetCommandCode(const std::string& name) {
   } else if (name == "status") {
     return kAPPLICATION_STATUS_COMMAND;
   } else if (name == "uninstall") {
-    return kDROP_UNINSTALL_COMMAND;
+    return kBUNDLE_UNINSTALL_COMMAND;
   } else if (name == "update") {
-    return kDROP_UPDATE_COMMAND;
+    return kBUNDLE_UPDATE_COMMAND;
   } else if (name == "close") {
     return kAPPLICATION_INSTANCE_CLOSE_COMMAND;
   } else if (name == "sign") {
-    return kDROP_SIGN_COMMAND;
+    return kBUNDLE_SIGN_COMMAND;
   } else if (name == "pin") {
     return kAPPLICATION_PIN_COMMAND;
   } else if (name == "unpin") {
@@ -368,7 +368,7 @@ SystemProfile::~SystemProfile() {
 CommandCode SystemProfile::GetCommandCode(const std::string& name) {
   // this part is very alike the application
   if (name == "install") {
-    return kDROP_INSTALL_COMMAND;
+    return kBUNDLE_INSTALL_COMMAND;
   } else if (name == "launch") {
     return kAPPLICATION_INSTANCE_LAUNCH_COMMAND;
   } else if (name == "start") {
@@ -378,13 +378,13 @@ CommandCode SystemProfile::GetCommandCode(const std::string& name) {
   } else if (name == "status") {
     return kAPPLICATION_STATUS_COMMAND;
   } else if (name == "uninstall") {
-    return kDROP_UNINSTALL_COMMAND;
+    return kBUNDLE_UNINSTALL_COMMAND;
   } else if (name == "update") {
-    return kDROP_UPDATE_COMMAND;
+    return kBUNDLE_UPDATE_COMMAND;
   } else if (name == "close") {
     return kAPPLICATION_INSTANCE_CLOSE_COMMAND;
   } else if (name == "sign") {
-    return kDROP_SIGN_COMMAND;
+    return kBUNDLE_SIGN_COMMAND;
   } else if (name == "pin") {
     return kAPPLICATION_PIN_COMMAND;
   } else if (name == "unpin") {
@@ -1187,23 +1187,23 @@ int CommandExecutor::Execute(CommandCode command, const base::CommandLine::Strin
     case kWORKER_TERMINATE_COMMAND:
       command_ = WorkerTerminateCommand::Create();
       break;
-    case kDROP_BUILD_COMMAND:
-      command_ = DropBuildCommand::Create();
+    case kBUNDLE_BUILD_COMMAND:
+      command_ = BundleBuildCommand::Create();
       break;
-    case kDROP_INSTALL_COMMAND:
-      command_ = DropInstallCommand::Create();
+    case kBUNDLE_INSTALL_COMMAND:
+      command_ = BundleInstallCommand::Create();
       break;
-    case kDROP_SIGN_COMMAND:
-      command_ = DropSignCommand::Create();
+    case kBUNDLE_SIGN_COMMAND:
+      command_ = BundleSignCommand::Create();
       break;
-    case kDROP_UNINSTALL_COMMAND:
-      command_ = DropUninstallCommand::Create();
+    case kBUNDLE_UNINSTALL_COMMAND:
+      command_ = BundleUninstallCommand::Create();
       break;
-    case kDROP_UPDATE_COMMAND:
-      command_ = DropUpdateCommand::Create();
+    case kBUNDLE_UPDATE_COMMAND:
+      command_ = BundleUpdateCommand::Create();
       break;
-    case kDROP_INIT_COMMAND:
-      command_ = DropInitCommand::Create();
+    case kBUNDLE_INIT_COMMAND:
+      command_ = BundleInitCommand::Create();
       break;
     case kSCRIPT_ADD_COMMAND:
       command_ = ScriptAddCommand::Create();

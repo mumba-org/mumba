@@ -2,21 +2,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MUMBA_KIT_CPP_LAUNCHER_DROP_SIGN_COMMAND_H_
-#define MUMBA_KIT_CPP_LAUNCHER_DROP_SIGN_COMMAND_H_
+#ifndef MUMBA_KIT_CPP_LAUNCHER_BUNDLE_INSTALL_COMMAND_H_
+#define MUMBA_KIT_CPP_LAUNCHER_BUNDLE_INSTALL_COMMAND_H_
 
 #include "launcher/command.h"
 
-class DropSignCommand : public Command {
+class BundleInstallCommand : public Command {
 public:
-  static std::unique_ptr<DropSignCommand> Create();
+ static std::unique_ptr<BundleInstallCommand> Create();
 
-  DropSignCommand();
- ~DropSignCommand() override;
-
+ BundleInstallCommand();
+ ~BundleInstallCommand() override;
+ 
  std::string GetCommandMethod() const override;
  int Run(CommandExecutor* executor, const base::CommandLine::StringVector& args) override;
- 
 };
 
 #endif

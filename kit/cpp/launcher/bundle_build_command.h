@@ -2,17 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MUMBA_KIT_CPP_LAUNCHER_DROP_BUILD_COMMAND_H_
-#define MUMBA_KIT_CPP_LAUNCHER_DROP_BUILD_COMMAND_H_
+#ifndef MUMBA_KIT_CPP_LAUNCHER_BUNDLE_BUILD_COMMAND_H_
+#define MUMBA_KIT_CPP_LAUNCHER_BUNDLE_BUILD_COMMAND_H_
 
 #include "launcher/command.h"
 
-class DropBuildCommand : public Command {
+class BundleBuildCommand : public Command {
 public:
-  static std::unique_ptr<DropBuildCommand> Create();
+ static std::unique_ptr<BundleBuildCommand> Create();
 
-  DropBuildCommand();
- ~DropBuildCommand() override;
+ BundleBuildCommand();
+ ~BundleBuildCommand() override;
 
  std::string GetCommandMethod() const override;
  int Run(CommandExecutor* executor, const base::CommandLine::StringVector& args) override;

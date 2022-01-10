@@ -1,6 +1,6 @@
 Mumba 
 ======
-The multi-os p2p application platform based on Chromium
+The p2p application web platform
 ------
 
 What is it?

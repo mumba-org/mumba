@@ -42,6 +42,8 @@ public:
   void UnpackBundleSync(const std::string& name, const base::FilePath& src, base::OnceCallback<void(bool)> callback);
   void UnpackBundleFromContentsSync(const std::string& name, base::StringPiece contents, base::OnceCallback<void(bool)> callback);
 
+  void SignBundle(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback);
+
   void AddObserver(BundleManagerObserver* observer);
   void RemoveObserver(BundleManagerObserver* observer);
 
@@ -55,6 +57,8 @@ private:
   bool BeforeBundleUnpack(const base::FilePath& dest) const;
   bool AfterBundleUnpack(const std::string& name, const base::FilePath& dest) const;
   base::FilePath GetOutputPath() const;
+
+  void SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback);
 
   void OnLoad(int r, int count);
 

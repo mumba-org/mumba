@@ -243,6 +243,10 @@ public:
     return market_manager_.get(); 
   }
 
+  BundleManager* bundle_manager() const {
+    return bundle_manager_.get();
+  }
+
   int generate_next_application_id();
 
   void set_theme_service(std::unique_ptr<ThemeService> service) {

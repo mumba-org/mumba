@@ -74,7 +74,10 @@ message BundleInitRequest {}
 message BundleInstallRequest {
   string url = 1; 
 }
-message BundleSignRequest {}
+message BundleSignRequest {
+  string bundle_path = 1; 
+  string public_signature = 2; 
+}
 message BundleUninstallRequest {}
 message BundleUpdateRequest {}
 message FetchStartRequest {}

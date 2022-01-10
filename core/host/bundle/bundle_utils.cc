@@ -14,6 +14,8 @@
 #include "third_party/msix/src/inc/internal/VectorStream.hpp"
 #include "third_party/msix/src/inc/internal/AppxPackageObject.hpp"
 #include "third_party/msix/src/inc/internal/ZipObjectReader.hpp"
+#include "third_party/msix/src/inc/public/AppxPackaging.hpp"
+#include "third_party/msix/src/inc/shared/ComHelper.hpp"
 #include "third_party/msix/sample/inc/Helpers.hpp"
 
 namespace host {
@@ -230,6 +232,77 @@ std::string BundleUtils::GetPackageFullName(IAppxPackageReader* package_reader) 
   MSIX::ComPtr<IAppxManifestPackageId> packageId;
   manifest_reader->GetPackageId(&packageId);
   return packageId.As<IAppxManifestPackageIdInternal>()->GetPackageFullName();
+}
+
+// static
+bool BundleUtils::UnpackBundle(const base::FilePath& src, const base::FilePath& dest) {
+  MSIX_VALIDATION_OPTION validation = MSIX_VALIDATION_OPTION_SKIPSIGNATURE;
+  MSIX_PACKUNPACK_OPTION packUnpack = MSIX_PACKUNPACK_OPTION_NONE;
+  MSIX_APPLICABILITY_OPTIONS applicability = MSIX_APPLICABILITY_OPTION_FULL;
+
+  int r = ::UnpackBundle(packUnpack,
+                         validation,
+                         applicability,
+                         const_cast<char*>(src.value().c_str()),
+                         const_cast<char*>(dest.value().c_str()));
+  return r == 0;
+}
+
+// static 
+bool BundleUtils::SignBundle(const base::FilePath& bundle_file, const std::vector<uint8_t>& public_signature) {
+  MSIX::ComPtr<IStream> package_stream;
+  MSIX::ComPtr<IAppxBundleFactory> factory;
+  MSIX::ComPtr<IAppxBundleWriter> bundleWriter;
+  
+  if (CoCreateAppxBundleFactoryWithHeap(
+            MyAllocate,
+            MyFree,
+            MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_SKIPSIGNATURE,
+            static_cast<MSIX_APPLICABILITY_OPTIONS>(MSIX_APPLICABILITY_OPTIONS::MSIX_APPLICABILITY_OPTION_SKIPPLATFORM |
+                                                    MSIX_APPLICABILITY_OPTIONS::MSIX_APPLICABILITY_OPTION_SKIPLANGUAGE),
+            &factory) != 0) {
+    return false;
+  }
+
+  DLOG(INFO) << "CreateStreamOnFile: '" << bundle_file.value() << "'";
+  if (CreateStreamOnFile(const_cast<char *>(bundle_file.value().c_str()), true, &package_stream) != 0) {
+    DLOG(INFO) << "CreateStreamOnFile failed";
+    return false;
+  }
+
+  if (factory->CreateBundleWriter(package_stream.Get(), 0, &bundleWriter) != 0) {
+    DLOG(INFO) << "CreateBundleWriter failed";
+    return false;
+  }
+
+  std::vector<uint8_t> signature_data = public_signature;
+  auto signature_stream = MSIX::ComPtr<IStream>::Make<MSIX::VectorStream>(&signature_data);
+
+  // get it back to the beginning
+  LARGE_INTEGER li{{ 0 }};    
+  if (signature_stream->Seek(li, MSIX::StreamBase::Reference::START, nullptr) != 0) {
+    DLOG(INFO) << "VectorStream Seek failed";
+  }
+
+  std::wstring signature_file;
+  base::UTF8ToWide(APPXSIGNATURE_P7X, strlen(APPXSIGNATURE_P7X), &signature_file);
+
+  if (bundleWriter->AddPayloadPackage(signature_file.data(), signature_stream.Get())) {
+    DLOG(INFO) << "AddPayloadPackage failed";
+    return false;
+  }
+
+  return true;
+}
+
+// static 
+bool BundleUtils::GetBundleSignature(const base::FilePath& bundle_file, std::vector<uint8_t>* public_signature) {
+  return false;
+}
+
+// static 
+bool BundleUtils::ValidateBundleSignature(const base::FilePath& bundle_file) {
+  return false;
 }
 
 }

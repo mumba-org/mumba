@@ -2,21 +2,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MUMBA_KIT_CPP_LAUNCHER_DROP_INIT_COMMAND_H_
-#define MUMBA_KIT_CPP_LAUNCHER_DROP_INIT_COMMAND_H_
+#ifndef MUMBA_KIT_CPP_LAUNCHER_BUNDLE_UPDATE_COMMAND_H_
+#define MUMBA_KIT_CPP_LAUNCHER_BUNDLE_UPDATE_COMMAND_H_
 
 #include "launcher/command.h"
 
-class DropInitCommand : public Command {
+class BundleUpdateCommand : public Command {
 public:
-  static std::unique_ptr<DropInitCommand> Create();
-
-  DropInitCommand();
- ~DropInitCommand() override;
+  static std::unique_ptr<BundleUpdateCommand> Create();
+  
+  BundleUpdateCommand();
+  ~BundleUpdateCommand() override;
 
  std::string GetCommandMethod() const override;
  int Run(CommandExecutor* executor, const base::CommandLine::StringVector& args) override;
- 
 };
 
 #endif

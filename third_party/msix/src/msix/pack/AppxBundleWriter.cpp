@@ -119,7 +119,15 @@ namespace MSIX {
     HRESULT STDMETHODCALLTYPE AppxBundleWriter::AddPayloadPackage(LPCWSTR fileName, IStream* packageStream) noexcept try
     {
         // TODO: implement
-        NOTIMPLEMENTED;
+        //NOTIMPLEMENTED;
+        // Mumba: implemented here a very simple add for signature. no checks
+      std::string filename = wstring_to_utf8(fileName);
+      if (filename == APPXSIGNATURE_P7X) {
+        auto bundleSignatureContentType = ContentType::GetBundlePayloadFileContentType(APPX_BUNDLE_FOOTPRINT_FILE_TYPE_SIGNATURE);
+        AddFileToPackage(filename, packageStream, true, true, bundleSignatureContentType.c_str());
+        return static_cast<HRESULT>(Error::OK);
+      }
+      return static_cast<HRESULT>(Error::InvalidParameter);
     } CATCH_RETURN();
 
     HRESULT STDMETHODCALLTYPE AppxBundleWriter::Close() noexcept try

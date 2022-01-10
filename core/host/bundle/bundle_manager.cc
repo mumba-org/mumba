@@ -112,6 +112,18 @@ void BundleManager::UnpackBundleFromContents(const std::string& name, base::Stri
       base::Passed(std::move(callback))));
 }
 
+void BundleManager::SignBundle(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback) {
+   base::PostTaskWithTraits(
+    FROM_HERE,
+    { base::WithBaseSyncPrimitives(), base::MayBlock() },
+    base::BindOnce(
+      &BundleManager::SignBundleImpl, 
+      base::Unretained(this), 
+      src,
+      signature,
+      base::Passed(std::move(callback))));
+}
+
 void BundleManager::UnpackBundleSync(const std::string& name, const base::FilePath& src, base::OnceCallback<void(bool)> callback) {
   base::FilePath dest = GetOutputPath();
   UnpackBundleImpl(name, src, dest, std::move(callback));
@@ -135,22 +147,7 @@ void BundleManager::UnpackBundleImpl(const std::string& name, const base::FilePa
     return;
   }
 
-  MSIX_VALIDATION_OPTION validation = MSIX_VALIDATION_OPTION_SKIPSIGNATURE;
-  MSIX_PACKUNPACK_OPTION packUnpack = MSIX_PACKUNPACK_OPTION_NONE;
-  MSIX_APPLICABILITY_OPTIONS applicability = MSIX_APPLICABILITY_OPTION_FULL;
-
-  int r = ::UnpackBundle(packUnpack,
-                         validation,
-                         applicability,
-                         const_cast<char*>(src.value().c_str()),
-                         const_cast<char*>(dest.value().c_str()));
-  // int r = UnpackPackage(
-  //   MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
-  //   MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_SKIPSIGNATURE,
-  //   const_cast<char*>(src.value().c_str()),
-  //   const_cast<char*>(dest.value().c_str()));
-
-  if (r != 0) {
+  if (!BundleUtils::UnpackBundle(src, dest)) {
     DLOG(ERROR) << "BundleManager::UnpackBundle: failed to unpack on " << dest;
     std::move(callback).Run(false);
     return;  
@@ -301,6 +298,11 @@ bool BundleManager::AfterBundleUnpack(const std::string& name, const base::FileP
 base::FilePath BundleManager::GetOutputPath() const {
   base::FilePath out_path = workspace_->tmp_dir();
   return out_path.AppendASCII("app" + base::IntToString(base::RandInt(0, std::numeric_limits<int16_t>::max())));
+}
+
+void BundleManager::SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback) {
+  bool result = BundleUtils::SignBundle(src, signature);
+  std::move(callback).Run(result ? net::OK : net::ERR_FAILED);
 }
 
 void BundleManager::NotifyBundleAdded(Bundle* bundle) {
