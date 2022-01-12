@@ -1,5 +1,5 @@
-create database 'tweedy';
-create table users {
-  key BLOB;
-  value BLOB;
-};
+CREATE DATABASE tweedy OPTIONS(
+  type='key-value'
+);
+CREATE TABLE users;
+CREATE TABLE posts;

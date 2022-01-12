@@ -26,6 +26,7 @@
 #include "third_party/zetasql/parser/parse_tree.h"
 #include "third_party/zetasql/parser/ast_node_kind.h"
 #include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
 #include "third_party/zetasql/base/status.h"
 #pragma clang diagnostic pop
 
@@ -191,7 +192,7 @@ void Bundle::PostUnpackActions(scoped_refptr<Workspace> workspace, const base::F
   base::FileEnumerator dbs_files(dbs_path, false, base::FileEnumerator::FILES);
   for (base::FilePath db_file = dbs_files.Next(); !db_file.empty(); db_file = dbs_files.Next()) {
     DLOG(INFO) << "adding database from '" << db_file << "' into disk '" << name() << "'";
-    CreateDatabase(workspace, db_file);
+    CreateDatabases(workspace, db_file);
   }
   
   // now create the shares
@@ -280,21 +281,68 @@ void Bundle::CreateFileset(scoped_refptr<Workspace> workspace, const base::FileP
     files_dir.BaseName().value());
 }
 
-void Bundle::CreateDatabase(scoped_refptr<Workspace> workspace, const base::FilePath& db_file) {
+void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::FilePath& db_file) {
   std::string sql_statement;
   if (!base::ReadFileToString(db_file, &sql_statement)) {
     DLOG(INFO) << "Bundle::CreateDatabase: failed to read file " << db_file << " to string";
     return;
   }
 
+  bool at_end_of_input = false;
   std::unique_ptr<zetasql::ParserOutput> parser_output;
-  if (!zetasql::ParseStatement(sql_statement, zetasql::ParserOptions(), &parser_output).ok()) {
-    DLOG(INFO) << "Bundle::CreateDatabase: parsing sql statement failed:\n'" << sql_statement << "'";
-    return;
+  // for simple key-value databases
+  // FIXME: 
+  std::vector<std::unique_ptr<DatabaseCreationInfo>> infos;
+
+  zetasql::ParseResumeLocation location = zetasql::ParseResumeLocation::FromStringView("_", sql_statement);
+  DatabaseCreationInfo* current = nullptr;
+
+  while (!at_end_of_input) {
+    zetasql_base::Status status = zetasql::ParseNextStatement(&location, zetasql::ParserOptions(), &parser_output, &at_end_of_input);
+    if (!status.ok()) {
+      DLOG(INFO) << "Bundle::CreateDatabase: parsing sql statement failed:\n'" << sql_statement << "'" << 
+      " error: \n" << status.ToString();
+      return;
+    }
+    const zetasql::ASTStatement* statement = parser_output->statement();
+    zetasql::ASTNodeKind kind = statement->node_kind();
+    // NOTE: for this to work, create database must come before
+    //       'create table'... but we need to test for scenarios 
+    //       where devs might create after
+    if (kind == zetasql::AST_CREATE_DATABASE_STATEMENT) {
+      const zetasql::ASTCreateDatabaseStatement* create_db = statement->GetAsOrNull<zetasql::ASTCreateDatabaseStatement>();
+      std::unique_ptr<DatabaseCreationInfo> info = std::make_unique<DatabaseCreationInfo>();
+      current = info.get();
+      info->database_name = create_db->name()->first_name()->GetAsString();
+      DLOG(INFO) << "Bundle::CreateDatabase: adding database '" << info->database_name << "' to the list of dbs that have to be created";
+      infos.push_back(std::move(info));
+    } else if (kind == zetasql::AST_CREATE_TABLE_STATEMENT) {
+      const zetasql::ASTCreateTableStatement* create_table = statement->GetAsOrNull<zetasql::ASTCreateTableStatement>();
+      std::string keyspace = create_table->name()->first_name()->GetAsString();;
+      DCHECK(current);
+      DLOG(INFO) << "Bundle::CreateDatabase: adding keyspace '" << keyspace << "'";
+      current->keyspaces.push_back(keyspace);
+    }
+    //LOG(INFO) << "Parse tree:\n" << statement->DebugString();
   }
 
-  const zetasql::ASTStatement* statement = parser_output->statement();
-  LOG(INFO) << "Parse tree:\n" << statement->DebugString();
+  for (auto it = infos.begin(); it != infos.end(); it++) {
+    CreateDatabase(workspace, it->get());
+  }
+  
+}
+
+void Bundle::CreateDatabase(scoped_refptr<Workspace> workspace, DatabaseCreationInfo* creation) {
+  DLOG(INFO) << "Bundle::CreateDatabase: creating database '" << creation->database_name << "'";
+  workspace->share_manager()->CreateDatabaseShare(name(), creation->database_name, creation->keyspaces);
+  workspace->share_manager()->CreateShare(name(), 
+    storage_proto::InfoKind::INFO_DATA, 
+    creation->database_name, 
+    creation->keyspaces,
+    base::Bind(&Bundle::OnDatabaseCreated, 
+      base::Unretained(this), 
+      workspace,
+      creation->database_name));
 }
 
 void Bundle::CreateShare(scoped_refptr<Workspace> workspace, const base::FilePath& share_file) {
@@ -360,6 +408,10 @@ void Bundle::OnShareAdded(scoped_refptr<Workspace> workspace, const base::UUID& 
   Share* share = workspace->share_manager()->GetShare(name(), uuid);
   DCHECK(share);
   share->AddObserver(domain);
+}
+
+void Bundle::OnDatabaseCreated(scoped_refptr<Workspace> workspace, const std::string& db_name, int64_t result) {
+  DLOG(INFO) << "Bundle::OnDatabaseCreated: creating database '" << db_name << "' result = " << result;
 }
 
 }

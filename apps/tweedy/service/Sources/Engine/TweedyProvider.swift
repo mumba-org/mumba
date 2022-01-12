@@ -483,7 +483,6 @@ internal class TweedyProviderImpl : tweedy_TweedyProvider {
     context.serviceWorkerContextClient = ServiceWorkerContextClientImpl(delegate: serviceWorkerClient)
 
     routes.bind(routeMap)
-    //context.storage.filebaseExists("site", onFilebaseExists)
   }
 
   public func routeHandler(for route: String) -> RouteHandler? {

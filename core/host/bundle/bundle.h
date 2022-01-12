@@ -82,6 +82,12 @@ public:
   void PostUnpackActions(scoped_refptr<Workspace> workspace, const base::FilePath& path);
 
 private:
+  
+  struct DatabaseCreationInfo {
+    int type; // 0 = KEY-VALUE, 1 = SQL
+    std::string database_name;
+    std::vector<std::string> keyspaces;
+  };
 
   void ResolvePackages();
   void ResolveResourcePackage();
@@ -92,11 +98,13 @@ private:
   void InjectCoreMethods(std::string* proto) const;
 
   void CreateFileset(scoped_refptr<Workspace> workspace, const base::FilePath& files_dir);
-  void CreateDatabase(scoped_refptr<Workspace> workspace, const base::FilePath& db_file);
+  void CreateDatabases(scoped_refptr<Workspace> workspace, const base::FilePath& db_file);
+  void CreateDatabase(scoped_refptr<Workspace> workspace, DatabaseCreationInfo* creation);
   void CreateShare(scoped_refptr<Workspace> workspace, const base::FilePath& share_file);
 
   void OnResourceCached(const base::FilePath& input_dir, const std::string& name, const base::UUID& uuid, int64_t result);
   void OnShareAdded(scoped_refptr<Workspace> workspace, const base::UUID& uuid, const std::string& infohash, const std::string& name, int64_t result);
+  void OnDatabaseCreated(scoped_refptr<Workspace> workspace, const std::string& db_name, int64_t result);
 
   BundlePackage* resource_package_;
   BundlePackage* application_package_;
