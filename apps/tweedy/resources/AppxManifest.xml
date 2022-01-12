@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf8" ?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="Tweedy.Mumba.Tweedy" 
+  <Identity Name="tweedy" 
      Version="0.0.0.1" 
-     Publisher="CN=Tweedy, O=Tweedy, L=SanFrancisco, S=California, C=US"/>
+     Publisher="CN=tweedy, O=tweedy, L=SanFrancisco, S=California, C=US"/>
   <Properties>
     <DisplayName>Tweedy Resources</DisplayName>
-    <PublisherDisplayName>Tweedy</PublisherDisplayName>
+    <PublisherDisplayName>tweedy</PublisherDisplayName>
     <Logo>images\apple-icon-180x180.png</Logo>
     <ResourcePackage>true</ResourcePackage>
   </Properties>

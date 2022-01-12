@@ -23,6 +23,7 @@
 #include "core/host/application/domain_automation_host.h"
 #include "core/host/application/runnable_manager.h"
 #include "core/host/route/route_dispatcher_client.h"
+#include "core/host/application/storage_context.h"
 #include "core/host/compositor/surface_utils.h"
 #include "core/host/background_fetch_delegate.h"
 #include "core/host/background_fetch/background_fetch_delegate_factory.h"
@@ -664,6 +665,157 @@ void Domain::CreateOffscreenCanvasProvider(
     offscreen_canvas_provider_ = std::make_unique<OffscreenCanvasProviderImpl>(GetHostFrameSinkManager());
   }
   offscreen_canvas_provider_->Add(std::move(request));
+}
+
+void Domain::AddStorageContext(scoped_refptr<StorageContext> context) {
+  contexts_.push_back(context);
+}
+
+void Domain::RemoveStorageContext(scoped_refptr<StorageContext> context) {
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    if (it->get() == context.get()) {
+      contexts_.erase(it);
+      return;
+    }
+  }
+}
+
+void Domain::OnDHTAnnounceReply(Share* share, int peers){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnDHTAnnounceReply(share, peers);
+  }
+}
+
+void Domain::OnShareMetadataReceived(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareMetadataReceived(share);
+  }
+}
+
+void Domain::OnShareMetadataError(Share* share, int error){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareMetadataError(share, error);
+  }
+}
+
+void Domain::OnSharePieceReadError(Share* share, int piece_offset, int error){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePieceReadError(share, piece_offset, error);
+  }
+}
+
+void Domain::OnSharePiecePass(Share* share, int piece_offset){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePiecePass(share, piece_offset);
+  }
+}
+
+void Domain::OnSharePieceFailed(Share* share, int piece_offset){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePieceFailed(share, piece_offset);
+  }
+}
+
+void Domain::OnSharePieceRead(Share* share, int piece, int64_t offset, int64_t size, int64_t block_size, int result){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePieceRead(share, piece, offset, size, block_size, result);
+  }
+}
+
+void Domain::OnSharePieceWrite(Share* share, int piece, int64_t offset, int64_t size, int64_t block_size, int result){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePieceWrite(share, piece, offset, size, block_size, result);
+  }
+}
+
+void Domain::OnSharePieceFinished(Share* share, int piece_offset){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePieceFinished(share, piece_offset);
+  }
+}
+
+void Domain::OnSharePieceHashFailed(Share* share, int piece_offset){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePieceHashFailed(share, piece_offset);
+  }
+}
+
+void Domain::OnShareFileCompleted(Share* share, int piece_offset){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareFileCompleted(share, piece_offset);
+  }
+}
+
+void Domain::OnShareFinished(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareFinished(share);
+  }
+}
+
+void Domain::OnShareDownloading(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareDownloading(share);
+  }
+}
+
+void Domain::OnShareCheckingFiles(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareCheckingFiles(share);
+  }
+}
+
+void Domain::OnShareDownloadingMetadata(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareDownloadingMetadata(share);
+  }
+}
+
+void Domain::OnShareSeeding(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareSeeding(share);
+  }
+}
+
+void Domain::OnSharePaused(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnSharePaused(share);
+  }
+}
+
+void Domain::OnShareResumed(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareResumed(share);
+  }
+}
+
+void Domain::OnShareChecked(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareChecked(share);
+  }
+}
+
+void Domain::OnShareDeleted(Share* share){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareDeleted(share);
+  }
+}
+
+void Domain::OnShareDeletedError(Share* share, int error){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareDeletedError(share, error);
+  }
+}
+
+void Domain::OnShareFileRenamed(Share* share, int file_offset, const std::string& name){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareFileRenamed(share, file_offset, name);
+  }
+}
+
+void Domain::OnShareFileRenamedError(Share* share, int index, int error){ 
+  for (auto it = contexts_.begin(); it != contexts_.end(); it++) {
+    (*it)->OnShareFileRenamedError(share, index, error);
+  }
 }
 
 }

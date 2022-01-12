@@ -62,7 +62,7 @@ private:
 class StorageContext : public ShareObserver,
                        public base::RefCountedThreadSafe<StorageContext> {
 public:
-  StorageContext(int id, scoped_refptr<Workspace> workspace, Domain* shell);
+  StorageContext(int id, scoped_refptr<Workspace> workspace, Domain* domain);
 
   int id() const {
     return id_;
@@ -121,6 +121,9 @@ public:
   void IndexResolveId(uint32_t context_id, int32_t req, const std::string& address);
 
 private:
+
+  friend class base::RefCountedThreadSafe<StorageContext>;
+  friend class Domain;
   
   void ListSharesImpl(uint32_t context_id, int32_t req, base::OnceCallback<void(std::vector<common::mojom::ShareInfoPtr>)> , std::vector<std::unique_ptr<storage_proto::Info>>, int64_t);
   void ListShareEntriesImpl(uint32_t context_id, int32_t req, const std::string& tid, base::OnceCallback<void(std::vector<common::mojom::ShareStorageEntryPtr>)> cb, std::vector<std::unique_ptr<storage_proto::Info>>, int64_t);
@@ -257,8 +260,6 @@ private:
   void OnShareDeletedError(Share* share, int error) override;
   void OnShareFileRenamed(Share* share, int file_offset, const std::string& name) override;
   void OnShareFileRenamedError(Share* share, int index, int error) override;
-
-  friend class base::RefCountedThreadSafe<StorageContext>;
 
   ~StorageContext();
   

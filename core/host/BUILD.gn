@@ -2240,6 +2240,8 @@ component("host") {
     #"usb/web_usb_permission_provider.h",
     "workspace/app_storage.cc",
     "workspace/app_storage.h",
+    "workspace/bin_storage.cc",
+    "workspace/bin_storage.h",
     "workspace/volume_storage.cc",
     "workspace/volume_storage.h",
     "workspace/storage_layer.h",

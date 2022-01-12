@@ -43,7 +43,6 @@ namespace MSIX {
     // IBundleWriter
     void AppxBundleWriter::ProcessBundlePayload(const ComPtr<IDirectoryObject>& from, bool flatBundle)
     {
-        printf("AppxBundleWriter::ProcessBundlePayload: flatbundle? %d\n", flatBundle);
         ThrowErrorIf(Error::InvalidState, m_state != WriterState::Open, "Invalid package writer state");
         auto failState = MSIX::scope_exit([this]
             {
@@ -53,7 +52,6 @@ namespace MSIX {
         auto fileMap = from->GetFilesByLastModDate();
         for (const auto& file : fileMap)
         {   
-            printf("AppxBundleWriter::ProcessBundlePayload: %s footprint? %d\n", file.second.c_str(), FileNameValidation::IsFootPrintFile(file.second, true));
             if (!(FileNameValidation::IsFootPrintFile(file.second, true)))
             {
                 std::string ext = Helper::tolower(file.second.substr(file.second.find_last_of(".") + 1));

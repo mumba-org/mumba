@@ -96,7 +96,7 @@ namespace {
 
 //const char kURLDataManagerBackendKeyName[] = "url_data_manager_backend";
 
-const char kCoreServices[] = "message FetchRequest {\n int64 started_time = 1;\n string content_type = 2;\n string url = 3;\n int64 size = 4;\n bytes data = 5;\n }\nmessage FetchReply {\n int64 size=1;\n  bytes data = 2;\n}\nservice FetchService {\n rpc FetchUnary(FetchRequest) returns (FetchReply);\n rpc FetchClientStream(stream FetchRequest) returns (FetchReply);\n rpc FetchServerStream(FetchRequest) returns (stream FetchReply);\n rpc FetchBidiStream(stream FetchRequest) returns (stream FetchReply);\n }\n";
+//const char kCoreServices[] = "message FetchRequest {\n int64 started_time = 1;\n string content_type = 2;\n string url = 3;\n int64 size = 4;\n bytes data = 5;\n }\nmessage FetchReply {\n int64 size=1;\n  bytes data = 2;\n}\nservice FetchService {\n rpc FetchUnary(FetchRequest) returns (FetchReply);\n rpc FetchClientStream(stream FetchRequest) returns (FetchReply);\n rpc FetchServerStream(FetchRequest) returns (stream FetchReply);\n rpc FetchBidiStream(stream FetchRequest) returns (stream FetchReply);\n }\n";
 
 
 std::vector<std::string> GetSystemKeyspaces() {
@@ -680,260 +680,88 @@ void Workspace::RemoveChannel(const base::UUID& uuid) {
 
 void Workspace::InstallSchemaAndLibrariesFromVolumeCheckout(Volume* volume, const base::FilePath& path) {
   Bundle* bundle = volume->bundle();
-  DCHECK(bundle);
-  std::string resources_path = bundle->resources_path();
-  std::string executable_path = bundle->application_path();
-  InstallSchemaFromVolumeCheckout(volume, path.AppendASCII(resources_path));
-  InstallLibrariesFromVolumeCheckout(volume, path.AppendASCII(executable_path));
+  bundle->PostUnpackActions(this, path);
+  // std::string resources_path = bundle->resources_path();
+  // std::string executable_path = bundle->application_path();
+  // InstallSchemaFromVolumeCheckout(volume, path.AppendASCII(resources_path));
+  // InstallLibrariesFromVolumeCheckout(volume, path.AppendASCII(executable_path));
+  // // add the assets on resources into the application storage
+
+  // base::UUID uuid = base::UUID::generate();
+  // base::FilePath files_path = path.AppendASCII(resources_path).AppendASCII("files");
+  
+  // base::FileEnumerator resources_files(files_path, false, base::FileEnumerator::DIRECTORIES);
+  // for (base::FilePath files_dir = resources_files.Next(); !files_dir.empty(); files_dir = resources_files.Next()) {
+  //   //DLOG(INFO) << "adding fileset entry from '" << files_dir << "' into disk '" << volume->name() << "' named '" << files_dir.BaseName().value() << "'";
+  //   share_manager()->AddEntry(
+  //     volume->name(),
+  //     files_dir,
+  //     uuid,
+  //     base::Bind(&Bundle::OnResourceCached, 
+  //       base::Unretained(bundle), 
+  //       files_dir,
+  //       files_dir.BaseName().value(),
+  //       uuid),
+  //     files_dir.BaseName().value());
+  // }
 }
 
 void Workspace::InstallSchemaFromVolumeCheckout(Volume* volume, const base::FilePath& path) {
-  base::FilePath schema_path = path.AppendASCII("proto");
-  base::FileEnumerator schema_files(schema_path, false, base::FileEnumerator::FILES, FILE_PATH_LITERAL("*.proto"));
-  for (base::FilePath schema_file = schema_files.Next(); !schema_file.empty(); schema_file = schema_files.Next()) {
-    std::string file_content;
-#if defined (OS_WIN)
-    std::string file_name = base::UTF16ToASCII(schema_file.RemoveExtension().BaseName().value());
-#else
-    std::string file_name = schema_file.RemoveExtension().BaseName().value();
-#endif
-    if (!base::ReadFileToString(schema_file, &file_content)) {
-      DLOG(ERROR) << "failed to read schema file content at " << schema_file;
-      return;
-    }
-    // FIXME: this is desirable only for main services.. if theres more than one
-    // (a batch service for instance) the injection should not happen
-    // BTW, this is a hacky way to insert common methods we will need
-    InjectCoreMethods(&file_content);
+//  DEPRECATED: its on Bundle::PostUnpackActions now  
+//   base::FilePath schema_path = path.AppendASCII("proto");
+//   base::FileEnumerator schema_files(schema_path, false, base::FileEnumerator::FILES, FILE_PATH_LITERAL("*.proto"));
+//   for (base::FilePath schema_file = schema_files.Next(); !schema_file.empty(); schema_file = schema_files.Next()) {
+//     std::string file_content;
+// #if defined (OS_WIN)
+//     std::string file_name = base::UTF16ToASCII(schema_file.RemoveExtension().BaseName().value());
+// #else
+//     std::string file_name = schema_file.RemoveExtension().BaseName().value();
+// #endif
+//     if (!base::ReadFileToString(schema_file, &file_content)) {
+//       DLOG(ERROR) << "failed to read schema file content at " << schema_file;
+//       return;
+//     }
+//     // FIXME: this is desirable only for main services.. if theres more than one
+//     // (a batch service for instance) the injection should not happen
+//     // BTW, this is a hacky way to insert common methods we will need
+//     InjectCoreMethods(&file_content);
 
-    std::unique_ptr<Schema> schema = Schema::NewFromProtobuf(schema_registry_.get(), 
-      std::move(file_name), 
-      std::move(file_content));
-    DCHECK(schema);
-    schema_registry_->InsertSchema(std::move(schema));
-  }
+//     std::unique_ptr<Schema> schema = Schema::NewFromProtobuf(schema_registry_.get(), 
+//       std::move(file_name), 
+//       std::move(file_content));
+//     DCHECK(schema);
+//     schema_registry_->InsertSchema(std::move(schema));
+//   }
 }
 
 void Workspace::InstallLibrariesFromVolumeCheckout(Volume* volume, const base::FilePath& path) {
-  base::FilePath exe_path;
-  base::PathService::Get(base::DIR_EXE, &exe_path); 
+  //  DEPRECATED: its on Bundle::PostUnpackActions now  
+//   base::FilePath exe_path;
+//   base::PathService::Get(base::DIR_EXE, &exe_path); 
 
-  base::FilePath input_dir = exe_path;
+//   base::FilePath input_dir = exe_path;
   
-#if defined (OS_POSIX)
-  base::FilePath input_dev("/dev");
-#endif  
-  //base::FilePath output_path = path.AppendASCII("lib");
-  base::FilePath dev_path = path.AppendASCII("dev");
-  if (!base::CreateDirectory(dev_path)) {
-    DLOG(ERROR) << "failed to create dev directory " << dev_path;
-    return;
-  }
+// #if defined (OS_POSIX)
+//   base::FilePath input_dev("/dev");
+// #endif  
+//   base::FilePath dev_path = path.AppendASCII("dev");
+//   if (!base::CreateDirectory(dev_path)) {
+//     DLOG(ERROR) << "failed to create dev directory " << dev_path;
+//     return;
+//   }
 
-  base::FilePath output_path = path.AppendASCII(
-    storage::GetIdentifierForArchitecture(storage::GetHostArchitecture()));
+//   base::FilePath output_path = path.AppendASCII(
+//     storage::GetIdentifierForArchitecture(storage::GetHostArchitecture()));
 
-  // base::FilePath service_output_path = path.AppendASCII(
-  //   storage::GetIdentifierForArchitecture(storage::GetHostArchitecture()));  
+// std::vector<std::string> dev_access = {
+//   "urandom"
+// };
 
-std::vector<std::string> dev_access = {
-  "urandom"
-};
-
-
-#if defined(COMPONENT_BUILD)
-// TODO: this is a nice use-case for the ResourceBundle
-  std::vector<std::string> libraries = {
-    // "libc++.so",
-    // "libapplication_shared.so",
-    // "libcommon_shared.so",
-    // "libdomain_shared.so",
-    // "libbase.so",
-    // "libcc.so",
-    // "libcc_animation.so",
-    // "libcc_paint.so",
-    // "libviz_common.so",
-    // "libipc.so",
-    // "libgpu.so",
-    // "libgin.so",
-    // "libgles2.so",
-    // "libraster.so",
-    // "libgles2_implementation.so",
-    // "libmedia.so",
-    // "libmojo_edk.so",
-    // "libbindings.so",
-    // "libservice_manager_cpp.so",
-    // "libservice_manager_mojom.so",
-    // "libtracing_cpp.so",
-    // "libnet.so",
-    // "libcrcrypto.so",
-    // "libskia.so",
-    // "libui_base.so",
-    // "libui_base_ime.so",
-    // "libdisplay.so",
-    // "libdisplay_types.so",
-    // "libevents.so",
-    // "libgesture_detection.so",
-    // "libgfx.so",
-    // "libanimation.so",
-    // "libgeometry.so",
-    // "libgl_wrapper.so",
-    // "libblink_core.so",
-    // "libschemabuf_lite.so",
-    // "libv8_libbase.so",
-    // "libgfx_x11.so",
-    // "libmojo_public_system_cpp.so",
-    // "libmojo_public_system.so",
-    // "libmojo_cpp_platform.so",
-    // "libcolor_space.so",
-    // "libgeometry_skia.so",
-    // "libcodec.so",
-    // "libcrash_key.so",
-    // "libmessage_support.so",
-    // "libbindings_base.so",
-    // "libmojo_mojom_bindings_shared.so",
-    // "libgfx_ipc_geometry.so",
-    // "liburl.so",
-    // "libgl_in_process_context.so",
-    // "libshared_memory_support.so",
-    // "libgfx_ipc_color.so",
-    // "libmojo_base_mojom_shared.so",
-    // "libmojo_base_mojom.so",
-    // "libmojo_base_lib.so",
-    // "libmojo_base_shared_typemap_traits.so",
-    // "libbase_i18n.so",
-    // "libservice_manager_mojom_constants.so",
-    // "libservice_manager_cpp_types.so",
-    // "libcc_base.so",
-    // "libcc_debug.so",
-    // "libmetrics_cpp.so",
-    // "libservice.so",
-    // "libevents_base.so",
-    // "libnetwork_cpp_base.so",
-    // "libsandbox.so",
-    // "libnetwork_service.so",
-    // "libtracing_mojom.so",
-    // "libperfetto.so",
-    // "libblink_mojo_bindings_shared.so",
-    // "libblink_android_mojo_bindings_shared.so",
-    // "libwtf.so",
-    // "libblink_platform.so",
-    // "libgl_init.so",
-    // "libprefs.so",
-    // "libcapture_base.so",
-    // "libfreetype_harfbuzz.so",
-    // "libsandbox_services.so",
-    // "libbluetooth.so",
-    // "libmedia_blink.so",
-    // "libclient.so",
-    // "libnetwork_cpp.so",
-    // "libdiscardable_memory_client.so",
-    // "libtracing.so",
-    // "libcc_blink.so",
-    // "libgfx_switches.so",
-    // "libipc_mojom.so",
-    // "libmedia_gpu.so",
-    // "libblink_common.so",
-    // "libmojom_core_shared.so",
-    // "libmojom_platform_shared.so",
-    // "libgpu_util.so",
-    // "libgpu_ipc_service.so",
-    // "libcore_shared_common_mojom_shared.so",
-    // "libblink_controller.so",
-    // "libresource_coordinator_cpp.so",
-    // "libresource_coordinator_public_mojom.so",
-    // "libv8.so",
-    // "libembedder.so",
-    // "libhost.so",
-    // "libmidi.so",
-    // "libnative_theme.so",
-    // "libcore_shared_common_mojo_bindings_shared.so",
-    // "libgfx_ipc.so",
-    // "liburl_ipc.so",
-    // "libleveldatabase.so",
-    // "libgfx_ipc_skia.so",
-    // "libui_base_x.so",
-    // "libcc_ipc.so",
-    // "libaccessibility.so",
-    // "libffmpeg.so",
-    // "libviz_resource_format.so",
-    // "libmojo_mojom_bindings.so",
-    // "libgfx_ipc_buffer_types.so",
-    // "libgles2_utils.so",
-    // "libkeycodes_x11.so",
-    // "libmojo_edk_ports.so",
-    // "libservice_manager_mojom_shared.so",
-    // "libui_data_pack.so",
-    // "libplatform.so",
-    // "libdevices.so",
-    // "libx11_events_platform.so",
-    // "libevents_x.so",
-    // "librange.so",
-    // "libblink_core_mojo_bindings_shared.so",
-    // "libservice_manager_mojom_constants_shared.so",
-    // "libcapture_lib.so",
-    // "libmedia_mojo_services.so",
-    // "libseccomp_bpf.so",
-    // "libsuid_sandbox_client.so",
-    // "libnetwork_session_configurator.so",
-    // "liburl_matcher.so",
-    // "libdbus.so",
-    // "libsql.so",
-    // "libtracing_mojom_shared.so",
-    // "libdevice_vr_mojo_bindings_blink.so",
-    // "libmojo_base_mojom_blink.so",
-    // "libresource_coordinator_public_mojom_blink.so",
-    // "libblink_offscreen_canvas_mojo_bindings_shared.so",
-    // "libdevice_event_log.so",
-    // "libdevice_base.so",
-    // "libdiscardable_memory_common.so",
-    // "libipc_mojom_shared.so",
-    // "libblink_modules.so",
-    // "libresource_coordinator_cpp_base.so",
-    // "libresource_coordinator_public_mojom_shared.so",
-    // "libembedder_switches.so",
-    // "libstartup_tracing.so",
-    // "libevents_devices_x11.so",
-    // "libcdm_manager.so",
-    // "libchromium_sqlite3.so",
-    // "libdevice_vr_mojo_bindings_shared.so",
-    // "libmedia_devices_mojo_bindings_shared.so",
-    // "libstorage.so",
-    // "libicui18n.so",
-    // "libicui18n_swift.so",
-    // "libicuuc.so",
-    // "libicuuc_swift.so",
-    "natives_blob.bin",
-    "snapshot_blob.bin",
-    "libraries.bin",
-    "libraries_extras.bin",
-    // "libmumba_kit.so",
-    // "libboringssl.so",
-    // "libfontconfig.so",
-    // "librpc.so",
-    // "libgrpc.so",
-    "icudtl.dat",
-    "icudtl55.dat",
-  };
-#else
-std::vector<std::string> libraries;
-// TODO: define at least the main app_sdk dso library
-#endif 
-
-  //if (!base::CreateDirectory(output_path)) {
-  //  DLOG(ERROR) << "failed to create directory " << output_path;
-  //  return;
-  //}
-  // create links
-#if defined(OS_POSIX)
-  for (auto it = dev_access.begin(); it != dev_access.end(); ++it) {
-    base::CreateSymbolicLink(input_dev.AppendASCII(*it), dev_path.AppendASCII(*it));
-  }
-  for (auto it = libraries.begin(); it != libraries.end(); ++it) {
-    base::CreateSymbolicLink(input_dir.AppendASCII(*it), output_path.AppendASCII(*it));
-    //base::CreateSymbolicLink(input_dir.AppendASCII(*it), service_output_path.AppendASCII(*it));
-  }
-#endif
+// #if defined(OS_POSIX)
+//   for (auto it = dev_access.begin(); it != dev_access.end(); ++it) {
+//     base::CreateSymbolicLink(input_dev.AppendASCII(*it), dev_path.AppendASCII(*it));
+//   }
+// #endif
 }
 
 bool Workspace::InstallSchemaFromBundle(std::string filename, int id) {
@@ -1788,8 +1616,9 @@ void Workspace::CloseAllTabsCanceled() {}
 void Workspace::SetTabNeedsAttentionAt(int index, bool attention) {}
 
 void Workspace::InjectCoreMethods(std::string* proto) const {
-  proto->append("\n\n");
-  proto->append(kCoreServices);
+  // DEPRECATED: at Bundle::PostUnpackActions now
+  // proto->append("\n\n");
+  // proto->append(kCoreServices);
 }
 
 

@@ -141,64 +141,64 @@ public class TweedyContext : EngineContext,
   }
 
   open func onShareDHTAnnounceReply(uuid: String, peers: Int) {
-    //print("TweedyContext.onShareDHTAnnounceReply: \(uuid) peers: \(peers)")
+    print("TweedyContext.onShareDHTAnnounceReply: \(uuid) peers: \(peers)")
   }
   open func onShareMetadataReceived(uuid: String) {
-    //print("TweedyContext.onShareMetadataReceived: \(uuid)")
+    print("TweedyContext.onShareMetadataReceived: \(uuid)")
   }
   open func onShareMetadataError(uuid: String, error: Int) {
-    //print("TweedyContext.onShareMetadataError: \(uuid) error: \(error)")
+    print("TweedyContext.onShareMetadataError: \(uuid) error: \(error)")
   }
   open func onSharePieceReadError(uuid: String, piece: Int, error: Int) {
-    //print("TweedyContext.onSharePieceReadError: \(uuid) error: \(error)")
+    print("TweedyContext.onSharePieceReadError: \(uuid) error: \(error)")
   }
   open func onSharePiecePass(uuid: String, piece: Int) {
-    //print("TweedyContext.onSharePiecePass: \(uuid) piece: \(piece)")
+    print("TweedyContext.onSharePiecePass: \(uuid) piece: \(piece)")
   }
   open func onSharePieceFailed(uuid: String, piece: Int) {
-    //print("TweedyContext.onSharePieceFailed: \(uuid) piece: \(piece)")
+    print("TweedyContext.onSharePieceFailed: \(uuid) piece: \(piece)")
   }
   open func onSharePieceRead(uuid: String, piece: Int, offset: Int, size: Int, blockSize: Int, result: Int) {
-    //print("TweedyContext.onSharePieceRead: \(uuid) piece: \(piece) size: \(size)")
+    print("TweedyContext.onSharePieceRead: \(uuid) piece: \(piece) size: \(size)")
   }
   open func onSharePieceWrite(uuid: String, piece: Int, offset: Int, size: Int, blockSize: Int, result: Int) {
-    //print("TweedyContext.onSharePieceWrite: \(uuid) piece: \(piece) size: \(size)")
+    print("TweedyContext.onSharePieceWrite: \(uuid) piece: \(piece) size: \(size)")
   }
   open func onSharePieceHashFailed(uuid: String, piece: Int) {
-    //print("TweedyContext.onSharePieceHashFailed: \(uuid) piece: \(piece)")
+    print("TweedyContext.onSharePieceHashFailed: \(uuid) piece: \(piece)")
   }
   open func onShareCheckingFiles(uuid: String) {
-    //print("TweedyContext.onShareCheckingFiles: \(uuid)")
+    print("TweedyContext.onShareCheckingFiles: \(uuid)")
   }
   open func onShareDownloadingMetadata(uuid: String) {
-    //print("TweedyContext.onShareDownloadingMetadata: \(uuid)")
+    print("TweedyContext.onShareDownloadingMetadata: \(uuid)")
   }
   open func onShareFileRenamed(uuid: String, fileOffset: Int, name: String, error: Int) {
-    //print("TweedyContext.onShareFileRenamed: \(uuid)")
+    print("TweedyContext.onShareFileRenamed: \(uuid)")
   }
   open func onShareResumed(uuid: String) {
-    //print("TweedyContext.onShareResumed: \(uuid)")
+    print("TweedyContext.onShareResumed: \(uuid)")
   }
   open func onShareChecked(uuid: String, result: Int) {
-    //print("TweedyContext.onShareChecked: \(uuid) result: \(result)")
+    print("TweedyContext.onShareChecked: \(uuid) result: \(result)")
   }
   open func onSharePieceComplete(uuid: String, piece: Int) {
-    //print("TweedyContext.onSharePieceComplete: \(uuid) piece: \(piece)")
+    print("TweedyContext.onSharePieceComplete: \(uuid) piece: \(piece)")
   }
   open func onShareFileComplete(uuid: String, fileOffset: Int) {
-    //print("TweedyContext.onShareFileComplete: \(uuid) file: \(fileOffset)")
+    print("TweedyContext.onShareFileComplete: \(uuid) file: \(fileOffset)")
   }
   open func onShareDownloading(uuid: String) {
-    //print("TweedyContext.onShareDownloading: \(uuid)")
+    print("TweedyContext.onShareDownloading: \(uuid)")
   }
   open func onShareComplete(uuid: String) {
-    //print("TweedyContext.onTorretComplete: \(uuid)")
+    print("TweedyContext.onTorretComplete: \(uuid)")
   } 
   open func onShareSeeding(uuid: String) {
-    //print("TweedyContext.onShareSeeding: \(uuid)")
+    print("TweedyContext.onShareSeeding: \(uuid)")
   } 
   open func onSharePaused(uuid: String) {
-    //print("TweedyContext.onSharePaused: \(uuid)")
+    print("TweedyContext.onSharePaused: \(uuid)")
   }
 
   // ApplicationInstanceObserver

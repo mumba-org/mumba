@@ -30,7 +30,7 @@ public class HelloHandler : RouteHandler {
   private var _iconData: Data?
   private var bytesRead: Int64 = 0
   private weak var context: TweedyContext?
-  private var burma: Filebase?
+  private var site: Filebase?
   private var outputString: String = String()
   //private var queryString: String = String()
   //private var files: [Int: [String: SharedMemory]] = [[:]]
@@ -74,10 +74,10 @@ public class HelloHandler : RouteHandler {
       print("HelloHandler.onResponseStarted: null completion. exiting..")
       return
     } 
-    if burma == nil {
-      context!.storage.openFilebase("burma", { [self, completion] (status, filebase) in
+    if site == nil {
+      context!.storage.openFilebase("site", { [self, completion] (status, filebase) in
         if status == 0 {
-          self.burma = filebase
+          self.site = filebase
           completion!(0)
         } else {
           completion!(-2)
@@ -108,10 +108,10 @@ public class HelloHandler : RouteHandler {
           urlRequest = UrlRequest(engine: engine, executor: executor, handler: self, url: url, params: params)
           urlRequest!.start()
         case "path=2":
-          //print("\n'/hello' route => path=2 opening burma..")
-          context!.storage.openFilebase("burma", { [self] (status, filebase) in
+          //print("\n'/hello' route => path=2 opening site..")
+          context!.storage.openFilebase("site", { [self] (status, filebase) in
             if status == 0 {
-              burma = filebase
+              site = filebase
               filebase!.readAll(from: "index.html", {[self] (status, mem) in  
                 if status == 0 {
                   if let m = mem {
@@ -125,19 +125,19 @@ public class HelloHandler : RouteHandler {
                       close(call: request.callId, status: .ok, completion: nil)
                     })                      
                   } else {
-                    let helloString = "error reading file 'burma/index.html': NO DATA"
+                    let helloString = "error reading file 'site/index.html': NO DATA"
                     writeRaw(call: request.callId, string: helloString)
                     close(call: request.callId, status: .ok, completion: nil)
                   }
                 } else {
-                  let helloString = "error reading file 'burma/index.html': FAILED"
+                  let helloString = "error reading file 'site/index.html': FAILED"
                   writeRaw(call: request.callId, string: helloString)
                   close(call: request.callId, status: .ok, completion: nil)
                 }
                 //filebase!.close({print("closing filebase returned \($0)")})
               })
             } else {
-              let helloString = "error opening filebase 'burma': FAILED"
+              let helloString = "error opening filebase 'site': FAILED"
               writeRaw(call: request.callId, string: helloString)
               close(call: request.callId, status: .ok, completion: nil)
             }
@@ -169,7 +169,7 @@ public class HelloHandler : RouteHandler {
           close(call: request.callId, status: .ok, completion: nil)
       }
     } else {
-      guard let assets = burma else {
+      guard let assets = site else {
         writeRaw(call: request.callId, string: "sorry")
         close(call: request.callId, status: .ok, completion: nil)
         return
@@ -245,8 +245,8 @@ public class HelloHandler : RouteHandler {
   }
 
   private func openFile(file: String, request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
-    guard let files = burma else {
-      print("HelloHandler.onResponseStarted: \(request.callId) - \(request.url) => burma is not here. really bad")
+    guard let files = site else {
+      print("HelloHandler.onResponseStarted: \(request.callId) - \(request.url) => site is not here. really bad")
       completion(-2)
       return
     }

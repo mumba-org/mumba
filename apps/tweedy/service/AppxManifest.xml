@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf8" ?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="Tweedy.Mumba.Tweedy" 
+  <Identity Name="tweedy" 
      Version="0.0.0.1" 
-     Publisher="CN=Tweedy, O=Tweedy, L=SanFrancisco, S=California, C=US" 
+     Publisher="CN=tweedy, O=tweedy, L=SanFrancisco, S=California, C=US" 
      ProcessorArchitecture="x64"/>
   <Properties>
-    <DisplayName>Tweedy Service</DisplayName>
-    <PublisherDisplayName>Tweedy</PublisherDisplayName>
+    <DisplayName>tweedy service</DisplayName>
+    <PublisherDisplayName>tweedy</PublisherDisplayName>
     <Logo>images\apple-icon-180x180.png</Logo>
   </Properties>
   <Prerequisites>
@@ -20,8 +20,8 @@
     <TargetDeviceFamily Name="Linux.All" MinVersion="0.0.0.0" MaxVersionTested="0.0.0.0"/>
   </Dependencies>
   <Applications>
-  <Application Id="Tweedy" Executable="tweedy_service.so" StartPage="index.html">
-    <VisualElements DisplayName="Tweedy" Description="social network" 
+  <Application Id="tweedy" Executable="tweedy_service.so" StartPage="index.html">
+    <VisualElements DisplayName="tweedy" Description="social network" 
          Logo="images\apple-icon-180x180.png" ForegroundText="dark" BackgroundColor="#FFFFFF" >
       <SplashScreen Image="images\splash.png" />
     </VisualElements>

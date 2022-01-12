@@ -21,7 +21,7 @@ public:
   StorageManager(scoped_refptr<Workspace> workspace);
   ~StorageManager();
 
- scoped_refptr<StorageContext> CreateContext(Domain* shell);
+ scoped_refptr<StorageContext> CreateContext(Domain* domain);
  scoped_refptr<StorageContext> GetContext(int context_id);
  void DestroyContext(int context_id);  
 

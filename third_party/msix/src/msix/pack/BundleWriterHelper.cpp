@@ -20,7 +20,6 @@ namespace MSIX {
     void BundleWriterHelper::AddPackage(std::string fileName, IAppxPackageReader* packageReader,
         std::uint64_t bundleOffset, std::uint64_t packageSize, bool isDefaultApplicableResource)
     {
-        printf("BundleWriterHelper::AddPackage: %s\n", fileName.c_str());
         ComPtr<IAppxManifestPackageId> packageId;
         APPX_BUNDLE_PAYLOAD_PACKAGE_TYPE packageType = APPX_BUNDLE_PAYLOAD_PACKAGE_TYPE::APPX_BUNDLE_PAYLOAD_PACKAGE_TYPE_APPLICATION;
         ComPtr<IAppxManifestQualifiedResourcesEnumerator> resources;
@@ -44,8 +43,6 @@ namespace MSIX {
         *resources = nullptr;
         *tdfs = nullptr;
 
-        printf("BundleWriterHelper::GetValidatedPackageData: %s\n", fileName.c_str());
-
         ComPtr<IAppxManifestPackageId> loadedPackageId;
         APPX_BUNDLE_PAYLOAD_PACKAGE_TYPE loadedPackageType = APPX_BUNDLE_PAYLOAD_PACKAGE_TYPE::APPX_BUNDLE_PAYLOAD_PACKAGE_TYPE_APPLICATION;
         ComPtr<IAppxManifestQualifiedResourcesEnumerator> loadedResources;
@@ -64,8 +61,6 @@ namespace MSIX {
 
         loadedPackageType = this->m_validationHelper.GetPayloadPackageType(manifestReader.Get(), fileName);
         
-        printf("BundleWriterHelper::GetValidatedPackageData: loadedPackageType = %u\n", loadedPackageType);
-
         this->m_validationHelper.AddPackage(loadedPackageType, packageIdInternal.Get(), fileName);
         this->m_validationHelper.ValidateOSVersion(manifestReader.Get(), fileName);        
 
@@ -73,7 +68,6 @@ namespace MSIX {
 
         if (loadedPackageType == APPX_BUNDLE_PAYLOAD_PACKAGE_TYPE_APPLICATION)
         {
-            printf("BundleWriterHelper::GetValidatedPackageData: loadedPackageType = application => this->m_validationHelper.ValidateApplicationElement()\n");
             this->m_validationHelper.ValidateApplicationElement(manifestReader.Get(), fileName);
             if (loadedTdfs.Get() != nullptr)
             {
@@ -104,7 +98,6 @@ namespace MSIX {
         else
         {
             std::string packageName = packageId->GetName();
-            
             if ((this->mainPackageName.compare(packageName)) != 0)
             {
                 std::string packageFullName = packageId->GetPackageFullName();
@@ -130,7 +123,6 @@ namespace MSIX {
         IAppxManifestQualifiedResourcesEnumerator* resources,
         IAppxManifestTargetDeviceFamiliesEnumerator* tdfs)
     {
-        printf("BundleWriterHelper::AddValidatedPackageData: %s\n", fileName.c_str());
         auto innerPackageIdInternal = packageId.As<IAppxManifestPackageIdInternal>();
 
         PackageInfo packageInfo;
@@ -269,7 +261,6 @@ namespace MSIX {
         // A bundle must contain at least one app package.  It's an error to Close
         // the writer without having added one.
         bool result = this->m_validationHelper.ContainsApplicationPackage();
-        printf("BundleWriterHelper::EndBundleManifest: ContainsApplicationPackage? %d\n", result);
         if (!result)
         {
             ThrowErrorAndLog(Error::AppxManifestSemanticError, "The bundle must contain at least one app package targeting a known processor architecture.");
@@ -299,14 +290,12 @@ namespace MSIX {
 
         for(std::size_t i = 0; i < this->payloadPackages.size(); i++) 
         {
-            printf("BundleWriterHelper::EndBundleManifest: m_bundleManifestWriter.AddPackage(%lu)\n", i);
             m_bundleManifestWriter.AddPackage(payloadPackages[i]);
         }
 
         std::map<std::string, OptionalBundleInfo>::iterator optionalBundleIterator = optionalBundles.begin();     
         while(optionalBundleIterator != optionalBundles.end())
         {
-            printf("BundleWriterHelper::EndBundleManifest: m_bundleManifestWriter.AddOptionalBundle()\n");
             m_bundleManifestWriter.AddOptionalBundle(optionalBundleIterator->second);
             optionalBundleIterator++;
         }

@@ -18,7 +18,8 @@
 #include "core/shared/common/mojom/bundle.mojom.h"
 
 namespace host {
-
+class Workspace;
+class Share;
 /*
  *
  * Get the whole bundle manifest info from msix
@@ -77,11 +78,25 @@ public:
 
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
 
+  // FIXME: maybe to be on a BundleController instead of Bundle
+  void PostUnpackActions(scoped_refptr<Workspace> workspace, const base::FilePath& path);
+
 private:
 
   void ResolvePackages();
   void ResolveResourcePackage();
   void ResolveApplicationPackage();
+
+  void InstallSchemaAfterBundleUnpack(scoped_refptr<Workspace> workspace, const base::FilePath& path);
+  void InstallLibrariesAfterBundleUnpack(scoped_refptr<Workspace> workspace, const base::FilePath& path);
+  void InjectCoreMethods(std::string* proto) const;
+
+  void CreateFileset(scoped_refptr<Workspace> workspace, const base::FilePath& files_dir);
+  void CreateDatabase(scoped_refptr<Workspace> workspace, const base::FilePath& db_file);
+  void CreateShare(scoped_refptr<Workspace> workspace, const base::FilePath& share_file);
+
+  void OnResourceCached(const base::FilePath& input_dir, const std::string& name, const base::UUID& uuid, int64_t result);
+  void OnShareAdded(scoped_refptr<Workspace> workspace, const base::UUID& uuid, const std::string& infohash, const std::string& name, int64_t result);
 
   BundlePackage* resource_package_;
   BundlePackage* application_package_;

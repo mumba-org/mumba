@@ -213,7 +213,7 @@ Ports
 -----
 
 There is a working Linux implementation, but given it's created on top of the Chromium supporting libraries
-its pretty much portable with a little effort. Unfortunatelly making all of this functionality to work is a tour-de-fource
+its pretty much portable with a little effort. Unfortunatelly making all of this functionality to work is a tour-de-force
 in itself for a one-man-show, so i was unable to provide the ports, but i hope they will be ready pretty soon
 as i finish other things that are missing (and if im lucky with the help of others).
 
@@ -238,7 +238,7 @@ Creating your applications
 Distributing your applications
 -----
   TODO
-  
+
 Screenshots and videos
 -----    
   TODO

@@ -30,6 +30,7 @@
 #include "core/host/service_worker/service_worker_context_wrapper.h"
 #include "core/host/service_worker/service_worker_type.h"
 #include "core/host/shared_worker/shared_worker_service_impl.h"
+#include "core/host/share/share_observer.h"
 #include "core/host/url_loader_factory_getter.h"
 #include "core/host/ui/dock.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -66,6 +67,7 @@ class Workspace;
 class ApplicationProcessHost;
 class BackgroundFetchDelegate;
 class BackgroundSyncController;
+class StorageContext;
 class ChromeBlobStorageContext;
 class PlatformNotificationContextImpl;
 class BackgroundFetchContext;
@@ -86,6 +88,7 @@ class Bundle;
 // A managed domain
 
 class Domain : public DomainProcessHost::Observer,
+               public ShareObserver,
                public Serializable {
 public:
   class Observer {
@@ -228,7 +231,9 @@ public:
     managed_ = managed;
   }
 
-  
+  void AddStorageContext(scoped_refptr<StorageContext> context);
+  void RemoveStorageContext(scoped_refptr<StorageContext> context);
+
   Application* NewApplication(int id, 
     const std::string& name, 
     const GURL& url, 
@@ -328,6 +333,31 @@ private:
   void NotifyServiceAdded(HostRpcService* service);
   void NotifyServiceRemoved(HostRpcService* service);
 
+  // ShareObserver
+  void OnDHTAnnounceReply(Share* share, int peers) override;
+  void OnShareMetadataReceived(Share* share) override;
+  void OnShareMetadataError(Share* share, int error) override;
+  void OnSharePieceReadError(Share* share, int piece_offset, int error) override;
+  void OnSharePiecePass(Share* share, int piece_offset) override;
+  void OnSharePieceFailed(Share* share, int piece_offset) override;
+  void OnSharePieceRead(Share* share, int piece, int64_t offset, int64_t size, int64_t block_size, int result) override;
+  void OnSharePieceWrite(Share* share, int piece, int64_t offset, int64_t size, int64_t block_size, int result) override;
+  void OnSharePieceFinished(Share* share, int piece_offset) override;
+  void OnSharePieceHashFailed(Share* share, int piece_offset) override;
+  void OnShareFileCompleted(Share* share, int piece_offset) override;
+  void OnShareFinished(Share* share) override;
+  void OnShareDownloading(Share* share) override;
+  void OnShareCheckingFiles(Share* share) override;
+  void OnShareDownloadingMetadata(Share* share) override;
+  void OnShareSeeding(Share* share) override;
+  void OnSharePaused(Share* share) override;
+  void OnShareResumed(Share* share) override;
+  void OnShareChecked(Share* share) override;
+  void OnShareDeleted(Share* share) override;
+  void OnShareDeletedError(Share* share, int error) override;
+  void OnShareFileRenamed(Share* share, int file_offset, const std::string& name) override;
+  void OnShareFileRenamedError(Share* share, int index, int error) override;
+
   void GetQuotaSettings(
     storage::OptionalQuotaSettingsCallback callback);
 
@@ -398,6 +428,8 @@ private:
   scoped_refptr<ServiceWorkerDispatcherHost> service_worker_worker_dispatcher_host_;
   std::unique_ptr<OffscreenCanvasProviderImpl> offscreen_canvas_provider_;
   std::unique_ptr<RouteDispatcherClient> route_dispatcher_client_;
+
+  std::vector<scoped_refptr<StorageContext>> contexts_;
 
   bool managed_;
 

@@ -7,6 +7,8 @@
 
 #include "base/base_paths.h"
 #include "base/path_service.h"
+#include "base/command_line.h"
+#include "base/at_exit.h"
 #include "base/files/file_util.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -14,18 +16,65 @@
 #include "storage/storage_utils.h"
 #include "third_party/msix/src/inc/public/AppxPackaging.hpp"
 
-bool CreateBaseDirectories(const base::FilePath& base_dir) {
+std::vector<std::string> libraries = {
+  "natives_blob.bin",
+  "snapshot_blob.bin",
+  "icudtl.dat",
+  "icudtl55.dat",
+};
+
+const char kDEFAULT_BIN_MANIFEST[] = R"(<?xml version="1.0" encoding="utf8" ?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="__NAME__" 
+     Version="0.0.0.1" 
+     Publisher="CN=__NAME__, O=__NAME__, L=SanFrancisco, S=California, C=US" 
+     ProcessorArchitecture="x64"/>
+  <Properties>
+    <DisplayName>__NAME__</DisplayName>
+    <PublisherDisplayName>__NAME__</PublisherDisplayName>
+    <Logo>images\icon-180x180.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion></OSMinVersion>
+    <OSMaxVersionTested></OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+   <Dependencies>
+    <TargetDeviceFamily Name="Linux.All" MinVersion="0.0.0.0" MaxVersionTested="0.0.0.0"/>
+  </Dependencies>
+  <Applications>
+  <Application Id="__NAME__" Executable="__NAME__" StartPage="/">
+    <VisualElements DisplayName="__NAME__" Description="application" 
+         Logo="images\apple-icon-180x180.png" ForegroundText="dark" BackgroundColor="#FFFFFF" >
+      <SplashScreen Image="images\splash.png" />
+    </VisualElements>
+  </Application>
+</Applications>
+</Package>)";
+
+bool CreateBaseDirectories(const std::string& identifier, const base::FilePath& base_dir, bool no_frontend) {
+  base::FilePath bin_path = base_dir.AppendASCII("bin");
   base::FilePath applications_path = base_dir.AppendASCII("apps");
   base::FilePath application_path = applications_path.AppendASCII("app");
   base::FilePath service_path = applications_path.AppendASCII("service");
   base::FilePath resources_path = base_dir.AppendASCII("resources");
   base::FilePath proto_path = resources_path.AppendASCII("proto");
   base::FilePath databases_path = resources_path.AppendASCII("databases");
+  base::FilePath shares_path = resources_path.AppendASCII("shares");
   base::FilePath files_path = resources_path.AppendASCII("files");
 
   if (!base::CreateDirectory(base_dir)) {
     printf("error while creating temporary directory\n");
     return false;
+  }
+
+  if (!no_frontend) {
+    if (!base::CreateDirectory(bin_path)) {
+      printf("error while creating temporary directory 'bin'\n");
+      return false;
+    }
   }
   if (!base::CreateDirectory(applications_path)) {
     printf("error while creating temporary directory 'apps'\n");
@@ -51,12 +100,22 @@ bool CreateBaseDirectories(const base::FilePath& base_dir) {
     printf("error while creating temporary directory 'resources/databases'\n");
     return false;
   }
+  if (!base::CreateDirectory(shares_path)) {
+    printf("error while creating temporary directory 'resources/shares'\n");
+    return false;
+  }
   if (!base::CreateDirectory(files_path)) {
     printf("error while creating temporary directory 'resources/files'\n");
     return false;
   }
   
   std::string target_arch = storage::GetIdentifierForHostOS();
+
+  if (!base::CreateDirectory(bin_path.AppendASCII(target_arch))) {
+    printf("error while creating temporary directory 'bin/%s'\n", target_arch.c_str());
+    return false;
+  }
+
   if (!base::CreateDirectory(application_path.AppendASCII(target_arch))) {
     printf("error while creating temporary directory 'apps/app/%s'\n", target_arch.c_str());
     return false;
@@ -70,17 +129,20 @@ bool CreateBaseDirectories(const base::FilePath& base_dir) {
   return true;
 }
 
-bool CopyFiles(const std::string& identifier, const base::FilePath& app_base_path, const base::FilePath& input_dir, const base::FilePath& base_dir) {
-  //std::string target_arch = storage::GetIdentifierForHostOS();
+bool CopyFiles(const std::string& identifier, const base::FilePath& app_base_path, const base::FilePath& input_dir, const base::FilePath& base_dir, bool no_frontend) {
+  base::FilePath bin_out_dir = base_dir.AppendASCII("bin");
   base::FilePath app_out_dir = base_dir.AppendASCII("apps").AppendASCII("app");
   base::FilePath service_out_dir = base_dir.AppendASCII("apps").AppendASCII("service");
   base::FilePath resources_out_dir = base_dir.AppendASCII("resources");
   base::FilePath schema_out_dir = resources_out_dir.AppendASCII("proto");
   
+  base::FilePath bin_out_file = bin_out_dir.AppendASCII(storage::GetIdentifierForHostOS()).AppendASCII(identifier);
+
   base::FilePath service_out_file = service_out_dir.Append(storage::GetPathForArchitecture(identifier + "_service", storage::GetHostArchitecture(), storage_proto::LIBRARY));
   base::FilePath app_out_file = app_out_dir.Append(storage::GetPathForArchitecture(identifier + "_app", storage::GetHostArchitecture(), storage_proto::PROGRAM));
   base::FilePath schema_out_file = schema_out_dir.AppendASCII(identifier + ".proto");
 
+  base::FilePath bin_in_file = input_dir.AppendASCII(identifier);
   base::FilePath service_in_file = input_dir.Append(storage::GetFilePathForArchitecture(identifier + "_service", storage::GetHostArchitecture(), storage_proto::LIBRARY));
   base::FilePath app_in_file = input_dir.Append(storage::GetFilePathForArchitecture(identifier + "_app", storage::GetHostArchitecture(), storage_proto::PROGRAM));
   
@@ -97,23 +159,37 @@ bool CopyFiles(const std::string& identifier, const base::FilePath& app_base_pat
   base::FilePath service_manifest_in_file = app_base_path.AppendASCII(identifier).AppendASCII("service").AppendASCII("AppxManifest.xml");
   base::FilePath resources_manifest_in_file = app_base_path.AppendASCII(identifier).AppendASCII("resources").AppendASCII("AppxManifest.xml");
   
+  base::FilePath bin_manifest_out_file = bin_out_dir.AppendASCII("AppxManifest.xml");
   base::FilePath app_manifest_out_file = app_out_dir.AppendASCII("AppxManifest.xml");
   base::FilePath service_manifest_out_file = service_out_dir.AppendASCII("AppxManifest.xml");
   base::FilePath resources_manifest_out_file = resources_out_dir.AppendASCII("AppxManifest.xml");
 
-  printf("copying service: %s to %s ...\n", service_in_file.value().c_str(), service_out_file.value().c_str());
+  if (!no_frontend) {
+    if (!base::CopyFile(bin_in_file, bin_out_file)) {
+      printf("error while copying bin file\n");
+      return false;
+    }
+  }
+
   if (!base::CopyFile(service_in_file, service_out_file)) {
     printf("error while copying service files\n");
     return false;
   }
 
-  printf("copying app: %s to %s ...\n", app_in_file.value().c_str(), app_out_file.value().c_str());
   if (!base::CopyFile(app_in_file, app_out_file)) {
     printf("error while copying app files\n");
     return false;
   }
 
-  printf("copying schema:  %s to %s ...\n", schema_in_file.value().c_str(), schema_out_file.value().c_str());
+  for (size_t i = 0; i < libraries.size(); ++i) {
+    base::FilePath in_lib_file = input_dir.AppendASCII(libraries[i]);
+    base::FilePath out_lib_file = app_out_dir.AppendASCII(storage::GetIdentifierForHostOS()).AppendASCII(libraries[i]);
+    if (!base::CopyFile(in_lib_file, out_lib_file)) {
+      printf("error while copying app files\n");
+      return false;
+    }
+  }
+
   if (!base::CopyFile(schema_in_file, schema_out_file)) {
     printf("error while copying schema files\n");
     return false;
@@ -121,7 +197,7 @@ bool CopyFiles(const std::string& identifier, const base::FilePath& app_base_pat
 
   base::FilePath resource_files = app_base_path.AppendASCII(identifier).AppendASCII("resources").AppendASCII("files"); 
   base::FilePath resource_files_out = resources_out_dir;
-  printf("copying resources/files: %s to %s ..\n", resource_files.value().c_str(), resource_files_out.value().c_str());
+  
   if (!base::CopyDirectory(
         resource_files,
         resource_files_out,
@@ -132,7 +208,7 @@ bool CopyFiles(const std::string& identifier, const base::FilePath& app_base_pat
 
   base::FilePath resource_databases = app_base_path.AppendASCII(identifier).AppendASCII("resources").AppendASCII("databases");
   base::FilePath resource_databases_out = resources_out_dir;
-  printf("copying resources/databases: %s to %s ..\n", resource_databases.value().c_str(), resource_databases_out.value().c_str());
+  
   if (!base::CopyDirectory(
         resource_databases,
         resource_databases_out,
@@ -141,19 +217,42 @@ bool CopyFiles(const std::string& identifier, const base::FilePath& app_base_pat
     return false;
   }
 
-  printf("copying app manifest:  %s to %s ...\n", app_manifest_in_file.value().c_str(), app_manifest_out_file.value().c_str());
+  base::FilePath resource_shares = app_base_path.AppendASCII(identifier).AppendASCII("resources").AppendASCII("shares");
+  base::FilePath resource_shares_out = resources_out_dir;
+  
+  if (!base::CopyDirectory(
+        resource_shares,
+        resource_shares_out,
+        true)) {
+    printf("error while copying resources/shares\n");
+    return false;
+  }
+
+  if (!no_frontend) {
+    std::string bin_manifest_data(kDEFAULT_BIN_MANIFEST);
+    size_t offset = bin_manifest_data.find("__NAME__");
+    while (offset != std::string::npos) {
+      bin_manifest_data = bin_manifest_data.replace(offset, 8, identifier);
+      offset = bin_manifest_data.find("__NAME__");
+    }
+
+    int wrote_len = base::WriteFile(bin_manifest_out_file, bin_manifest_data.data(), bin_manifest_data.size());
+    if (wrote_len != static_cast<int>(bin_manifest_data.size())) {
+      printf("error while creating bin manifest file\n");
+      return false;
+    }
+  }
+
   if (!base::CopyFile(app_manifest_in_file, app_manifest_out_file)) {
     printf("error while copying manifest file\n");
     return false;
   }
 
-  printf("copying service manifest:  %s to %s ...\n", service_manifest_in_file.value().c_str(), service_manifest_out_file.value().c_str());
   if (!base::CopyFile(service_manifest_in_file, service_manifest_out_file)) {
     printf("error while copying manifest file\n");
     return false;
   }
 
-  printf("copying resources manifest:  %s to %s ...\n", resources_manifest_in_file.value().c_str(), resources_manifest_out_file.value().c_str());
   if (!base::CopyFile(resources_manifest_in_file, resources_manifest_out_file)) {
     printf("error while copying manifest file\n");
     return false;
@@ -194,7 +293,7 @@ bool CopyFiles(const std::string& identifier, const base::FilePath& app_base_pat
   return true;
 }
 
-bool PackDirectory(const std::string& identifier, const base::FilePath& src_path, const base::FilePath& output_dir) {
+bool PackDirectory(const std::string& identifier, const base::FilePath& src_path, const base::FilePath& output_dir, bool no_frontend) {
   base::FilePath bundle_out_dir = output_dir.AppendASCII(identifier);
   
   if (base::PathExists(bundle_out_dir)) {
@@ -208,6 +307,12 @@ bool PackDirectory(const std::string& identifier, const base::FilePath& src_path
 
   //std::string host_arch = storage::GetIdentifierForArchitecture(storage::GetHostArchitecture());
   std::string host_os = storage::GetIdentifierForHostOS();
+
+  base::FilePath bin_in_dir = src_path.AppendASCII("bin");
+  base::FilePath bin_out_file = bundle_out_dir.AppendASCII(identifier + "_bin-" + host_os + ".appx");
+  if (base::PathExists(bin_out_file)) {
+    base::DeleteFile(bin_out_file, false);
+  }
 
   base::FilePath app_in_dir = src_path.AppendASCII("apps").AppendASCII("app");
   base::FilePath app_out_file = bundle_out_dir.AppendASCII(identifier + "_app-" + host_os + ".appx");
@@ -232,39 +337,51 @@ bool PackDirectory(const std::string& identifier, const base::FilePath& src_path
     base::DeleteFile(bundle_out_file, false);
   }
 
-  printf("packing app: %s to %s ...\n", app_in_dir.value().c_str(), app_out_file.value().c_str());
+  // special case for the 'world' bundle
+  if (!no_frontend) {
+    // bin
+    if (PackPackage(
+          MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
+          MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
+          const_cast<char*>(bin_in_dir.value().c_str()),
+          const_cast<char*>(bin_out_file.value().c_str())) != 0) {
+      printf("error: failed while creating %s package\n", bin_out_file.value().c_str());
+      return false; 
+    }
+  }
 
+  // app
   if (PackPackage(
         MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
         MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
         const_cast<char*>(app_in_dir.value().c_str()),
         const_cast<char*>(app_out_file.value().c_str())) != 0) {
-    printf("error: failed while creating app package\n");
+    printf("error: failed while creating %s package\n", app_out_file.value().c_str());
     return false; 
   }
 
-  printf("packing service: %s to %s ...\n", service_in_dir.value().c_str(), service_out_file.value().c_str());
+  // service
   if (PackPackage(
         MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
         MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
         const_cast<char*>(service_in_dir.value().c_str()),
         const_cast<char*>(service_out_file.value().c_str())) != 0) {
-    printf("error: failed while creating service package\n");
+    printf("error: failed while creating %s package\n", service_out_file.value().c_str());
     return false; 
   }
 
-  printf("packing resources: %s to %s ...\n", resource_in_dir.value().c_str(), resource_out_file.value().c_str());
+  // resource
   if (PackPackage(
         MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
         MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
         const_cast<char*>(resource_in_dir.value().c_str()),
         const_cast<char*>(resource_out_file.value().c_str())) != 0) {
-    printf("error: failed while creating resource package\n");
+    printf("error: failed while creating %s package\n", resource_out_file.value().c_str());
     return false; 
   }
 
+  // bundle
   MSIX_BUNDLE_OPTIONS options = (MSIX_BUNDLE_OPTIONS)(MSIX_BUNDLE_OPTIONS::MSIX_OPTION_VERBOSE | MSIX_BUNDLE_OPTIONS::MSIX_OPTION_OVERWRITE | MSIX_BUNDLE_OPTIONS::MSIX_BUNDLE_OPTION_FLATBUNDLE);
-  printf("packing bundle: %s to %s ...\n", bundle_out_dir.value().c_str(), bundle_out_file.value().c_str());
   if (PackBundle(
       options,    
       const_cast<char*>(bundle_out_dir.value().c_str()),
@@ -276,7 +393,6 @@ bool PackDirectory(const std::string& identifier, const base::FilePath& src_path
   }
 
   base::FilePath move_bundle_to = bundle_out_dir.AppendASCII(identifier + ".bundle");
-  printf("moving bundle: %s to %s ...\n", bundle_out_file.value().c_str(), move_bundle_to.value().c_str());
   if (!base::Move(bundle_out_file, move_bundle_to)) {
     printf("error: failed while moving bundle file\n");
     return false;
@@ -286,13 +402,9 @@ bool PackDirectory(const std::string& identifier, const base::FilePath& src_path
   if (identifier == "world") {
     base::FilePath asset_path;
     base::PathService::Get(base::DIR_ASSETS, &asset_path);
-    printf("world. copying %s to %s\n", move_bundle_to.value().c_str(), asset_path.value().c_str());
     base::CopyFile(move_bundle_to, asset_path.Append(move_bundle_to.BaseName()));
-    printf("world. copying %s to %s\n", app_out_file.value().c_str(), asset_path.value().c_str());
     base::CopyFile(app_out_file, asset_path.Append(app_out_file.BaseName()));
-    printf("world. copying %s to %s\n", service_out_file.value().c_str(), asset_path.value().c_str());
     base::CopyFile(service_out_file, asset_path.Append(service_out_file.BaseName()));
-    printf("world. copying %s to %s\n", resource_out_file.value().c_str(), asset_path.value().c_str());
     base::CopyFile(resource_out_file, asset_path.Append(resource_out_file.BaseName()));
   }
 
@@ -300,15 +412,26 @@ bool PackDirectory(const std::string& identifier, const base::FilePath& src_path
 }
 
 int main(int argc, char** argv) {
- base::FilePath home_path;
+  base::AtExitManager at_exit;
+  base::FilePath home_path;
+  
+  if (!base::CommandLine::Init(argc, argv)) {
+    printf("error: failed creating command line\n");
+    return 1;  
+  }
 
  if (argc < 3) {
   printf("error: not enough arguments. missing identifier and/or app base path\n");
   return 1;
  }
 
+ base::CommandLine* cmd = base::CommandLine::ForCurrentProcess();
+
  std::string identifier(argv[1]);
  base::FilePath app_base_path(argv[2]);
+ bool no_frontend = cmd->HasSwitch("no-frontend");
+
+ printf("no_frontend? %s\n", (no_frontend ? "true" : "false"));
 
  if (!base::PathService::Get(base::DIR_HOME, &home_path)) {
     printf("error while getting home path\n");
@@ -320,10 +443,10 @@ int main(int argc, char** argv) {
     return 1;
  }
  base::FilePath temp_dir = home_path.AppendASCII("tmp" + base::IntToString(base::RandInt(0, std::numeric_limits<int16_t>::max()))); 
- if (!CreateBaseDirectories(temp_dir)) {
+ if (!CreateBaseDirectories(identifier, temp_dir, no_frontend)) {
    return 1;
  }
- if (!CopyFiles(identifier, app_base_path, binary_out_path, temp_dir)) {
+ if (!CopyFiles(identifier, app_base_path, binary_out_path, temp_dir, no_frontend)) {
    return 1;
  }
 
@@ -333,15 +456,11 @@ int main(int argc, char** argv) {
   base::CreateDirectory(mumba_out_dir);
  }
 
- if (!PackDirectory(identifier, temp_dir, mumba_out_dir)) {
+ if (!PackDirectory(identifier, temp_dir, mumba_out_dir, no_frontend)) {
    printf("error while creating drop file\n");
    return 1;
  }
 
- 
   base::DeleteFile(temp_dir, true);
-
-  printf("done.\n");
- 
   return 0;
 }

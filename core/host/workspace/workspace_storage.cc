@@ -12,6 +12,7 @@
 #include "core/host/host_thread.h"
 #include "core/host/workspace/app_storage.h"
 #include "core/host/workspace/volume_storage.h"
+#include "core/host/workspace/bin_storage.h"
 #include "storage/storage.h"
 #include "storage/db/db.h"
 #include "storage/storage_manager.h"
@@ -22,6 +23,7 @@ namespace host {
 namespace {
   
 const char kVOLUME_DIR[] = "volumes";
+const char kBIN_DIR[] = "bin";
 const char kAPP_DIR[] = "apps";
 const char kTMP_DIR[] = "tmp";
 
@@ -34,7 +36,8 @@ WorkspaceStorage::WorkspaceStorage(const base::FilePath& root_dir):
   workspace_disk_(nullptr),
   storage_manager_(nullptr),
   volume_storage_(new VolumeStorage(root_dir.AppendASCII(kVOLUME_DIR))),
-  app_storage_(new AppStorage(root_dir.AppendASCII(kAPP_DIR))) {
+  app_storage_(new AppStorage(root_dir.AppendASCII(kAPP_DIR))),
+  bin_storage_(new BinStorage(root_dir.AppendASCII(kBIN_DIR))) {
 
 }
 

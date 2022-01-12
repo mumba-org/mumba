@@ -550,28 +550,3 @@ static_library("launcher") {
     "-Wno-unused-variable"
   ]
 }
-
-# just as a test, but we need to make a macro out of this
-# and create a executable for the application frontend
-executable("tweedy_exe") {
-  output_name = "tweedy"
-  configs -= [ "//build/config/clang:find_bad_constructs" ]
-  configs -= [ "//build/config/compiler:chromium_code" ]
-  
-  cflags = []
-  cflags_cc = []
-  defines = []
-
-  sources = [
-    "launcher.cc"
-  ]
-  deps = [
-    ":launcher"
-  ]
-  cflags = [
-    "-Wno-unused-variable"
-  ]
-  ldflags = [
-    "-lz"
-  ]
-}

@@ -19,7 +19,8 @@ if (host_os == "win") {
   flex_exe = "flex"
 }
 
-component("zetasql") {
+#component("zetasql") {
+static_library("zetasql") {
     configs -= [ "//build/config/compiler:chromium_code" ]
     configs += [
         "//build/config/compiler:no_chromium_code",

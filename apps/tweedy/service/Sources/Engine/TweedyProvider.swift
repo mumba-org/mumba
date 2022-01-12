@@ -483,7 +483,7 @@ internal class TweedyProviderImpl : tweedy_TweedyProvider {
     context.serviceWorkerContextClient = ServiceWorkerContextClientImpl(delegate: serviceWorkerClient)
 
     routes.bind(routeMap)
-    context.storage.filebaseExists("burma", onFilebaseExists)
+    //context.storage.filebaseExists("site", onFilebaseExists)
   }
 
   public func routeHandler(for route: String) -> RouteHandler? {
@@ -858,19 +858,21 @@ internal class TweedyProviderImpl : tweedy_TweedyProvider {
   //   })      
   // }
 
-  func onFilebaseExists(_ exists: Bool) {
-    if !exists {
-      context!.storage.createFilebase("burma", path: "/home/fabiok/pages/burma/", { status, filebase in 
-        print("creating file 'burma' returned \(status)")
-        if status == 0 {
-          print("closing 'burma'..")
-          filebase!.close({
-            print("closing status \($0)")
-          })
-        }
-      })
-    }
-  }
+  // func onFilebaseExists(_ exists: Bool) {
+  //   if !exists {
+  //     context!.storage.createFilebase("site", path: "/home/fabiok/pages/site/", { status, filebase in 
+  //       print("creating file 'site' returned \(status)")
+  //       if status == 0 {
+  //         print("closing 'site'..")
+  //         filebase!.close({
+  //           print("closing status \($0)")
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     print("fileset 'site' already exists")
+  //   }
+  // }
 
 }
 

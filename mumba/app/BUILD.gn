@@ -214,6 +214,7 @@ action("world") {
     args = [
       "world",
       "$out_dir",
+      "--no-frontend"
     ]
     outputs = [
       "$out_dir/world/world.bundle",

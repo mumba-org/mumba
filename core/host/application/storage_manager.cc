@@ -18,9 +18,9 @@ StorageManager::~StorageManager() {
   
 }
 
-scoped_refptr<StorageContext> StorageManager::CreateContext(Domain* shell) {
+scoped_refptr<StorageContext> StorageManager::CreateContext(Domain* domain) {
   int context_id = context_seq_.GetNext() + 1;
-  scoped_refptr<StorageContext> context(new StorageContext(context_id, workspace_, shell));
+  scoped_refptr<StorageContext> context(new StorageContext(context_id, workspace_, domain));
   contexts_.emplace(std::make_pair(context_id, context));
   return context;
 }

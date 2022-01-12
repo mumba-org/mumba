@@ -25,6 +25,7 @@ class Torrent;
 namespace host {
 class VolumeStorage;
 class AppStorage;
+class BinStorage;
 /*
  * Deal with the storage backend of a given Workspace
  */
@@ -53,6 +54,10 @@ public:
 
   AppStorage* app_storage() const {
     return app_storage_.get();
+  }
+
+  BinStorage* bin_storage() const {
+    return bin_storage_.get();
   }
 
   storage::Storage* workspace_disk() const {
@@ -91,6 +96,7 @@ private:
   storage::StorageManager* storage_manager_;
   std::unique_ptr<VolumeStorage> volume_storage_;
   std::unique_ptr<AppStorage> app_storage_;
+  std::unique_ptr<BinStorage> bin_storage_;
 
   DISALLOW_COPY_AND_ASSIGN(WorkspaceStorage);
 };

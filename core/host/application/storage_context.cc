@@ -267,21 +267,22 @@ void StorageDataCursor::Rollback(RollbackCallback callback) {
   std::move(callback).Run(r ? net::OK : net::ERR_FAILED);
 }
 
-StorageContext::StorageContext(int id, scoped_refptr<Workspace> workspace, Domain* shell):
+StorageContext::StorageContext(int id, scoped_refptr<Workspace> workspace, Domain* domain):
   id_(id),
   workspace_(workspace),
-  domain_(shell),
+  domain_(domain),
   task_runner_(
     //base::CreateSingleThreadTaskRunnerWithTraits(
     base::CreateSequencedTaskRunnerWithTraits(
        { base::MayBlock(), base::WithBaseSyncPrimitives() })) {//,
          //base::WithBaseSyncPrimitives() },
        //base::SingleThreadTaskRunnerThreadMode::SHARED)) {
-   
+  domain_->AddStorageContext(this); 
 }
 
 StorageContext::~StorageContext() {
-  
+  // TODO: see if this is ok, given maybe context outlives domain
+  domain_->RemoveStorageContext(this); 
 }
 
 const std::string& StorageContext::domain_name() {
