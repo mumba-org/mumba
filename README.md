@@ -253,7 +253,7 @@ Missing
 ---
 
 Im finishing the bundle automation now, and will jump to the last item before a proper launch
-that is the combine the put the bundle distribution in a more usable state 
+that is to get the bundle distribution into a more usable state
 (for now publishing over the torrent DHT (the hardest part) is already working, but theres a need to 
  create a proper manager of the distribution repos, as is my intention that the user will be able to
  add the distribution channels from the application developers/providers by using the address they
