@@ -74,6 +74,7 @@
 #include "launcher/dom_storage_set_command.h"
 #include "launcher/bundle_build_command.h"
 #include "launcher/bundle_init_command.h"
+#include "launcher/bundle_pack_command.h"
 #include "launcher/bundle_install_command.h"
 #include "launcher/bundle_sign_command.h"
 #include "launcher/bundle_uninstall_command.h"
@@ -331,6 +332,8 @@ CommandCode ApplicationProfile::GetCommandCode(const std::string& name) {
     return kBUNDLE_INSTALL_COMMAND;
   } else if (name == "launch") {
     return kAPPLICATION_INSTANCE_LAUNCH_COMMAND;
+  } else if (name == "pack") {
+    return kBUNDLE_PACK_COMMAND;
   } else if (name == "start") {
     return kAPPLICATION_START_COMMAND;
   } else if (name == "stop") {
@@ -371,6 +374,8 @@ CommandCode SystemProfile::GetCommandCode(const std::string& name) {
     return kBUNDLE_INSTALL_COMMAND;
   } else if (name == "launch") {
     return kAPPLICATION_INSTANCE_LAUNCH_COMMAND;
+  } else if (name == "pack") {
+    return kBUNDLE_PACK_COMMAND;
   } else if (name == "start") {
     return kAPPLICATION_START_COMMAND;
   } else if (name == "stop") {
@@ -1189,6 +1194,9 @@ int CommandExecutor::Execute(CommandCode command, const base::CommandLine::Strin
       break;
     case kBUNDLE_BUILD_COMMAND:
       command_ = BundleBuildCommand::Create();
+      break;
+    case kBUNDLE_PACK_COMMAND:
+      command_ = BundlePackCommand::Create();
       break;
     case kBUNDLE_INSTALL_COMMAND:
       command_ = BundleInstallCommand::Create();

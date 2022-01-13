@@ -183,7 +183,6 @@ void Bundle::PostUnpackActions(scoped_refptr<Workspace> workspace, const base::F
   
   base::FileEnumerator resources_files(files_path, false, base::FileEnumerator::DIRECTORIES);
   for (base::FilePath files_dir = resources_files.Next(); !files_dir.empty(); files_dir = resources_files.Next()) {
-    DLOG(INFO) << "adding fileset entry from '" << files_dir << "' into disk '" << name() << "' named '" << files_dir.BaseName().value() << "'";
     CreateFileset(workspace, files_dir);
   }
 
@@ -191,7 +190,6 @@ void Bundle::PostUnpackActions(scoped_refptr<Workspace> workspace, const base::F
   base::FilePath dbs_path = path.AppendASCII(resources_path()).AppendASCII("databases");
   base::FileEnumerator dbs_files(dbs_path, false, base::FileEnumerator::FILES);
   for (base::FilePath db_file = dbs_files.Next(); !db_file.empty(); db_file = dbs_files.Next()) {
-    DLOG(INFO) << "adding database from '" << db_file << "' into disk '" << name() << "'";
     CreateDatabases(workspace, db_file);
   }
   
@@ -199,7 +197,6 @@ void Bundle::PostUnpackActions(scoped_refptr<Workspace> workspace, const base::F
   base::FilePath shares_path = path.AppendASCII(resources_path()).AppendASCII("shares");
   base::FileEnumerator shares_files(shares_path, false, base::FileEnumerator::FILES);
   for (base::FilePath share_file = shares_files.Next(); !share_file.empty(); share_file = shares_files.Next()) {
-    DLOG(INFO) << "adding share from '" << share_file << "' into disk '" << name() << "'";
     CreateShare(workspace, share_file);
   }
 }
@@ -314,13 +311,11 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
       std::unique_ptr<DatabaseCreationInfo> info = std::make_unique<DatabaseCreationInfo>();
       current = info.get();
       info->database_name = create_db->name()->first_name()->GetAsString();
-      DLOG(INFO) << "Bundle::CreateDatabase: adding database '" << info->database_name << "' to the list of dbs that have to be created";
       infos.push_back(std::move(info));
     } else if (kind == zetasql::AST_CREATE_TABLE_STATEMENT) {
       const zetasql::ASTCreateTableStatement* create_table = statement->GetAsOrNull<zetasql::ASTCreateTableStatement>();
       std::string keyspace = create_table->name()->first_name()->GetAsString();;
       DCHECK(current);
-      DLOG(INFO) << "Bundle::CreateDatabase: adding keyspace '" << keyspace << "'";
       current->keyspaces.push_back(keyspace);
     }
     //LOG(INFO) << "Parse tree:\n" << statement->DebugString();
@@ -333,7 +328,6 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
 }
 
 void Bundle::CreateDatabase(scoped_refptr<Workspace> workspace, DatabaseCreationInfo* creation) {
-  DLOG(INFO) << "Bundle::CreateDatabase: creating database '" << creation->database_name << "'";
   workspace->share_manager()->CreateDatabaseShare(name(), creation->database_name, creation->keyspaces);
   workspace->share_manager()->CreateShare(name(), 
     storage_proto::InfoKind::INFO_DATA, 
@@ -377,7 +371,6 @@ void Bundle::CreateShare(scoped_refptr<Workspace> workspace, const base::FilePat
       DLOG(INFO) << "Bundle::CreateShare: failed to get name from json object";
       continue;
     }
-    DLOG(INFO) << "recovered torrent " << infohash << " - '" << torrent_name << "'. adding it to the application storage";
     base::UUID uuid = base::UUID::generate();
     workspace->share_manager()->CreateShareWithInfohash(
       name(), 
@@ -399,7 +392,6 @@ void Bundle::OnResourceCached(const base::FilePath& input_dir, const std::string
 }
 
 void Bundle::OnShareAdded(scoped_refptr<Workspace> workspace, const base::UUID& uuid, const std::string& infohash, const std::string& torrent_name, int64_t result) {
-  DLOG(INFO) << "on adding share uuid: " << uuid.to_string() << " with infohash '" << infohash << "' named '" << torrent_name << "' result = " << result;
   Domain* domain = workspace->GetDomain(name());  
   if (!domain) {
     DLOG(ERROR) << "Bundle::OnShareAdded: domain named " << name() << " not found";
@@ -411,7 +403,7 @@ void Bundle::OnShareAdded(scoped_refptr<Workspace> workspace, const base::UUID& 
 }
 
 void Bundle::OnDatabaseCreated(scoped_refptr<Workspace> workspace, const std::string& db_name, int64_t result) {
-  DLOG(INFO) << "Bundle::OnDatabaseCreated: creating database '" << db_name << "' result = " << result;
+  //DLOG(INFO) << "Bundle::OnDatabaseCreated: creating database '" << db_name << "' result = " << result;
 }
 
 }

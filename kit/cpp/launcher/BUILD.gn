@@ -139,6 +139,8 @@ static_library("launcher") {
     "bundle_init_command.h",
     "bundle_install_command.cc",
     "bundle_install_command.h",
+    "bundle_pack_command.cc",
+    "bundle_pack_command.h",
     "bundle_sign_command.cc",
     "bundle_sign_command.h",
     "bundle_uninstall_command.cc",

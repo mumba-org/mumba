@@ -24,6 +24,8 @@ const char BundleInstallHandler::kFullname[] = "/mumba.Mumba/BundleInstall";
 const char BundleSignHandler::kFullname[] = "/mumba.Mumba/BundleSign";
 const char BundleUninstallHandler::kFullname[] = "/mumba.Mumba/BundleUninstall";
 const char BundleUpdateHandler::kFullname[] = "/mumba.Mumba/BundleUpdate";
+const char BundlePackHandler::kFullname[] = "/mumba.Mumba/BundlePack";
+const char BundleInitHandler::kFullname[] = "/mumba.Mumba/BundleInit";
 
 BundleBuildHandler::BundleBuildHandler():
   fullname_(BundleBuildHandler::kFullname) {
@@ -270,6 +272,126 @@ void BundleUpdateHandler::Init() {
 }
 
 const std::string& BundleUpdateHandler::output() const {
+  // FIXME
+  return fullname_;
+}
+
+// 
+
+BundlePackHandler::BundlePackHandler():
+  fullname_(BundlePackHandler::kFullname) {
+
+  Init();
+}
+
+BundlePackHandler::~BundlePackHandler() {
+
+}
+
+base::StringPiece BundlePackHandler::ns() const {
+  auto offset = service_name_.find_first_of(".");
+  return service_name_.substr(offset);
+}
+
+void BundlePackHandler::HandleCall(std::vector<char> data, base::Callback<void(int)> cb) {
+  std::string str_payload(data.data(), data.size());
+  bool no_frontend = false;
+  scoped_refptr<Workspace> workspace = Workspace::GetCurrent();
+
+  // decode message
+  const google::protobuf::Descriptor* message_descriptor = GetDescriptorFor(workspace, "BundlePackRequest");
+  if (!message_descriptor) {
+    DLOG(INFO) << "protobuf message for 'BundlePackRequest' not found";
+    return;
+  }
+  SchemaRegistry* schema_registry = workspace->schema_registry();
+  google::protobuf::DescriptorPool* descriptor_pool = schema_registry->descriptor_pool();
+  google::protobuf::DynamicMessageFactory factory(descriptor_pool);
+  const google::protobuf::Message* message_descr = factory.GetPrototype(message_descriptor);
+  google::protobuf::Message* message = message_descr->New();
+  message->ParseFromString(str_payload);
+  std::string name = GetStringField(workspace, message, "BundlePackRequest", "name");
+  std::string path = GetStringField(workspace, message, "BundlePackRequest", "path");
+  no_frontend = GetStringField(workspace, message, "BundlePackRequest", "no_frontend") == "true";
+  if (!path.empty() && !name.empty()) {
+    workspace->bundle_manager()->PackBundle(name, base::FilePath(path), no_frontend, std::move(cb));
+  } else {
+    DLOG(ERROR) << "error unpacking application: path is empty";
+  }
+  delete message;
+}
+
+void BundlePackHandler::Init() {
+  std::vector<base::StringPiece> pieces = base::SplitStringPiece(
+    fullname_,
+    "/",
+    base::KEEP_WHITESPACE,
+    base::SPLIT_WANT_NONEMPTY);
+
+  service_name_ = pieces[0];
+  method_name_ = pieces[1];
+}
+
+const std::string& BundlePackHandler::output() const {
+  // FIXME
+  return fullname_;
+}
+
+//
+
+BundleInitHandler::BundleInitHandler():
+  fullname_(BundleInitHandler::kFullname) {
+
+  Init();
+}
+
+BundleInitHandler::~BundleInitHandler() {
+
+}
+
+base::StringPiece BundleInitHandler::ns() const {
+  auto offset = service_name_.find_first_of(".");
+  return service_name_.substr(offset);
+}
+
+void BundleInitHandler::HandleCall(std::vector<char> data, base::Callback<void(int)> cb) {
+  std::string str_payload(data.data(), data.size());
+  scoped_refptr<Workspace> workspace = Workspace::GetCurrent();
+
+  // decode message
+  const google::protobuf::Descriptor* message_descriptor = GetDescriptorFor(workspace, "BundleInitRequest");
+  if (!message_descriptor) {
+    DLOG(INFO) << "protobuf message for 'BundleInitRequest' not found";
+    return;
+  }
+  SchemaRegistry* schema_registry = workspace->schema_registry();
+  google::protobuf::DescriptorPool* descriptor_pool = schema_registry->descriptor_pool();
+  google::protobuf::DynamicMessageFactory factory(descriptor_pool);
+  const google::protobuf::Message* message_descr = factory.GetPrototype(message_descriptor);
+  google::protobuf::Message* message = message_descr->New();
+  message->ParseFromString(str_payload);
+  std::string name = GetStringField(workspace, message, "BundleInitRequest", "name");
+  std::string path = GetStringField(workspace, message, "BundleInitRequest", "path");
+  if (!path.empty() && !name.empty()) {
+    workspace->bundle_manager()->InitBundle(name, base::FilePath(path), std::move(cb));
+  } else {
+    DLOG(ERROR) << "error initializing bundle: path is empty";
+  }
+  delete message;
+}
+
+void BundleInitHandler::Init() {
+  std::vector<base::StringPiece> pieces = base::SplitStringPiece(
+    fullname_,
+    "/",
+    base::KEEP_WHITESPACE,
+    base::SPLIT_WANT_NONEMPTY);
+
+  service_name_ = pieces[0];
+  method_name_ = pieces[1];
+}
+
+const std::string& BundleInitHandler::output() const {
   // FIXME
   return fullname_;
 }

@@ -804,7 +804,7 @@ void TorrentManager::OnUDPPacket(
   std::weak_ptr<libtorrent::aux::listen_socket_t> ls, 
   libtorrent::aux::transport ssl, 
   libtorrent::error_code const& ec) {
-  DLOG(INFO) << "TorrentManager::OnUDPPacket";
+  // DLOG(INFO) << "TorrentManager::OnUDPPacket";
 }
 
 void TorrentManager::OnAcceptConnection(
@@ -831,7 +831,7 @@ void TorrentManager::OnUdpWriteable(std::weak_ptr<libtorrent::aux::session_udp_s
 }
 
 void TorrentManager::IncomingConnection(std::shared_ptr<libtorrent::aux::socket_type> const& s) {
-  DLOG(INFO) << "TorrentManager::IncomingConnection";
+  // DLOG(INFO) << "TorrentManager::IncomingConnection";
   libtorrent::error_code ec;
   libtorrent::tcp::endpoint endp = s->remote_endpoint(ec);
 
@@ -935,7 +935,7 @@ void TorrentManager::OnTorrentResumed(lt::torrent_handle handle) {
 
 void TorrentManager::OnTorrentPaused(lt::torrent_handle handle) {
   lt::storage_index_t storage_id = handle.native_handle()->storage();
-  DLOG(INFO) << "TorrentManager::OnTorrentPaused (" << storage_id << ")";
+  // DLOG(INFO) << "TorrentManager::OnTorrentPaused (" << storage_id << ")";
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage_id);
   if (!torrent) {
     LOG(ERROR) << "TorrentManager::OnTorrentPaused: torrent with id " << (int)storage_id << " not found";
@@ -946,7 +946,7 @@ void TorrentManager::OnTorrentPaused(lt::torrent_handle handle) {
 }
 
 void TorrentManager::OnTorrentDeleted(lt::torrent_handle handle, lt::sha1_hash const& ih) {
-  DLOG(INFO) << "TorrentManager::OnTorrentDeleted";
+  // DLOG(INFO) << "TorrentManager::OnTorrentDeleted";
   lt::storage_index_t storage_id = handle.native_handle()->storage();
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage_id);
   if (!torrent) {
@@ -960,7 +960,7 @@ void TorrentManager::OnTorrentDeleted(lt::torrent_handle handle, lt::sha1_hash c
 void TorrentManager::OnTorrentDeletedError(lt::torrent_handle handle, 
                                      lt::error_code const& ec, 
                                      lt::sha1_hash const& ih) {
-  DLOG(INFO) << "TorrentManager::OnTorrentDeletedError";
+  // DLOG(INFO) << "TorrentManager::OnTorrentDeletedError";
   lt::storage_index_t storage_id = handle.native_handle()->storage();
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage_id);
   if (!torrent) {
@@ -973,7 +973,7 @@ void TorrentManager::OnTorrentDeletedError(lt::torrent_handle handle,
 void TorrentManager::OnTorrentFileRenamed(lt::torrent_handle handle, 
                                     lt::string_view name, 
                                     lt::file_index_t index) {
-  DLOG(INFO) << "TorrentManager::OnTorrentFileRenamed";
+  // DLOG(INFO) << "TorrentManager::OnTorrentFileRenamed";
   lt::storage_index_t storage_id = handle.native_handle()->storage();
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage_id);
   if (!torrent) {
@@ -986,7 +986,7 @@ void TorrentManager::OnTorrentFileRenamed(lt::torrent_handle handle,
 void TorrentManager::OnTorrentFileRenamedError(lt::torrent_handle handle, 
                                          lt::file_index_t index, 
                                          lt::error_code const& ec) {
-  DLOG(INFO) << "TorrentManager::OnTorrentFileRenamedError";
+  // DLOG(INFO) << "TorrentManager::OnTorrentFileRenamedError";
   lt::storage_index_t storage_id = handle.native_handle()->storage();
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage_id);
   if (!torrent) {
@@ -1002,18 +1002,18 @@ void TorrentManager::OnTrackerRequestError(lt::torrent_handle const& handle,
                                      lt::string_view url, 
                                      lt::error_code const& err, 
                                      lt::string_view message) {
-  //DLOG(INFO) << "TorrentManager::OnTrackerRequestError";
+  //// DLOG(INFO) << "TorrentManager::OnTrackerRequestError";
 }
 
 void TorrentManager::OnTrackerScrapeError(lt::torrent_handle const& h, 
                                     lt::tcp::endpoint const& ep, 
                                     lt::string_view u, 
                                     lt::error_code const& e) {
-  //DLOG(INFO) << "TorrentManager::OnTrackerScrapeError";
+  //// DLOG(INFO) << "TorrentManager::OnTrackerScrapeError";
 }
 
 void TorrentManager::OnTorrentFinished(const scoped_refptr<Torrent>& torrent) {
-  DLOG(INFO) << "TorrentManager::OnTorrentFinished: " << torrent->id().to_string();//: state = " << get_torrent_state(torrent->state());
+  // DLOG(INFO) << "TorrentManager::OnTorrentFinished: " << torrent->id().to_string();//: state = " << get_torrent_state(torrent->state());
 
   // if (torrent->state() == storage_proto::STATE_DOWNLOADING || 
   //     torrent->state() == storage_proto::STATE_FINISHED || 
@@ -1032,22 +1032,22 @@ void TorrentManager::OnTorrentFinished(const scoped_refptr<Torrent>& torrent) {
 
 
 void TorrentManager::OnTorrentDownloading(const scoped_refptr<Torrent>& torrent) {
-  DLOG(INFO) << "TorrentManager::OnTorrentDownloading: " << torrent->id().to_string();
+  // DLOG(INFO) << "TorrentManager::OnTorrentDownloading: " << torrent->id().to_string();
   torrent->OnDownloading();
 }
 
 void TorrentManager::OnTorrentCheckingFiles(const scoped_refptr<Torrent>& torrent) {
-  DLOG(INFO) << "TorrentManager::OnTorrentCheckingFiles: "  << torrent->id().to_string(); 
+  // DLOG(INFO) << "TorrentManager::OnTorrentCheckingFiles: "  << torrent->id().to_string(); 
   torrent->OnCheckingFiles();
 }
 
 void TorrentManager::OnTorrentDownloadingMetadata(const scoped_refptr<Torrent>& torrent) {
-  DLOG(INFO) << "TorrentManager::OnTorrentDownloadingMetadata: " << torrent->id().to_string();
+  // DLOG(INFO) << "TorrentManager::OnTorrentDownloadingMetadata: " << torrent->id().to_string();
   torrent->OnDownloadingMetadata();
 }
 
 void TorrentManager::OnTorrentSeeding(const scoped_refptr<Torrent>& torrent) {
-  DLOG(INFO) << "TorrentManager::OnTorrentSeeding: "  << torrent->id().to_string();
+  // DLOG(INFO) << "TorrentManager::OnTorrentSeeding: "  << torrent->id().to_string();
   //std::string text;
   //if (google::protobuf::TextFormat::PrintToString(torrent->info(), &text)) {
   //  printf("%s\n", text.c_str());
@@ -1060,7 +1060,7 @@ void TorrentManager::OnTorrentSeeding(const scoped_refptr<Torrent>& torrent) {
 }
 
 void TorrentManager::OnTorrentCheckingResumeData(const scoped_refptr<Torrent>& torrent) {
-  DLOG(INFO) << "TorrentManager::OnTorrentCheckingResumeData: "  << torrent->id().to_string(); 
+  //// DLOG(INFO) << "TorrentManager::OnTorrentCheckingResumeData: "  << torrent->id().to_string(); 
 }
 
 void TorrentManager::OnTorrentStateChanged(lt::torrent_handle const& h, 
@@ -1073,7 +1073,7 @@ void TorrentManager::OnTorrentStateChanged(lt::torrent_handle const& h,
     ////D//LOG(INFO) << "TorrentManager::OnTorrentStateChanged: torrent " << (int)storage << " not found";
     return;
   }
-  //DLOG(INFO) << "TorrentManager::OnTorrentStateChanged: " << torrent->id().to_string();
+  //// DLOG(INFO) << "TorrentManager::OnTorrentStateChanged: " << torrent->id().to_string();
   switch (state) {
     case lt::torrent_status::checking_files:
       torrent->set_state(storage_proto::STATE_CHECKING);
@@ -1129,7 +1129,7 @@ void TorrentManager::OnDHTAnnounceReply(libtorrent::torrent_handle thandle, int 
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnDHTAnnounceReply: " << torrent->id().to_string() << " peers count = " << peer_count << "\n" << peers_str;
+  // DLOG(INFO) << "TorrentManager::OnDHTAnnounceReply: " << torrent->id().to_string() << " peers count = " << peer_count << "\n" << peers_str;
   torrent->OnDHTAnnounceReply(peer_count);
 }
 
@@ -1140,7 +1140,7 @@ void TorrentManager::OnBlockFinished(lt::torrent_handle h,
                                      lt::piece_index_t piece_num) {
   auto storage = h.native_handle()->storage();
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage);
-  DLOG(INFO) << "TorrentManager::OnBlockFinished: " << torrent->id().to_string();
+  // DLOG(INFO) << "TorrentManager::OnBlockFinished: " << torrent->id().to_string();
 }
 
 void TorrentManager::OnPieceHashedError(lt::error_code const& ec, 
@@ -1149,7 +1149,7 @@ void TorrentManager::OnPieceHashedError(lt::error_code const& ec,
                                         lt::torrent_handle const& handle) {
   auto storage = handle.native_handle()->storage();
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage);
-  DLOG(INFO) << "TorrentManager::OnPieceHashedError: " << torrent->id().to_string();
+  // DLOG(INFO) << "TorrentManager::OnPieceHashedError: " << torrent->id().to_string();
 }
 
 void TorrentManager::OnPieceReadError(lt::torrent_handle const& handle, 
@@ -1167,19 +1167,19 @@ void TorrentManager::OnPieceReadError(lt::torrent_handle const& handle,
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnPieceReadError: " << torrent->id().to_string() << " piece = " << (int)piece_num;
+  // DLOG(INFO) << "TorrentManager::OnPieceReadError: " << torrent->id().to_string() << " piece = " << (int)piece_num;
   torrent->OnPieceReadError(piece_num, ec.value()); 
 }
 
 void TorrentManager::OnMetadataReceived(lt::torrent_handle const& handle) {
-  DLOG(INFO) << "TorrentManager::OnMetadataReceived: storage = " << (int)handle.native_handle()->storage();
+  // DLOG(INFO) << "TorrentManager::OnMetadataReceived: storage = " << (int)handle.native_handle()->storage();
   auto storage = handle.native_handle()->storage();
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage);
   if (!torrent) {
-    DLOG(INFO) << "TorrentManager::OnMetadataReceived: torrent for " << handle.native_handle()->storage() << " not found. cancelling";
+    //// DLOG(INFO) << "TorrentManager::OnMetadataReceived: torrent for " << handle.native_handle()->storage() << " not found. cancelling";
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnMetadataReceived: " << torrent->id().to_string();
+  // // DLOG(INFO) << "TorrentManager::OnMetadataReceived: " << torrent->id().to_string();
   torrent->OnMetadataReceived();
 }
 
@@ -1190,7 +1190,7 @@ void TorrentManager::OnMetadataError(lt::torrent_handle const& handle,
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnMetadataError: " << torrent->id().to_string();
+  // DLOG(INFO) << "TorrentManager::OnMetadataError: " << torrent->id().to_string();
   torrent->OnMetadataError(ec.value());
 }
 
@@ -1201,7 +1201,7 @@ void TorrentManager::OnPiecePass(lt::torrent_handle const& handle,
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnPiecePass: " << torrent->id().to_string() << " piece = " << (int)piece_num;
+  // DLOG(INFO) << "TorrentManager::OnPiecePass: " << torrent->id().to_string() << " piece = " << (int)piece_num;
   torrent->OnPiecePass(piece_num);
 }
 
@@ -1212,7 +1212,7 @@ void TorrentManager::OnPieceFailed(lt::torrent_handle const& handle,
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnPieceFailed: " << torrent->id().to_string() << " piece = " << (int)piece_num;
+  // DLOG(INFO) << "TorrentManager::OnPieceFailed: " << torrent->id().to_string() << " piece = " << (int)piece_num;
   torrent->OnPieceFailed(piece_num);
 }
 
@@ -1230,7 +1230,7 @@ void TorrentManager::OnPieceFinished(lt::torrent_handle const& handle,
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnPieceFinished: " << torrent->id().to_string() << " piece = " << (int)piece_num;
+  // DLOG(INFO) << "TorrentManager::OnPieceFinished: " << torrent->id().to_string() << " piece = " << (int)piece_num;
   torrent->OnPieceFinished(piece_num);
 }
 
@@ -1247,7 +1247,7 @@ void TorrentManager::OnPieceHashCheckFailed(lt::torrent_handle const& handle, lt
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnPieceHashCheckFailed: " << torrent->id().to_string() << " piece = " << (int)piece_num;
+  // DLOG(INFO) << "TorrentManager::OnPieceHashCheckFailed: " << torrent->id().to_string() << " piece = " << (int)piece_num;
   torrent->OnPieceHashFailed(piece_num);
 }
 
@@ -1258,7 +1258,7 @@ void TorrentManager::OnFileCompleted(lt::torrent_handle const& handle, lt::file_
   if (!torrent) {
     return;
   }
-  DLOG(INFO) << "TorrentManager::OnFileCompleted: " << torrent->id().to_string() << " file index = " << (int)idx;
+  // DLOG(INFO) << "TorrentManager::OnFileCompleted: " << torrent->id().to_string() << " file index = " << (int)idx;
   torrent->OnFileCompleted(idx);
 }
 
@@ -1281,13 +1281,13 @@ void TorrentManager::OnTrackerReply(lt::torrent_handle const& handle,
                               lt::tcp::endpoint const& endpoint, 
                               int num_peers, 
                               lt::string_view url) {
-  //DLOG(INFO) << "TorrentManager::OnTrackerReply";
+  //// DLOG(INFO) << "TorrentManager::OnTrackerReply";
 }
 
 void TorrentManager::OnPeerBlocked(lt::torrent_handle const& handle, 
                              lt::tcp::endpoint const& endpoint, 
                              int result) {
- // DLOG(INFO) << "TorrentManager::OnPeerBlocked";
+ // // DLOG(INFO) << "TorrentManager::OnPeerBlocked";
 }
 
 bool TorrentManager::OpenEntry(lt::storage_index_t storage) {
@@ -1433,7 +1433,7 @@ void TorrentManager::WriteEntry(lt::storage_index_t storage, lt::span<lt::iovec_
   int file_offset = piece == 0 ? 0 : (piece * block_size);
   
   for (lt::iovec_t const buf: bufs) {
-    DLOG(INFO) << "Write(" << (int)storage << "): piece: " << piece << " file_offset: " << file_offset << " size: " << buf.size() << " offset: " << offset;
+    // DLOG(INFO) << "Write(" << (int)storage << "): piece: " << piece << " file_offset: " << file_offset << " size: " << buf.size() << " offset: " << offset;
     int r = t->Write(buf.data(), buf.size(), file_offset);
     if (r != 0) {
       LOG(ERROR) << "TorrentManager::WriteEntry: error writing '" << t->id().to_string() << "'";

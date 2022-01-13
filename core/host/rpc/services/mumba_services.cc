@@ -247,6 +247,8 @@ void MumbaServices::AddDefaultServices() {
   AddServiceHandler(std::make_unique<ApplicationInstanceCloseHandler>());
   AddServiceHandler(std::make_unique<BundleInstallHandler>());
   AddServiceHandler(std::make_unique<BundleSignHandler>());
+  AddServiceHandler(std::make_unique<BundlePackHandler>());
+  AddServiceHandler(std::make_unique<BundleInitHandler>());
   AddServiceHandler(std::make_unique<ServiceStartHandler>());
   AddServiceHandler(std::make_unique<ServiceStopHandler>());
   AddServiceHandler(std::make_unique<ServiceListHandler>());

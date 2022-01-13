@@ -126,6 +126,78 @@ private:
   
 };
 
+class BundlePackHandler : public MumbaServicesUnaryCallHandler {
+public:  
+  static const char kFullname[];
+
+  BundlePackHandler();
+  ~BundlePackHandler();
+
+  const std::string& fullname() const override {
+    return fullname_;
+  }
+
+  base::StringPiece ns() const override;
+  
+  base::StringPiece service_name() const override {
+    return service_name_;
+  }
+  
+  base::StringPiece method_name() const override {
+    return method_name_;
+  }
+
+  const std::string& output() const override;
+
+  void HandleCall(std::vector<char> data, base::Callback<void(int)> cb) override;
+  
+private:
+  
+  void Init();
+  
+  // TODO: Use just one string for everything and a StringPiece for parts
+  std::string fullname_;
+  base::StringPiece service_name_;
+  base::StringPiece method_name_;
+  
+};
+
+class BundleInitHandler : public MumbaServicesUnaryCallHandler {
+public:  
+  static const char kFullname[];
+
+  BundleInitHandler();
+  ~BundleInitHandler();
+
+  const std::string& fullname() const override {
+    return fullname_;
+  }
+
+  base::StringPiece ns() const override;
+  
+  base::StringPiece service_name() const override {
+    return service_name_;
+  }
+  
+  base::StringPiece method_name() const override {
+    return method_name_;
+  }
+
+  const std::string& output() const override;
+
+  void HandleCall(std::vector<char> data, base::Callback<void(int)> cb) override;
+  
+private:
+  
+  void Init();
+  
+  // TODO: Use just one string for everything and a StringPiece for parts
+  std::string fullname_;
+  base::StringPiece service_name_;
+  base::StringPiece method_name_;
+  
+};
+
 class BundleSignHandler : public MumbaServicesUnaryCallHandler {
 public:  
   static const char kFullname[];
