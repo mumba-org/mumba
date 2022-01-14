@@ -187,7 +187,11 @@ void BundleSignHandler::HandleCall(std::vector<char> data, base::Callback<void(i
   std::string bundle_path = GetStringField(workspace, message, "BundleSignRequest", "bundle_path");
   if (!public_signature.empty()) {
     std::vector<uint8_t> data(public_signature.begin(), public_signature.end());
-    workspace->bundle_manager()->SignBundle(base::FilePath(bundle_path), data, std::move(cb));
+    workspace->bundle_manager()->SignBundle(
+      base::FilePath(bundle_path), 
+      data, 
+      HostThread::GetTaskRunnerForThread(HostThread::IO),
+      std::move(cb));
   } else {
     DLOG(ERROR) << "error signing bundle: public_signature is empty";
   }
@@ -314,7 +318,12 @@ void BundlePackHandler::HandleCall(std::vector<char> data, base::Callback<void(i
   std::string path = GetStringField(workspace, message, "BundlePackRequest", "path");
   no_frontend = GetStringField(workspace, message, "BundlePackRequest", "no_frontend") == "true";
   if (!path.empty() && !name.empty()) {
-    workspace->bundle_manager()->PackBundle(name, base::FilePath(path), no_frontend, std::move(cb));
+    workspace->bundle_manager()->PackBundle(
+      name, 
+      base::FilePath(path), 
+      no_frontend, 
+      HostThread::GetTaskRunnerForThread(HostThread::IO),
+      std::move(cb));
   } else {
     DLOG(ERROR) << "error unpacking application: path is empty";
   }
@@ -373,7 +382,11 @@ void BundleInitHandler::HandleCall(std::vector<char> data, base::Callback<void(i
   std::string name = GetStringField(workspace, message, "BundleInitRequest", "name");
   std::string path = GetStringField(workspace, message, "BundleInitRequest", "path");
   if (!path.empty() && !name.empty()) {
-    workspace->bundle_manager()->InitBundle(name, base::FilePath(path), std::move(cb));
+    workspace->bundle_manager()->InitBundle(
+      name, 
+      base::FilePath(path), 
+      HostThread::GetTaskRunnerForThread(HostThread::IO),
+      std::move(cb));
   } else {
     DLOG(ERROR) << "error initializing bundle: path is empty";
   }

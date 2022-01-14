@@ -334,6 +334,8 @@ CommandCode ApplicationProfile::GetCommandCode(const std::string& name) {
     return kAPPLICATION_INSTANCE_LAUNCH_COMMAND;
   } else if (name == "pack") {
     return kBUNDLE_PACK_COMMAND;
+  } else if (name == "init") {
+    return kBUNDLE_INIT_COMMAND;
   } else if (name == "start") {
     return kAPPLICATION_START_COMMAND;
   } else if (name == "stop") {
@@ -376,6 +378,8 @@ CommandCode SystemProfile::GetCommandCode(const std::string& name) {
     return kAPPLICATION_INSTANCE_LAUNCH_COMMAND;
   } else if (name == "pack") {
     return kBUNDLE_PACK_COMMAND;
+  } else if (name == "init") {
+    return kBUNDLE_INIT_COMMAND;
   } else if (name == "start") {
     return kAPPLICATION_START_COMMAND;
   } else if (name == "stop") {

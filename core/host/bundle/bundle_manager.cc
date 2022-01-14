@@ -129,6 +129,7 @@ Bundle* BundleManager::GetBundle(const std::string& name) {
 }
 
 void BundleManager::PackBundle(const std::string& name, const base::FilePath& src, bool no_frontend, base::OnceCallback<void(int)> callback) {
+  
   base::PostTaskWithTraits(
     FROM_HERE,
     { base::WithBaseSyncPrimitives(), base::MayBlock() },
@@ -138,10 +139,41 @@ void BundleManager::PackBundle(const std::string& name, const base::FilePath& sr
       name,
       src,
       no_frontend,
+      scoped_refptr<base::SingleThreadTaskRunner>(),
+      base::Passed(std::move(callback))));
+}
+
+void BundleManager::PackBundle(const std::string& name, const base::FilePath& src, bool no_frontend, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback) {
+  base::PostTaskWithTraits(
+    FROM_HERE,
+    { base::WithBaseSyncPrimitives(), base::MayBlock() },
+    base::BindOnce(
+      &BundleManager::PackBundleImpl, 
+      base::Unretained(this), 
+      name,
+      src,
+      no_frontend,
+      reply_to,
       base::Passed(std::move(callback))));
 }
 
 void BundleManager::UnpackBundle(const std::string& name, const base::FilePath& src, base::OnceCallback<void(bool)> callback) {
+  base::FilePath dest = GetOutputPath();
+  scoped_refptr<base::SingleThreadTaskRunner> reply_to = base::ThreadTaskRunnerHandle::Get();
+  base::PostTaskWithTraits(
+    FROM_HERE,
+    { base::WithBaseSyncPrimitives(), base::MayBlock() },
+    base::BindOnce(
+      &BundleManager::UnpackBundleImpl, 
+      base::Unretained(this), 
+      name,
+      src,
+      dest,
+      reply_to,
+      base::Passed(std::move(callback))));
+}
+
+void BundleManager::UnpackBundle(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(bool)> callback) {
   base::FilePath dest = GetOutputPath();
   
   base::PostTaskWithTraits(
@@ -153,6 +185,7 @@ void BundleManager::UnpackBundle(const std::string& name, const base::FilePath& 
       name,
       src,
       dest,
+      reply_to,
       base::Passed(std::move(callback))));
 }
 
@@ -180,6 +213,20 @@ void BundleManager::SignBundle(const base::FilePath& src, const std::vector<uint
       base::Unretained(this), 
       src,
       signature,
+      scoped_refptr<base::SingleThreadTaskRunner>(),
+      base::Passed(std::move(callback))));
+}
+
+void BundleManager::SignBundle(const base::FilePath& src, const std::vector<uint8_t>& signature, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback) {
+   base::PostTaskWithTraits(
+    FROM_HERE,
+    { base::WithBaseSyncPrimitives(), base::MayBlock() },
+    base::BindOnce(
+      &BundleManager::SignBundleImpl, 
+      base::Unretained(this), 
+      src,
+      signature,
+      reply_to,
       base::Passed(std::move(callback))));
 }
 
@@ -192,12 +239,26 @@ void BundleManager::InitBundle(const std::string& name, const base::FilePath& sr
       base::Unretained(this), 
       name,
       src,
+      scoped_refptr<base::SingleThreadTaskRunner>(),
       base::Passed(std::move(callback))));
 }
 
-void BundleManager::UnpackBundleSync(const std::string& name, const base::FilePath& src, base::OnceCallback<void(bool)> callback) {
+void BundleManager::InitBundle(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback) {
+  base::PostTaskWithTraits(
+    FROM_HERE,
+    { base::WithBaseSyncPrimitives(), base::MayBlock() },
+    base::BindOnce(
+      &BundleManager::InitBundleImpl, 
+      base::Unretained(this), 
+      name,
+      src,
+      reply_to,
+      base::Passed(std::move(callback))));
+}
+
+void BundleManager::UnpackBundleSync(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(bool)> callback) {
   base::FilePath dest = GetOutputPath();
-  UnpackBundleImpl(name, src, dest, std::move(callback));
+  UnpackBundleImpl(name, src, dest, reply_to, std::move(callback));
 }
 
 void BundleManager::UnpackBundleFromContentsSync(const std::string& name, base::StringPiece contents, base::OnceCallback<void(bool)> callback) {
@@ -205,22 +266,40 @@ void BundleManager::UnpackBundleFromContentsSync(const std::string& name, base::
   UnpackBundleFromContentsImpl(name, contents, dest, std::move(callback));
 }
 
-void BundleManager::UnpackBundleImpl(const std::string& name, const base::FilePath& src, const base::FilePath& dest, base::OnceCallback<void(bool)> callback) {
+void BundleManager::UnpackBundleImpl(const std::string& name, const base::FilePath& src, const base::FilePath& dest, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(bool)> callback) {
   std::string real_name = SanitizeName(name);
   
   if (!ValidateBundleBeforeUnpack(src)) {
-    std::move(callback).Run(false);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE,
+                        base::BindOnce(std::move(callback),
+                                        false));
+    } else {
+      std::move(callback).Run(false);
+    }
     return;
   }
   
   if (!BeforeBundleUnpack(dest)) {
-    std::move(callback).Run(false);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE,
+                        base::BindOnce(std::move(callback),
+                                        false));
+    } else {
+      std::move(callback).Run(false);
+    }
     return;
   }
 
   if (!BundleUtils::UnpackBundle(src, dest)) {
     DLOG(ERROR) << "BundleManager::UnpackBundle: failed to unpack on " << dest;
-    std::move(callback).Run(false);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE,
+                        base::BindOnce(std::move(callback),
+                                        false));
+    } else {
+      std::move(callback).Run(false);
+    }
     return;  
   }
 
@@ -230,12 +309,22 @@ void BundleManager::UnpackBundleImpl(const std::string& name, const base::FilePa
   base::FilePath unpacked_exe_dest = dest.AppendASCII(bundle_info->application_path());
   
   if (!AfterBundleUnpack(real_name, unpacked_exe_dest)) {
-    std::move(callback).Run(false);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE,
+                        base::BindOnce(std::move(callback),
+                                        false));
+    } else {
+      std::move(callback).Run(false);
+    }
     return;
   }
 
   model_->AddBundle(std::move(bundle_info));
 
+  if (reply_to) {
+    reply_to->PostTask(FROM_HERE, base::BindOnce(std::move(callback), true));
+    return;
+  } 
   std::move(callback).Run(true);
 }
 
@@ -371,37 +460,69 @@ base::FilePath BundleManager::GetOutputPath() const {
   return out_path.AppendASCII("app" + base::IntToString(base::RandInt(0, std::numeric_limits<int16_t>::max())));
 }
 
-void BundleManager::SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback) {
+void BundleManager::SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback) {
   // TODO: not really working yet
   bool result = false;//BundleUtils::SignBundle(src, signature);
-  std::move(callback).Run(result ? net::OK : net::ERR_FAILED);
+  //std::move(callback).Run(result ? net::OK : net::ERR_FAILED);
+  if (reply_to) {
+    reply_to->PostTask(FROM_HERE, 
+                     base::BindOnce(
+                       std::move(callback),
+                       result ? net::OK : net::ERR_FAILED));
+  } else {
+    std::move(callback).Run(result ? net::OK : net::ERR_FAILED);
+  }
 }
 
-void BundleManager::PackBundleImpl(const std::string& name, const base::FilePath& src, bool no_frontend, base::OnceCallback<void(int)> callback) {
+void BundleManager::PackBundleImpl(const std::string& name, const base::FilePath& src, bool no_frontend, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback) {
   base::FilePath home_path;
   base::FilePath binary_out_path;
 
   if (!base::PathService::Get(base::DIR_HOME, &home_path)) {
     DLOG(ERROR) << "error while getting home path";
-    std::move(callback).Run(net::ERR_FAILED);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE, 
+                        base::BindOnce(std::move(callback),
+                                        net::ERR_FAILED));
+    } else {
+      std::move(callback).Run(net::ERR_FAILED);
+    }
     return;
   }
   
   if (!base::PathService::Get(base::DIR_EXE, &binary_out_path)) {
     DLOG(ERROR) << "error while getting executable path";
-    std::move(callback).Run(net::ERR_FAILED);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE, 
+                        base::BindOnce(std::move(callback),
+                                        net::ERR_FAILED));
+    } else {
+      std::move(callback).Run(net::ERR_FAILED);
+    }
     return;
   }
 
   base::FilePath temp_dir = home_path.AppendASCII("tmp" + base::IntToString(base::RandInt(0, std::numeric_limits<int16_t>::max()))); 
   
   if (!PackCreateBaseDirectories(name, temp_dir, no_frontend)) {
-    std::move(callback).Run(net::ERR_FAILED);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE, 
+                        base::BindOnce(std::move(callback),
+                                        net::ERR_FAILED));
+    } else {
+      std::move(callback).Run(net::ERR_FAILED);
+    }
     return;
   }
 
   if (!PackCopyFiles(name, src, binary_out_path, temp_dir, no_frontend)) {
-    std::move(callback).Run(net::ERR_FAILED);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE, 
+                        base::BindOnce(std::move(callback),
+                                        net::ERR_FAILED));
+    } else {
+      std::move(callback).Run(net::ERR_FAILED);
+    }
     return;
   }
 
@@ -413,12 +534,24 @@ void BundleManager::PackBundleImpl(const std::string& name, const base::FilePath
 
   if (!PackDirectory(name, temp_dir, mumba_out_dir, no_frontend)) {
     DLOG(ERROR) << "error while creating drop file";
-    std::move(callback).Run(net::ERR_FAILED);
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE, 
+                        base::BindOnce(std::move(callback),
+                                        net::ERR_FAILED));
+    } else {
+      std::move(callback).Run(net::ERR_FAILED);
+    }
     return;
   }
 
   base::DeleteFile(temp_dir, true);
-  std::move(callback).Run(net::OK);
+  if (reply_to) {
+    reply_to->PostTask(FROM_HERE, 
+                     base::BindOnce(std::move(callback),
+                                      net::OK));
+  } else {
+    std::move(callback).Run(net::OK);
+  }
 }
 
 bool BundleManager::PackCreateBaseDirectories(const std::string& identifier, const base::FilePath& base_dir, bool no_frontend) {
@@ -558,7 +691,7 @@ bool BundleManager::PackCopyFiles(const std::string& identifier, const base::Fil
   }
 
   if (!base::CopyFile(schema_in_file, schema_out_file)) {
-    printf("error while copying schema files\n");
+    printf("error while copying schema files from %s to %s\n", schema_in_file.value().c_str(), schema_out_file.value().c_str());
     return false;
   }
 
@@ -778,8 +911,27 @@ bool BundleManager::PackDirectory(const std::string& identifier, const base::Fil
   return true; 
 }
 
-void BundleManager::InitBundleImpl(const std::string& name, const base::FilePath& src, base::OnceCallback<void(int)> callback) {
-  std::move(callback).Run(net::ERR_FAILED);
+void BundleManager::InitBundleImpl(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback) {
+  base::FilePath real_src = src.AppendASCII(name);
+  if (!PackCreateBaseDirectories(name, real_src, true)) {
+    if (reply_to) {
+      reply_to->PostTask(FROM_HERE, 
+                         base::BindOnce(std::move(callback),
+                                        net::ERR_FAILED));
+    } else {
+      std::move(callback).Run(net::ERR_FAILED);
+    }
+    return;
+  }
+
+  if (reply_to) {
+    reply_to->PostTask(FROM_HERE, 
+                        base::BindOnce(std::move(callback),
+                                      net::OK));
+    return;
+  }
+
+  std::move(callback).Run(net::OK);
 }
 
 void BundleManager::NotifyBundleAdded(Bundle* bundle) {

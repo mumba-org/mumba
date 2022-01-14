@@ -13,6 +13,8 @@
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece.h"
 #include "base/files/file_path.h"
+#include "base/single_thread_task_runner.h"
+#include "base/task_runner_util.h"
 #include "core/host/bundle/bundle_manager_observer.h"
 #include "core/host/database_policy.h"
 
@@ -38,37 +40,45 @@ public:
   
   void InitBundle(const std::string& name, const base::FilePath& src, base::OnceCallback<void(int)> callback);
   void PackBundle(const std::string& name, const base::FilePath& src, bool no_frontend, base::OnceCallback<void(int)> callback);
- 
+  void SignBundle(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback);
   void UnpackBundle(const std::string& name, const base::FilePath& src, base::OnceCallback<void(bool)> callback);
+
+  void InitBundle(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
+  void PackBundle(const std::string& name, const base::FilePath& src, bool no_frontend, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
+  void SignBundle(const base::FilePath& src, const std::vector<uint8_t>& signature, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
+  void UnpackBundle(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(bool)> callback);
+  
   void UnpackBundleFromContents(const std::string& name, base::StringPiece contents, base::OnceCallback<void(bool)> callback);
 
-  void UnpackBundleSync(const std::string& name, const base::FilePath& src, base::OnceCallback<void(bool)> callback);
+  void UnpackBundleSync(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(bool)> callback);
   void UnpackBundleFromContentsSync(const std::string& name, base::StringPiece contents, base::OnceCallback<void(bool)> callback);
-
-  void SignBundle(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback);
 
   void AddObserver(BundleManagerObserver* observer);
   void RemoveObserver(BundleManagerObserver* observer);
 
 private:
   friend class Workspace;
+  friend class BundleInitHandler;
+  friend class BundlePackHandler;
+  friend class BundleUnpackHandler;
+  friend class BundleSignHandler;
   
   bool ValidateBundleBeforeUnpack(const base::FilePath& src);
 
-  void UnpackBundleImpl(const std::string& name, const base::FilePath& src, const base::FilePath& dest, base::OnceCallback<void(bool)> callback);
+  void UnpackBundleImpl(const std::string& name, const base::FilePath& src, const base::FilePath& dest, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(bool)> callback);
   void UnpackBundleFromContentsImpl(const std::string& name, base::StringPiece contents, const base::FilePath& dest, base::OnceCallback<void(bool)> callback);
   bool BeforeBundleUnpack(const base::FilePath& dest) const;
   bool AfterBundleUnpack(const std::string& name, const base::FilePath& dest) const;
   base::FilePath GetOutputPath() const;
 
-  void SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, base::OnceCallback<void(int)> callback);
+  void SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
 
-  void PackBundleImpl(const std::string& name, const base::FilePath& src, bool no_frontend, base::OnceCallback<void(int)> callback);
+  void PackBundleImpl(const std::string& name, const base::FilePath& src, bool no_frontend, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
   bool PackCreateBaseDirectories(const std::string& identifier, const base::FilePath& base_dir, bool no_frontend);
   bool PackCopyFiles(const std::string& identifier, const base::FilePath& app_base_path, const base::FilePath& input_dir, const base::FilePath& base_dir, bool no_frontend);
   bool PackDirectory(const std::string& identifier, const base::FilePath& src_path, const base::FilePath& output_dir, bool no_frontend);
 
-  void InitBundleImpl(const std::string& name, const base::FilePath& src, base::OnceCallback<void(int)> callback);
+  void InitBundleImpl(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
 
   void OnLoad(int r, int count);
 

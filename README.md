@@ -205,7 +205,16 @@ How is this similar/different from
 
 * Browsers
 
-* "Web3" 
+* "Web3" (the crypto one) 
+
+* IPFS
+
+  We have a IPFS like layer in the storage part of this solution, based on torrents, but giving a lot of details are abstracted away
+  a IPFS wrapper would be able to serve data-over-peers the same way the torrent engine is doing right now.
+
+  But nowadays, with the torrent DHT we have a way to give the developers the freedom to expose their applications
+  with a well-known address that they can share with other people to install their applications, and that only them
+  (with access to the private key) can write to and change the torrent where this is pointing out.
 
 Documentation
 -----
@@ -233,7 +242,7 @@ Building
   Our gn's is a fork from the original which also allow us to build Swift sources
   to build the sdk or applications, so you will have to build it before generating
 
-Tour (see how it works in practice, with screenshots and explanation of the real thing)
+See it in action
 -----    
   TODO
 
@@ -270,3 +279,8 @@ that is to get the bundle distribution into a more usable state
 
  On the web side of things, those languages will have the same access (even more to be true) as Javascript have to the web today
  which is by itself pretty cool and the first languages to do that beyond C++ which is the runtime and Javascript.
+
+ Contact
+ ---
+
+ Discord channel: https://discord.gg/jtDzF9nUEh
