@@ -18,6 +18,23 @@ namespace host {
 class Bundle;
 class BundlePackage;
 
+const char kBIN_PATH[] = "bin";
+const char kAPPS_PATH[] = "apps";
+const char kAPP_PATH[] = "app";
+const char kSERVICE_PATH[] = "service";
+const char kRESOURCES_PATH[] = "resources";
+const char kPROTO_PATH[] = "proto";
+const char kDATABASES_PATH[] = "databases";
+const char kSHARES_PATH[] = "shares";
+const char kFILES_PATH[] = "files";
+
+const char kBUNDLE_EXT[] = ".bundle";
+const char kAPP_EXT[] = ".appx";
+const char kBUILD_FILE[] = "BUILD.gn";
+
+const char kWORLD_BUNDLE[] = "world";
+const char kBUNDLE_MANIFEST[] = "AppxManifest.xml";
+
 class BundleUtils {
 public:
   ~BundleUtils() {}

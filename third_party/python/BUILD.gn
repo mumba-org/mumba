@@ -1,5 +1,5 @@
 import("//build/config/dcheck_always_on.gni")
-import("//lib/testing/libfuzzer/fuzzer_test.gni")
+#import("//lib/testing/libfuzzer/fuzzer_test.gni")
 
 config("python3_compile_options") {
   defines = [

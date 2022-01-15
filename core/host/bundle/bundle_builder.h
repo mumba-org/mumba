@@ -1,9 +1,9 @@
-// Copyright (c) 2021 Mumba. All rights reserved.
+// Copyright (c) 2022 Mumba. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef MUMBA_HOST_BUNDLE_EXECUTABLE_H_
-#define MUMBA_HOST_BUNDLE_EXECUTABLE_H_
+#ifndef MUMBA_HOST_BUNDLE_BUILDER_H_
+#define MUMBA_HOST_BUNDLE_BUILDER_H_
 
 #include <memory>
 
@@ -13,13 +13,13 @@
 
 namespace host {
 
-class BundleExecutable {
+class BundleBuilder {
 public:
-  BundleExecutable();
-  ~BundleExecutable();
+  BundleBuilder();
+  ~BundleBuilder();
   
 private:
-  DISALLOW_COPY_AND_ASSIGN(BundleExecutable);
+  DISALLOW_COPY_AND_ASSIGN(BundleBuilder);
 };
 
 }

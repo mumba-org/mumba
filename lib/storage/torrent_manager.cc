@@ -904,7 +904,6 @@ void TorrentManager::PutMutableCallback(
 
 void TorrentManager::OnTorrentChecked(lt::torrent_handle handle) {
   lt::storage_index_t storage_id = handle.native_handle()->storage();
-  LOG(ERROR) << "TorrentManager::OnTorrentChecked: torrent with id " << (int)storage_id;
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage_id);
   if (!torrent) {
     LOG(ERROR) << "TorrentManager::OnTorrentChecked: torrent with id " << (int)storage_id << " not found";

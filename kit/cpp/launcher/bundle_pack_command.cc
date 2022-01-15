@@ -4,6 +4,7 @@
 
 #include "launcher/bundle_pack_command.h"
 
+#include "base/files/file_path.h"
 #include "launcher/rpc_client.h"
 #include "launcher/command_executor.h"
 #include "third_party/protobuf/src/google/protobuf/compiler/parser.h"
@@ -40,16 +41,23 @@ std::string BundlePackCommand::GetCommandMethod() const {
 int BundlePackCommand::Run(CommandExecutor* executor, const base::CommandLine::StringVector& args) {
   std::map<std::string, std::string> input_map;
   std::string encoded_input;
+  
+  if (args.size() < 3) {
+    printf("bundle pack: wrong number of arguments: need [path]\n");
+    return 1;
+  }
   std::unique_ptr<RPCUnaryCall> install_caller = executor->CreateRPCUnaryCall(GetCommandMethod());
-  input_map.emplace(std::make_pair("name", args[2].c_str()));
-  input_map.emplace(std::make_pair("path", args[3].c_str()));
-  if (args.size() >= 5) {
-    input_map.emplace(std::make_pair("no_frontend", args[4].c_str()));
+  base::FilePath path(args[2].c_str());
+  std::string name = path.BaseName().value();
+  input_map.emplace(std::make_pair("name", name.c_str()));
+  input_map.emplace(std::make_pair("path", path.value().c_str()));
+  if (args.size() >= 4) {
+    input_map.emplace(std::make_pair("no_frontend", args[3].c_str()));
   } else {
     input_map.emplace(std::make_pair("no_frontend", "false"));
   }
   if(!executor->EncodeMessage("BundlePackRequest", input_map, &encoded_input)) {
-    printf("bundle init: failed while encoding request\n");
+    printf("bundle pack: failed while encoding request\n");
     return 1;
   }
   install_caller->Call(args, encoded_input);

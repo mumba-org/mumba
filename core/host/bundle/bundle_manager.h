@@ -74,12 +74,8 @@ private:
   void SignBundleImpl(const base::FilePath& src, const std::vector<uint8_t>& signature, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
 
   void PackBundleImpl(const std::string& name, const base::FilePath& src, bool no_frontend, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
-  bool PackCreateBaseDirectories(const std::string& identifier, const base::FilePath& base_dir, bool no_frontend);
-  bool PackCopyFiles(const std::string& identifier, const base::FilePath& app_base_path, const base::FilePath& input_dir, const base::FilePath& base_dir, bool no_frontend);
-  bool PackDirectory(const std::string& identifier, const base::FilePath& src_path, const base::FilePath& output_dir, bool no_frontend);
-
   void InitBundleImpl(const std::string& name, const base::FilePath& src, scoped_refptr<base::SingleThreadTaskRunner> reply_to, base::OnceCallback<void(int)> callback);
-
+  
   void OnLoad(int r, int count);
 
   void NotifyBundleAdded(Bundle* bundle);

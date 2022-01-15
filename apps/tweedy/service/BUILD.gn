@@ -11,7 +11,6 @@ swift_shared("tweedy_service") {
     "//kit/swift/Javascript",
     "//kit/swift/Python",
     "//kit/swift/Service",
-    #"//kit/swift/R",
     "//kit/swift/PosixShim",
     "//kit/swift/Compositor",
     "//kit/swift/Route",
@@ -34,8 +33,6 @@ swift_shared("tweedy_service") {
     "Sources/Engine/TweedyProvider.swift"
   ]
   ldflags = [
-    #"-lpython3_vm",
     "-lffi",
-    #"-lz"
   ]
 }
