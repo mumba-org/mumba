@@ -45,6 +45,8 @@ public:
   static std::string GetPackageUnpackPath(const base::FilePath& package);
   static std::unique_ptr<Bundle> CreateBundleFromBundleFile(const base::FilePath& package);
   static std::unique_ptr<BundlePackage> CreateBundlePackageFromPackageFile(const base::FilePath& package, BundlePackageType type, uint64_t size);
+  static bool PackBundle(const base::FilePath& input_dir, const base::FilePath& dest);
+  static bool PackPackage(const base::FilePath& input_dir, const base::FilePath& dest);
   static bool UnpackBundle(const base::FilePath& src, const base::FilePath& dest);
   // sign the collection of bundle files, with the same signature
   static bool SignBundle(const base::FilePath& bundle_file, const std::vector<uint8_t>& public_signature);

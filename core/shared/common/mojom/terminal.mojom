@@ -1,0 +1,64 @@
+// this is supposed to be running on the application side,
+// which in our case is who take those decisions
+
+// except if we proxify, as in:
+//  client(application process A) -> (TerminalHost proxy)(host process) -> (real TerminalHost) application process B
+
+interface TerminalHost {
+  GetConsoleCodepage(bool output) => (uint64 codepage);
+  SetConsoleCodepage();
+  GetConsoleMode() => (uint64 mode);
+  SetConsoleMode(uint64 mode);
+  GetNumberOfInputEvents() => (uint64 ready_events);
+  GetConsoleInput(int32 flags, bool unicode) => (uint64 num_records);
+  ReadConsole(
+    bool unicode,
+    bool process_control_z,
+    uint16 exe_name_length,
+    uint16 initial_num_bytes,
+    uint16 ctrl_wakeup_mask) => (uint64 control_keystate, uint64 bytes);
+  WriteConsole(bool unicode) => (uint64 bytes);
+  GetConsoleLanguageId() => (LanguageId id);
+  FillConsoleOutput();
+  GenerateConsoleCtrlEvent();
+  SetConsoleActiveScreenBuffer();
+  FlushConsoleInputBuffer();
+  GetConsoleCursorInfo();
+  SetConsoleCursorInfo();
+  GetConsoleScreenBufferInfo();
+  SetConsoleScreenBufferInfo();
+  SetConsoleScreenBufferSize();
+  SetConsoleCursorPosition();
+  GetLargestConsoleWindowSize();
+  ScrollConsoleScreenBuffer();
+  SetConsoleTextAttribute();
+  SetConsoleWindowInfo();
+  ReadConsoleOutputString();
+  WriteConsoleInput();
+  WriteConsoleOutput();
+  WriteConsoleOutputString();
+  ReadConsoleOutput();
+  GetConsoleTitle();
+  SetConsoleTitle();
+  GetConsoleMouseInfo();
+  GetConsoleFontSize();
+  GetConsoleCurrentFont();
+  SetConsoleCurrentFont();
+  SetConsoleDisplayMode();
+  GetConsoleDisplayMode();
+  AddConsoleAlias();
+  GetConsoleAlias();
+  GetConsoleAliasesLength();
+  GetConsoleAliasExesLength();
+  GetConsoleAliases();
+  GetConsoleAliasExes();
+  ExpungeConsoleCommandHistory();
+  SetConsoleNumberOfCommands();
+  GetConsoleCommandHistoryLength();
+  GetConsoleCommandHistory();
+  GetConsoleWindow();
+  GetConsoleSelectionInfo();
+  GetConsoleProcessList();
+  GetConsoleHistory();
+  SetConsoleHistory();
+};

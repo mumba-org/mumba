@@ -10,6 +10,10 @@ import("//build/config/allocator.gni")
 #    use_blink = false
 #}
 
+declare_args() {
+  use_nss_certs = false
+}
+
 shared_library("MumbaShims") {
 #jumbo_component("MumbaShims") {
   #testonly = true

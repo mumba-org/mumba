@@ -1,4 +1,4 @@
-Script is a python script infrastructure that is not actually hosted on the host process
+Script is a script infrastructure that is not actually hosted on the host process
 but its executed the 'world' application/domain
 
 While world is the default, other applications (through its domain process) might

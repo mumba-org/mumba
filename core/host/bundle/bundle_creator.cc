@@ -1242,6 +1242,20 @@ const char kDEFAULT_SWIFT_HELLO_APPLICATION[] = R"(
 
 )";
 
+std::vector<std::string> symlinks = {
+  "build",
+  "build_overrides",
+  "runtime",
+  "kit",
+  "third_party",
+  "tools",
+  "core",
+  "v8",
+  "lib",
+  "mumba",
+  "buildtools"
+};
+
 }
 
 BundleCreator::BundleCreator() {
@@ -1256,8 +1270,20 @@ bool BundleCreator::InitBundle(const std::string& name, const base::FilePath& pa
   base::FilePath src_out_path;
 
   if (name.empty()) {
+    DLOG(ERROR) << "error: no project name informed";
     return false;
   }
+
+  if (!path.IsAbsolute()) {
+    DLOG(ERROR) << "error: path " << path << " is not absolute";
+    return false;
+  }
+
+  if (base::PathExists(path)) {
+    DLOG(ERROR) << "error: path " << path << " already exists";
+    return false;
+  }
+
   std::string name_lower = base::ToLowerASCII(name);
   if (!CreateBaseDirectories(name_lower, path, true, true)) {
     return false;
@@ -1273,42 +1299,12 @@ bool BundleCreator::InitBundle(const std::string& name, const base::FilePath& pa
 
   // create a link from the build repository
 #if defined(OS_POSIX)
-  base::FilePath build_dir = src_out_path.AppendASCII("build");
-  base::FilePath build_overrides_dir = src_out_path.AppendASCII("build_overrides");
-  base::FilePath runtime_dir = src_out_path.AppendASCII("runtime");
-  base::FilePath kit_dir = src_out_path.AppendASCII("kit");
-  base::FilePath third_party_dir = src_out_path.AppendASCII("third_party");
-  base::FilePath tools_dir = src_out_path.AppendASCII("tools");
-
-  if (!base::CreateSymbolicLink(build_dir,
-                                path.AppendASCII("build"))) {
-    DLOG(ERROR) << "error while creating build symlink from " << build_dir << " to " << path.AppendASCII("build");
-    return false;
-  }
-  if (!base::CreateSymbolicLink(build_overrides_dir,
-                                path.AppendASCII("build_overrides"))) {
-    DLOG(ERROR) << "error while creating build symlink from " << build_overrides_dir << " to " << path.AppendASCII("build_overrides");
-    return false;
-  }
-  if (!base::CreateSymbolicLink(runtime_dir,
-                                path.AppendASCII("runtime"))) {
-    DLOG(ERROR) << "error while creating build symlink from " << runtime_dir << " to " << path.AppendASCII("runtime");
-    return false;
-  }
-  if (!base::CreateSymbolicLink(kit_dir,
-                                path.AppendASCII("kit"))) {
-    DLOG(ERROR) << "error while creating build symlink from " << kit_dir << " to " << path.AppendASCII("kit");
-    return false;
-  }
-  if (!base::CreateSymbolicLink(third_party_dir,
-                                path.AppendASCII("third_party"))) {
-    DLOG(ERROR) << "error while creating build symlink from " << third_party_dir << " to " << path.AppendASCII("third_party");
-    return false;
-  }
-  if (!base::CreateSymbolicLink(tools_dir,
-                                path.AppendASCII("tools"))) {
-    DLOG(ERROR) << "error while creating build symlink from " << tools_dir << " to " << path.AppendASCII("tools");
-    return false;
+  for (const auto& symlink : symlinks) {
+    if (!base::CreateSymbolicLink(src_out_path.AppendASCII(symlink),
+                                  path.AppendASCII(symlink))) {
+      DLOG(ERROR) << "error while creating build symlink from '" << symlink << "'";
+      return false;
+    }
   }
 #endif  
   
@@ -1449,7 +1445,6 @@ bool BundleCreator::PackDirectory(const std::string& name, const base::FilePath&
     return false;
   }
 
-  //std::string host_arch = storage::Getname_lowerForArchitecture(storage::GetHostArchitecture());
   std::string host_os = storage::GetIdentifierForHostOS();
 
   base::FilePath bin_in_dir = src_path.AppendASCII(kBIN_PATH);
@@ -1484,84 +1479,36 @@ bool BundleCreator::PackDirectory(const std::string& name, const base::FilePath&
   // special case for the 'world' bundle
   if (!no_frontend) {
     // bin
-    // FIXME: maybe change msix to a exception free code
-    try {
-      if (::PackPackage(
-            MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
-            MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
-            const_cast<char*>(bin_in_dir.value().c_str()),
-            const_cast<char*>(bin_out_file.value().c_str())) != 0) {
-        printf("error: failed while creating %s package\n", bin_out_file.value().c_str());
-        return false; 
-      }
-    } catch(std::exception const& ex) {
-      printf("error: exception while creating %s\n", bin_out_file.value().c_str());
-      return false;
+    if (!BundleUtils::PackPackage(bin_in_dir, bin_out_file)) {
+      printf("error: failed while creating %s package\n", bin_out_file.value().c_str());
+      return false; 
     }
   }
 
   // app
-  try {  
-    if (::PackPackage(
-          MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
-          MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
-          const_cast<char*>(app_in_dir.value().c_str()),
-          const_cast<char*>(app_out_file.value().c_str())) != 0) {
-      printf("error: failed while creating %s package\n", app_out_file.value().c_str());
-      return false; 
-    }
-  } catch(std::exception const& ex) {
-    printf("error: exception while creating %s\n", app_out_file.value().c_str());
-    return false;
+  if (!BundleUtils::PackPackage(app_in_dir, app_out_file)) {
+    printf("error: failed while creating %s package\n", app_out_file.value().c_str());
+    return false; 
   }
-
+  
   // service
-  try {  
-    if (::PackPackage(
-          MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
-          MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
-          const_cast<char*>(service_in_dir.value().c_str()),
-          const_cast<char*>(service_out_file.value().c_str())) != 0) {
-      printf("error: failed while creating %s package\n", service_out_file.value().c_str());
-      return false; 
-    }
-  } catch(std::exception const& ex) {
-    printf("error: exception while creating %s\n", service_out_file.value().c_str());
-    return false;
+  if (!BundleUtils::PackPackage(service_in_dir, service_out_file)) {
+    printf("error: failed while creating %s package\n", service_out_file.value().c_str());
+    return false; 
   }
-
+  
   // resource
-  try {  
-    if (::PackPackage(
-          MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
-          MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
-          const_cast<char*>(resource_in_dir.value().c_str()),
-          const_cast<char*>(resource_out_file.value().c_str())) != 0) {
-      printf("error: failed while creating %s package\n", resource_out_file.value().c_str());
-      return false; 
-    }
-  } catch(std::exception const& ex) {
-    printf("error: exception while creating %s\n", resource_out_file.value().c_str());
-    return false;
+  if (!BundleUtils::PackPackage(resource_in_dir, resource_out_file)) {
+    printf("error: failed while creating %s package\n", resource_out_file.value().c_str());
+    return false; 
   }
-
+  
   // bundle
-  try {  
-    MSIX_BUNDLE_OPTIONS options = (MSIX_BUNDLE_OPTIONS)(MSIX_BUNDLE_OPTIONS::MSIX_OPTION_VERBOSE | MSIX_BUNDLE_OPTIONS::MSIX_OPTION_OVERWRITE | MSIX_BUNDLE_OPTIONS::MSIX_BUNDLE_OPTION_FLATBUNDLE);
-    if (::PackBundle(
-        options,    
-        const_cast<char*>(bundle_out_dir.value().c_str()),
-        const_cast<char*>(bundle_out_file.value().c_str()),
-        nullptr,
-        nullptr) != 0) {
-      printf("error: failed while creating bundle\n");
-      return false; 
-    }
-  } catch(std::exception const& ex) {
-    printf("error: exception while creating %s\n", bundle_out_file.value().c_str());
-    return false;
+  if (!BundleUtils::PackBundle(bundle_out_dir, bundle_out_file)) {
+    printf("error: failed while creating bundle\n");
+    return false; 
   }
-
+  
   base::FilePath move_bundle_to = bundle_out_dir.AppendASCII(name + kBUNDLE_EXT);
   if (!base::Move(bundle_out_file, move_bundle_to)) {
     printf("error: failed while moving bundle file\n");

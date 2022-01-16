@@ -250,6 +250,44 @@ std::string BundleUtils::GetPackageFullName(IAppxPackageReader* package_reader) 
   return packageId.As<IAppxManifestPackageIdInternal>()->GetPackageFullName();
 }
 
+// static 
+bool BundleUtils::PackBundle(const base::FilePath& input_dir, const base::FilePath& dest) {
+  try {  
+    MSIX_BUNDLE_OPTIONS options = (MSIX_BUNDLE_OPTIONS)(MSIX_BUNDLE_OPTIONS::MSIX_OPTION_VERBOSE | MSIX_BUNDLE_OPTIONS::MSIX_OPTION_OVERWRITE | MSIX_BUNDLE_OPTIONS::MSIX_BUNDLE_OPTION_FLATBUNDLE);
+    if (::PackBundle(
+        options,    
+        const_cast<char*>(input_dir.value().c_str()),
+        const_cast<char*>(dest.value().c_str()),
+        nullptr,
+        nullptr) != 0) {
+      printf("error: failed while creating bundle\n");
+      return false; 
+    }
+  } catch(std::exception const& ex) {
+    printf("error: exception while creating %s\n", dest.value().c_str());
+    return false;
+  }
+  return true;
+}
+
+// static 
+bool BundleUtils::PackPackage(const base::FilePath& input_dir, const base::FilePath& dest) {
+  try {  
+    if (::PackPackage(
+            MSIX_PACKUNPACK_OPTION::MSIX_PACKUNPACK_OPTION_NONE,
+            MSIX_VALIDATION_OPTION::MSIX_VALIDATION_OPTION_FULL,
+            const_cast<char*>(input_dir.value().c_str()),
+            const_cast<char*>(dest.value().c_str())) != 0) {
+    
+      return false; 
+    }
+  } catch(std::exception const& ex) {
+    printf("error: exception while creating %s\n", dest.value().c_str());
+    return false;
+  }
+  return true;
+}  
+
 // static
 bool BundleUtils::UnpackBundle(const base::FilePath& src, const base::FilePath& dest) {
   MSIX_VALIDATION_OPTION validation = MSIX_VALIDATION_OPTION_SKIPSIGNATURE;

@@ -1,0 +1,9 @@
+A ipc terminal api where the clients/applications can 
+talk to host to serve them a terminal api
+
+the TerminalHost is supposed to be running on the application side,
+which in our case is who act as the host api handler
+
+except if we proxify, as in:
+ client(application process A) -> (TerminalHost proxy)(host process) -> (real TerminalHost) application process B
+
