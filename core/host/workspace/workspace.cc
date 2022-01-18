@@ -50,6 +50,9 @@
 #include "core/host/application/domain_model.h"
 #include "core/host/application/application_controller.h"
 #include "core/host/application/runnable_manager.h"
+#include "core/host/store/app_store.h"
+#include "core/host/store/app_store_model.h"
+#include "core/host/store/app_store_dispatcher.h"
 #include "core/host/volume/volume_model.h"
 #include "core/host/volume/volume_source_model.h"
 #include "core/host/ui/dock.h"
@@ -59,7 +62,6 @@
 #include "core/host/host.h"
 #include "core/host/themes/theme_service.h"
 #include "core/host/application/storage_manager.h"
-//#include "core/host/ui/window_manager.h"
 #include "core/common/protocol/message_serialization.h"
 #include "core/host/ml/ml_controller.h"
 #include "core/host/ml/ml_model_service_dispatcher.h"
@@ -94,11 +96,6 @@ namespace host {
 
 namespace {
 
-//const char kURLDataManagerBackendKeyName[] = "url_data_manager_backend";
-
-//const char kCoreServices[] = "message FetchRequest {\n int64 started_time = 1;\n string content_type = 2;\n string url = 3;\n int64 size = 4;\n bytes data = 5;\n }\nmessage FetchReply {\n int64 size=1;\n  bytes data = 2;\n}\nservice FetchService {\n rpc FetchUnary(FetchRequest) returns (FetchReply);\n rpc FetchClientStream(stream FetchRequest) returns (FetchReply);\n rpc FetchServerStream(FetchRequest) returns (stream FetchReply);\n rpc FetchBidiStream(stream FetchRequest) returns (stream FetchReply);\n }\n";
-
-
 std::vector<std::string> GetSystemKeyspaces() {
   std::vector<std::string> keyspaces;
   keyspaces.push_back("volume");
@@ -114,6 +111,7 @@ std::vector<std::string> GetSystemKeyspaces() {
   keyspaces.push_back("ml_model");
   keyspaces.push_back("ml_predictor");
   keyspaces.push_back("ml_dataset");
+  keyspaces.push_back("app_store");
   return keyspaces;
 }
 
@@ -237,6 +235,9 @@ bool Workspace::Init(const WorkspaceParams& params,
   market_manager_.reset(new MarketManager());
   market_dispatcher_.reset(new MarketDispatcher());
 
+  app_store_.reset(new AppStore());
+  app_store_dispatcher_.reset(new AppStoreDispatcher(this, app_store_.get()));
+
   domain_manager_->AddObserver(this);
   device_manager_->AddObserver(this);
   channel_manager_->AddObserver(this);
@@ -246,6 +247,8 @@ bool Workspace::Init(const WorkspaceParams& params,
   rpc_manager_->AddObserver(this);
   schema_registry_->AddObserver(this);
   volume_manager_->AddObserver(this);
+  app_store_->AddObserver(this);
+  bundle_manager_->AddObserver(this);
   DockList::AddObserver(this);
   
   storage_manager_->Init(
@@ -278,6 +281,8 @@ void Workspace::Shutdown() {
   rpc_manager_->RemoveObserver(this);
   schema_registry_->RemoveObserver(this);
   volume_manager_->RemoveObserver(this);
+  app_store_->RemoveObserver(this);
+  bundle_manager_->RemoveObserver(this);
   DockList::RemoveObserver(this);
 
   DockList::CloseAllDocksWithWorkspace(this);
@@ -315,6 +320,8 @@ void Workspace::Shutdown() {
   channel_manager_.reset(); 
   route_registry_.reset();
   device_manager_.reset();
+  app_store_.reset();
+  app_store_dispatcher_.reset();
   bundle_manager_.reset();
   //workspace_service_dispatcher_.reset();
   //storage_manager_.reset();
@@ -1219,7 +1226,7 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
   repo_manager_->Init(system_db, db_policy_);
   channel_manager_->Init(system_db, db_policy_);
   share_manager_->Init(std::move(system_share), db_policy_);
-
+  app_store_->Init(system_db, db_policy_);
   //Share* system_graph = share_manager_->CreateShare(storage_->workspace_disk_name(), "system_graph", true /* in_memory*/);
   //scoped_refptr<ShareDatabase> system_graph_db = system_graph->db();
   //DCHECK(system_graph_db);
@@ -1241,6 +1248,7 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
   db_policy_observers_.push_back(schema_registry_->model());
   db_policy_observers_.push_back(channel_manager_->channels());
   db_policy_observers_.push_back(repo_manager_->model());
+  db_policy_observers_.push_back(app_store_->model());
 
   if (db_policy == DatabasePolicy::OpenClose) {
     system_db->Close();
@@ -1592,6 +1600,28 @@ void Workspace::OnBundleRemoved(Bundle* bundle) {
   }
 }
 
+void Workspace::OnAppStoreEntriesLoad(int r, int count) {
+  if (r == net::OK) {
+    for (auto& observer : observers_) {
+      observer.OnAppStoreEntriesLoaded(count);
+    }
+    printf("app store entries loaded: %d\n", count);
+  }
+}
+
+void Workspace::OnAppStoreEntryAdded(AppStoreEntry* entry) {
+  for (auto& observer : observers_) {
+    observer.OnAppStoreEntryAdded(entry);
+  }
+}
+
+void Workspace::OnAppStoreEntryRemoved(AppStoreEntry* entry) {
+  for (auto& observer : observers_) {
+    //fixme: OnAppStoreEntryemoved => OnAppStoreEntryRemoved
+    observer.OnAppStoreEntryemoved(entry);
+  }
+}
+
 void Workspace::OnDockAdded(Dock* dock) {
   dock->tablist_model()->AddObserver(this);
 }
@@ -1615,12 +1645,5 @@ void Workspace::TablistEmpty() {}
 void Workspace::WillCloseAllTabs() {}
 void Workspace::CloseAllTabsCanceled() {}
 void Workspace::SetTabNeedsAttentionAt(int index, bool attention) {}
-
-void Workspace::InjectCoreMethods(std::string* proto) const {
-  // DEPRECATED: at Bundle::PostUnpackActions now
-  // proto->append("\n\n");
-  // proto->append(kCoreServices);
-}
-
 
 }

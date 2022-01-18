@@ -604,6 +604,8 @@ mojom("mojom") {
     "mojom/script.mojom",
     "mojom/bundle.mojom",
     "mojom/repo.mojom",
+    "mojom/app_store.mojom",
+    #"mojom/terminal.mojom",
     "mojom/share.mojom",
     "mojom/channel.mojom",
     "mojom/service.mojom",

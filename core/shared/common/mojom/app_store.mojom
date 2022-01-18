@@ -1,0 +1,79 @@
+// Copyright 2022 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/ref_counted_memory.mojom";
+import "lib/mojo/public/mojom/base/big_buffer.mojom";
+import "lib/url/mojom/url.mojom";
+
+enum AppStoreStatusCode {
+  kSTORE_STATUS_OK = 0,
+  kSTORE_STATUS_ERR_FAILED,
+  kSTORE_STATUS_ERR_ENTRY_NOT_FOUND,
+};
+
+enum AppStoreAvailabilityState {
+  APP_UNAVAILABLE = 0,
+  APP_AVAILABLE,
+  APP_DEACTIVATED
+};
+
+enum AppStoreInstallState {
+  APP_NOT_INSTALLED = 0,
+  APP_DOWNLOADED,
+  APP_INSTALLED,
+  APP_DISABLED,
+  APP_ERROR
+};
+
+struct AppStoreEntry {
+  string uuid;
+  string name;
+  string description;
+  string version;
+  string license;
+  string publisher;
+  string publisher_url;  
+  string publisher_public_key;
+  string logo_path;
+  uint64 size;
+  string repo_uuid;
+  string repo_public_key;
+  AppStoreInstallState install_state;
+  AppStoreAvailabilityState availability_state;
+  uint64 install_counter;
+  uint32 rating;
+  string app_public_key;
+  array<string> supported_platforms;
+  array<string> supported_languages;
+};
+
+struct AppStoreEntryDescriptor {
+  string address;
+};
+
+interface AppStoreWatcher {
+  OnEntryAdded(AppStoreEntry entry);
+  OnEntryRemoved(AppStoreEntry entry);
+};
+
+interface AppStoreDispatcher {
+  AddEntry(AppStoreEntry entry) => (AppStoreStatusCode reply);
+  AddEntryByAddress(AppStoreEntryDescriptor descriptor) => (AppStoreStatusCode reply);
+  RemoveEntry(string address) => (AppStoreStatusCode reply);
+  RemoveEntryByUUID(string uuid) => (AppStoreStatusCode reply);
+  LookupEntry(string address) => (AppStoreStatusCode code, AppStoreEntry? entry);
+  LookupEntryByName(string name) => (AppStoreStatusCode code, AppStoreEntry? entry);
+  LookupEntryByUUID(string uuid) => (AppStoreStatusCode code, AppStoreEntry? entry);
+  HaveEntry(string address) => (bool have);
+  HaveEntryByName(string name) => (bool have);
+  HaveEntryByUUID(string uuid) => (bool have);
+  ListEntries() => (array<AppStoreEntry> entries);
+  GetEntryCount() => (uint32 count);
+
+  AddWatcher(AppStoreWatcher watcher) => (int32 id);
+  RemoveWatcher(int32 watcher);
+};

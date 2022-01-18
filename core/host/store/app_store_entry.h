@@ -19,15 +19,36 @@ namespace host {
 
 class AppStoreEntry : public Serializable {
 public:
-
   static char kClassName[];
   static std::unique_ptr<AppStoreEntry> Deserialize(net::IOBuffer* buffer, int size);
   
+  AppStoreEntry();
+  AppStoreEntry(protocol::AppStoreEntry proto);
+
   ~AppStoreEntry() override;
 
   const base::UUID& id() const {
     return id_;
   }
+
+  const std::string& name() const;
+  const std::string& description() const;
+  const std::string& version() const;
+  const std::string& license() const;
+  const std::string& publisher() const;
+  const std::string& publisher_url() const;
+  base::StringPiece publisher_public_key() const;
+  const std::string& logo_path() const;
+  uint64_t size() const;
+  const base::UUID& repo_uuid();
+  base::StringPiece repo_public_key() const;
+  protocol::AppStoreInstallState install_state() const;
+  protocol::AppStoreAvailabilityState availability_state() const;
+  uint64_t install_counter() const;
+  uint32_t rating() const;
+  base::StringPiece app_public_key() const;
+  const std::vector<protocol::AppStoreSupportedPlatform>& supported_platforms();
+  const std::vector<std::string>& supported_languages();
 
   bool is_managed() const {
     return managed_;
@@ -40,12 +61,20 @@ public:
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
 
 private:
-  Schema();
-  Schema(protocol::Protocol schema);
 
   base::UUID id_;
 
   protocol::AppStoreEntry app_proto_;
+
+  base::UUID repo_uuid_;
+
+  std::vector<protocol::AppStoreSupportedPlatform> supported_platforms_;
+
+  std::vector<std::string> supported_languages_;
+
+  bool supported_platforms_populated_;
+
+  bool supported_languages_populated_;
 
   bool managed_;
 

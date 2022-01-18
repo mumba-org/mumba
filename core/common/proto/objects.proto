@@ -454,3 +454,55 @@ message Bundle {
   repeated BundlePackage packages = 7;
 }
 
+enum AppStoreAvailabilityState {
+  // listed but somehow unavailable
+  APP_UNAVAILABLE = 0;
+  // listed available for install
+  APP_AVAILABLE = 1;
+  // deactivated (peer voting?)
+  APP_DEACTIVATED = 2;
+}
+
+enum AppStoreInstallState {
+  APP_NOT_INSTALLED = 0;
+  // downloaded but not installed
+  APP_DOWNLOADED = 1;
+  // downloaded and installed
+  APP_INSTALLED = 2;
+  // was installed but disabled somehow
+  APP_DISABLED = 3;
+  // maybe an error while installing
+  APP_ERROR = 4;
+}
+
+message AppStoreSupportedPlatform {
+  BundlePlatform platforms = 1;
+  BundleArchitecture architectures = 2;
+}
+
+// TODO: permissions
+message AppStoreEntry {
+  bytes uuid = 1;
+  string name = 2;
+  string description = 3;
+  string version = 4;
+  string license = 5;
+  string publisher = 6;
+  string publisher_url = 7;
+  bytes publisher_public_key = 8;
+  string logo_path = 9;
+  uint64 size = 10;
+  bytes repo_uuid = 11;
+  // this might match the publisher public key
+  // in some cases
+  bytes repo_public_key = 12;
+  AppStoreInstallState install_state = 13;
+  AppStoreAvailabilityState availability_state = 14;
+  uint64 install_counter = 15;
+  uint32 rating = 16;
+  // not being used right now
+  // but available for future use
+  bytes app_public_key = 17;
+  repeated AppStoreSupportedPlatform supported_platforms = 18;
+  repeated string supported_languages = 19;
+}

@@ -8,20 +8,59 @@
 #include <memory>
 
 #include "base/macros.h"
+#include "base/memory/ref_counted.h"
+#include "base/files/file_path.h"
+#include "base/atomic_sequence_num.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_piece.h"
 #include "base/uuid.h"
 #include "core/common/proto/objects.pb.h"
+#include "core/host/database_policy.h"
 
 namespace host {
+class AppStoreEntry;
+class AppStoreModel;
+class AppStoreObserver;
+class ShareDatabase;
 
 class AppStore {
 public:
   AppStore();
-  ~AppStore() override
+  ~AppStore();
+  
+  AppStoreModel* model() const {
+    return entries_.get();
+  }
+
+  void Init(scoped_refptr<ShareDatabase> db, DatabasePolicy policy);
+  void Shutdown();
+
+  void InsertEntry(std::unique_ptr<AppStoreEntry> entry, bool persist = true);
+  void RemoveEntry(AppStoreEntry* entry);
+  void RemoveEntry(const base::UUID& uuid);
+
+  void AddObserver(AppStoreObserver* observer);
+  void RemoveObserver(AppStoreObserver* observer);
 
 private:
+
+  void InitImpl();
+  void ShutdownImpl();
+
+  void OnLoad(int r, int count);
+
+  void NotifyEntryAdded(AppStoreEntry* entry);
+  void NotifyEntryRemoved(AppStoreEntry* entry);
+  void NotifyEntriesLoad(int r, int count);
+
+private:
+
+  std::unique_ptr<AppStoreModel> entries_;  
+  std::vector<AppStoreObserver*> observers_;
+
+  base::WeakPtrFactory<AppStore> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(AppStore);
 };

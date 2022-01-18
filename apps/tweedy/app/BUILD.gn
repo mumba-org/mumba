@@ -30,7 +30,7 @@ swift_executable("tweedy_app") {
     "//kit/swift/ThirdParty/icu4c:icui18n",
     "//kit/swift/ThirdParty/ProtocolBuffers",
     "//kit/swift/ThirdParty/CGRPCZlib",
-    "//third_party/pytorch",
+    #"//third_party/pytorch",
   ]
   sources = [
     "Sources/TweedyMain.swift",

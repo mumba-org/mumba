@@ -110,7 +110,7 @@ config("icu_code") {
   }
 }
 
-component("icui18n") {
+shared_library("icui18n") {
   # find  source/i18n -maxdepth 1  ! -type d  | egrep  '\.(c|cpp|h)$' |\
   # sort | sed 's/^\(.*\)$/    "\1",/'
   sources = [
@@ -432,6 +432,7 @@ component("icui18n") {
   defines = [ "U_I18N_IMPLEMENTATION" ]
   deps = [
     ":icuuc",
+    "//buildtools/third_party/libc++"
   ]
 
   # ICU uses RTTI, replace the default "no rtti" config.
@@ -456,7 +457,7 @@ component("icui18n") {
   output_name = "icui18n_swift"
 }
 
-component("icuuc") {
+shared_library("icuuc") {
   # find  source/common -maxdepth 1  ! -type d  | egrep  '\.(c|cpp|h)$' |\
   # sort | sed 's/^\(.*\)$/    "\1",/'
   sources = [
@@ -736,6 +737,7 @@ component("icuuc") {
   defines = [ "U_COMMON_IMPLEMENTATION" ]
   deps = [
     ":icudata",
+    "//buildtools/third_party/libc++"
   ]
 
   configs -= [

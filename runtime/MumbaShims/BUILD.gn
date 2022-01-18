@@ -22,8 +22,8 @@ shared_library("MumbaShims") {
   #module_map = "module.modulemap"
 
   default_compiler_configs -= [
-    "//build/config/clang:find_bad_constructs",
-    "//build/config/clang:extra_warnings",
+    #"//build/config/clang:find_bad_constructs",
+    #"//build/config/clang:extra_warnings",
   ]
 
   configs = []

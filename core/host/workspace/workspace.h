@@ -33,6 +33,7 @@
 #include "core/host/bundle/bundle_manager_observer.h"
 #include "core/host/identity/identity_manager.h"
 #include "core/host/repo/repo_manager.h"
+#include "core/host/store/app_store_observer.h"
 #include "core/host/rpc/server/rpc_manager.h"
 #include "core/host/schema/schema_registry.h"
 #include "core/host/route/route_observer.h"
@@ -81,6 +82,8 @@ class MarketDispatcher;
 class MarketManager;
 class BundleManager;
 class Bundle;
+class AppStoreDispatcher;
+class AppStore;
 
 struct WorkspaceParams {
   base::FilePath profile_path;
@@ -103,6 +106,7 @@ class Workspace : public Serializable,
                   public BundleManagerObserver,
                   public ChannelManagerObserver,
                   public TablistModelObserver,
+                  public AppStoreObserver,
                   public base::RefCountedThreadSafe<Workspace> {
 public:
   // TODO: We need to bind this with a 'workspace disk' now
@@ -245,6 +249,14 @@ public:
 
   BundleManager* bundle_manager() const {
     return bundle_manager_.get();
+  }
+
+  AppStore* app_store() const {
+    return app_store_.get();
+  }
+
+  AppStoreDispatcher* app_store_dispatcher() const {
+    return app_store_dispatcher_.get();
   }
 
   int generate_next_application_id();
@@ -507,6 +519,11 @@ private:
   void OnBundleAdded(Bundle* bundle) override;
   void OnBundleRemoved(Bundle* bundle) override;
 
+  // AppStoreObserver
+  void OnAppStoreEntriesLoad(int r, int count) override;
+  void OnAppStoreEntryAdded(AppStoreEntry* entry) override;
+  void OnAppStoreEntryRemoved(AppStoreEntry* entry) override;
+
   // DockListObserver
   void OnDockAdded(Dock* dock) override;
   void OnDockClosing(Dock* dock) override;
@@ -598,8 +615,6 @@ private:
   bool DeleteDatabase(const base::UUID& uuid);
   bool DeleteDatabase(const std::string& name);
 
-  void InjectCoreMethods(std::string* proto) const;
-  
   protocol::Workspace workspace_schema_;
 
   base::UUID id_;
@@ -648,7 +663,9 @@ private:
   std::unique_ptr<MarketDispatcher> market_dispatcher_;
   std::unique_ptr<MarketManager> market_manager_;
   std::unique_ptr<BundleManager> bundle_manager_;
-  
+  std::unique_ptr<AppStore> app_store_;
+  std::unique_ptr<AppStoreDispatcher> app_store_dispatcher_;
+   
   scoped_refptr<base::SingleThreadTaskRunner> domain_socket_acceptor_;
   
   std::vector<DatabasePolicyObserver *> db_policy_observers_;
