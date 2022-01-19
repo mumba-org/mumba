@@ -75,8 +75,6 @@ void ShareModel::InsertShareToDB(const base::UUID& id, Share* share) {
   scoped_refptr<net::IOBufferWithSize> data = share->Serialize();
   if (data) {
     MaybeOpen();
-    //result = db_->Insert(ShareDatabase::kShareTable, share->name(), data);
-    //db_context_->Insert("share", share->name(), data, base::Bind(&ShareModel::OnInsertReply, base::Unretained(this)))
     storage::Transaction* trans = db_->Begin(true);
     bool ok = db_->Put(trans, Share::kClassName, share->name(), base::StringPiece(data->data(), data->size()));
     ok ? trans->Commit() : trans->Rollback();
@@ -175,14 +173,6 @@ void ShareModel::RemoveFromCache(Share* share) {
       return;
     }
   }
-}
-
-void ShareModel::OnInsertReply(bool result) {
-  DLOG(INFO) << "inserting share on db: " << (result ? "true" : "false");
-}
-
-void ShareModel::OnRemoveReply(bool result) {
-  DLOG(INFO) << "removing share on db: " << (result ? "true" : "false");
 }
 
 void ShareModel::MaybeOpen() {

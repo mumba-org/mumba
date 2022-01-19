@@ -86,8 +86,8 @@ void AppStoreModel::InsertEntry(AppStoreEntry* entry, bool persist) {
   InsertEntryInternal(entry, persist);
 }
 
-void AppStoreModel::RemoveEntry(const base::UUID& id) {
-  RemoveEntryInternal(id);
+bool AppStoreModel::RemoveEntry(const base::UUID& id) {
+  return RemoveEntryInternal(id);
 } 
 
 void AppStoreModel::Close() {}
@@ -103,14 +103,15 @@ void AppStoreModel::InsertEntryInternal(AppStoreEntry* entry, bool persist) {
   }
 }
 
-void AppStoreModel::RemoveEntryInternal(const base::UUID& id) {
+bool AppStoreModel::RemoveEntryInternal(const base::UUID& id) {
   AppStoreEntry* entry = GetEntryById(id);
   if (entry) {
     RemoveEntryFromDB(entry);
-    RemoveFromCache(entry);
+    return RemoveFromCache(entry);
   } else {
     LOG(ERROR) << "Failed to remove app store entry. Entry with id " << id.to_string() << " not found.";
   }
+  return false;
 }
 
 void AppStoreModel::InsertEntryToDB(AppStoreEntry* entry) {
@@ -137,34 +138,40 @@ void AppStoreModel::AddToCache(AppStoreEntry* entry) {
   entry->set_managed(true);
 }
 
-void AppStoreModel::RemoveFromCache(const base::UUID& id, bool should_delete) {
+bool AppStoreModel::RemoveFromCache(const base::UUID& id, bool should_delete) {
   base::AutoLock lock(entries_vector_lock_);
+  bool found = false;
   AppStoreEntry* entry = nullptr;
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
     if ((*it)->id() == id) {
       entry = *it;
       (*it)->set_managed(false);
       entries_.erase(it);
+      found = true;
       break;
     }
   }
   if (should_delete && entry) {
     delete entry;
   }
+  return found;
 }
 
-void AppStoreModel::RemoveFromCache(AppStoreEntry* entry, bool should_delete) {
+bool AppStoreModel::RemoveFromCache(AppStoreEntry* entry, bool should_delete) {
   base::AutoLock lock(entries_vector_lock_);
+  bool found = false;
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
     if (*it == entry) {
       (*it)->set_managed(false);
       entries_.erase(it);
+      found = true;
       break;
     }
   }
   if (should_delete && entry) {
     delete entry;
   }
+  return found;
 }
 
 void AppStoreModel::LoadEntriesFromDB(base::Callback<void(int, int)> cb) {
@@ -201,14 +208,6 @@ void AppStoreModel::LoadEntriesFromDB(base::Callback<void(int, int)> cb) {
   trans->Commit();
   MaybeClose();
   std::move(cb).Run(net::OK, count);
-}
-
-void AppStoreModel::OnInsertReply(bool result) {
-
-}
-
-void AppStoreModel::OnRemoveReply(bool result) {
-
 }
 
 void AppStoreModel::MaybeOpen() {

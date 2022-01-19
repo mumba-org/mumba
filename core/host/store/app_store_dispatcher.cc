@@ -4,6 +4,7 @@
 
 #include "core/host/store/app_store_dispatcher.h"
 
+#include "base/base64.h"
 #include "core/host/store/app_store.h"
 #include "core/host/store/app_store_entry.h"
 #include "core/host/workspace/workspace.h"
@@ -137,7 +138,10 @@ protocol::AppStoreEntry FromMojomToProto(common::mojom::AppStoreEntry* entry) {
 
 AppStoreDispatcher::AppStoreDispatcher(scoped_refptr<Workspace> workspace, AppStore* app_store):
   workspace_(workspace),
-  app_store_(app_store)  {
+  app_store_(app_store),
+  share_controller_(workspace->share_manager()),
+  controller_(app_store_, &share_controller_),
+  next_watcher_id_(1)  {
 
 }
 
@@ -296,59 +300,245 @@ void AppStoreDispatcher::RemoveWatcher(int watcher) {
 
 void AppStoreDispatcher::AddEntryImpl(common::mojom::AppStoreEntryPtr entry, AddEntryCallback callback) {
   std::unique_ptr<AppStoreEntry> entry_ptr = std::make_unique<AppStoreEntry>(FromMojomToProto(entry.get()));
-  app_store_->InsertEntry(std::move(entry_ptr));
+  controller_.InsertEntry(std::move(entry_ptr));
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK));
 }
 
 void AppStoreDispatcher::AddEntryByAddressImpl(common::mojom::AppStoreEntryDescriptorPtr descriptor, AddEntryByAddressCallback callback) {
-
+  // we are suppose to find this app over DHT
+  if (descriptor->type == common::mojom::AppStoreEntryAddressType::APP_DHT_ADDRESS) {
+    controller_.InsertEntryByDHTAddress(descriptor->address, base::Bind(&AppStoreDispatcher::OnStorageCloned,
+                                                                         base::Unretained(this),
+                                                                         base::Passed(std::move(callback))));
+  } else if (descriptor->type == common::mojom::AppStoreEntryAddressType::APP_TORRENT_ADDRESS) {
+    controller_.InsertEntryByInfohashAddress(descriptor->address, base::Bind(&AppStoreDispatcher::OnShareCreated,
+                                                                         base::Unretained(this),
+                                                                         base::Passed(std::move(callback))));
+  } else {
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED));
+  }
 }
 
 void AppStoreDispatcher::RemoveEntryImpl(const std::string& address, RemoveEntryCallback callback) {
-
+  bool result = controller_.RemoveEntry(address);
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        result ?
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK : 
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED));
 }
 
 void AppStoreDispatcher::RemoveEntryByUUIDImpl(const std::string& uuid, RemoveEntryByUUIDCallback callback) {
-
+  bool decoded = false;
+  base::UUID id = base::UUID::from_string(uuid, &decoded);
+  if (!decoded) {
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED));
+    return;
+  }
+  bool result = controller_.RemoveEntry(id);
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        result ?
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK : 
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED));
 }
 
 void AppStoreDispatcher::LookupEntryImpl(const std::string& address, LookupEntryCallback callback) {
-
+  AppStoreEntry* entry = controller_.LookupEntry(address);
+  if (entry) {
+    auto mojo_ptr = entry->ToMojom();
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK, 
+        base::Passed(std::move(mojo_ptr))));
+  } else { 
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED, nullptr));
+  }
 }
 
 void AppStoreDispatcher::LookupEntryByNameImpl(const std::string& name, LookupEntryCallback callback) {
-
+  AppStoreEntry* entry = controller_.LookupEntryByName(name);
+  if (entry) {
+    auto mojo_ptr = entry->ToMojom();
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK, 
+        base::Passed(std::move(mojo_ptr))));
+  } else { 
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED, nullptr));
+  }
 }
 
 void AppStoreDispatcher::LookupEntryByUUIDImpl(const std::string& uuid, LookupEntryByUUIDCallback callback) {
-
+  bool decoded = false;
+  base::UUID id = base::UUID::from_string(uuid, &decoded);
+  if (!decoded) {
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED, nullptr));
+    return;
+  }
+  AppStoreEntry* entry = controller_.LookupEntryByUUID(id);
+  if (entry) {
+    auto mojo_ptr = entry->ToMojom();
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK, 
+        base::Passed(std::move(mojo_ptr))));
+  } else { 
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+          common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED, nullptr));
+  }
 }
 
 void AppStoreDispatcher::HaveEntryImpl(const std::string& address, HaveEntryCallback callback) {
-
+  bool result = controller_.HaveEntry(address);
+  HostThread::PostTask(
+    HostThread::IO, 
+    FROM_HERE,
+    base::BindOnce(
+      std::move(callback), 
+      result));
 }
 
 void AppStoreDispatcher::HaveEntryByNameImpl(const std::string& name, HaveEntryCallback callback) {
-
+  bool result = controller_.HaveEntryByName(name);
+  HostThread::PostTask(
+    HostThread::IO, 
+    FROM_HERE,
+    base::BindOnce(
+      std::move(callback), 
+      result));
 }
 
 void AppStoreDispatcher::HaveEntryByUUIDImpl(const std::string& uuid, HaveEntryByUUIDCallback callback) {
-
+  bool decoded = false;
+  base::UUID id = base::UUID::from_string(uuid, &decoded);
+  if (!decoded) {
+    HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), false));
+    return;
+  }
+  bool result = controller_.HaveEntryByUUID(id);
+  HostThread::PostTask(
+    HostThread::IO, 
+    FROM_HERE,
+    base::BindOnce(
+      std::move(callback), 
+      result));
 }
 
 void AppStoreDispatcher::ListEntriesImpl(ListEntriesCallback callback) {
-
+  std::vector<common::mojom::AppStoreEntryPtr> result;
+  std::vector<AppStoreEntry*> entries = controller_.ListEntries();
+  for (auto* entry : entries) {
+    result.push_back(entry->ToMojom());
+  }
+  HostThread::PostTask(
+    HostThread::IO, 
+    FROM_HERE,
+    base::BindOnce(
+      std::move(callback), 
+      base::Passed(std::move(result))));
 }
 
 void AppStoreDispatcher::GetEntryCountImpl(GetEntryCountCallback callback) {
-
+  size_t result = controller_.GetEntryCount();
+  HostThread::PostTask(
+    HostThread::IO, 
+    FROM_HERE,
+    base::BindOnce(
+      std::move(callback), 
+      result));
 }
 
 void AppStoreDispatcher::AddWatcherImpl(common::mojom::AppStoreWatcherPtr watcher, AddWatcherCallback callback) {
-
+  // FIXME: just adding but not triggering when the events happen
+  int id = next_watcher_id_++;
+  watchers_.emplace(std::make_pair(id, std::move(watcher)));
+  HostThread::PostTask(
+    HostThread::IO, 
+    FROM_HERE,
+    base::BindOnce(
+      std::move(callback), 
+      id));
 }
 
 void AppStoreDispatcher::RemoveWatcherImpl(int watcher) {
+  auto found = watchers_.find(watcher);
+  if (found != watchers_.end()) {
+    watchers_.erase(found);
+  }
+}
 
+void AppStoreDispatcher::OnStorageCloned(AddEntryByAddressCallback callback, int result) {
+  common::mojom::AppStoreStatusCode r = (result == 0 ? common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK : common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED);
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        r));
+}
+
+void AppStoreDispatcher::OnShareCreated(AddEntryByAddressCallback callback, int result) {
+  common::mojom::AppStoreStatusCode r = (result == 0 ? common::mojom::AppStoreStatusCode::kSTORE_STATUS_OK : common::mojom::AppStoreStatusCode::kSTORE_STATUS_ERR_FAILED);
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        r));
 }
 
 }

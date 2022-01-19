@@ -36,16 +36,24 @@ void RepoModel::InsertRepo(const base::UUID& id, std::unique_ptr<Repo> repo, boo
   InsertRepoInternal(id, std::move(repo), persist);
 }
 
-void RepoModel::RemoveRepo(const base::UUID& id) {
-  RemoveRepoInternal(id);
+bool RepoModel::RemoveRepo(const base::UUID& id) {
+  return RemoveRepoInternal(id);
+}
+
+bool RepoModel::RemoveRepoByAddress(const std::string& address) {
+  Repo* repo = GetRepoByAddress(address);
+  if (repo) {
+    return RemoveRepoInternal(repo->id());
+  }
+  return false;
 }
 
 void RepoModel::InsertRepoInternal(const base::UUID& id, std::unique_ptr<Repo> repo, bool persist) {
   // after is added to the db, add it to the cache
   if (!RepoExists(repo.get())) {
     //if (InsertRepoToDB(id, repo)) {
-      InsertRepoToDB(id, repo.get());
-      AddToCache(id, std::move(repo));
+    InsertRepoToDB(id, repo.get());
+    AddToCache(id, std::move(repo));
     //} else {
     //  LOG(ERROR) << "Failed to add repo " << id.to_string() << " to DB";
     //}
@@ -54,19 +62,15 @@ void RepoModel::InsertRepoInternal(const base::UUID& id, std::unique_ptr<Repo> r
   }
 }
 
-void RepoModel::RemoveRepoInternal(const base::UUID& id) {
+bool RepoModel::RemoveRepoInternal(const base::UUID& id) {
   // after is removed from the db, remove it from cache
   Repo* repo = GetRepoById(id);
   if (repo) {
-    //if (RemoveRepoFromDB(repo)) {
-      RemoveRepoFromDB(repo);
-      RemoveFromCache(repo);
-    //} else {
-    //  LOG(ERROR) << "Failed to remove repo from DB. id " << id.to_string() << ".";
-    //}
-  } else {
-    LOG(ERROR) << "Failed to remove repo. Repo with id " << id.to_string() << " not found.";
+    RemoveRepoFromDB(repo);
+    return RemoveFromCache(repo);
   }
+  LOG(ERROR) << "Failed to remove repo. Repo with id " << id.to_string() << " not found.";
+  return false;
 }
 
 void RepoModel::InsertRepoToDB(const base::UUID& id, Repo* repo) {
@@ -75,8 +79,6 @@ void RepoModel::InsertRepoToDB(const base::UUID& id, Repo* repo) {
   if (data) {
     MaybeOpen();
     LOG(INFO) << "inserting repo " << repo->name() << " '" << data->data() << "'";
-    //result = db_->Insert(RepoDatabase::kRepoTable, repo->name(), data);
-    //db_context_->Insert("repo", repo->name(), data, base::Bind(&RepoModel::OnInsertReply, base::Unretained(this)))
     storage::Transaction* trans = db_->Begin(true);
     bool ok = db_->Put(trans, Repo::kClassName, repo->name(), base::StringPiece(data->data(), data->size()));
     ok ? trans->Commit() : trans->Rollback();
@@ -127,6 +129,33 @@ void RepoModel::LoadReposFromDB(base::Callback<void(int, int)> cb) {
   std::move(cb).Run(net::OK, count);
 }
 
+bool RepoModel::RepoExistsById(const base::UUID& id) const {
+  for (auto it = repos_.begin(); it != repos_.end(); ++it) {
+    if ((*it)->id() == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool RepoModel::RepoExistsByName(const std::string& name) const {
+  for (auto it = repos_.begin(); it != repos_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool RepoModel::RepoExistsByAddress(const std::string& address) const {
+  for (auto it = repos_.begin(); it != repos_.end(); ++it) {
+    if ((*it)->address() == address) {
+      return true;
+    }
+  }
+  return false;
+}
+  
 Repo* RepoModel::GetRepoById(const base::UUID& id) {
   for (auto it = repos_.begin(); it != repos_.end(); ++it) {
     if ((*it)->id() == id) {
@@ -135,6 +164,24 @@ Repo* RepoModel::GetRepoById(const base::UUID& id) {
   }
   return nullptr;
 }
+
+Repo* RepoModel::GetRepoByName(const std::string& name) {
+  for (auto it = repos_.begin(); it != repos_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return it->get();
+    }
+  }
+  return nullptr;
+}
+
+Repo* RepoModel::GetRepoByAddress(const std::string& address) {
+  for (auto it = repos_.begin(); it != repos_.end(); ++it) {
+    if ((*it)->address() == address) {
+      return it->get();
+    }
+  }
+  return nullptr;
+}  
 
 bool RepoModel::RepoExists(Repo* repo) const {
   for (auto it = repos_.begin(); it != repos_.end(); ++it) {
@@ -145,35 +192,41 @@ bool RepoModel::RepoExists(Repo* repo) const {
   return false; 
 }
 
+std::vector<Repo*> RepoModel::GetRepoList() const {
+  std::vector<Repo*> vec;
+  for (auto it = repos_.begin(); it != repos_.end(); ++it) {
+    vec.push_back(it->get());
+  }
+  return vec;
+}
+
+size_t RepoModel::GetRepoCount() const {
+  return repos_.size();
+}
+
 void RepoModel::AddToCache(const base::UUID& id, std::unique_ptr<Repo> repo) {
   repo->set_managed(true);
   repos_.push_back(std::move(repo));
 }
 
-void RepoModel::RemoveFromCache(const base::UUID& id) {
+bool RepoModel::RemoveFromCache(const base::UUID& id) {
   for (auto it = repos_.begin(); it != repos_.end(); ++it) {
     if ((*it)->id() == id) {
       repos_.erase(it);
-      return;
+      return true;
     }
   }
+  return false;
 }
 
-void RepoModel::RemoveFromCache(Repo* repo) {
+bool RepoModel::RemoveFromCache(Repo* repo) {
   for (auto it = repos_.begin(); it != repos_.end(); ++it) {
     if (it->get() == repo) {
       repos_.erase(it);
-      return;
+      return true;
     }
   }
-}
-
-void RepoModel::OnInsertReply(bool result) {
-  DLOG(INFO) << "inserting repo on db: " << (result ? "true" : "false");
-}
-
-void RepoModel::OnRemoveReply(bool result) {
-  DLOG(INFO) << "removing repo on db: " << (result ? "true" : "false");
+  return false;
 }
 
 void RepoModel::MaybeOpen() {

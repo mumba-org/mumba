@@ -18,6 +18,53 @@
 
 namespace host {
 
+namespace {
+
+std::string GetPlatformString(protocol::BundlePlatform platform) {
+  bool is_mac = platform == protocol::PLATFORM_MACOS;
+  bool is_ios = platform == protocol::PLATFORM_IOS;
+  bool is_android = platform == protocol::PLATFORM_ANDROID;
+  bool is_linux = platform == protocol::PLATFORM_LINUX;
+  bool is_web = platform == protocol::PLATFORM_WEB;
+  bool is_windows = platform == protocol::PLATFORM_WINDOWS;
+  if (is_mac) {
+    return "MACOS";
+  } else if (is_ios) {
+    return "IOS";
+  } else if (is_android) {
+    return "ANDROID";
+  } else if (is_linux) {
+    return "LINUX";
+  } else if (is_web) {
+    return "WEB";
+  } else if (is_windows) {
+    return "WINDOWS";
+  }
+  return "WEB";
+}
+
+std::string GetArchitectureString(protocol::BundleArchitecture platform) {
+  bool is_x86 = platform == protocol::ARCH_X86;
+  bool is_arm = platform == protocol::ARCH_ARM;
+  bool is_x64 = platform == protocol::ARCH_X64;
+  bool is_neutral = platform == protocol::ARCH_NEUTRAL;
+  bool is_arm64 = platform == protocol::ARCH_ARM64;
+  if (is_x86) {
+    return "X86";
+  } else if (is_arm) {
+    return "ARM";
+  } else if (is_x64) {
+    return "x64";
+  } else if (is_neutral) {
+    return "NEUTRAL";
+  } else if (is_arm64) {
+    return "ARM64";
+  }
+  return "x64";
+}      
+
+}
+
 char AppStoreEntry::kClassName[] = "app_store";
 
 std::unique_ptr<AppStoreEntry> AppStoreEntry::Deserialize(net::IOBuffer* buffer, int size) {
@@ -143,6 +190,37 @@ const std::vector<std::string>& AppStoreEntry::supported_languages() {
 
 scoped_refptr<net::IOBufferWithSize> AppStoreEntry::Serialize() const {
   return protocol::SerializeMessage(app_proto_);
+}
+
+common::mojom::AppStoreEntryPtr AppStoreEntry::ToMojom() {
+  common::mojom::AppStoreEntryPtr result = common::mojom::AppStoreEntry::New();
+  result->uuid = id().to_string();
+  result->name = name();
+  result->description = description();
+  result->version = version();
+  result->license = license();
+  result->publisher = publisher();
+  result->publisher_url = publisher_url();
+  result->publisher_public_key = publisher_public_key().as_string();
+  result->logo_path = logo_path();
+  result->size = size();
+  result->repo_uuid = repo_uuid().to_string();
+  result->repo_public_key = repo_public_key().as_string();
+  result->install_state = static_cast<common::mojom::AppStoreInstallState>(install_state());
+  result->availability_state = static_cast<common::mojom::AppStoreAvailabilityState>(availability_state());
+  result->install_counter = install_counter();
+  result->rating = rating();
+  result->app_public_key = app_public_key().as_string();
+  for (auto it = supported_platforms().begin(); it != supported_platforms().end(); ++it) {
+    const protocol::AppStoreSupportedPlatform& platform = *it;
+    result->supported_platforms.push_back(
+      GetPlatformString(platform.platforms()) + "-" + GetArchitectureString(platform.architectures())
+    );
+  }
+  for (auto it = supported_languages().begin(); it != supported_languages().end(); ++it) {
+    result->supported_languages.push_back(*it);
+  }
+  return result;
 }
 
 }

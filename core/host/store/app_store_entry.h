@@ -14,6 +14,7 @@
 #include "base/uuid.h"
 #include "core/common/proto/objects.pb.h"
 #include "core/host/serializable.h"
+#include "core/shared/common/mojom/app_store.mojom.h"
 
 namespace host {
 
@@ -59,6 +60,7 @@ public:
   }
 
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
+  common::mojom::AppStoreEntryPtr ToMojom();
 
 private:
 

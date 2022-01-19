@@ -60,6 +60,7 @@ public:
    // create and insert share
   bool HasUUID(const std::string& name, const base::UUID& uuid);
   bool GetUUID(const std::string& storage_name, const std::string& uuid_str, base::UUID* id);
+  void CloneStorageWithDHTAddress(const std::string& dht_address_bytes, base::Callback<void(int)> callback);
   Share* CreateDatabaseShare(const std::string& domain, const std::vector<std::string>& keyspaces, bool in_memory = false);
   Share* CreateDatabaseShare(const std::string& domain, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory = false);
   Share* CreateShare(scoped_refptr<storage::Torrent> torrent, bool in_memory = false);

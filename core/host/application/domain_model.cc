@@ -167,12 +167,6 @@ void DomainModel::RemoveDomainFromDB(Domain* shell) {
 void DomainModel::AddDomainIntoDBImpl(Domain* shell) {
   scoped_refptr<net::IOBufferWithSize> data = shell->Serialize();
   if (data) {
-    //printf("adding '%s' = '%s'(%d) into db\n", shell->name().c_str(), data->data(), data->size());
-    //if (!db_context_->Insert(shell->name(), data)) {
-    //  LOG(ERROR) << "failed to insert shell " << shell->name() << " into DB";
-    //  return;
-    //}
-    //db_context_->Insert("shell", shell->name(), data, base::Bind(&DomainModel::OnInsertReply, base::Unretained(this)));
     MaybeOpen();
     storage::Transaction* trans = db_->Begin(true);
     bool ok = db_->Put(trans, Domain::kClassName, shell->name(), base::StringPiece(data->data(), data->size()));
@@ -184,16 +178,12 @@ void DomainModel::AddDomainIntoDBImpl(Domain* shell) {
 }
 
 void DomainModel::RemoveDomainFromDBImpl(Domain* shell) {
-  //if (!db_->Remove(DomainDatabase::kDomainTable, shell->name())) {
-  //if (!domain_table_->Remove(shell->name())) {
-  //  LOG(ERROR) << "failed to remove shell " << shell->name() << " from DB";
-  //}
+ 
   MaybeOpen();
   storage::Transaction* trans = db_->Begin(true);
   bool ok = db_->Delete(trans, Domain::kClassName, shell->name());
   ok ? trans->Commit() : trans->Rollback();
   MaybeClose();
-  //db_context_->Remove("shell", shell->name(), base::Bind(&DomainModel::OnRemoveReply, base::Unretained(this)));
   shell->set_managed(false);
 }
 
@@ -280,20 +270,11 @@ std::string DomainModel::ParseTargetFromURL(const GURL& url, bool* ok) const {
   return result;
 }
 
-void DomainModel::OnInsertReply(bool result) {
-  //DLOG(INFO) << "inserting app on db: " << (result ? "true" : "false");
-}
-
-void DomainModel::OnRemoveReply(bool result) {
-  //DLOG(INFO) << "removing app on db: " << (result ? "true" : "false");
-}
-
 void DomainModel::MaybeOpen() {
   if (policy_ != DatabasePolicy::OpenClose) {
     return;
   }
   if (!db_->is_open()) {
-    //DLOG(INFO) << "DomainModel::MaybeOpen: db is not open, reopening...";
     db_->Open();
   }
 }

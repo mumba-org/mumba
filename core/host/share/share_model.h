@@ -54,8 +54,6 @@ private:
 
   void LoadSharesFromDB(base::Callback<void(int, int)> cb);
 
-  void OnInsertReply(bool result);
-  void OnRemoveReply(bool result);
   void MaybeOpen();
   void MaybeClose();
 

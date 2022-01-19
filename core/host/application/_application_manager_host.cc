@@ -1,1 +1,0 @@
-application_manager_host.cc

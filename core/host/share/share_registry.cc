@@ -251,12 +251,12 @@ void ShareRegistry::RemoveWatcher(int watcher) {
 
 void ShareRegistry::AddShareImpl(common::mojom::ShareEntryPtr entry, AddShareCallback callback) {
   const std::string& address = entry->address;
-  controller_.AddShare(address);
+  controller_.CreateShareWithPath(address);
 }
 
 void ShareRegistry::AddShareByAddressImpl(common::mojom::ShareDescriptorPtr descriptor, AddShareByAddressCallback callback) {
   const std::string& address = descriptor->address;
-  controller_.AddShare(address);
+  controller_.CreateShareWithPath(address);
 }
 
 void ShareRegistry::RemoveShareImpl(const std::string& address, RemoveShareCallback callback) {

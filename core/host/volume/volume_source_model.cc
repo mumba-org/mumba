@@ -108,15 +108,13 @@ void VolumeSourceModel::InsertVolumeSourceToDB(const base::UUID& id, VolumeSourc
   if (data) {
     MaybeOpen();
     storage::Transaction* trans = db_->Begin(true);
-    //return db_->Insert(VolumeDatabase::kVolumeSourceTable, source->name(), data);
-    bool ok = db_->Put(trans, "source", source->name(), base::StringPiece(data->data(), data->size()));//, base::Bind(&VolumeSourceModel::OnInsertReply, base::Unretained(this)));
+    bool ok = db_->Put(trans, "source", source->name(), base::StringPiece(data->data(), data->size()));
     ok ? trans->Commit() : trans->Rollback();
     MaybeClose();
   }
 }
 
 void VolumeSourceModel::RemoveVolumeSourceFromDB(VolumeSource* source) {
-  //return db_->Remove(VolumeDatabase::kVolumeSourceTable, source->name());
   MaybeOpen();
   storage::Transaction* trans = db_->Begin(true);
   bool ok = db_->Delete(trans, "source", source->name());//, base::Bind(&VolumeSourceModel::OnRemoveReply, base::Unretained(this)));
@@ -161,14 +159,6 @@ void VolumeSourceModel::RemoveFromCache(VolumeSource* source, bool should_delete
   if (should_delete) {
     delete source;
   }
-}
-
-void VolumeSourceModel::OnInsertReply(bool result) {
-  DLOG(INFO) << "inserting source on db: " << (result ? "true" : "false");
-}
-
-void VolumeSourceModel::OnRemoveReply(bool result) {
-  DLOG(INFO) << "removing source on db: " << (result ? "true" : "false");
 }
 
 void VolumeSourceModel::MaybeOpen() {

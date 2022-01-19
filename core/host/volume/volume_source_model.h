@@ -41,8 +41,6 @@ private:
 
   void LoadVolumeSourcesFromDB();
 
-  void OnInsertReply(bool result);
-  void OnRemoveReply(bool result);
   void MaybeOpen();
   void MaybeClose();
 

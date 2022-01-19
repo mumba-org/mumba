@@ -22,12 +22,16 @@ public:
   AppStoreModel(scoped_refptr<ShareDatabase> db, DatabasePolicy policy);
   ~AppStoreModel();
 
-  const std::vector<AppStoreEntry *>& entries() const {
+  const std::vector<std::unique<AppStoreEntry>>& entries() const {
     return entries_;
   }
 
-  std::vector<AppStoreEntry *>& entries() {
+  std::vector<std::unique<AppStoreEntry>>& entries() {
     return entries_;
+  }
+
+  size_t entry_count() const {
+    return entries_.size();
   }
 
   void Load(base::Callback<void(int, int)> cb);
@@ -37,26 +41,24 @@ public:
   AppStoreEntry* GetEntryById(const base::UUID& id);
   AppStoreEntry* GetEntryByName(const std::string& name);
   void InsertEntry(AppStoreEntry* entry, bool persist = true);
-  void RemoveEntry(const base::UUID& id);
+  bool RemoveEntry(const base::UUID& id);
  
   void Close();
 
 private:
   
   void InsertEntryInternal(AppStoreEntry* entry, bool persist);
-  void RemoveEntryInternal(const base::UUID& id);
+  bool RemoveEntryInternal(const base::UUID& id);
 
   void InsertEntryToDB(AppStoreEntry* entry);
   void RemoveEntryFromDB(AppStoreEntry* entry);
 
   void AddToCache(AppStoreEntry* entry);
-  void RemoveFromCache(const base::UUID& id, bool should_delete = true);
-  void RemoveFromCache(AppStoreEntry* entry, bool should_delete = true);
+  bool RemoveFromCache(const base::UUID& id, bool should_delete = true);
+  bool RemoveFromCache(AppStoreEntry* entry, bool should_delete = true);
 
   void LoadEntriesFromDB(base::Callback<void(int, int)> cb);
 
-  void OnInsertReply(bool result);
-  void OnRemoveReply(bool result);
   void MaybeOpen();
   void MaybeClose();
 
@@ -66,7 +68,7 @@ private:
   scoped_refptr<ShareDatabase> db_;
   
   base::Lock entries_vector_lock_;
-  std::vector<AppStoreEntry *> entries_;
+  std::vector<std::unique_ptr<AppStoreEntry>> entries_;
 
 private:
 

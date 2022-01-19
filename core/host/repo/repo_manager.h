@@ -22,16 +22,10 @@ namespace host {
 class RepoModel;
 class Repo;
 class ShareDatabase;
+class RepoManagerObserver;
 
 class RepoManager {
 public:
-  class Observer {
-  public:
-    virtual ~Observer(){}
-    virtual void OnReposLoad(int r, int count) {}
-    virtual void OnRepoAdded(Repo* repo) {}
-    virtual void OnRepoRemoved(Repo* repo) {}
-  };
   RepoManager();
   ~RepoManager();
 
@@ -42,12 +36,22 @@ public:
   void Init(scoped_refptr<ShareDatabase> db, DatabasePolicy policy);
   void Shutdown();
 
+  bool RepoExists(Repo* repo) const;
+  bool RepoExistsById(const base::UUID& id) const;
+  bool RepoExistsByName(const std::string& name) const;
+  bool RepoExistsByAddress(const std::string& address) const;
+  Repo* GetRepoById(const base::UUID& id);
+  Repo* GetRepoByName(const std::string& name);
+  Repo* GetRepoByAddress(const std::string& address);
   void InsertRepo(std::unique_ptr<Repo> repo, bool persist = true);
-  void RemoveRepo(Repo* repo);
-  void RemoveRepo(const base::UUID& uuid);
-
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
+  bool RemoveRepo(Repo* repo);
+  bool RemoveRepo(const base::UUID& uuid);
+  bool RemoveRepoByAddress(const std::string& address);
+  std::vector<Repo*> GetRepoList() const;
+  size_t GetRepoCount() const;
+  
+  void AddObserver(RepoManagerObserver* observer);
+  void RemoveObserver(RepoManagerObserver* observer);
 
 private:
 
@@ -61,7 +65,7 @@ private:
   void NotifyReposLoad(int r, int count);
 
   std::unique_ptr<RepoModel> repos_;
-  std::vector<Observer*> observers_;
+  std::vector<RepoManagerObserver*> observers_;
 
   base::WeakPtrFactory<RepoManager> weak_factory_;
 

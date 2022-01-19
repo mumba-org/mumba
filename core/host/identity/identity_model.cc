@@ -78,8 +78,6 @@ void IdentityModel::InsertIdentityToDB(const base::UUID& id, Identity* identity)
   if (data) {
     MaybeOpen();
     LOG(INFO) << "inserting identity " << identity->name() << " '" << data->data() << "'";
-    //result = db_->Insert(IdentityDatabase::kIdentityTable, identity->name(), data);
-    //db_context_->Insert("identity", identity->name(), data, base::Bind(&IdentityModel::OnInsertReply, base::Unretained(this)))
     storage::Transaction* trans = db_->Begin(true);
     bool ok = db_->Put(trans, Identity::kClassName, identity->name(), base::StringPiece(data->data(), data->size()));
     ok ? trans->Commit() : trans->Rollback();
@@ -90,7 +88,7 @@ void IdentityModel::InsertIdentityToDB(const base::UUID& id, Identity* identity)
 void IdentityModel::RemoveIdentityFromDB(Identity* identity) {
   MaybeOpen();
   storage::Transaction* trans = db_->Begin(true);
-  bool ok = db_->Delete(trans, Identity::kClassName, identity->name());//, base::Bind(&IdentityModel::OnRemoveReply, base::Unretained(this)));
+  bool ok = db_->Delete(trans, Identity::kClassName, identity->name());
   ok ? trans->Commit() : trans->Rollback();
   MaybeClose();
 }
@@ -179,14 +177,6 @@ void IdentityModel::RemoveFromCache(Identity* identity, bool should_delete) {
   if (should_delete) {
     delete identity;
   }
-}
-
-void IdentityModel::OnInsertReply(bool result) {
-  DLOG(INFO) << "inserting identity on db: " << (result ? "true" : "false");
-}
-
-void IdentityModel::OnRemoveReply(bool result) {
-  DLOG(INFO) << "removing identity on db: " << (result ? "true" : "false");
 }
 
 void IdentityModel::MaybeOpen() {

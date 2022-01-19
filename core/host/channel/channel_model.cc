@@ -96,9 +96,6 @@ bool ChannelModel::InsertChannelToDB(const base::UUID& id, Channel* channel) {
   scoped_refptr<net::IOBufferWithSize> data = channel->Serialize();
   if (data) {
     MaybeOpen();
-    //LOG(INFO) << "inserting channel " << channel->name() << " '" << data->data() << "'";
-    //result = db_->Insert(ChannelDatabase::kChannelTable, channel->name(), data);
-    //db_context_->Insert("channel", channel->name(), data, base::Bind(&ChannelModel::OnInsertReply, base::Unretained(this)))
     storage::Transaction* trans = db_->Begin(true);
     bool ok = db_->Put(trans, Channel::kClassName, channel->name(), base::StringPiece(data->data(), data->size()));
     ok ? trans->Commit() : trans->Rollback();
@@ -222,14 +219,6 @@ void ChannelModel::RemoveFromCache(Channel* channel) {
       return;
     }
   }
-}
-
-void ChannelModel::OnInsertReply(bool result) {
-  //DLOG(INFO) << "inserting channel on db: " << (result ? "true" : "false");
-}
-
-void ChannelModel::OnRemoveReply(bool result) {
-  //DLOG(INFO) << "removing channel on db: " << (result ? "true" : "false");
 }
 
 void ChannelModel::MaybeOpen() {

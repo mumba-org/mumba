@@ -57,7 +57,7 @@ public:
   virtual void OnBundleRemoved(Bundle* bundle) {}
   virtual void OnAppStoreEntriesLoaded(size_t count) {}
   virtual void OnAppStoreEntryAdded(AppStoreEntry* app_store_entry) {}
-  virtual void OnAppStoreEntryemoved(AppStoreEntry* app_store_entry) {}
+  virtual void OnAppStoreEntryRemoved(AppStoreEntry* app_store_entry) {}
 };
 
 }

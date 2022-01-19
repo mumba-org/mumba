@@ -44,23 +44,52 @@ void AppStore::ShutdownImpl() {
   entries_.reset();
 }
 
+bool AppStore::EntryExists(const base::UUID& id) {
+  return entries_->EntryExists(id);
+}
+
+bool AppStore::EntryExists(const std::string& name) {
+  return entries_->EntryExists(name);
+}
+
+bool AppStore::EntryExists(AppStoreEntry* entry) {
+  return entries_->EntryExists(entry);
+}
+
+AppStoreEntry* AppStore::GetEntryById(const base::UUID& id) {
+  return entries_->GetEntryById(id);
+}
+
+AppStoreEntry* AppStore::GetEntryByName(const std::string& name) {
+  return entries_->GetEntryByName(name);
+}
+
+const std::vector<AppStoreEntry *>& AppStore::GetEntries() {
+  return entries_->entries();
+}
+
+size_t AppStore::GetEntryCount() {
+  return entries_->entry_count();
+}
+
 void AppStore::InsertEntry(std::unique_ptr<AppStoreEntry> entry, bool persist) {
   AppStoreEntry* reference = entry.get();
   entries_->InsertEntry(entry.release(), persist);
   NotifyEntryAdded(reference);
 }
 
-void AppStore::RemoveEntry(AppStoreEntry* entry) {
+bool AppStore::RemoveEntry(AppStoreEntry* entry) {
   NotifyEntryRemoved(entry);
-  entries_->RemoveEntry(entry->id());
+  return entries_->RemoveEntry(entry->id());
 }
 
-void AppStore::RemoveEntry(const base::UUID& uuid) {
+bool AppStore::RemoveEntry(const base::UUID& uuid) {
   AppStoreEntry* entry = entries_->GetEntryById(uuid);
   if (entry) {
     NotifyEntryRemoved(entry);
-    entries_->RemoveEntry(uuid);
+    return entries_->RemoveEntry(uuid);
   }
+  return false;
 }
 
 void AppStore::AddObserver(AppStoreObserver* observer) {

@@ -87,6 +87,7 @@
 #include "mumba/app/resources/grit/content_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "core/host/workspace/workspace_service_dispatcher.h"
+#include "core/host/repo/repo_manager.h"
 #if defined(OS_WIN)
 #undef uuid_t
 #endif
@@ -97,22 +98,22 @@ namespace host {
 namespace {
 
 std::vector<std::string> GetSystemKeyspaces() {
-  std::vector<std::string> keyspaces;
-  keyspaces.push_back("volume");
-  keyspaces.push_back("source");
-  keyspaces.push_back("application");
-  keyspaces.push_back("schema");
-  keyspaces.push_back("identity");
-  keyspaces.push_back("graph");
-  keyspaces.push_back("channel");
-  keyspaces.push_back("repo");
-  keyspaces.push_back("share");
-  keyspaces.push_back("bundle");
-  keyspaces.push_back("ml_model");
-  keyspaces.push_back("ml_predictor");
-  keyspaces.push_back("ml_dataset");
-  keyspaces.push_back("app_store");
-  return keyspaces;
+  return {
+    "volume",
+    "source",
+    "application",
+    "schema",
+    "identity",
+    "graph",
+    "channel",
+    "repo",
+    "share",
+    "bundle",
+    "ml_model",
+    "ml_predictor",
+    "ml_dataset",
+    "app_store";
+  };
 }
 
 void OnBundleApplicationInstalledFromVolume(int result) {}
@@ -1617,8 +1618,7 @@ void Workspace::OnAppStoreEntryAdded(AppStoreEntry* entry) {
 
 void Workspace::OnAppStoreEntryRemoved(AppStoreEntry* entry) {
   for (auto& observer : observers_) {
-    //fixme: OnAppStoreEntryemoved => OnAppStoreEntryRemoved
-    observer.OnAppStoreEntryemoved(entry);
+    observer.OnAppStoreEntryRemoved(entry);
   }
 }
 

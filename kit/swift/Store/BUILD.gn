@@ -1,4 +1,4 @@
-swift_static("Registry") {
+swift_static("Store") {
   deps = [
     "//runtime/MumbaShims",
     "//kit/swift/Base",
@@ -9,7 +9,7 @@ swift_static("Registry") {
     ]
   }
   sources = [
-    "Sources/UrlRegistry.swift",
-    "Sources/ServiceRegistry.swift"
+    "Sources/RepoRegistry.swift",
+    "Sources/AppStore.swift"
   ]
 }

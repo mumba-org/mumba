@@ -57,6 +57,11 @@ bool ShareManager::GetUUID(const std::string& storage_name, const std::string& u
   return storage_manager_->GetUUID(storage_name, uuid_str, id);
 }
 
+void ShareManager::CloneStorageWithDHTAddress(const std::string& dht_address_bytes, base::Callback<void(int)> callback) {
+  std::string dht_address_hex = base::HexEncode(dht_address_bytes.data(), dht_address_bytes.size());
+  storage_manager_->CloneStorage(dht_address_hex, std::move(callback));
+}
+
 Share* ShareManager::CreateDatabaseShare(const std::string& domain, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory) {
   scoped_refptr<storage::Torrent> share_torrent;
   if (!in_memory) {

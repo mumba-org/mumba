@@ -10,6 +10,8 @@
 #include "core/common/proto/objects.pb.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/associated_binding_set.h"
+#include "core/host/share/share_controller.h"
+#include "core/host/store/app_store_controller.h"
 
 namespace host {
 class Workspace;
@@ -61,10 +63,17 @@ private:
 
   void AddWatcherImpl(common::mojom::AppStoreWatcherPtr watcher, AddWatcherCallback callback);
   void RemoveWatcherImpl(int watcher);
+
+  void OnStorageCloned(AddEntryByAddressCallback callback, int result);
+  void OnShareCreated(AddEntryByAddressCallback callback, int result);
  
   scoped_refptr<Workspace> workspace_;
   AppStore* app_store_;
+  ShareController share_controller_;
+  AppStoreController controller_;
   mojo::AssociatedBindingSet<common::mojom::AppStoreDispatcher> app_store_dispatcher_binding_;
+  std::unordered_map<int, common::mojom::AppStoreWatcherPtr> watchers_;
+  int next_watcher_id_;
 
   DISALLOW_COPY_AND_ASSIGN(AppStoreDispatcher);
 };

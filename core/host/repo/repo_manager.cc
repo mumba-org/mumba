@@ -12,6 +12,7 @@
 #include "core/host/host_thread.h"
 #include "core/host/repo/repo.h"
 #include "core/host/repo/repo_model.h"
+#include "core/host/repo/repo_manager_observer.h"
 #include "core/host/workspace/workspace.h"
 #include "core/host/share/share_database.h"
 #include "storage/torrent.h"
@@ -43,30 +44,76 @@ void RepoManager::ShutdownImpl() {
   repos_.reset();
 }
 
+bool RepoManager::RepoExists(Repo* repo) const {
+  return repos_->RepoExists(repo);
+}
+
+bool RepoManager::RepoExistsById(const base::UUID& id) const {
+  return repos_->RepoExistsById(id);
+}
+
+bool RepoManager::RepoExistsByName(const std::string& name) const {
+  return repos_->RepoExistsByName(name);
+}
+
+bool RepoManager::RepoExistsByAddress(const std::string& address) const {
+  return repos_->RepoExistsByAddress(address);
+}
+
+Repo* RepoManager::GetRepoById(const base::UUID& id) {
+  return repos_->GetRepoById(id);
+}
+
+Repo* RepoManager::GetRepoByName(const std::string& name) {
+  return repos_->GetRepoByName(name);
+}
+
+Repo* RepoManager::GetRepoByAddress(const std::string& address) {
+  return repos_->GetRepoByAddress(address);
+}
+
+std::vector<Repo*> RepoManager::GetRepoList() const {
+  return repos_->GetRepoList();
+}
+
+size_t RepoManager::GetRepoCount() const {
+  return repos_->GetRepoCount();
+}
+
 void RepoManager::InsertRepo(std::unique_ptr<Repo> repo, bool persist) {
   Repo* reference = repo.get();
   repos_->InsertRepo(repo->id(), std::move(repo), persist);
   NotifyRepoAdded(reference);
 }
 
-void RepoManager::RemoveRepo(Repo* repo) {
+bool RepoManager::RemoveRepo(Repo* repo) {
   NotifyRepoRemoved(repo);
-  repos_->RemoveRepo(repo->id());
+  return repos_->RemoveRepo(repo->id());
 }
 
-void RepoManager::RemoveRepo(const base::UUID& uuid) {
+bool RepoManager::RemoveRepo(const base::UUID& uuid) {
   Repo* repo = repos_->GetRepoById(uuid);
   if (repo) {
     NotifyRepoRemoved(repo);
-    repos_->RemoveRepo(uuid);
+    return repos_->RemoveRepo(uuid);
   }
+  return false;
 }
 
-void RepoManager::AddObserver(Observer* observer) {
+bool RepoManager::RemoveRepoByAddress(const std::string& address) {
+  Repo* repo = repos_->GetRepoByAddress(address);
+  if (repo) {
+    NotifyRepoRemoved(repo);
+    return repos_->RemoveRepo(repo->id());
+  }
+  return false;
+}
+
+void RepoManager::AddObserver(RepoManagerObserver* observer) {
   observers_.push_back(observer);
 }
 
-void RepoManager::RemoveObserver(Observer* observer) {
+void RepoManager::RemoveObserver(RepoManagerObserver* observer) {
   for (auto it = observers_.begin(); it != observers_.end(); ++it) {
     if (observer == *it) {
       observers_.erase(it);
@@ -75,27 +122,27 @@ void RepoManager::RemoveObserver(Observer* observer) {
   }
 }
 
-void RepoManager::OnLoad(int r, int count) {
-  NotifyReposLoad(r, count);
+void RepoManager::OnLoad(int result_code, int count) {
+  NotifyReposLoad(result_code, count);
 }
 
-void RepoManager::NotifyReposLoad(int r, int count) {
+void RepoManager::NotifyReposLoad(int result_code, int count) {
   for (auto it = observers_.begin(); it != observers_.end(); ++it) {
-    Observer* observer = *it;
-    observer->OnReposLoad(r, count);
+    RepoManagerObserver* observer = *it;
+    observer->OnReposLoad(result_code, count);
   }
 }
 
 void RepoManager::NotifyRepoAdded(Repo* repo) {
   for (auto it = observers_.begin(); it != observers_.end(); ++it) {
-    Observer* observer = *it;
+    RepoManagerObserver* observer = *it;
     observer->OnRepoAdded(repo);
   }
 }
 
 void RepoManager::NotifyRepoRemoved(Repo* repo) {
   for (auto it = observers_.begin(); it != observers_.end(); ++it) {
-    Observer* observer = *it;
+    RepoManagerObserver* observer = *it;
     observer->OnRepoRemoved(repo);
   }
 }

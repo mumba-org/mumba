@@ -231,14 +231,6 @@ void VolumeModel::RemoveFromCache(Volume* volume, bool should_delete) {
   }
 }
 
-void VolumeModel::OnInsertReply(bool result) {
-  //DLOG(INFO) << "inserting volume on db: " << (result ? "true" : "false");
-}
-
-void VolumeModel::OnRemoveReply(bool result) {
-  //DLOG(INFO) << "removing volume on db: " << (result ? "true" : "false");
-}
-
 void VolumeModel::MaybeOpen() {
   if (policy_ != DatabasePolicy::OpenClose) {
     return;

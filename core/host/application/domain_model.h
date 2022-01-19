@@ -86,9 +86,6 @@ private:
 
   std::string ParseTargetFromURL(const GURL& url, bool* ok) const;
 
-  void OnInsertReply(bool result);
-  void OnRemoveReply(bool result);
-
   void MaybeOpen();
   void MaybeClose();
 

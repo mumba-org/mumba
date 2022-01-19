@@ -37,9 +37,16 @@ public:
   void Init(scoped_refptr<ShareDatabase> db, DatabasePolicy policy);
   void Shutdown();
 
+  bool EntryExists(const base::UUID& id);
+  bool EntryExists(const std::string& name);
+  bool EntryExists(AppStoreEntry* entry);
+  AppStoreEntry* GetEntryById(const base::UUID& id);
+  AppStoreEntry* GetEntryByName(const std::string& name);
   void InsertEntry(std::unique_ptr<AppStoreEntry> entry, bool persist = true);
-  void RemoveEntry(AppStoreEntry* entry);
-  void RemoveEntry(const base::UUID& uuid);
+  bool RemoveEntry(AppStoreEntry* entry);
+  bool RemoveEntry(const base::UUID& uuid);
+  const std::vector<AppStoreEntry *>& GetEntries();
+  size_t GetEntryCount();
 
   void AddObserver(AppStoreObserver* observer);
   void RemoveObserver(AppStoreObserver* observer);
@@ -54,8 +61,6 @@ private:
   void NotifyEntryAdded(AppStoreEntry* entry);
   void NotifyEntryRemoved(AppStoreEntry* entry);
   void NotifyEntriesLoad(int r, int count);
-
-private:
 
   std::unique_ptr<AppStoreModel> entries_;  
   std::vector<AppStoreObserver*> observers_;

@@ -14,18 +14,19 @@
 namespace host {
 class RepoManager;
 class Repo;
+class ShareController;
 
 class RepoController {
 public:
-  RepoController(RepoManager* manager);
+  RepoController(RepoManager* manager, ShareController* share_controller);
   ~RepoController();
 
-  void AddRepo(const std::string& address);
-  void RemoveRepo(const std::string& address);
-  void RemoveRepo(const base::UUID& uuid);
-  void LookupRepoByAddress(const std::string& address);
-  void LookupRepoByName(const std::string& name);
-  void LookupRepoByUUID(const base::UUID& id);
+  void AddRepo(const std::string& base64_address, base::Callback<void(int)> callback);
+  bool RemoveRepo(const std::string& address);
+  bool RemoveRepo(const base::UUID& uuid);
+  Repo* LookupRepoByAddress(const std::string& address);
+  Repo* LookupRepoByName(const std::string& name);
+  Repo* LookupRepoByUUID(const base::UUID& id);
   bool HaveRepoByAddress(const std::string& address);
   bool HaveRepoByName(const std::string& name);
   bool HaveRepoByUUID(const base::UUID& id);
@@ -34,7 +35,10 @@ public:
 
 private:
   
+  void OnStorageCloned(base::Callback<void(int)> callback, int result);
+
   RepoManager* manager_;
+  ShareController* share_controller_;
 
   DISALLOW_COPY_AND_ASSIGN(RepoController);
 };

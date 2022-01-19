@@ -32,7 +32,7 @@
 #include "core/host/channel/channel_manager_observer.h"
 #include "core/host/bundle/bundle_manager_observer.h"
 #include "core/host/identity/identity_manager.h"
-#include "core/host/repo/repo_manager.h"
+#include "core/host/repo/repo_manager_observer.h"
 #include "core/host/store/app_store_observer.h"
 #include "core/host/rpc/server/rpc_manager.h"
 #include "core/host/schema/schema_registry.h"
@@ -62,6 +62,7 @@ class ServiceRegistry;
 class RouteRegistry;
 class RouteResolver;
 class Repo;
+class RepoManager;
 class Device;
 class Channel;
 class ChannelManager;
@@ -97,7 +98,7 @@ class Workspace : public Serializable,
                   public DomainManager::Observer,
                   public DeviceManager::Observer,
                   public IdentityManager::Observer,
-                  public RepoManager::Observer, 
+                  public RepoManagerObserver, 
                   public RpcManager::Observer,
                   public SchemaRegistry::Observer,
                   public RouteObserver,

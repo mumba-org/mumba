@@ -2272,6 +2272,8 @@ component("host") {
     "schema/schema_registry.h",
     "schema/schema_model.cc",
     "schema/schema_model.h",
+    "store/app_store_controller.h",
+    "store/app_store_controller.cc",
     "store/app_store_dispatcher.h",
     "store/app_store_dispatcher.cc",
     "store/app_store_entry.h",

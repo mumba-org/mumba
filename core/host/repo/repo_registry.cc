@@ -11,9 +11,11 @@
 namespace host {
 
 RepoRegistry::RepoRegistry(scoped_refptr<Workspace> workspace, RepoManager* repo_manager): 
-  controller_(repo_manager),
+  share_controller_(workspace->share_manager()),
+  controller_(repo_manager, &share_controller_),
   workspace_(workspace),
-  repo_manager_(repo_manager) {
+  repo_manager_(repo_manager),
+  next_watcher_id_(1) {
 
 }
 
@@ -172,20 +174,42 @@ void RepoRegistry::RemoveWatcher(int watcher) {
 
 void RepoRegistry::AddRepoImpl(common::mojom::RepoEntryPtr entry, AddRepoCallback callback) {
   const std::string& address = entry->address;
-  controller_.AddRepo(address);
+  controller_.AddRepo(address,
+   base::Bind(&RepoRegistry::OnStorageCloned, 
+                  base::Unretained(this),
+                  base::Passed(std::move(callback))));
 }
 
 void RepoRegistry::AddRepoByAddressImpl(common::mojom::RepoDescriptorPtr descriptor, AddRepoByAddressCallback callback) {
   const std::string& address = descriptor->address;
-  controller_.AddRepo(address);
+  controller_.AddRepo(address,
+    base::Bind(&RepoRegistry::OnStorageCloned, 
+                  base::Unretained(this),
+                  base::Passed(std::move(callback))));
 }
 
 void RepoRegistry::RemoveRepoImpl(const std::string& address, RemoveRepoCallback callback) {
-  controller_.RemoveRepo(address);
+  bool removed = controller_.RemoveRepo(address);
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        removed ? 
+        common::mojom::RepoStatusCode::kREPO_STATUS_OK :
+        common::mojom::RepoStatusCode::kREPO_STATUS_ERR_FAILED));
 }
 
 void RepoRegistry::RemoveRepoByUUIDImpl(const std::string& uuid, RemoveRepoByUUIDCallback callback) {
-  controller_.RemoveRepo(uuid);
+  bool removed = controller_.RemoveRepo(uuid);
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        removed ? 
+        common::mojom::RepoStatusCode::kREPO_STATUS_OK :
+        common::mojom::RepoStatusCode::kREPO_STATUS_ERR_FAILED));
 }
 
 void RepoRegistry::LookupRepoImpl(const std::string& address, LookupRepoCallback callback) {
@@ -232,11 +256,31 @@ void RepoRegistry::GetRepoCountImpl(GetRepoCountCallback callback) {
 }
 
 void RepoRegistry::AddWatcherImpl(common::mojom::RepoWatcherPtr watcher, AddWatcherCallback callback) {
-
+  int id = next_watcher_id_++;
+  watchers_.emplace(std::make_pair(id, std::move(watcher)));
+  HostThread::PostTask(
+    HostThread::IO, 
+    FROM_HERE,
+    base::BindOnce(
+      std::move(callback), 
+      id));
 }
 
 void RepoRegistry::RemoveWatcherImpl(int watcher) {
+  auto found = watchers_.find(watcher);
+  if (found != watchers_.end()) {
+    watchers_.erase(found);
+  }
+}
 
+void RepoRegistry::OnStorageCloned(AddRepoCallback callback, int result) {
+  common::mojom::RepoStatusCode r = (result == 0 ? common::mojom::RepoStatusCode::kREPO_STATUS_OK : common::mojom::RepoStatusCode::kREPO_STATUS_ERR_FAILED);
+  HostThread::PostTask(
+      HostThread::IO, 
+      FROM_HERE,
+      base::BindOnce(
+        std::move(callback), 
+        r));
 }
 
 }

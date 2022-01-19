@@ -32,28 +32,34 @@ public:
 
   void Load(base::Callback<void(int, int)> cb);
   bool RepoExists(Repo* repo) const;
+  bool RepoExistsById(const base::UUID& id) const;
+  bool RepoExistsByName(const std::string& name) const;
+  bool RepoExistsByAddress(const std::string& address) const;
   Repo* GetRepoById(const base::UUID& id);
+  Repo* GetRepoByName(const std::string& name);
+  Repo* GetRepoByAddress(const std::string& address);
   void InsertRepo(const base::UUID& id, std::unique_ptr<Repo> repo, bool persist = true);
-  void RemoveRepo(const base::UUID& id);
- 
+  bool RemoveRepo(const base::UUID& id);
+  bool RemoveRepoByAddress(const std::string& address);
+  std::vector<Repo*> GetRepoList() const;
+  size_t GetRepoCount() const;
+
   void Close();
 
 private:
   
   void InsertRepoInternal(const base::UUID& id, std::unique_ptr<Repo> repo, bool persist);
-  void RemoveRepoInternal(const base::UUID& id);
+  bool RemoveRepoInternal(const base::UUID& id);
 
   void InsertRepoToDB(const base::UUID& id, Repo* repo);
   void RemoveRepoFromDB(Repo* repo);
 
   void AddToCache(const base::UUID& id, std::unique_ptr<Repo> repo);
-  void RemoveFromCache(const base::UUID& id);
-  void RemoveFromCache(Repo* repo);
+  bool RemoveFromCache(const base::UUID& id);
+  bool RemoveFromCache(Repo* repo);
 
   void LoadReposFromDB(base::Callback<void(int, int)> cb);
 
-  void OnInsertReply(bool result);
-  void OnRemoveReply(bool result);
   void MaybeOpen();
   void MaybeClose();
 

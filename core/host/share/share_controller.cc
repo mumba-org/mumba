@@ -4,6 +4,10 @@
 
 #include "core/host/share/share_controller.h"
 
+#include "base/base64.h"
+#include "net/base/net_errors.h"
+#include "core/host/share/share_manager.h"
+
 namespace host {
 
 ShareController::ShareController(ShareManager* manager): manager_(manager) {
@@ -11,10 +15,23 @@ ShareController::ShareController(ShareManager* manager): manager_(manager) {
 }
 
 ShareController::~ShareController() {
-  manager_ = nullptr;
+  
 }
 
-void ShareController::AddShare(const std::string& address) {
+void ShareController::CloneStorageWithDHTAddress(const std::string& dht_address_base64, base::Callback<void(int)> callback) {
+  std::string bytes;
+  if (!base::Base64Decode(dht_address_base64, &bytes)) {
+    std::move(callback).Run(net::ERR_FAILED);
+    return;
+  }
+  manager_->CloneStorageWithDHTAddress(bytes, std::move(callback));
+}
+
+void ShareController::CreateShareWithPath(const std::string& address) {
+
+}
+
+void ShareController::CreateShareWithInfohash(const std::string& address, base::Callback<void(int64_t)> callback) {
 
 }
 

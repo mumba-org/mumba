@@ -51,7 +51,13 @@ struct AppStoreEntry {
   array<string> supported_languages;
 };
 
+enum AppStoreEntryAddressType {
+  APP_DHT_ADDRESS = 0,
+  APP_TORRENT_ADDRESS
+};
+
 struct AppStoreEntryDescriptor {
+  AppStoreEntryAddressType type;
   string address;
 };
 

@@ -265,14 +265,6 @@ void SchemaModel::Close() {
   //db_->Close();
 }
 
-void SchemaModel::OnInsertReply(bool result) {
-  //DLOG(INFO) << "inserting schema on db: " << (result ? "true" : "false");
-}
-
-void SchemaModel::OnRemoveReply(bool result) {
-  //DLOG(INFO) << "removing schema on db: " << (result ? "true" : "false");
-}
-
 void SchemaModel::MaybeOpen() {
   if (policy_ != DatabasePolicy::OpenClose) {
     return;

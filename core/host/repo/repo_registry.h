@@ -9,6 +9,7 @@
 
 #include "core/common/proto/objects.pb.h"
 #include "core/host/repo/repo_controller.h"
+#include "core/host/share/share_controller.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/associated_binding_set.h"
 
@@ -62,11 +63,16 @@ private:
 
   void AddWatcherImpl(common::mojom::RepoWatcherPtr watcher, AddWatcherCallback callback);
   void RemoveWatcherImpl(int watcher);
+
+  void OnStorageCloned(AddRepoCallback callback, int result);
  
+  ShareController share_controller_;
   RepoController controller_;
   scoped_refptr<Workspace> workspace_;
   RepoManager* repo_manager_;
   mojo::AssociatedBindingSet<common::mojom::RepoRegistry> repo_registry_binding_;
+  std::unordered_map<int, common::mojom::RepoWatcherPtr> watchers_;
+  int next_watcher_id_;
 
   DISALLOW_COPY_AND_ASSIGN(RepoRegistry);
 };
