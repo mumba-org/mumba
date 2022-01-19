@@ -12,9 +12,9 @@
 #include "base/uuid.h"
 #include "net/base/io_buffer.h"
 #include "core/host/database_policy.h"
+#include "core/host/store/app_store_entry.h"
 
 namespace host {
-class AppStoreEntry;
 class ShareDatabase;
 
 class AppStoreModel : public DatabasePolicyObserver {
@@ -22,11 +22,11 @@ public:
   AppStoreModel(scoped_refptr<ShareDatabase> db, DatabasePolicy policy);
   ~AppStoreModel();
 
-  const std::vector<std::unique<AppStoreEntry>>& entries() const {
+  const std::vector<std::unique_ptr<AppStoreEntry>>& entries() const {
     return entries_;
   }
 
-  std::vector<std::unique<AppStoreEntry>>& entries() {
+  std::vector<std::unique_ptr<AppStoreEntry>>& entries() {
     return entries_;
   }
 
@@ -40,22 +40,22 @@ public:
   bool EntryExists(AppStoreEntry* entry);
   AppStoreEntry* GetEntryById(const base::UUID& id);
   AppStoreEntry* GetEntryByName(const std::string& name);
-  void InsertEntry(AppStoreEntry* entry, bool persist = true);
+  void InsertEntry(std::unique_ptr<AppStoreEntry> entry, bool persist = true);
   bool RemoveEntry(const base::UUID& id);
  
   void Close();
 
 private:
   
-  void InsertEntryInternal(AppStoreEntry* entry, bool persist);
+  void InsertEntryInternal(std::unique_ptr<AppStoreEntry> entry, bool persist);
   bool RemoveEntryInternal(const base::UUID& id);
 
   void InsertEntryToDB(AppStoreEntry* entry);
   void RemoveEntryFromDB(AppStoreEntry* entry);
 
-  void AddToCache(AppStoreEntry* entry);
-  bool RemoveFromCache(const base::UUID& id, bool should_delete = true);
-  bool RemoveFromCache(AppStoreEntry* entry, bool should_delete = true);
+  void AddToCache(std::unique_ptr<AppStoreEntry> entry);
+  bool RemoveFromCache(const base::UUID& id);
+  bool RemoveFromCache(AppStoreEntry* entry);
 
   void LoadEntriesFromDB(base::Callback<void(int, int)> cb);
 

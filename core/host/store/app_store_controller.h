@@ -43,14 +43,14 @@ public:
   bool RemoveEntry(AppStoreEntry* entry);
   bool RemoveEntry(const base::UUID& uuid);
   bool RemoveEntry(const std::string& address);
-  AppStoreEntry* LookupEntry(const std::string& address);
-  AppStoreEntry* LookupEntryByName(const std::string& name);
-  AppStoreEntry* LookupEntryByUUID(const base::UUID& uuid);
-  bool HaveEntry(const std::string& address);
-  bool HaveEntryByName(const std::string& name);
-  bool HaveEntryByUUID(const base::UUID& uuid);
-  std::vector<AppStoreEntry*> ListEntries();
-  size_t GetEntryCount();
+  AppStoreEntry* LookupEntry(const std::string& address) const;
+  AppStoreEntry* LookupEntryByName(const std::string& name) const;
+  AppStoreEntry* LookupEntryByUUID(const base::UUID& uuid) const;
+  bool HaveEntry(const std::string& address) const;
+  bool HaveEntryByName(const std::string& name) const;
+  bool HaveEntryByUUID(const base::UUID& uuid) const;
+  std::vector<AppStoreEntry*> ListEntries() const;
+  size_t GetEntryCount() const;
 
 private:
 

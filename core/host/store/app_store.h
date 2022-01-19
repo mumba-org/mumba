@@ -45,7 +45,7 @@ public:
   void InsertEntry(std::unique_ptr<AppStoreEntry> entry, bool persist = true);
   bool RemoveEntry(AppStoreEntry* entry);
   bool RemoveEntry(const base::UUID& uuid);
-  const std::vector<AppStoreEntry *>& GetEntries();
+  const std::vector<std::unique_ptr<AppStoreEntry>>& GetEntries() const;
   size_t GetEntryCount();
 
   void AddObserver(AppStoreObserver* observer);

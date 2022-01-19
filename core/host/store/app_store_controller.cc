@@ -63,36 +63,40 @@ bool AppStoreController::RemoveEntry(const std::string& address) {
   return store_->RemoveEntry(entry);
 }
 
-AppStoreEntry* AppStoreController::LookupEntry(const std::string& address) {
+AppStoreEntry* AppStoreController::LookupEntry(const std::string& address) const {
   return store_->GetEntryByName(address);
 }
 
-AppStoreEntry* AppStoreController::LookupEntryByName(const std::string& name) {
+AppStoreEntry* AppStoreController::LookupEntryByName(const std::string& name) const {
   return store_->GetEntryByName(name);
 }
 
-AppStoreEntry* AppStoreController::LookupEntryByUUID(const base::UUID& uuid) {
+AppStoreEntry* AppStoreController::LookupEntryByUUID(const base::UUID& uuid) const {
   return store_->GetEntryById(uuid);
 }
 
-bool AppStoreController::HaveEntry(const std::string& address) {
+bool AppStoreController::HaveEntry(const std::string& address) const {
   return store_->EntryExists(address);
 }
 
-bool AppStoreController::HaveEntryByName(const std::string& name) {
+bool AppStoreController::HaveEntryByName(const std::string& name) const {
   return store_->EntryExists(name);
 }
 
-bool AppStoreController::HaveEntryByUUID(const base::UUID& uuid) {
+bool AppStoreController::HaveEntryByUUID(const base::UUID& uuid) const {
   return store_->EntryExists(uuid);
 }
 
-std::vector<AppStoreEntry*> AppStoreController::ListEntries() {
-  std::vector<AppStoreEntry*> result = store_->GetEntries();
+std::vector<AppStoreEntry*> AppStoreController::ListEntries() const {
+  std::vector<AppStoreEntry*> result;
+  const auto& entries = store_->GetEntries();
+  for (const auto& entry : entries) {
+    result.push_back(entry.get());
+  }
   return result;
 }
 
-size_t AppStoreController::GetEntryCount() {
+size_t AppStoreController::GetEntryCount() const {
   return store_->GetEntryCount();
 }
 

@@ -20,11 +20,6 @@ AppStoreModel::AppStoreModel(scoped_refptr<ShareDatabase> db, DatabasePolicy pol
 }
 
 AppStoreModel::~AppStoreModel() {
-  base::AutoLock lock(entries_vector_lock_);
-  for (auto it = entries_.begin(); it != entries_.end(); ++it) {
-    delete *it;
-  }
-  entries_.clear();
   db_ = nullptr;
 }
 
@@ -55,7 +50,7 @@ bool AppStoreModel::EntryExists(const std::string& name) {
 bool AppStoreModel::EntryExists(AppStoreEntry* entry) {
   base::AutoLock lock(entries_vector_lock_);
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
-    if (*it == entry) {
+    if (it->get() == entry) {
       return true;
     }
   }
@@ -66,7 +61,7 @@ AppStoreEntry* AppStoreModel::GetEntryById(const base::UUID& id) {
   base::AutoLock lock(entries_vector_lock_);
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
     if ((*it)->id() == id) {
-      return *it;
+      return it->get();
     }
   }
   return nullptr;
@@ -76,14 +71,14 @@ AppStoreEntry* AppStoreModel::GetEntryByName(const std::string& name) {
   base::AutoLock lock(entries_vector_lock_);
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
     if ((*it)->name() == name) {
-      return *it;
+      return it->get();
     }
   }
   return nullptr;
 }
 
-void AppStoreModel::InsertEntry(AppStoreEntry* entry, bool persist) {
-  InsertEntryInternal(entry, persist);
+void AppStoreModel::InsertEntry(std::unique_ptr<AppStoreEntry> entry, bool persist) {
+  InsertEntryInternal(std::move(entry), persist);
 }
 
 bool AppStoreModel::RemoveEntry(const base::UUID& id) {
@@ -92,12 +87,12 @@ bool AppStoreModel::RemoveEntry(const base::UUID& id) {
 
 void AppStoreModel::Close() {}
 
-void AppStoreModel::InsertEntryInternal(AppStoreEntry* entry, bool persist) {
-  if (!EntryExists(entry)) {
+void AppStoreModel::InsertEntryInternal(std::unique_ptr<AppStoreEntry> entry, bool persist) {
+  if (!EntryExists(entry.get())) {
     if (persist) {
-      InsertEntryToDB(entry);
+      InsertEntryToDB(entry.get());
     }
-    AddToCache(entry);
+    AddToCache(std::move(entry));
   } else {
     LOG(ERROR) << "Failed to add entry " << entry->id().to_string() << " to DB. Already exists";
   }
@@ -133,43 +128,37 @@ void AppStoreModel::RemoveEntryFromDB(AppStoreEntry* entry) {
   MaybeClose();
 }
 
-void AppStoreModel::AddToCache(AppStoreEntry* entry) {
-  entries_.push_back(entry);
+void AppStoreModel::AddToCache(std::unique_ptr<AppStoreEntry> entry) {
+  entries_.push_back(std::move(entry));
   entry->set_managed(true);
 }
 
-bool AppStoreModel::RemoveFromCache(const base::UUID& id, bool should_delete) {
+bool AppStoreModel::RemoveFromCache(const base::UUID& id) {
   base::AutoLock lock(entries_vector_lock_);
   bool found = false;
   AppStoreEntry* entry = nullptr;
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
     if ((*it)->id() == id) {
-      entry = *it;
+      entry = it->get();
       (*it)->set_managed(false);
       entries_.erase(it);
       found = true;
       break;
     }
-  }
-  if (should_delete && entry) {
-    delete entry;
   }
   return found;
 }
 
-bool AppStoreModel::RemoveFromCache(AppStoreEntry* entry, bool should_delete) {
+bool AppStoreModel::RemoveFromCache(AppStoreEntry* entry) {
   base::AutoLock lock(entries_vector_lock_);
   bool found = false;
   for (auto it = entries_.begin(); it != entries_.end(); ++it) {
-    if (*it == entry) {
+    if (it->get() == entry) {
       (*it)->set_managed(false);
       entries_.erase(it);
       found = true;
       break;
     }
-  }
-  if (should_delete && entry) {
-    delete entry;
   }
   return found;
 }
@@ -194,7 +183,7 @@ void AppStoreModel::LoadEntriesFromDB(base::Callback<void(int, int)> cb) {
       if (p) {
         p->set_managed(true);
         entries_vector_lock_.Acquire();
-        entries_.push_back(p.release());
+        entries_.push_back(std::move(p));
         entries_vector_lock_.Release();
       } else {
         LOG(ERROR) << "failed to deserialize entry";

@@ -112,7 +112,7 @@ std::vector<std::string> GetSystemKeyspaces() {
     "ml_model",
     "ml_predictor",
     "ml_dataset",
-    "app_store";
+    "app_store"
   };
 }
 

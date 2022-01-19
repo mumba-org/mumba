@@ -64,7 +64,7 @@ AppStoreEntry* AppStore::GetEntryByName(const std::string& name) {
   return entries_->GetEntryByName(name);
 }
 
-const std::vector<AppStoreEntry *>& AppStore::GetEntries() {
+const std::vector<std::unique_ptr<AppStoreEntry>>& AppStore::GetEntries() const {
   return entries_->entries();
 }
 
@@ -74,7 +74,7 @@ size_t AppStore::GetEntryCount() {
 
 void AppStore::InsertEntry(std::unique_ptr<AppStoreEntry> entry, bool persist) {
   AppStoreEntry* reference = entry.get();
-  entries_->InsertEntry(entry.release(), persist);
+  entries_->InsertEntry(std::move(entry), persist);
   NotifyEntryAdded(reference);
 }
 
