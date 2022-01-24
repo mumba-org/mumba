@@ -431,8 +431,6 @@ int main(int argc, char** argv) {
  base::FilePath app_base_path(argv[2]);
  bool no_frontend = cmd->HasSwitch("no-frontend");
 
- printf("no_frontend? %s\n", (no_frontend ? "true" : "false"));
-
  if (!base::PathService::Get(base::DIR_HOME, &home_path)) {
     printf("error while getting home path\n");
     return 1;

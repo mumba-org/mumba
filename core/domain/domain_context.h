@@ -49,6 +49,8 @@ class LauncherClient;
 class P2PSocketDispatcher;
 class ApplicationManager;
 class RouteDispatcher;
+class AppStoreDispatcher;
+class RepoDispatcher;
 
 enum class DomainState {
   kUndefined,
@@ -92,6 +94,14 @@ public:
   LauncherClient* launcher_client() const { return launcher_client_.get(); }
   ServiceDispatcher* service_dispatcher() const { return service_dispatcher_.get(); }
   RouteDispatcher* route_dispatcher() const { return route_dispatcher_.get(); }
+  RepoDispatcher* repo_dispatcher() const {
+    return repo_dispatcher_.get();
+  }
+  
+  AppStoreDispatcher* app_store_dispatcher() const {
+    return app_store_dispatcher_.get();
+  }
+  
   common::mojom::RouteRegistry* GetRouteRegistry();
   common::mojom::ServiceRegistry* GetServiceRegistry();
   common::mojom::ChannelRegistry* GetChannelRegistry();
@@ -106,7 +116,6 @@ public:
     blink::AssociatedInterfaceRegistry* associated_interface_registry);
 
   void Shutdown();
-
 
 private:
   friend class base::RefCountedThreadSafe<DomainContext>;
@@ -134,6 +143,8 @@ private:
   std::unique_ptr<IdentityManagerClient> identity_manager_client_;
   std::unique_ptr<ServiceDispatcher> service_dispatcher_;
   std::unique_ptr<RouteDispatcher> route_dispatcher_;
+  std::unique_ptr<RepoDispatcher> repo_dispatcher_;
+  std::unique_ptr<AppStoreDispatcher> app_store_dispatcher_;
   std::unique_ptr<LauncherClient> launcher_client_;
 
   std::unique_ptr<StorageManager> storage_manager_;

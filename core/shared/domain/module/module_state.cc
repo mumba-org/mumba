@@ -39,6 +39,14 @@ common::mojom::ServiceRegistry* ModuleState::service_registry() const {
   return delegate_->service_registry();
 }
 
+RepoDispatcher* ModuleState::repo_dispatcher() const {
+  return delegate_->repo_dispatcher();
+}
+
+AppStoreDispatcher* ModuleState::app_store_dispatcher() const {
+  return delegate_->app_store_dispatcher();
+}
+
 void ModuleState::CreateP2PSocket(
     int type, 
     int id, 

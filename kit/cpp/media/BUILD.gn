@@ -1,0 +1,11 @@
+executable("decode") {
+  deps = [
+    #"//lib/media/ffmpeg",
+    "//third_party/ffmpeg",
+    "//third_party/ffmpeg:ffmpeg_features",
+    "//third_party/opus",
+  ]
+  sources = [
+    "decode.cc",
+  ]
+}

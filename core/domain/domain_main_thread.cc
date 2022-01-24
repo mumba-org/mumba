@@ -73,6 +73,8 @@
 #include "core/domain/resource_dispatcher.h"
 #include "core/shared/domain/storage/storage_dispatcher.h"
 #include "core/shared/domain/route/route_dispatcher.h"
+#include "core/shared/domain/repo/repo_dispatcher.h"
+#include "core/shared/domain/store/app_store_dispatcher.h"
 #include "core/domain/device/device_dispatcher.h"
 #include "core/domain/application/application_manager_client.h"
 #include "core/domain/application/window_manager_client.h"
@@ -767,11 +769,9 @@ void DomainMainThread::Init(const base::CommandLine& cmd, const Options& options
 
   GetChannel()->GetRemoteAssociatedInterface(
     &domain_context_->application_manager_client()->application_manager_host_);
-
   //DCHECK(domain_context_->application_manager_client()->application_manager_host_);
 
   GetChannel()->GetRemoteAssociatedInterface(&domain_context_->domain_registry_interface_);
-  
   //DCHECK(domain_context_->domain_registry_interface_);
 
   GetChannel()->GetRemoteAssociatedInterface(&domain_context_->service_registry_interface_);
@@ -780,13 +780,14 @@ void DomainMainThread::Init(const base::CommandLine& cmd, const Options& options
   GetChannel()->GetRemoteAssociatedInterface(&domain_context_->channel_registry_interface_);
   //DCHECK(domain_context_->channel_registry_interface_);
   
-  //DLOG(INFO) << "Domain main thread: getting 'route_dispatcher_client' .. ";
-
-  // GetChannel()->GetRemoteAssociatedInterface(
-  //    &domain_context_->route_dispatcher()->route_dispatcher_client_);
-  
   GetChannel()->GetRemoteAssociatedInterface(
     &domain_context_->route_dispatcher()->route_dispatcher_client_);
+
+  GetChannel()->GetRemoteAssociatedInterface(
+    &domain_context_->repo_dispatcher()->repo_dispatcher_);
+  
+  GetChannel()->GetRemoteAssociatedInterface(
+    &domain_context_->app_store_dispatcher()->app_store_dispatcher_);
 
   LoadResourceBundles();
 
@@ -965,6 +966,14 @@ void DomainMainThread::RegisterMojoInterfaces() {
   GetAssociatedInterfaceRegistry()->AddInterface(
       base::BindRepeating(&RouteDispatcher::Bind,
                           base::Unretained(domain_context()->route_dispatcher())));
+
+  // GetAssociatedInterfaceRegistry()->AddInterface(
+  //     base::BindRepeating(&RepoDispatcher::Bind,
+  //                         base::Unretained(domain_context()->repo_dispatcher())));
+
+  // GetAssociatedInterfaceRegistry()->AddInterface(
+  //     base::BindRepeating(&AppStoreDispatcher::Bind,
+  //                         base::Unretained(domain_context()->app_store_dispatcher())));
     
 }
 

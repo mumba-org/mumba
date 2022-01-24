@@ -35,6 +35,8 @@
 #include "core/shared/domain/storage/storage_context.h"
 #include "core/shared/domain/storage/storage_index.h"
 #include "core/shared/domain/route/route_dispatcher.h"
+#include "core/shared/domain/repo/repo_dispatcher.h"
+#include "core/shared/domain/store/app_store_dispatcher.h"
 #include "core/domain/application/application_manager.h"
 #include "core/domain/application/window_manager_client.h"
 #include "core/domain/application/application_manager_client.h"
@@ -59,6 +61,8 @@ DomainContext::DomainContext(
     identity_manager_client_(new IdentityManagerClient()),
     service_dispatcher_(new ServiceDispatcher()),
     route_dispatcher_(new RouteDispatcher()),
+    repo_dispatcher_(new RepoDispatcher()),
+    app_store_dispatcher_(new AppStoreDispatcher()),
     launcher_client_(new LauncherClient()),
     storage_manager_(new StorageManager(this, domain_root)),
     device_manager_(new DeviceManager()),
@@ -79,6 +83,8 @@ bool DomainContext::Init(P2PSocketDispatcher* p2p_socket_dispatcher,
   application_manager_.reset(new ApplicationManager(this, main_task_runner, ipc_channel, associated_interface_registry));
   storage_manager_->Initialize(storage_dispatcher_.get(), main_task_runner, io_task_runner);
   route_dispatcher_->Initialize(main_task_runner);
+  app_store_dispatcher_->Initialize(main_task_runner);
+  repo_dispatcher_->Initialize(main_task_runner);
 
   return true;
 }

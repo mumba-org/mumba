@@ -1064,8 +1064,8 @@ template("swift_protobuf") {
       rebase_path(proto_in_dir, root_build_dir),
       "--swift-out-dir",
       rel_swift_out_dir,
-      "--import-dir",
-      rebase_path("//kit/proto", root_build_dir)
+      #"--import-dir",
+      #rebase_path("//kit/proto", root_build_dir)
     ]
 
     if (defined(invoker.import_dirs)) {

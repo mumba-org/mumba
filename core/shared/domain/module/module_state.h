@@ -29,6 +29,8 @@ namespace domain {
 class P2PSocketDispatcher;
 class StorageManager;
 class RouteDispatcher;
+class RepoDispatcher;
+class AppStoreDispatcher;
 
 class CONTENT_EXPORT ModuleState {
 public:
@@ -42,6 +44,8 @@ public:
     virtual StorageManager* storage_manager() const = 0;
     virtual RouteDispatcher* route_dispatcher() const = 0;
     virtual P2PSocketDispatcher* socket_dispatcher() const = 0;
+    virtual RepoDispatcher* repo_dispatcher() const = 0;
+    virtual AppStoreDispatcher* app_store_dispatcher() const = 0;
     virtual common::mojom::RouteRegistry* route_registry() const = 0;
     virtual common::mojom::ChannelRegistry* channel_registry() const = 0;
     virtual common::mojom::ServiceRegistry* service_registry() const = 0;
@@ -65,6 +69,8 @@ public:
   P2PSocketDispatcher* socket_dispatcher() const;
   StorageManager* storage_manager() const;
   RouteDispatcher* route_dispatcher() const;
+  RepoDispatcher* repo_dispatcher() const;
+  AppStoreDispatcher* app_store_dispatcher() const;
   common::mojom::RouteRegistry* route_registry() const;
   common::mojom::ChannelRegistry* channel_registry() const;
   common::mojom::ServiceRegistry* service_registry() const;

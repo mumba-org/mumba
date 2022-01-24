@@ -197,6 +197,14 @@ RouteDispatcher* NativeModule::route_dispatcher() const {
   return context_->route_dispatcher();
 }
 
+RepoDispatcher* NativeModule::repo_dispatcher() const {
+  return context_->repo_dispatcher();
+}
+
+AppStoreDispatcher* NativeModule::app_store_dispatcher() const {
+  return context_->app_store_dispatcher();
+}
+
 common::mojom::RouteRegistry* NativeModule::route_registry() const {
   return context_->GetRouteRegistry();
 }
