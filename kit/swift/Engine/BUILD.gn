@@ -11,6 +11,7 @@ swift_static("Engine") {
     "//kit/swift/Service",
     "//kit/swift/App",
     "//kit/swift/Route",
+    "//kit/swift/Collection",
     "//kit/swift/ThirdParty/Libevent",
     "//kit/swift/ThirdParty/ProtocolBuffers",
     "//kit/swift/ThirdParty/CGRPCZlib"

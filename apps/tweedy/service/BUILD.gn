@@ -14,6 +14,7 @@ swift_shared("tweedy_service") {
     "//kit/swift/PosixShim",
     "//kit/swift/Compositor",
     "//kit/swift/Route",
+    "//kit/swift/Collection",
     "//kit/swift/Web",
     "//kit/swift/PDF",
     "//kit/swift/Gpu",

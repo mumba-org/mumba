@@ -17,7 +17,7 @@ class Schema;
 class Volume;
 class HostRpcService;
 class Bundle;
-class AppStoreEntry;
+class CollectionEntry;
 
 class WorkspaceObserver {
 public:
@@ -55,9 +55,9 @@ public:
   virtual void OnBundlesLoaded(size_t count) {}
   virtual void OnBundleAdded(Bundle* bundle) {}
   virtual void OnBundleRemoved(Bundle* bundle) {}
-  virtual void OnAppStoreEntriesLoaded(size_t count) {}
-  virtual void OnAppStoreEntryAdded(AppStoreEntry* app_store_entry) {}
-  virtual void OnAppStoreEntryRemoved(AppStoreEntry* app_store_entry) {}
+  virtual void OnCollectionEntriesLoaded(size_t count) {}
+  virtual void OnCollectionEntryAdded(CollectionEntry* collection_entry) {}
+  virtual void OnCollectionEntryRemoved(CollectionEntry* collection_entry) {}
 };
 
 }

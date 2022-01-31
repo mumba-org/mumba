@@ -581,7 +581,6 @@ mojom("constants") {
 
 mojom("mojom") {
   sources = [
-    "mojom/ads.mojom",
     "mojom/api.mojom",
     "mojom/automation.mojom",
     "mojom/application_types.mojom",
@@ -604,7 +603,7 @@ mojom("mojom") {
     "mojom/script.mojom",
     "mojom/bundle.mojom",
     "mojom/repo.mojom",
-    "mojom/app_store.mojom",
+    "mojom/collection.mojom",
     #"mojom/terminal.mojom",
     "mojom/share.mojom",
     "mojom/channel.mojom",

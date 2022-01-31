@@ -73,7 +73,6 @@ struct SchemeListCallbackState {
 struct RepoAddWatcherCallbackState {
   void* state;
   void* watcher_state;
-  void(*cb)(void*, int, void*, void*);
   void(*OnRepoAdded)(void*, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*);
   void(*OnRepoRemoved)(void*, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*);
   common::mojom::RepoWatcherPtr watcher_ptr;
@@ -137,12 +136,8 @@ void OnAddWatcherResult(
 struct RepoRegistryWrapper : public domain::RepoDispatcher::Delegate {
 
   RepoRegistryWrapper(domain::RepoDispatcher* dispatcher, 
-                      void* handler_state,
-                      RepoRegistryCallbacks handler_callbacks,
                       const scoped_refptr<base::SingleThreadTaskRunner>& task_runner): 
     dispatcher(dispatcher),
-    handler_state(handler_state),
-    handler_callbacks(std::move(handler_callbacks)),
     task_runner(task_runner) {
     if (dispatcher) {
       dispatcher->set_delegate(this);
@@ -150,8 +145,6 @@ struct RepoRegistryWrapper : public domain::RepoDispatcher::Delegate {
   }
 
   domain::RepoDispatcher* dispatcher;
-  void* handler_state;
-  RepoRegistryCallbacks handler_callbacks;
   scoped_refptr<base::SingleThreadTaskRunner> task_runner;
 
   void AddWatcher(
@@ -331,12 +324,10 @@ struct RepoRegistryWrapper : public domain::RepoDispatcher::Delegate {
 
 };
 
-RepoRegistryRef _RepoRegistryCreateFromEngine(EngineInstanceRef handle, void* state, RepoRegistryCallbacks callbacks) {
+RepoRegistryRef _RepoRegistryCreateFromEngine(EngineInstanceRef handle) {
   domain::ModuleState* module = reinterpret_cast<_EngineInstance *>(handle)->module_state();
   return new RepoRegistryWrapper(
     module->repo_dispatcher(), 
-    state, 
-    std::move(callbacks), 
     module->GetMainTaskRunner());
 }
 
@@ -344,20 +335,9 @@ void _RepoRegistryDestroy(RepoRegistryRef handle) {
   delete reinterpret_cast<RepoRegistryWrapper *>(handle);
 }
 
-void _RepoRegistryAddRepo(RepoRegistryRef handle, const char* uuid, int type, const char* name, const char* address, int addr_format, const char* addr_format_ver, const char* pk, int pk_format, const char* root_tree, const char* creator, void(*callback)(void*, int)) {
+void _RepoRegistryAddRepo(RepoRegistryRef handle, const char* uuid, int type, const char* name, const char* address, int addr_format, const char* addr_format_ver, const char* pk, int pk_format, const char* root_tree, const char* creator, void* state, void(*callback)(void*, int)) {
   common::mojom::RepoEntryPtr entry = common::mojom::RepoEntry::New();
   
-  // string uuid;
-  // RepoType type;
-  // string name;
-  // string address;
-  // RepoAddressFormat address_format;
-  // string address_format_version;
-  // string public_key; // raw_bytes
-  // PKCryptoFormat pk_crypto_format;
-  // string root_tree; // raw_bytes
-  // string creator;
-
   entry->uuid = std::string(uuid);
   entry->type = static_cast<common::mojom::RepoType>(type);
   entry->name = std::string(name);
@@ -370,77 +350,75 @@ void _RepoRegistryAddRepo(RepoRegistryRef handle, const char* uuid, int type, co
   reinterpret_cast<RepoRegistryWrapper *>(handle)->AddRepo(std::move(entry));
 }
 
-void _RepoRegistryAddRepoByAddress(RepoRegistryRef handle, const char* address, void(*callback)(void*, int)) {
+void _RepoRegistryAddRepoByAddress(RepoRegistryRef handle, const char* address, void* state, void(*callback)(void*, int)) {
   
 }
 
-void _RepoRegistryRemoveRepo(RepoRegistryRef handle, const char* address, void(*callback)(void*, int)) {
+void _RepoRegistryRemoveRepo(RepoRegistryRef handle, const char* address, void* state, void(*callback)(void*, int)) {
   reinterpret_cast<RepoRegistryWrapper *>(handle)->RemoveRepo(address);
 }
 
-void _RepoRegistryRemoveRepoByUUID(RepoRegistryRef handle, const char* uuid, void(*callback)(void*, int)) {
+void _RepoRegistryRemoveRepoByUUID(RepoRegistryRef handle, const char* uuid, void* state, void(*callback)(void*, int)) {
   reinterpret_cast<RepoRegistryWrapper *>(handle)->RemoveRepoByUUID(uuid);
 }
 
-void _RepoRegistryLookupRepo(RepoRegistryRef handle, const char* address, void(*callback)(void*, int, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*)) {
+void _RepoRegistryLookupRepo(RepoRegistryRef handle, const char* address, void* state, void(*callback)(void*, int, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoGetCallbackState cb_state{registry->handler_state, callback};  
+  RepoGetCallbackState cb_state{state, callback};  
   registry->LookupRepo(address, std::move(cb_state));
 }
 
-void _RepoRegistryLookupRepoByName(RepoRegistryRef handle, const char* name, void(*callback)(void*, int, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*)) {
+void _RepoRegistryLookupRepoByName(RepoRegistryRef handle, const char* name, void* state, void(*callback)(void*, int, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoGetCallbackState cb_state{registry->handler_state, callback};  
+  RepoGetCallbackState cb_state{state, callback};  
   registry->LookupRepoByName(name, std::move(cb_state));
 }
 
-void _RepoRegistryLookupRepoByUUID(RepoRegistryRef handle, const char* uuid, void(*callback)(void*, int, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*)) {
+void _RepoRegistryLookupRepoByUUID(RepoRegistryRef handle, const char* uuid, void* state, void(*callback)(void*, int, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoGetCallbackState cb_state{registry->handler_state, callback};  
+  RepoGetCallbackState cb_state{state, callback};  
   registry->LookupRepoByUUID(uuid, std::move(cb_state));
 }
 
-void _RepoRegistryHaveRepo(RepoRegistryRef handle, const char* address, void(*callback)(void*, int)) {
+void _RepoRegistryHaveRepo(RepoRegistryRef handle, const char* address, void* state, void(*callback)(void*, int)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoHaveCallbackState cb_state{registry->handler_state, callback};  
+  RepoHaveCallbackState cb_state{state, callback};  
   registry->HaveRepo(address, std::move(cb_state));
 }
 
-void _RepoRegistryHaveRepoByName(RepoRegistryRef handle, const char* name, void(*callback)(void*, int)) {
+void _RepoRegistryHaveRepoByName(RepoRegistryRef handle, const char* name, void* state, void(*callback)(void*, int)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoHaveCallbackState cb_state{registry->handler_state, callback};  
+  RepoHaveCallbackState cb_state{state, callback};  
   registry->HaveRepoByName(name, std::move(cb_state));
 }
 
-void _RepoRegistryHaveRepoByUUID(RepoRegistryRef handle, const char* uuid, void(*callback)(void*, int)) {
+void _RepoRegistryHaveRepoByUUID(RepoRegistryRef handle, const char* uuid, void* state, void(*callback)(void*, int)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoHaveCallbackState cb_state{registry->handler_state, callback};  
+  RepoHaveCallbackState cb_state{state, callback};  
   registry->HaveRepoByUUID(uuid, std::move(cb_state));
 }
 
-void _RepoRegistryListRepos(RepoRegistryRef handle, void(*callback)(void*, int, const char**, int*, const char**, const char**, int*, const char**, const char**, int*, const char**, const char**)) {
+void _RepoRegistryListRepos(RepoRegistryRef handle, void* state, void(*callback)(void*, int, const char**, int*, const char**, const char**, int*, const char**, const char**, int*, const char**, const char**)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoListCallbackState cb_state{registry->handler_state, callback};  
+  RepoListCallbackState cb_state{state, callback};  
   registry->ListRepos(std::move(cb_state));
 }
 
-void _RepoRegistryGetRepoCount(RepoRegistryRef handle, void(*callback)(void*, int)) {
+void _RepoRegistryGetRepoCount(RepoRegistryRef handle, void* state, void(*callback)(void*, int)) {
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoHaveCallbackState cb_state{registry->handler_state, callback};  
+  RepoHaveCallbackState cb_state{state, callback};  
   registry->GetRepoCount(std::move(cb_state));
 }
 
 void _RepoRegistryAddWatcher(
   RepoRegistryRef handle, 
-  RepoWatcherRef watcher, 
   void* state,
   void* watcher_state, 
-  void(*cb)(void*, int, void*, void*),
   void(*OnEntryAdded)(void*, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*),
   void(*OnEntryRemoved)(void*, const char*, int, const char*, const char*, int, const char*, const char*, int, const char*, const char*)) {
 
   RepoRegistryWrapper* registry = reinterpret_cast<RepoRegistryWrapper *>(handle);
-  RepoAddWatcherCallbackState cb_state{state, watcher_state, cb, OnEntryAdded, OnEntryRemoved};  
+  RepoAddWatcherCallbackState cb_state{state, watcher_state, OnEntryAdded, OnEntryRemoved};  
   registry->AddWatcher(std::move(cb_state));  
 }
 
@@ -448,3 +426,6 @@ void _RepoRegistryRemoveWatcher(RepoRegistryRef handle, int32_t watcher) {
   reinterpret_cast<RepoRegistryWrapper*>(handle)->RemoveWatcher(watcher);
 }
 
+void _RepoWatcherDestroy(void* handle) {
+  delete reinterpret_cast<RepoRegistryWatcherImpl *>(handle);
+}

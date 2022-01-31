@@ -83,7 +83,7 @@ private:
   StorageManager* storage_manager() const override;
   RouteDispatcher* route_dispatcher() const override;
   RepoDispatcher* repo_dispatcher() const override;
-  AppStoreDispatcher* app_store_dispatcher() const override;
+  CollectionDispatcher* collection_dispatcher() const override;
   common::mojom::RouteRegistry* route_registry() const override;
   common::mojom::ChannelRegistry* channel_registry() const override;
   common::mojom::ServiceRegistry* service_registry() const override;

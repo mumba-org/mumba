@@ -1,0 +1,84 @@
+// Copyright 2022 Mumba. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module common.mojom;
+
+import "lib/mojo/public/mojom/base/string16.mojom";
+import "lib/mojo/public/mojom/base/ref_counted_memory.mojom";
+import "lib/mojo/public/mojom/base/big_buffer.mojom";
+import "lib/url/mojom/url.mojom";
+
+enum CollectionStatusCode {
+  kCOLLECTION_STATUS_OK = 0,
+  kCOLLECTION_STATUS_ERR_FAILED,
+  kCOLLECTION_STATUS_ERR_ENTRY_NOT_FOUND,
+};
+
+enum CollectionEntryAvailabilityState {
+  COLLECTION_ENTRY_UNAVAILABLE = 0,
+  COLLECTION_ENTRY_AVAILABLE,
+  COLLECTION_ENTRY_DEACTIVATED
+};
+
+enum CollectionEntryInstallState {
+  COLLECTION_ENTRY_NOT_INSTALLED = 0,
+  COLLECTION_ENTRY_DOWNLOADED,
+  COLLECTION_ENTRY_INSTALLED,
+  COLLECTION_ENTRY_DISABLED,
+  COLLECTION_ENTRY_ERROR
+};
+
+struct CollectionEntry {
+  string uuid;
+  string name;
+  string description;
+  string version;
+  string license;
+  string publisher;
+  string publisher_url;  
+  string publisher_public_key;
+  string logo_path;
+  uint64 size;
+  string repo_uuid;
+  string repo_public_key;
+  CollectionEntryInstallState install_state;
+  CollectionEntryAvailabilityState availability_state;
+  uint64 install_counter;
+  uint32 rating;
+  string app_public_key;
+  array<string> supported_platforms;
+  array<string> supported_languages;
+};
+
+enum CollectionEntryAddressType {
+  COLLECTION_DHT_ADDRESS = 0,
+  COLLECTION_TORRENT_ADDRESS
+};
+
+struct CollectionEntryDescriptor {
+  CollectionEntryAddressType type;
+  string address;
+};
+
+interface CollectionWatcher {
+  OnEntryAdded(CollectionEntry entry);
+  OnEntryRemoved(CollectionEntry entry);
+};
+
+interface CollectionDispatcher {
+  AddEntry(CollectionEntry entry) => (CollectionStatusCode reply);
+  AddEntryByAddress(CollectionEntryDescriptor descriptor) => (CollectionStatusCode reply);
+  RemoveEntry(string address) => (CollectionStatusCode reply);
+  RemoveEntryByUUID(string uuid) => (CollectionStatusCode reply);
+  LookupEntry(string address) => (CollectionStatusCode code, CollectionEntry? entry);
+  LookupEntryByName(string name) => (CollectionStatusCode code, CollectionEntry? entry);
+  LookupEntryByUUID(string uuid) => (CollectionStatusCode code, CollectionEntry? entry);
+  HaveEntry(string address) => (bool have);
+  HaveEntryByName(string name) => (bool have);
+  HaveEntryByUUID(string uuid) => (bool have);
+  ListEntries() => (array<CollectionEntry> entries);
+  GetEntryCount() => (uint32 count);
+  AddWatcher(CollectionWatcher watcher) => (int32 id);
+  RemoveWatcher(int32 watcher);
+};

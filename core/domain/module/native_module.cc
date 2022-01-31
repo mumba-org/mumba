@@ -201,8 +201,8 @@ RepoDispatcher* NativeModule::repo_dispatcher() const {
   return context_->repo_dispatcher();
 }
 
-AppStoreDispatcher* NativeModule::app_store_dispatcher() const {
-  return context_->app_store_dispatcher();
+CollectionDispatcher* NativeModule::collection_dispatcher() const {
+  return context_->collection_dispatcher();
 }
 
 common::mojom::RouteRegistry* NativeModule::route_registry() const {

@@ -173,6 +173,7 @@ void RepoRegistry::RemoveWatcher(int watcher) {
 }
 
 void RepoRegistry::AddRepoImpl(common::mojom::RepoEntryPtr entry, AddRepoCallback callback) {
+  DLOG(INFO) << "RepoRegistry::AddRepoImpl";
   const std::string& address = entry->address;
   controller_.AddRepo(address,
    base::Bind(&RepoRegistry::OnStorageCloned, 
@@ -181,6 +182,7 @@ void RepoRegistry::AddRepoImpl(common::mojom::RepoEntryPtr entry, AddRepoCallbac
 }
 
 void RepoRegistry::AddRepoByAddressImpl(common::mojom::RepoDescriptorPtr descriptor, AddRepoByAddressCallback callback) {
+  DLOG(INFO) << "RepoRegistry::AddRepoByAddressImpl";
   const std::string& address = descriptor->address;
   controller_.AddRepo(address,
     base::Bind(&RepoRegistry::OnStorageCloned, 

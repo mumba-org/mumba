@@ -16,6 +16,7 @@ import Graphics
 import Web
 import Python
 import PDF
+import Collection
 
 public class HelloWorker : WebWorkerNative {
 
@@ -501,6 +502,7 @@ internal class TweedyProviderImpl : tweedy_TweedyProvider {
   
 
   func say(callId: Int, request: Tweedy.ChatMessage, session: tweedy_TweedySaySession) throws -> ServerStatus? {
+    print("say() rpc method was called (on domain process)")
     // let waitev = WaitableEvent(resetPolicy: .manual, initialState: .notSignaled)
     appId += 1
     let msg = Tweedy.ChatMessage.getBuilder()
@@ -544,36 +546,47 @@ internal class TweedyProviderImpl : tweedy_TweedyProvider {
     //   print("requestCacheNames returned => caches: '\(caches.count)'")
     // })
 
-    for apphost in context!.applications {
-      for app in apphost.instances {
-        app.openCache("tweedy|main", { result in
-          let resultStr = result == 0 ? "opened" : "opening failed"
-          print("openCache returned => cache 'tweedy' \(resultStr)")
-          let blob = Engine.BlobData()
-          blob.appendBytes(Data(bytes: self.lenaBuffer!, count: self.lenaBufferSize))
-          //blob.appendFile("/home/fabiok/Downloads/pnad_2015_relacoes_de_trabalho.xls", offset: 0, length: 5255168, expectedModificationTime: -1)
-          app.requestCachedResponse("tweedy|main", url: "tweedy://hello", base64Encoded: false, { getResult in
-            //let encData = Data(base64Encoded: getResult.body)!
-            //let data = String(data: encData, encoding: .utf8)!
-            //print("requestCache returned:\n'\(data)'")
-            print("requestCache returned \(getResult.body.count) bytes of data")
-            if getResult.body.isEmpty {
-              app.putCacheEntry("tweedy|main", request: "tweedy://hello", blob: blob, { putResult in
-                print("putCache returned => \(putResult)")
-                // if putResult {
-                //   app.requestCachedResponse("tweedy|main", url: "tweedy://hello", base64Encoded: false, { getResult in
-                //     //let encData = Data(base64Encoded: getResult.body)!
-                //     //let data = String(data: encData, encoding: .utf8)!
-                //     //print("requestCache returned:\n'\(data)'")
-                //     print("requestCache returned:\n'\(getResult.body)'")
-                //   })
-                // }
-              })
-            }
-          })
-        })
+    // web cache test
+
+    // for apphost in context!.applications {
+    //   for app in apphost.instances {
+    //     app.openCache("tweedy|main", { result in
+    //       let resultStr = result == 0 ? "opened" : "opening failed"
+    //       print("openCache returned => cache 'tweedy' \(resultStr)")
+    //       let blob = Engine.BlobData()
+    //       blob.appendBytes(Data(bytes: self.lenaBuffer!, count: self.lenaBufferSize))
+    //       //blob.appendFile("/home/fabiok/Downloads/pnad_2015_relacoes_de_trabalho.xls", offset: 0, length: 5255168, expectedModificationTime: -1)
+    //       app.requestCachedResponse("tweedy|main", url: "tweedy://hello", base64Encoded: false, { getResult in
+    //         //let encData = Data(base64Encoded: getResult.body)!
+    //         //let data = String(data: encData, encoding: .utf8)!
+    //         //print("requestCache returned:\n'\(data)'")
+    //         print("requestCache returned \(getResult.body.count) bytes of data")
+    //         if getResult.body.isEmpty {
+    //           app.putCacheEntry("tweedy|main", request: "tweedy://hello", blob: blob, { putResult in
+    //             print("putCache returned => \(putResult)")
+    //             // if putResult {
+    //             //   app.requestCachedResponse("tweedy|main", url: "tweedy://hello", base64Encoded: false, { getResult in
+    //             //     //let encData = Data(base64Encoded: getResult.body)!
+    //             //     //let data = String(data: encData, encoding: .utf8)!
+    //             //     //print("requestCache returned:\n'\(data)'")
+    //             //     print("requestCache returned:\n'\(getResult.body)'")
+    //             //   })
+    //             // }
+    //           })
+    //         }
+    //       })
+    //     })
+    //   }
+    // }
+
+    // collection/ repo test
+    context!.repos.addRepo(address: "123456", { ok in 
+      if ok {
+        print("adding repo '123456' ok")
+      } else {
+        print("adding repo '123456' failed")
       }
-    }
+    })
 
     msg.message = "some automation method was called"
 

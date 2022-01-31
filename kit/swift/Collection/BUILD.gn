@@ -1,0 +1,15 @@
+swift_static("Collection") {
+  deps = [
+    "//runtime/MumbaShims",
+    "//kit/swift/Base",
+  ]
+  if (is_linux) {
+    deps += [
+      "//kit/swift/PosixShim",
+    ]
+  }
+  sources = [
+    "Sources/RepoRegistry.swift",
+    "Sources/Collection.swift"
+  ]
+}

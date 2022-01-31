@@ -74,7 +74,7 @@
 #include "core/shared/domain/storage/storage_dispatcher.h"
 #include "core/shared/domain/route/route_dispatcher.h"
 #include "core/shared/domain/repo/repo_dispatcher.h"
-#include "core/shared/domain/store/app_store_dispatcher.h"
+#include "core/shared/domain/collection/collection_dispatcher.h"
 #include "core/domain/device/device_dispatcher.h"
 #include "core/domain/application/application_manager_client.h"
 #include "core/domain/application/window_manager_client.h"
@@ -787,7 +787,7 @@ void DomainMainThread::Init(const base::CommandLine& cmd, const Options& options
     &domain_context_->repo_dispatcher()->repo_dispatcher_);
   
   GetChannel()->GetRemoteAssociatedInterface(
-    &domain_context_->app_store_dispatcher()->app_store_dispatcher_);
+    &domain_context_->collection_dispatcher()->collection_dispatcher_);
 
   LoadResourceBundles();
 
@@ -972,8 +972,8 @@ void DomainMainThread::RegisterMojoInterfaces() {
   //                         base::Unretained(domain_context()->repo_dispatcher())));
 
   // GetAssociatedInterfaceRegistry()->AddInterface(
-  //     base::BindRepeating(&AppStoreDispatcher::Bind,
-  //                         base::Unretained(domain_context()->app_store_dispatcher())));
+  //     base::BindRepeating(&CollectionDispatcher::Bind,
+  //                         base::Unretained(domain_context()->collection_dispatcher())));
     
 }
 

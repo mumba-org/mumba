@@ -86,6 +86,8 @@
 #include "core/host/io_thread.h"
 #include "core/host/route/route_registry.h"
 #include "core/host/rpc/service_registry.h"
+#include "core/host/collection/collection_dispatcher.h"
+#include "core/host/repo/repo_registry.h"
 #include "net/url_request/url_request_context_getter.h"
 #include "ipc/ipc.mojom.h"
 #include "ipc/ipc_channel.h"
@@ -779,6 +781,14 @@ void DomainProcessHost::RegisterMojoInterfaces() {
   channel_->AddAssociatedInterfaceForIOThread(
       base::Bind(&RouteRegistry::AddBinding,
                  base::Unretained(workspace->route_registry())));
+
+  channel_->AddAssociatedInterfaceForIOThread(
+      base::Bind(&RepoRegistry::AddBinding,
+                 base::Unretained(workspace->repo_registry())));
+
+  channel_->AddAssociatedInterfaceForIOThread(
+      base::Bind(&CollectionDispatcher::AddBinding,
+                 base::Unretained(workspace->collection_dispatcher())));
 
   channel_->AddAssociatedInterfaceForIOThread(
       base::Bind(&ServiceRegistry::AddBinding,

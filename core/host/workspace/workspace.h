@@ -33,7 +33,7 @@
 #include "core/host/bundle/bundle_manager_observer.h"
 #include "core/host/identity/identity_manager.h"
 #include "core/host/repo/repo_manager_observer.h"
-#include "core/host/store/app_store_observer.h"
+#include "core/host/collection/collection_observer.h"
 #include "core/host/rpc/server/rpc_manager.h"
 #include "core/host/schema/schema_registry.h"
 #include "core/host/route/route_observer.h"
@@ -63,6 +63,7 @@ class RouteRegistry;
 class RouteResolver;
 class Repo;
 class RepoManager;
+class RepoRegistry;
 class Device;
 class Channel;
 class ChannelManager;
@@ -75,16 +76,14 @@ class MLController;
 class RunnableManager;
 class ShareManager;
 class ShareRegistry;
-class AdsManager;
-class AdsDispatcher;
 class APIManager;
 class APIDispatcher;
 class MarketDispatcher;
 class MarketManager;
 class BundleManager;
 class Bundle;
-class AppStoreDispatcher;
-class AppStore;
+class CollectionDispatcher;
+class Collection;
 
 struct WorkspaceParams {
   base::FilePath profile_path;
@@ -107,7 +106,7 @@ class Workspace : public Serializable,
                   public BundleManagerObserver,
                   public ChannelManagerObserver,
                   public TablistModelObserver,
-                  public AppStoreObserver,
+                  public CollectionObserver,
                   public base::RefCountedThreadSafe<Workspace> {
 public:
   // TODO: We need to bind this with a 'workspace disk' now
@@ -188,6 +187,10 @@ public:
     return repo_manager_.get();
   }
 
+  RepoRegistry* repo_registry() const {
+    return repo_registry_.get();
+  }
+
   ApplicationController* application_controller() const {
     return application_controller_.get();
   }
@@ -224,14 +227,6 @@ public:
     return share_manager_.get();
   }
 
-  AdsManager* ads_manager() const {
-    return ads_manager_.get();
-  }
-
-  AdsDispatcher* ads_dispatcher() const {
-    return ads_dispatcher_.get();
-  }
-
   APIManager* api_manager() const {
     return api_manager_.get(); 
   }
@@ -252,12 +247,12 @@ public:
     return bundle_manager_.get();
   }
 
-  AppStore* app_store() const {
-    return app_store_.get();
+  Collection* collection() const {
+    return collection_.get();
   }
 
-  AppStoreDispatcher* app_store_dispatcher() const {
-    return app_store_dispatcher_.get();
+  CollectionDispatcher* collection_dispatcher() const {
+    return collection_dispatcher_.get();
   }
 
   int generate_next_application_id();
@@ -520,10 +515,10 @@ private:
   void OnBundleAdded(Bundle* bundle) override;
   void OnBundleRemoved(Bundle* bundle) override;
 
-  // AppStoreObserver
-  void OnAppStoreEntriesLoad(int r, int count) override;
-  void OnAppStoreEntryAdded(AppStoreEntry* entry) override;
-  void OnAppStoreEntryRemoved(AppStoreEntry* entry) override;
+  // CollectionObserver
+  void OnCollectionEntriesLoad(int r, int count) override;
+  void OnCollectionEntryAdded(CollectionEntry* entry) override;
+  void OnCollectionEntryRemoved(CollectionEntry* entry) override;
 
   // DockListObserver
   void OnDockAdded(Dock* dock) override;
@@ -647,6 +642,7 @@ private:
   std::unique_ptr<StorageManager> storage_context_manager_;
   std::unique_ptr<ThemeService> theme_service_;
   std::unique_ptr<RepoManager> repo_manager_;
+  std::unique_ptr<RepoRegistry> repo_registry_;
   std::unique_ptr<ChannelManager> channel_manager_;
   std::unique_ptr<ApplicationController> application_controller_;
   std::unique_ptr<MLModelManager> ml_model_manager_;
@@ -657,15 +653,13 @@ private:
   std::unique_ptr<RunnableManager> runnable_manager_;
   std::unique_ptr<ShareRegistry> share_registry_;
   std::unique_ptr<ShareManager> share_manager_;
-  std::unique_ptr<AdsManager> ads_manager_;
-  std::unique_ptr<AdsDispatcher> ads_dispatcher_;
   std::unique_ptr<APIManager> api_manager_;
   std::unique_ptr<APIDispatcher> api_dispatcher_;
   std::unique_ptr<MarketDispatcher> market_dispatcher_;
   std::unique_ptr<MarketManager> market_manager_;
   std::unique_ptr<BundleManager> bundle_manager_;
-  std::unique_ptr<AppStore> app_store_;
-  std::unique_ptr<AppStoreDispatcher> app_store_dispatcher_;
+  std::unique_ptr<Collection> collection_;
+  std::unique_ptr<CollectionDispatcher> collection_dispatcher_;
    
   scoped_refptr<base::SingleThreadTaskRunner> domain_socket_acceptor_;
   

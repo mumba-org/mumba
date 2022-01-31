@@ -10,6 +10,7 @@ import Route
 import Service
 import Channel
 import Web
+import Collection
 
 public class ContainerContext {
   
@@ -30,6 +31,8 @@ open class EngineContext : Delegate,
   public private(set) var channelRegistry: ChannelRegistry!
   public private(set) var serviceRegistry: ServiceRegistry!
   public private(set) var routes: RouteManager!
+  public private(set) var collection: Collection!
+  public private(set) var repos: RepoRegistry!
   public private(set) var storageDelegate: StorageDelegate?
   public private(set) weak var applicationDelegate: ApplicationHostDelegate?
   public private(set) var routeRequestHandler: RouteRequestHandlerInterface?
@@ -49,6 +52,8 @@ open class EngineContext : Delegate,
     routes = RouteManager(routeRegistry: RouteRegistry(reference: _RouteRegistryCreateFromEngine(Instance.instance().state, self.routeRequestHandler!.state, self.routeRequestHandler!.callbacks)))
     channelRegistry = ChannelRegistry(reference: _ChannelRegistryCreateFromEngine(Instance.instance().state))
     serviceRegistry = ServiceRegistry(reference: _ServiceRegistryCreateFromEngine(Instance.instance().state))
+    collection = Collection(reference: _CollectionCreateFromEngine(Instance.instance().state))
+    repos = RepoRegistry(reference: _RepoRegistryCreateFromEngine(Instance.instance().state))
   }
 
   public func shutdown() {

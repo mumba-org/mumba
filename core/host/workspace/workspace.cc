@@ -39,6 +39,7 @@
 #include "core/host/channel/channel_model.h"
 #include "core/host/repo/repo_manager.h"
 #include "core/host/repo/repo_model.h"
+#include "core/host/repo/repo_registry.h"
 #include "core/host/repo/repo.h"
 #include "core/host/identity/identity_manager.h"
 #include "core/host/identity/identity_model.h"
@@ -50,9 +51,9 @@
 #include "core/host/application/domain_model.h"
 #include "core/host/application/application_controller.h"
 #include "core/host/application/runnable_manager.h"
-#include "core/host/store/app_store.h"
-#include "core/host/store/app_store_model.h"
-#include "core/host/store/app_store_dispatcher.h"
+#include "core/host/collection/collection.h"
+#include "core/host/collection/collection_model.h"
+#include "core/host/collection/collection_dispatcher.h"
 #include "core/host/volume/volume_model.h"
 #include "core/host/volume/volume_source_model.h"
 #include "core/host/ui/dock.h"
@@ -69,8 +70,6 @@
 #include "core/host/ml/ml_model.h"
 #include "core/host/ml/ml_model_manager.h"
 #include "core/host/ml/ml_service_manager.h"
-#include "core/host/ads/ads_dispatcher.h"
-#include "core/host/ads/ads_manager.h"
 #include "core/host/api/api_dispatcher.h"
 #include "core/host/api/api_manager.h"
 #include "core/host/bundle/bundle_manager.h"
@@ -112,7 +111,7 @@ std::vector<std::string> GetSystemKeyspaces() {
     "ml_model",
     "ml_predictor",
     "ml_dataset",
-    "app_store"
+    "collection"
   };
 }
 
@@ -214,6 +213,7 @@ bool Workspace::Init(const WorkspaceParams& params,
     params.admin_service_host,
     params.admin_service_port));
   repo_manager_.reset(new RepoManager());
+  repo_registry_.reset(new RepoRegistry(this, repo_manager_.get()));
   channel_manager_.reset(new ChannelManager());
   device_manager_.reset(new DeviceManager());
 
@@ -229,15 +229,13 @@ bool Workspace::Init(const WorkspaceParams& params,
   share_manager_.reset(new ShareManager(volume_storage()->storage_manager()));
   share_registry_.reset(new ShareRegistry(this, share_manager_.get()));
 
-  ads_manager_.reset(new AdsManager());
-  ads_dispatcher_.reset(new AdsDispatcher());
   api_manager_.reset(new APIManager());
   api_dispatcher_.reset(new APIDispatcher());
   market_manager_.reset(new MarketManager());
   market_dispatcher_.reset(new MarketDispatcher());
 
-  app_store_.reset(new AppStore());
-  app_store_dispatcher_.reset(new AppStoreDispatcher(this, app_store_.get()));
+  collection_.reset(new Collection());
+  collection_dispatcher_.reset(new CollectionDispatcher(this, collection_.get()));
 
   domain_manager_->AddObserver(this);
   device_manager_->AddObserver(this);
@@ -248,7 +246,7 @@ bool Workspace::Init(const WorkspaceParams& params,
   rpc_manager_->AddObserver(this);
   schema_registry_->AddObserver(this);
   volume_manager_->AddObserver(this);
-  app_store_->AddObserver(this);
+  collection_->AddObserver(this);
   bundle_manager_->AddObserver(this);
   DockList::AddObserver(this);
   
@@ -282,7 +280,7 @@ void Workspace::Shutdown() {
   rpc_manager_->RemoveObserver(this);
   schema_registry_->RemoveObserver(this);
   volume_manager_->RemoveObserver(this);
-  app_store_->RemoveObserver(this);
+  collection_->RemoveObserver(this);
   bundle_manager_->RemoveObserver(this);
   DockList::RemoveObserver(this);
 
@@ -321,8 +319,8 @@ void Workspace::Shutdown() {
   channel_manager_.reset(); 
   route_registry_.reset();
   device_manager_.reset();
-  app_store_.reset();
-  app_store_dispatcher_.reset();
+  collection_.reset();
+  collection_dispatcher_.reset();
   bundle_manager_.reset();
   //workspace_service_dispatcher_.reset();
   //storage_manager_.reset();
@@ -1227,7 +1225,7 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
   repo_manager_->Init(system_db, db_policy_);
   channel_manager_->Init(system_db, db_policy_);
   share_manager_->Init(std::move(system_share), db_policy_);
-  app_store_->Init(system_db, db_policy_);
+  collection_->Init(system_db, db_policy_);
   //Share* system_graph = share_manager_->CreateShare(storage_->workspace_disk_name(), "system_graph", true /* in_memory*/);
   //scoped_refptr<ShareDatabase> system_graph_db = system_graph->db();
   //DCHECK(system_graph_db);
@@ -1249,7 +1247,7 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
   db_policy_observers_.push_back(schema_registry_->model());
   db_policy_observers_.push_back(channel_manager_->channels());
   db_policy_observers_.push_back(repo_manager_->model());
-  db_policy_observers_.push_back(app_store_->model());
+  db_policy_observers_.push_back(collection_->model());
 
   if (db_policy == DatabasePolicy::OpenClose) {
     system_db->Close();
@@ -1601,24 +1599,24 @@ void Workspace::OnBundleRemoved(Bundle* bundle) {
   }
 }
 
-void Workspace::OnAppStoreEntriesLoad(int r, int count) {
+void Workspace::OnCollectionEntriesLoad(int r, int count) {
   if (r == net::OK) {
     for (auto& observer : observers_) {
-      observer.OnAppStoreEntriesLoaded(count);
+      observer.OnCollectionEntriesLoaded(count);
     }
     printf("app store entries loaded: %d\n", count);
   }
 }
 
-void Workspace::OnAppStoreEntryAdded(AppStoreEntry* entry) {
+void Workspace::OnCollectionEntryAdded(CollectionEntry* entry) {
   for (auto& observer : observers_) {
-    observer.OnAppStoreEntryAdded(entry);
+    observer.OnCollectionEntryAdded(entry);
   }
 }
 
-void Workspace::OnAppStoreEntryRemoved(AppStoreEntry* entry) {
+void Workspace::OnCollectionEntryRemoved(CollectionEntry* entry) {
   for (auto& observer : observers_) {
-    observer.OnAppStoreEntryRemoved(entry);
+    observer.OnCollectionEntryRemoved(entry);
   }
 }
 

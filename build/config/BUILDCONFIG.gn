@@ -1132,6 +1132,7 @@ template("swift_protobuf") {
         "//kit/swift/GL",
         "//kit/swift/Service",
         "//kit/swift/Route",
+        "//kit/swift/Collection",
         "//kit/swift/_C",
         "//kit/swift/Javascript",
         "//kit/swift/ThirdParty/CGRPCZlib"

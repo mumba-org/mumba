@@ -49,6 +49,7 @@ void RepoDispatcher::Initialize(scoped_refptr<base::SingleThreadTaskRunner> task
 }
 
 void RepoDispatcher::AddRepo(common::mojom::RepoEntryPtr entry, AddRepoCallback callback) {
+  DLOG(INFO) << "RepoDispatcher::AddRepo";
   repo_dispatcher_->AddRepo(std::move(entry), std::move(callback));
 }
 

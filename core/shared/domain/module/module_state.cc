@@ -43,8 +43,8 @@ RepoDispatcher* ModuleState::repo_dispatcher() const {
   return delegate_->repo_dispatcher();
 }
 
-AppStoreDispatcher* ModuleState::app_store_dispatcher() const {
-  return delegate_->app_store_dispatcher();
+CollectionDispatcher* ModuleState::collection_dispatcher() const {
+  return delegate_->collection_dispatcher();
 }
 
 void ModuleState::CreateP2PSocket(

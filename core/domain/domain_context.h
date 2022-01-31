@@ -49,7 +49,7 @@ class LauncherClient;
 class P2PSocketDispatcher;
 class ApplicationManager;
 class RouteDispatcher;
-class AppStoreDispatcher;
+class CollectionDispatcher;
 class RepoDispatcher;
 
 enum class DomainState {
@@ -98,8 +98,8 @@ public:
     return repo_dispatcher_.get();
   }
   
-  AppStoreDispatcher* app_store_dispatcher() const {
-    return app_store_dispatcher_.get();
+  CollectionDispatcher* collection_dispatcher() const {
+    return collection_dispatcher_.get();
   }
   
   common::mojom::RouteRegistry* GetRouteRegistry();
@@ -144,7 +144,7 @@ private:
   std::unique_ptr<ServiceDispatcher> service_dispatcher_;
   std::unique_ptr<RouteDispatcher> route_dispatcher_;
   std::unique_ptr<RepoDispatcher> repo_dispatcher_;
-  std::unique_ptr<AppStoreDispatcher> app_store_dispatcher_;
+  std::unique_ptr<CollectionDispatcher> collection_dispatcher_;
   std::unique_ptr<LauncherClient> launcher_client_;
 
   std::unique_ptr<StorageManager> storage_manager_;

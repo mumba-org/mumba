@@ -26,6 +26,10 @@ module MumbaShims [extern_c] [system] {
         header "ChannelRegistryShims.h"
         export *
     }
+    module MumbaRepoRegistryShims {
+        header "RepoShims.h"
+        export *
+    }
     module MumbaRouteRegistryShims {
         header "RouteRegistryShims.h"
         export *
@@ -36,6 +40,10 @@ module MumbaShims [extern_c] [system] {
     }
     module MumbaStorageShims {
         header "StorageShims.h"
+        export *
+    }
+    module MumbaCollectionShims {
+        header "CollectionShims.h"
         export *
     }
     module MumbaCompositorShims {
