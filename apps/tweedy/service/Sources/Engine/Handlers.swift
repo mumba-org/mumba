@@ -209,7 +209,6 @@ public class HelloHandler : RouteHandler {
   public func read(request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
     var queryString = String()
     if let queryStart = request.url.lastIndex(of: "?") {
-      // FIXME: hackish and dangerous
       queryString = String(request.url[request.url.index(queryStart, offsetBy: 1)..<request.url.endIndex])
     }
     if !queryString.isEmpty {
