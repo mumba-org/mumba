@@ -57,3 +57,30 @@ executable("mumba_install") {
   ]
 }
 
+executable("mumba_launch") {
+  configs -= [ "//build/config/clang:find_bad_constructs" ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  
+  cflags = []
+  cflags_cc = []
+  defines = []
+
+  sources = [
+    "mumba_launch.cc"
+  ]
+  deps = [
+    "//lib/base",
+    "//buildtools/third_party/libc++",
+    "//kit/cpp/launcher",
+    "//lib/rpc:grpc",
+    "//lib/rpc:rpc",
+    "//third_party/protobuf:protobuf_lite",
+  ]
+  cflags = [
+    "-Wno-unused-variable"
+  ]
+  ldflags = [
+    "-lz"
+  ]
+}
+

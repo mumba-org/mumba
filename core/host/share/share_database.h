@@ -27,8 +27,8 @@ public:
   };
   
   static scoped_refptr<ShareDatabase> Open(Delegate* delegate);
-  static scoped_refptr<ShareDatabase> Create(Delegate* delegate, const std::vector<std::string>& keyspaces);
-  static scoped_refptr<ShareDatabase> CreateMemory(Delegate* delegate, const std::vector<std::string>& keyspaces);
+  static scoped_refptr<ShareDatabase> Create(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value);
+  static scoped_refptr<ShareDatabase> CreateMemory(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value);
 
   ShareDatabase(Delegate* delegate, std::unique_ptr<storage::Database> db, bool in_memory);
   ShareDatabase(Delegate* delegate, storage::Database* db, bool in_memory);

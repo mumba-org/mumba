@@ -16,6 +16,15 @@
 #include "core/host/bundle/bundle_info.h"
 #include "core/host/bundle/bundle_package.h"
 #include "core/shared/common/mojom/bundle.mojom.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include "third_party/zetasql/parser/parse_tree.h"
+#include "third_party/zetasql/parser/ast_node_kind.h"
+#include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
+#include "third_party/zetasql/base/status.h"
+#pragma clang diagnostic pop
 
 namespace host {
 class Workspace;
@@ -86,7 +95,10 @@ private:
   struct DatabaseCreationInfo {
     int type; // 0 = KEY-VALUE, 1 = SQL
     std::string database_name;
-    std::vector<std::string> keyspaces;
+    // keyspaces or table names
+    // lifetime: as long as parser_output_ is live these statements will be ok
+    //std::vector<const zetasql::ASTCreateTableStatement*> create_table_stmts;
+    std::vector<std::string> create_table_stmts;
   };
 
   void ResolvePackages();
@@ -112,6 +124,8 @@ private:
   protocol::Bundle bundle_proto_;
   // fixme: should be added to the proto
   std::vector<std::unique_ptr<BundlePackage>> packages_;
+  // keep it here so the lifetime outlives the parsing method
+  std::unique_ptr<zetasql::ParserOutput> parser_output_;
   
   bool managed_;
 

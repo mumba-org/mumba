@@ -43,10 +43,15 @@
 #include "net/log/net_log.h"
 #include "net/disk_cache/backend_cleanup_tracker.h"
 #include "url/gurl.h"
-//#include "third_party/zetasql/public/analyzer.h"
-//#include "third_party/zetasql/resolved_ast/resolved_ast.h"
-//#include "third_party/boringssl/src/include/openssl/mem.h"
-//#include "third_party/boringssl/src/include/openssl/sha.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include "third_party/zetasql/parser/parse_tree.h"
+#include "third_party/zetasql/parser/ast_node_kind.h"
+#include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
+#include "third_party/zetasql/base/status.h"
+#pragma clang diagnostic pop
 
 namespace storage {
 class Database;
@@ -228,6 +233,7 @@ public:
   bool ShouldSeed(const storage_proto::Info& info) override;
   void OpenDatabase(scoped_refptr<Torrent> torrent, base::Callback<void(int64_t)> cb, bool sync = false) override;
   void CreateDatabase(scoped_refptr<Torrent> torrent, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb) override;
+  void CreateDatabase(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) override;
   Future<int> CreateTorrent(scoped_refptr<Torrent> torrent, bool is_journal = false, int jrn_seq = -1) override;
   Future<int> OpenTorrent(scoped_refptr<Torrent> torrent) override;
   Future<int> CloseTorrent(scoped_refptr<Torrent> torrent, bool is_journal = false, int jrn_seq = -1) override;

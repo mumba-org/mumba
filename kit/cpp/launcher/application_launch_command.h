@@ -16,6 +16,7 @@
 // it keeps running the executable on a main loop
 // once the main loop is broken somehow, it will call
 // close on its cleanup
+class RPCUnaryCall;
 
 class ApplicationLaunchCommand : public Command,
                                  public LauncherDaemon::Delegate {
@@ -37,6 +38,7 @@ private:
   void OnAfterRun() override;
 
   std::unique_ptr<LauncherDaemon> daemon_;
+  std::unique_ptr<RPCUnaryCall> call_;
   bool is_running_;
 };
 

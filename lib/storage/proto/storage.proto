@@ -216,10 +216,9 @@ message InfoInode {
 
 enum InfoKind {
   INFO_RAW = 0;
-  INFO_DATA = 1;
-  INFO_FILE = 2;
-  // its fileset on disk, but we have executables, manifests, etc..
-  INFO_APPLICATION = 3;
+  INFO_KVDB = 1;
+  INFO_SQLDB = 2;
+  INFO_FILE = 3;
 }
 
 enum InfoState {

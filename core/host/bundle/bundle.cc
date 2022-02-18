@@ -36,6 +36,22 @@ namespace {
 
 const char kCoreServices[] = "message FetchRequest {\n int64 started_time = 1;\n string content_type = 2;\n string url = 3;\n int64 size = 4;\n bytes data = 5;\n }\nmessage FetchReply {\n int64 size=1;\n  bytes data = 2;\n}\nservice FetchService {\n rpc FetchUnary(FetchRequest) returns (FetchReply);\n rpc FetchClientStream(stream FetchRequest) returns (FetchReply);\n rpc FetchServerStream(FetchRequest) returns (stream FetchReply);\n rpc FetchBidiStream(stream FetchRequest) returns (stream FetchReply);\n }\n";  
 
+std::string FormatForSqlite(const std::string& create_table_sql) {
+  //const char* source[] = {"STRING", "INT"};
+  //const char* dest[] = {"TEXT", "INTEGER"};
+  const char* source[] = {"STRING"};
+  const char* dest[] = {"TEXT"};
+  std::string result = create_table_sql;
+  for (size_t i = 0; i < arraysize(source); i++) {
+    size_t offset = result.find(source[i]);
+    while (offset != std::string::npos) {
+      result.replace(offset, strlen(source[i]), dest[i]);
+      offset = result.find(source[i], offset + 1, strlen(source[i]));
+    }
+  }
+  return result;
+}
+
 }
 
 char Bundle::kClassName[] = "bundle";    
@@ -286,7 +302,7 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
   }
 
   bool at_end_of_input = false;
-  std::unique_ptr<zetasql::ParserOutput> parser_output;
+  bool key_value_database = false;
   // for simple key-value databases
   // FIXME: 
   std::vector<std::unique_ptr<DatabaseCreationInfo>> infos;
@@ -295,13 +311,13 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
   DatabaseCreationInfo* current = nullptr;
 
   while (!at_end_of_input) {
-    zetasql_base::Status status = zetasql::ParseNextStatement(&location, zetasql::ParserOptions(), &parser_output, &at_end_of_input);
+    zetasql_base::Status status = zetasql::ParseNextStatement(&location, zetasql::ParserOptions(), &parser_output_, &at_end_of_input);
     if (!status.ok()) {
       DLOG(INFO) << "Bundle::CreateDatabase: parsing sql statement failed:\n'" << sql_statement << "'" << 
       " error: \n" << status.ToString();
       return;
     }
-    const zetasql::ASTStatement* statement = parser_output->statement();
+    const zetasql::ASTStatement* statement = parser_output_->statement();
     zetasql::ASTNodeKind kind = statement->node_kind();
     // NOTE: for this to work, create database must come before
     //       'create table'... but we need to test for scenarios 
@@ -312,13 +328,21 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
       current = info.get();
       info->database_name = create_db->name()->first_name()->GetAsString();
       infos.push_back(std::move(info));
+      // FIXME: only having options is not enough to detect the key-value sort of database
+      const zetasql::ASTOptionsList* options = create_db->options_list();
+      if (options && options->options_entries().size() > 0) {
+        key_value_database = true;
+        current->type = storage_proto::InfoKind::INFO_KVDB;
+      } else {
+        current->type = storage_proto::InfoKind::INFO_SQLDB;
+      }
     } else if (kind == zetasql::AST_CREATE_TABLE_STATEMENT) {
       const zetasql::ASTCreateTableStatement* create_table = statement->GetAsOrNull<zetasql::ASTCreateTableStatement>();
-      std::string keyspace = create_table->name()->first_name()->GetAsString();;
-      DCHECK(current);
-      current->keyspaces.push_back(keyspace);
+      std::string create_table_sql = zetasql::Unparse(create_table);
+      // FIXME: this is a very raw pure string substitution on create table ddl's
+      create_table_sql = FormatForSqlite(create_table_sql);
+      current->create_table_stmts.push_back(create_table_sql);
     }
-    //LOG(INFO) << "Parse tree:\n" << statement->DebugString();
   }
 
   for (auto it = infos.begin(); it != infos.end(); it++) {
@@ -328,11 +352,14 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
 }
 
 void Bundle::CreateDatabase(scoped_refptr<Workspace> workspace, DatabaseCreationInfo* creation) {
-  workspace->share_manager()->CreateDatabaseShare(name(), creation->database_name, creation->keyspaces);
-  workspace->share_manager()->CreateShare(name(), 
-    storage_proto::InfoKind::INFO_DATA, 
+  base::UUID uuid = base::UUID::generate();
+  workspace->share_manager()->CreateShare(
+    name(), 
+    creation->type == 0 ? storage_proto::InfoKind::INFO_KVDB : storage_proto::InfoKind::INFO_SQLDB, 
+    uuid,
     creation->database_name, 
-    creation->keyspaces,
+    creation->create_table_stmts,
+    creation->type == 0 ? true : false,
     base::Bind(&Bundle::OnDatabaseCreated, 
       base::Unretained(this), 
       workspace,

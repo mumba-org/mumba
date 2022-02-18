@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+{% block title %}Application {{ application.id }}{% endblock %}
+{% block content %}
+<h1 class="title">Application {{ application.id }}
+    <span class="links">
+        {% for link in links['application']: %}
+        <a href="{{ link.href.format(**application) }}"
+           title="{{ link.title.format(**application) }}"
+           class="button {{ link.class or 'is-light' }}">
+            <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+        </a>
+        {% endfor %}
+    </span>
+</h1>
+<h2 class="subtitle">owned by team <a href="./team-{{ application.team }}.html">{{ application.team }}</a></h2>
+
+<nav class="level">
+    <div class="level-item has-text-centered">
+        <div>
+            <p class="heading">Clusters</p>
+            <p class="title">{{ application.clusters|count }}</p>
+        </div>
+    </div>
+    <div class="level-item has-text-centered">
+        <div>
+            <p class="heading">Pods</p>
+            <p class="title">{{ application.pods }}</p>
+        </div>
+    </div>
+    <div class="level-item has-text-centered">
+        <div>
+            <p class="heading">CPU Requests</p>
+            <p class="title">{{ application.requests.cpu|cpu }}</p>
+        </div>
+    </div>
+    <div class="level-item has-text-centered">
+        <div>
+            <p class="heading">Memory Requests</p>
+            <p class="title">{{ application.requests.memory|filesizeformat(True) }}</p>
+        </div>
+    </div>
+    <div class="level-item has-text-centered">
+        <div>
+            <p class="heading">Monthly Cost</p>
+            <p class="title">{{ application.cost|money }} USD</p>
+        </div>
+    </div>
+</nav>
+<div class="notification is-warning">
+    You can potentially save <strong>{{ application.slack_cost|money }} USD</strong> every month by optimizing resource requests and reducing slack.
+</div>
+
+<div class="section collapsible" data-name="ingresses">
+    <h2 class="title is-5">Ingresses</h2>
+    {% if ingresses_by_application[application.id]: %}
+    <table class="table is-striped is-hoverable is-fullwidth" data-sortable>
+        <thead>
+            <tr>
+                <th>Cluster</th>
+                <th>Namespace</th>
+                <th>Name</th>
+                <th>Host</th>
+                <th>Status</th>
+                {% if links['ingress']: %}
+                <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for ingress in ingresses_by_application[application.id]: %}
+            <tr>
+                <td><a href="./cluster-{{ ingress.cluster_id }}.html">{{ ingress.cluster_summary.cluster.name }}</a></td>
+                <td>{{ ingress.namespace }}</td>
+                <td>{{ ingress.name }}</td>
+                <td>{{ ingress.host }}</td>
+                <td><span class="tag
+                                 {% if ingress.status >= 500 %}
+                                 is-danger
+                                 {% elif ingress.status >= 400 %}
+                                 is-info
+                                 {% elif ingress.status >= 200 %}
+                                 is-success
+                                 {% else: %}
+                                 is-info
+                                 {% endif %}
+                                 ">{{ ingress[4] }}</span></td>
+                {% if links['ingress']: %}
+                <td class="links">
+                    <div class="buttons has-addons">
+                        {% for link in links['ingress']: %}
+                        <a href="{{ link.href.format(cluster=ingress.cluster_summary.cluster.name, namespace=ingress.namespace, name=ingress.name, application=application.id, host=ingress.host) }}"
+                           title="{{ link.title.format(cluster=ingress.cluster_summary.cluster.name, namespace=ingress.namespace, name=ingress.name, application=application.id, host=ingress.host) }}"
+                           class="button is-small">
+                            <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {%endfor %}
+        </tbody>
+    </table>
+    {% else: %}
+    <p class="content"><em>No Ingresses found for application {{ application.id }}.</em></p>
+    {% endif %}
+</div>
+{% if enable_routegroups: %}
+<div class="section collapsible" data-name="routegroups">
+    <h2 class="title is-5">RouteGroups</h2>
+    {% if routegroups_by_application and routegroups_by_application[application.id]: %}
+    <table class="table is-striped is-hoverable is-fullwidth" data-sortable>
+        <thead>
+            <tr>
+                <th>Cluster</th>
+                <th>Namespace</th>
+                <th>Name</th>
+                <th>Host</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for rg in routegroups_by_application[application.id]: %}
+            <tr>
+                <td><a href="./cluster-{{ rg.cluster_id }}.html">{{ rg.cluster_summary.cluster.name }}</a></td>
+                <td>{{ rg.namespace }}</td>
+                <td>{{ rg.name }}</td>
+                <td>{{ rg.host }}</td>
+                {% if links['routegroups']: %}
+                <td class="links">
+                    <div class="buttons has-addons">
+                        {% for link in links['routegroups']: %}
+                        <a href="{{ link.href.format(cluster=rg.cluster_summary.cluster.name, namespace=rg.namespace, name=rg.name, application=application.id, hosts=rg.hosts) }}"
+                           title="{{ link.title.format(cluster=rg.cluster_summary.cluster.name, namespace=rg.namespace, name=rg.name, application=application.id, hosts=rg.hosts) }}"
+                           class="button is-small">
+                            <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else: %}
+    <p class="content"><em>No Routegroups found for application {{ application.id }}.</em></p>
+    {% endif %}
+</div>
+{% endif %}
+{% if enable_ingressroutes: %}
+<div class="section collapsible" data-name="ingressroutes">
+    <h2 class="title is-5">IngressRoutes</h2>
+    {% if ingressroutes_by_application and ingressroutes_by_application[application.id]: %}
+    <table class="table is-striped is-hoverable is-fullwidth" data-sortable>
+        <thead>
+            <tr>
+                <th style="min-width:100px">Cluster</th>
+                <th style="min-width:135px">Namespace</th>
+                <th>Name</th>
+                <th>Rules</th>
+                <th>Tls</th>
+                {% if links['ingressroute']: %}
+                <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for ir in ingressroutes_by_application[application.id]: %}
+            <tr>
+                <td><a href="./cluster-{{ ir.cluster_id }}.html">{{ ir.cluster_summary.cluster.name }}</a></td>
+                <td>{{ ir.namespace }}</td>
+                <td>{{ ir.name }}</td>
+                <td>
+                    <ul class="ingressroute">
+                    {% for rule in ir.host: %}
+                    <li>{{rule["match"]}}</li>
+                    {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                {% if ir.tls: %}
+                {{ ir.tls['certResolver'] }}
+                {% endif %}
+                </td>
+                {% if links['ingressroute']: %}
+                <td class="links">
+                    <div class="buttons has-addons">
+                        {% for link in links['ingressroute']: %}
+                        <a href="{{ link.href.format(cluster=ir.cluster_summary.cluster.name, namespace=ir.namespace, name=ir.name, application=application.id) }}"
+                            title="{{ link.title.format(cluster=ir.cluster_summary.cluster.name, namespace=ir.namespace, name=ir.name, application=application.id ) }}"
+                            class="button is-small">
+                            <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else: %}
+    <p class="content"><em>No IngressRoutes found for application {{ application.id }}.</em></p>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="section collapsible" data-name="components">
+    <h2 class="title is-5">Components</h2>
+    <table class="table is-striped is-hoverable is-fullwidth" data-sortable>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th><abbr title="Clusters">C</abbr></th>
+                <th><abbr title="Pods">P</abbr></th>
+                <th><abbr title="CPU Requests">CR</abbr></th>
+                <th><abbr title="Memory Requests">MR</abbr></th>
+                <th>CPU</th>
+                <th>Memory (MiB)</th>
+                <th class="has-text-right">Cost</th>
+                <th class="has-text-right">Slack Cost</th>
+                <th class="has-text-right">Cost %</th>
+                {% if links['component']: %}
+                <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for name, component in application.components.items()|sort: %}
+            <tr>
+                <td>{% if not name: %}<em>unnamed</em>{% else %}{{ name }}{% endif %}</td>
+                <td title="{{ component.clusters|join(', ') }}">{{ component.clusters|count }}</td>
+                <td>{{ component.pods }}</td>
+                <td>{{ component.requests.cpu|round(3) }}</td>
+                <td data-value="{{ component.requests.memory }}">{{ component.requests.memory|filesizeformat(True) }}</td>
+
+                <td style="font-size: 0.75rem" data-value="{{ component.usage.cpu }}">
+                    {{ elements.resource_bar_cpu(component) }}
+                </td>
+                <td style="font-size: 0.75rem" data-value="{{ component.usage.memory }}">
+                    {{ elements.resource_bar_memory(component) }}
+                </td>
+
+                <td class="has-text-right">{{ component.cost|money }}</td>
+                <td class="has-text-right">{{ component.slack_cost|money }}</td>
+
+                {% if application.cost > 0 %}
+                {% with percentage=(component.cost / application.cost) * 100 %}
+                <td style="font-size: 0.75rem" data-value="{{ percentage|round(3) }}">
+                    <div class="resource-labels">
+                        <span>{{ percentage|round(0)|int }}%</span> <span></span>
+                    </div>
+                    <div class="resource-bar" title="Percentage of component cost divided by application cost">
+                        <progress class="progress" value="100" max="100"></progress>
+                        <progress class="progress is-primary" value="{{ percentage|round(3) }}" max="100"></progress>
+                    </div>
+                </td>
+                {% endwith %}
+                {% else %}
+                <td class="has-text-right">-</td>
+                {% endif %}
+
+                {% if links['component']: %}
+                <td class="links">
+                    <div class="buttons has-addons">
+                        {% for link in links['component']: %}
+                        <a href="{{ link.href.format(application=application.id, name=name) }}"
+                           title="{{ link.title.format(application=application.id, name=name) }}"
+                           class="button is-small">
+                            <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {%endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+<div class="section collapsible" data-name="pods">
+    <h2 class="title is-5">Pods</h2>
+    <table class="table is-striped is-hoverable is-fullwidth" data-sortable>
+        <thead>
+            <tr>
+                <th>Cluster</th>
+                <th>Namespace</th>
+                <th>Component</th>
+                <th>Name</th>
+                <th><abbr title="Container Images">Cont.</abbr></th>
+                <th><abbr title="CPU Requests">CR</abbr></th>
+                <th><abbr title="Memory Requests">MR</abbr></th>
+                <th>CPU</th>
+                <th>Memory (MiB)</th>
+                <th class="has-text-right">Cost</th>
+                <th class="has-text-right">Slack Cost</th>
+                {% if links['pod']: %}
+                <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in pods_by_application[application.id]: %}
+            <tr>
+                <td><a href="./cluster-{{ row.cluster_id }}.html">{{ row.cluster_summary.cluster.name }}</a></td>
+                <td>{{ row.namespace }}</td>
+                <td>{{ row.pod.component }}</td>
+                <td>{{ row.name }}</td>
+                <td title="{{ row.pod.container_images|join(', ') }}">{{ row.pod.container_images|count }}</td>
+                <td>{{ row.pod.requests.cpu|round(3) }}</td>
+                <td data-value="{{ row.pod.requests.memory }}">{{ row.pod.requests.memory|filesizeformat(True) }}</td>
+
+                <td style="font-size: 0.75rem" data-value="{{ row.pod.usage.cpu }}">
+                    {{ elements.resource_bar_cpu(row.pod) }}
+                </td>
+                <td style="font-size: 0.75rem" data-value="{{ row.pod.usage.memory }}">
+                    {{ elements.resource_bar_memory(row.pod) }}
+                </td>
+
+                <td class="has-text-right">{{ row.pod.cost|money }}</td>
+                <td class="has-text-right">{{ row.pod.slack_cost|money }}</td>
+
+                {% if links['pod']: %}
+                <td class="links">
+                    <div class="buttons has-addons">
+                        {% for link in links['pod']: %}
+                        <a href="{{ link.href.format(cluster=row.cluster_summary.cluster.name, namespace=row.namespace, name=row.name) }}"
+                           title="{{ link.title.format(cluster=row.cluster_summary.cluster.name, namespace=row.namespace, name=row.name) }}"
+                           class="button is-small">
+                            <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {%endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+{% endblock %}

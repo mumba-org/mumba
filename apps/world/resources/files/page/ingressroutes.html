@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}IngressRoutes{% endblock %}
+{% block content %}
+
+<h1 class="title">All IngressRoutes
+</h1>
+
+<table class="table is-striped is-hoverable is-fullwidth" data-sortable>
+    <thead>
+        <tr>
+            <th style="min-width:100px">Cluster</th>
+            <th style="min-width:135px">Namespace</th>
+            <th>Name</th>
+            <th style="min-width:135px">Application</th>
+            <th>Rules</th>
+            <th>Tls</th>
+            {% if links['ingressroute']: %}
+            <th></th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for cluster_id, summary in cluster_summaries.items(): %}
+        {% for ingressroute in summary.ingressroutes: %}
+        <tr>
+            <td><a href="./cluster-{{ cluster_id }}.html">{{ summary["cluster"].name }}</a></td>
+            <td>{{ ingressroute[0] }}</td>
+            <td>{{ ingressroute[1] }}</td>
+            <td><a href="./application-{{ ingressroute[2] }}.html">{{ ingressroute[2] }}</a></td>
+            <td>
+                <p class="ingressroute">Match:</p>
+                <ul class="ingressroute">
+                {% for rule in ingressroute[3]: %}
+                    <li>{{rule["match"]}}
+                        {% if rule["middlewares"]: %}
+                        <p>Middlewares:</p>
+                        <ul class="ingressroute">
+                            {% for middleware in rule["middlewares"]: %}
+                            <li>{{middleware["namespace"]}}/{{middleware["name"]}}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        {% if rule["services"]: %}
+                        <p>Services:</p>
+                        <ul class="ingressroute">
+                            {% for services in rule["services"]: %}
+                            <li>{{services["name"]}}:{{services["port"]}}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </td>
+            <td>
+            {% if ingressroute[4]: %}
+            {{ ingressroute[4]['certResolver'] }}
+            {% endif %}
+            </td>
+            {% if links['ingressroute']: %}
+            <td class="links">
+                <div class="buttons has-addons">
+                    {% for link in links['ingressroute']: %}
+                    <a href="{{ link.href.format(cluster=summary["cluster"].name, namespace=ingressroute[0], name=ingressroute[1], application=ingressroute[2]) }}"
+                        title="{{ link.title.format(cluster=summary["cluster"].name, namespace=ingressroute[0], name=ingressroute[1], application=ingressroute[2]) }}"
+                        class="button is-small">
+                        <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

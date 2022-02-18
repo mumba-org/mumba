@@ -218,7 +218,12 @@ void ApplicationInstanceLaunchHandler::HandleCall(std::vector<char> data, base::
   google::protobuf::Message* message = message_descr->New();
   message->ParseFromString(encoded_data);
   std::string url_string = GetStringField(workspace, message, "ApplicationLaunchRequest", "url");
+  if (url_string.empty() && encoded_data.size()) {
+    // FIXME: convert clients sending plaintext to use protobuf encoding
+    url_string = encoded_data;
+  }
   GURL url(url_string);
+  DLOG(INFO) << "ApplicationInstanceLaunchHandler::HandleCall: url = " << url;
   int app_id = workspace->generate_next_application_id();
   // FIXME: this is the reply.. its crude and we could also make it async
   //        instead..

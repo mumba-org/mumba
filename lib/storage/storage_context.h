@@ -39,6 +39,16 @@
 #include "net/log/net_log.h"
 #include "net/disk_cache/backend_cleanup_tracker.h"
 #include "url/gurl.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include "third_party/zetasql/parser/parse_tree.h"
+#include "third_party/zetasql/parser/ast_node_kind.h"
+#include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
+#include "third_party/zetasql/base/status.h"
+#pragma clang diagnostic pop
+
 
 namespace storage {
 class Torrent;
@@ -59,7 +69,9 @@ private:
 };
 
 struct CreateDbParams {
+  storage_proto::InfoKind type = storage_proto::InfoKind::INFO_KVDB;
   std::vector<std::string> keyspaces;
+  std::vector<std::string> create_table_stmts;
 };
 
 // A shared-over-threads context to hold important handles both in Read and Write scenarios

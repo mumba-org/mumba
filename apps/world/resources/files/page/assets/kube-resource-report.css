@@ -1,0 +1,114 @@
+h1 .links {
+    margin-left: 1rem;
+}
+
+main div.section { margin: 0 0 1.5rem 0; padding: 0; }
+
+main div.section.collapsible h2.title { cursor: pointer; border-bottom: 1px solid #fff; }
+main div.section.collapsible h2.title:hover { color: #363636; border-bottom: 1px solid #dbdbdb; }
+main div.section.collapsible h2.title:hover::after { content: " ▴"; }
+
+main div.section.is-collapsed h2.title { color: #7a7a7a; border-bottom: 1px solid #dbdbdb; }
+main div.section.is-collapsed h2.title:hover::after { content: " ▾"; }
+main div.section.is-collapsed .content,
+main div.section.is-collapsed table { display: none; }
+
+.resource-labels {
+    display: flex;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+}
+.resource-labels span {
+    display: block;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+.resource-labels span:nth-child(2) {
+    text-align: center;
+}
+.resource-labels span:last-child {
+    text-align: right;
+}
+
+.resource-bar {
+    position: relative;
+    height: 0.4rem;
+}
+.resource-bar .recommendation {
+    position: absolute;
+    top: 0.5rem;
+    /* https://css-tricks.com/snippets/css/css-triangle/ */
+    width: 0;
+    height: 0;
+    margin-left: -0.344rem;
+    border-left: 0.344rem solid transparent;
+    border-right: 0.344rem solid transparent;
+    /* bulma success color */
+    border-bottom: 0.4rem solid hsl(141, 71%, 48%);
+}
+.resource-bar .recommendation-exceeds {
+    position: absolute;
+    left: 100%;
+    top: 0.5rem;
+    width: 0;
+    height: 0;
+    margin-left: -0.344rem;
+    border-left: 0.344rem solid transparent;
+    border-right: 0.344rem solid transparent;
+    /* bulma danger color */
+    border-bottom: 0.4rem solid hsl(348, 100%, 61%);
+}
+.resource-bar:not(:last-child) {
+    margin-bottom: 0.2rem;
+}
+.resource-bar progress {
+    height: 0.4rem;
+    margin: 0 !important;
+}
+.resource-bar progress:last-child {
+    position: relative;
+    top: -0.4rem;
+    background: transparent;
+}
+/* for Chrome: */
+.resource-bar progress:last-child::-webkit-progress-bar {
+    background: transparent;
+}
+
+.container>.resource-labels {
+    margin-bottom: 0.5rem;
+}
+.container>.resource-bar {
+    height: 1rem;
+}
+.container>.resource-bar {
+    margin-bottom: 1.5rem;
+}
+.container>.resource-bar progress {
+    height: 1rem;
+}
+.container>.resource-bar progress:last-child {
+    top: -1rem;
+}
+
+p.ingressroute {
+    font-variant: small-caps;
+}
+
+ul.ingressroute {
+    padding-left: 20px;
+    list-style: disc;
+}
+
+ul.ingressroute ul{
+    padding-left: 40px;
+    list-style: circle;
+}
+
+ul.ingressroute li p {
+    font-variant: small-caps;
+}
+
+.table thead th {
+    vertical-align: top !important; /* Ensure headings align when `abbr` tags are used */
+}

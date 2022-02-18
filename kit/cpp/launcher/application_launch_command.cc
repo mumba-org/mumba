@@ -101,24 +101,27 @@ int ApplicationLaunchCommand::Run(CommandExecutor* executor, const base::Command
     ApplicationCloseCommand close_command;
     base::CommandLine::StringVector args_copy = args;
     const std::string& app_name = executor->profile()->GetName();
-    std::string app_url = app_name + "://hello?path=2";
+    std::string app_url = app_name + "://";
+    if (args.size() > 1) {
+      app_url = app_url + args[0];
+    }
     args_copy.insert(args_copy.begin(), app_url);
-    std::unique_ptr<RPCUnaryCall> launch_caller = executor->CreateRPCUnaryCall(GetCommandMethod());
+    call_ = executor->CreateRPCUnaryCall(GetCommandMethod());
     std::string encoded_data = EncodeLaunchArguments(executor, args_copy);
-    launch_caller->Call(args, encoded_data);
+    call_->Call(args, encoded_data);
     // after sending the launch command, run the main loop
     daemon_.reset(new LauncherDaemon(this, executor->own_message_loop()));
     is_running_ = true;
     daemon_->Run();
 
-    if (launch_caller->output_data() == nullptr) {
+    if (call_->output_data() == nullptr) {
       printf("cannot call close: no application id received\n");
       return 1;
     }
 
     // get the application id
     int app_id = -1;
-    if (!GetApplicationIdFromResponse(executor, launch_caller->output_data(), launch_caller->output_data_size(), &app_id)) {
+    if (!GetApplicationIdFromResponse(executor, call_->output_data(), call_->output_data_size(), &app_id)) {
       printf("cannot call close: no valid application id received while decoding output from launch\n");
       return 1;
     }
@@ -128,10 +131,24 @@ int ApplicationLaunchCommand::Run(CommandExecutor* executor, const base::Command
     close_command.Run(executor, close_args);
     return 0;
   }
+  base::CommandLine::StringVector args_copy = args;
+  if (args_copy.size() >= 2) {
+    args_copy.erase(args_copy.begin() + 1);
+    args_copy.erase(args_copy.begin());
+  }
+  if (args_copy.size() == 0) {
+    printf("cannot launch without url\n");
+    return 1;
+  }
+  printf("ApplicationLaunchCommand::Run: %s\n", args_copy[0].c_str());
   // if its 'system' profile just call launch normally
-  std::unique_ptr<RPCUnaryCall> launch_caller = executor->CreateRPCUnaryCall(GetCommandMethod());
-  std::string encoded_data = EncodeLaunchArguments(executor, args);
-  launch_caller->Call(args, encoded_data, 0);  
+  call_ = executor->CreateRPCUnaryCall(GetCommandMethod());
+  std::string encoded_data = EncodeLaunchArguments(executor, args_copy);
+  call_->Call(args_copy, encoded_data, 0);
+  // after sending the launch command, run the main loop
+  daemon_.reset(new LauncherDaemon(this, executor->own_message_loop()));
+  is_running_ = true;
+  daemon_->Run();
   return 0;
 }
 

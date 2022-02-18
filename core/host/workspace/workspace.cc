@@ -996,7 +996,7 @@ scoped_refptr<ShareDatabase> Workspace::GetDatabase(const std::string& name) {
 }
 
 scoped_refptr<ShareDatabase> Workspace::CreateDatabase(const std::string& name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb) {
-  scoped_refptr<storage::Torrent> torrent = CreateTorrent(workspace_storage()->workspace_disk_name(), storage_proto::INFO_DATA, name, keyspaces, std::move(cb));
+  scoped_refptr<storage::Torrent> torrent = CreateTorrent(workspace_storage()->workspace_disk_name(), storage_proto::INFO_KVDB, name, keyspaces, std::move(cb));
   Share* share = share_manager_->CreateShare(torrent);
   return share->db();
 }
@@ -1141,7 +1141,7 @@ void Workspace::CreateOrOpenSystemDatabases(int64_t result) {
     std::vector<std::string> keyspaces = GetSystemKeyspaces();
     storage_manager_->CreateTorrent(
       storage_->workspace_disk_name(), 
-      storage_proto::INFO_DATA, 
+      storage_proto::INFO_KVDB, 
       "system", 
       std::move(keyspaces), 
       base::Bind(&Workspace::OnSystemDatabaseInit, this, base::Unretained(io_thread_), db_policy()));

@@ -439,6 +439,15 @@ bool Torrent::CreateMerkleTreeTables(int table_count) {
   return true;
 }
 
+bool Torrent::CreateMerkleTreeSQLTables(int table_count) {
+  int new_blocks = table_count - 1;
+  //DLOG(INFO) << "merkle tree: recovered " << table_count << " initial tables, with total of " << kSqliteInitialBlocks + new_blocks << " leafs";
+  std::unique_ptr<MerkleTree> merkle_tree(new MerkleTree(kSqliteInitialBlocks + new_blocks));
+  merkle_tree->Init();
+  set_merkle_tree(std::move(merkle_tree));
+  return true;
+}
+
 bool Torrent::CreateMerkleTreePieces(int piece_count) {
   //DLOG(INFO) << "merkle tree: creating merkle tree with " << piece_count << " initial blocks";
   std::unique_ptr<MerkleTree> merkle_tree(new MerkleTree(piece_count));

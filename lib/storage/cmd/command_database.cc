@@ -370,7 +370,7 @@ int RunDatabase(const std::vector<std::string>& args) {
     keyspaces.push_back(keyspace);
     manager->CreateTorrent(
       "twitter",
-      storage_proto::INFO_DATA,
+      storage_proto::INFO_KVDB,
       db_name,
       std::move(keyspaces),
       base::Bind(&OnDatabaseCreated, base::Passed(run_loop.QuitClosure()), db_name));

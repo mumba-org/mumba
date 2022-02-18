@@ -34,6 +34,15 @@
 #include "storage/torrent_manager.h"
 #include "libtorrent/io_context.hpp"
 #include "storage/storage_export.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include "third_party/zetasql/parser/parse_tree.h"
+#include "third_party/zetasql/parser/ast_node_kind.h"
+#include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
+#include "third_party/zetasql/base/status.h"
+#pragma clang diagnostic pop
 
 namespace storage {
 class Storage;
@@ -135,6 +144,7 @@ public:
   void OpenDatabase(const std::string& disk, const std::string& name, base::Callback<void(int64_t)> cb);
   void OpenDatabase(Storage* disk, const base::UUID& key, base::Callback<void(int64_t)> cb);
   void CreateDatabase(const std::string& disk, const std::string& db_name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb);
+  void CreateDatabase(const std::string& disk, const std::string& db_name, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb);
   void GetEntryInfo(const std::string& disk, const base::UUID& key, base::Callback<void(storage_proto::Info, int64_t)> cb);
   void ListEntries(const std::string& disk, base::Callback<void(std::vector<std::unique_ptr<storage_proto::Info>>, int64_t)> cb);
   void CloseDatabase(const std::string& disk, const std::string& name, base::Callback<void(int64_t)> cb);

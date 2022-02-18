@@ -7,6 +7,7 @@ import Foundation
 import Base
 import Net
 import Engine
+import Collection
 import Channel
 import Data
 import SwiftGlibc
@@ -30,6 +31,7 @@ internal class WorldProviderImpl : world_WorldProvider {
     self.context = context
     
     let routeMap = makeRoutes {
+      Route("/main", { return MainHandler(context: context) })
       Route("/new", { return NewHandler(context: context) })
       Route("/devtools", { return DevToolsHandler(context: context) })
     }

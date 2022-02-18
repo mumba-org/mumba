@@ -139,9 +139,9 @@ void ServiceWorkerDispatcherHost::OnProviderCreated(
     return;
   }
   if (GetContext()->GetProviderHost(process_id_, info.provider_id)) {
-    bad_message::ReceivedBadMessage(
-        this, bad_message::SWDH_PROVIDER_CREATED_DUPLICATE_ID);
-    // DLOG(ERROR) << "host::ServiceWorkerDispatcherHost::OnProviderCreated: " << info.provider_id << " is duplicated";
+    //bad_message::ReceivedBadMessage(
+    //    this, bad_message::SWDH_PROVIDER_CREATED_DUPLICATE_ID);
+    DLOG(ERROR) << "host::ServiceWorkerDispatcherHost::OnProviderCreated: " << info.provider_id << " is duplicated";
     return;
   }
 

@@ -1,0 +1,71 @@
+{% block content %}
+
+# HELP monthly_cost_total The total monthly cost for the cluster
+{% for cluster_id, summary in cluster_summaries.items() %}
+monthly_cost_total{clusterName="{{ summary.cluster.name }}"} {{ summary.cost }} {{ now|unix_timestamp }}
+{% endfor %}
+
+# HELP monthly_slack_total The total monthly slack for the cluster
+{% for cluster_id, summary in cluster_summaries.items() %}
+monthly_slack_total{clusterName="{{ summary.cluster.name }}"} {{ summary.slack_cost }} {{ now|unix_timestamp }}
+{% endfor %}
+
+# HELP kube_resource_report_master_nodes Number of control-planes in a cluster.
+{% for cluster_id, summary in cluster_summaries.items() %}
+kube_resource_report_master_nodes{clusterName="{{ summary.cluster.name }}"} {{summary.master_nodes}} {{ now|unix_timestamp }}
+{% endfor %}
+
+# HELP kube_resource_report_pods Number of pods in a cluster.
+{% for cluster_id, summary in cluster_summaries.items() %}
+kube_resource_report_pods{clusterName="{{ summary.cluster.name }}"} {{summary.pods|count}} {{ now|unix_timestamp }}
+{% endfor %}
+
+# HELP kube_resource_report_worker_nodes Number of workers in a cluster.
+{% for cluster_id, summary in cluster_summaries.items() %}
+kube_resource_report_worker_nodes{clusterName="{{ summary.cluster.name }}"} {{summary.worker_nodes}} {{ now|unix_timestamp }}
+{% endfor %}
+
+# HELP monthly_node_cost The monthly cost of each node
+{% for node_id, node in nodes.items()|sort: %}
+monthly_node_cost{clusterName="{{ node.cluster_name }}",nodeName="{{ node.node_name }}",instanceType="{{ node.instance_type }}",spotInstance="{{ node.spot }}",onDemandInstance="{{ node.spot == false }}"} {{ node.cost }} {{ now|unix_timestamp }}
+{% endfor %}
+
+# HELP monthly_team_cost The monthly cost for each team's resource usage
+{% for team_id, team in teams.items()|sort: %}
+{% for cluster_id in team.clusters %}
+monthly_team_cost{clusterName="{{cluster_summaries[cluster_id].cluster.name}}",teamName="{{ team_id }}"} {{ team.cost }} {{ now|unix_timestamp }}
+{% endfor %}
+{% endfor %}
+
+# HELP monthly_team_slack The monthly slack for each team's resource usage
+{% for team_id, team in teams.items()|sort: %}
+{% for cluster_id in team.clusters %}
+monthly_team_slack{clusterName="{{cluster_summaries[cluster_id].cluster.name}}",teamName="{{ team_id }}"} {{ team.slack_cost }} {{ now|unix_timestamp }}
+{% endfor %}
+{% endfor %}
+
+# HELP monthly_application_cost The monthly cost for each applications resource usage
+{% for application_id, app in applications.items()|sort: %}
+{% for cluster_id in app.clusters %}
+monthly_application_cost{clusterName="{{cluster_summaries[cluster_id].cluster.name}}",applicationName="{{application_id}}"} {{ app.cost }} {{ now|unix_timestamp }}
+{% endfor %}
+{% endfor %}
+
+# HELP monthly_application_slack The monthly slack for each applications resource usage
+{% for application_id, app in applications.items()|sort: %}
+{% for cluster_id in app.clusters %}
+monthly_application_slack{clusterName="{{cluster_summaries[cluster_id].cluster.name}}",applicationName="{{application_id}}"} {{ app.slack_cost }} {{ now|unix_timestamp }}
+{% endfor %}
+{% endfor %}
+
+# HELP monthly_namespace_cost The monthly cost for each namespace
+{% for namespace_id, namespace_data in namespace_usage.items()|sort: %}
+monthly_namespace_cost{clusterName="{{ namespace_data.cluster.name }}",namespace="{{namespace_id[0]}}"} {{ namespace_data.cost }} {{ now|unix_timestamp }}
+{% endfor %}
+
+# HELP monthly_namespace_slack The monthly slack for each namespace
+{% for namespace_id, namespace_data in namespace_usage.items()|sort: %}
+monthly_namespace_slack{clusterName="{{ namespace_data.cluster.name }}",namespace="{{namespace_id[0]}}"} {{ namespace_data.slack_cost }} {{ now|unix_timestamp }}
+{% endfor %}
+
+{% endblock %}

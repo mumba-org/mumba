@@ -44,6 +44,7 @@ RPCUnaryCall::RPCUnaryCall(const std::string& host, int port, const std::string&
 }
 
 RPCUnaryCall::~RPCUnaryCall() {
+  DLOG(INFO) << "~RPCUnaryCall"; 
   //drain_cq(completion_queue);
   if (output_data_) {
     free(output_data_);
@@ -147,7 +148,8 @@ void RPCUnaryCall::Call(const base::CommandLine::StringVector& args, const std::
   
   if (rc != GRPC_CALL_OK) {
     printf("error in grpc_call_start_batch\n");
-    goto end;
+    return;
+    //goto end;
   }
 
   event = grpc_completion_queue_pluck(completion_queue_, tag(1), grpc_timeout_milliseconds_to_deadline(milliseconds), nullptr);
@@ -164,16 +166,16 @@ void RPCUnaryCall::Call(const base::CommandLine::StringVector& args, const std::
       break;
   }
 
-end:
-  grpc_slice_unref(input_buffer_slice);
-  grpc_byte_buffer_destroy(input_buffer);
-  grpc_slice_unref(host_slice);
-  grpc_slice_unref(method_slice);
-  grpc_metadata_array_destroy(&begin_metadata);
-  grpc_metadata_array_destroy(&end_metadata);
-  if (channel) {
-    grpc_channel_destroy(channel);
-  }
+//end:
+  //grpc_slice_unref(input_buffer_slice);
+  //grpc_byte_buffer_destroy(input_buffer);
+  //grpc_slice_unref(host_slice);
+  //grpc_slice_unref(method_slice);
+  //grpc_metadata_array_destroy(&begin_metadata);
+  //grpc_metadata_array_destroy(&end_metadata);
+  //if (channel) {
+    //grpc_channel_destroy(channel);
+  //}
 }
 
 void RPCUnaryCall::ReadOutputBuffer() {

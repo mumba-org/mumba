@@ -1,0 +1,28 @@
+{% import "elements.html" as elements %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %} - Kubernetes Resource Report</title>
+        <link rel="stylesheet" href="assets/bulma.min.css">
+        <script defer src="assets/all.js"></script>
+        <script defer src="assets/sortable.min.js"></script>
+        <script src="assets/anchor.min.js"></script>
+        <script src="assets/kube-resource-report.js"></script>
+        <link rel="stylesheet" href="assets/sortable-theme-minimal.css" />
+        <link rel="stylesheet" href="assets/kube-resource-report.css" />
+        <link rel="shortcut icon" href="assets/favicon.png">
+        <link rel="icon" type="image/png" href="assets/favicon.png">
+        {% include "partials/extrahead.html" %}
+    </head>
+    <body class="has-navbar-fixed-top">
+        {% include "partials/navbar.html" %}
+        <section class="section">
+            <main class="container">
+                {% block content %}{% endblock %}
+            </main>
+        </section>
+        {% include "partials/footer.html" %}
+    </body>
+</html>

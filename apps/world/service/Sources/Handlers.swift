@@ -5,6 +5,7 @@
 import Base
 import Net
 import Engine
+import Collection
 import Data
 import Foundation
 import Python
@@ -52,6 +53,7 @@ public class NewHandler : RouteHandler {
 
   public func onResponseStarted(request: RouteRequest, info: RouteResponseInfo, completion: RouteCompletion?) {
     print("NewHandler.onResponseStarted")
+    completion!(0)
   }
 
   public func onReadCompleted(request: RouteRequest, info: RouteResponseInfo, buffer: RouteBuffer, bytesRead: UInt64) {
@@ -80,7 +82,9 @@ public class NewHandler : RouteHandler {
     print("NewHandler.onCanceled")
   }
 
-  public func read(request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {}
+  public func read(request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
+
+  }
 
   private func loadIcon() -> Data {
     let len = 3136
@@ -196,4 +200,146 @@ public class DevToolsHandler : RouteHandler {
     return Data(bytesNoCopy: buf!, count: readed, deallocator: .free)
   }
 
+}
+
+public class MainHandler : RouteHandler {
+  
+  public var entry: RouteEntry
+  private var page: Filebase?
+  private weak var context: WorldContext?
+  public var lastCallId: Int  = 0
+  public var writeCompletion: WriteCompletion?
+  public var writeRawCompletion: WriteRawCompletion?
+  public var closeCompletion: CloseCompletion?
+
+  public init(context: WorldContext) {
+    self.context = context
+    entry = RouteEntry(
+      type: .Entry,
+      transportType: .Ipc, 
+      transportMode: .Unary, 
+      scheme: "world", 
+      name: "main", 
+      title: "Any Title", 
+      contentType: "text/html")
+    entry.iconData = loadIcon()
+  }
+
+  public func onResponseStarted(request: RouteRequest, info: RouteResponseInfo, completion: RouteCompletion?) {
+    guard let complete = completion else {
+      return
+    } 
+    if page == nil {
+      context!.storage.openFilebase("page", { [self, completion] (status, filebase) in
+        if status == 0 {
+          self.page = filebase
+          completion!(0)
+        } else {
+          completion!(-2)
+        }
+      })
+    } else {
+      completion!(0)
+    }
+  }
+
+  public func onReadCompleted(request: RouteRequest, info: RouteResponseInfo, buffer: RouteBuffer, bytesRead: UInt64) {
+   print("MainHandler.onReadCompleted")
+  }
+
+  public func getRawBodyBytes(url: String) -> Int64 {
+    print("MainHandler.getRawBodyBytes: url: \(url)")
+    return 3072
+  }
+
+  public func getExpectedContentSize(url: String) -> Int64 {
+    print("MainHandler.getExpectedContentSize: url: \(url)")
+    return 3072
+  }
+
+  public func getResponseHeaders(url: String) -> String { 
+    // fixed for now
+    print("MainHandler.getResponseHeaders: url: \(url)")
+    return String("HTTP 1.1 200 OK\n\nContent-Length: 3072\n Content-Type: \(self.contentType); charset=UTF-8")
+  }
+
+  public func read(request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
+    print("MainHandler.read: \(request.url)")
+    var isMain = false
+    if let offset = request.url.lastIndex(of: ":") {
+      var path = String(request.url[request.url.index(offset, offsetBy: 3)..<request.url.endIndex])
+      print(path)
+      if path == "main/" || path == "main" {
+        isMain = true
+      }
+    }
+    if isMain {
+      print("MainHandler.read: isMain = true => opening index.html")
+      onFileAvailableRead(file: "index.html", request: request, buffer: buffer, maxBytes: maxBytes, completion: completion)
+    } else {
+      print("MainHandler.read: isMain = false => reading asset")
+      processAsset(request: request, buffer: buffer, maxBytes: maxBytes, completion: completion)
+    }
+  }
+
+  private func processAsset(request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
+    var assetPath = String(request.url[request.url.index(request.url.firstIndex(of: "/")!, offsetBy: 2)..<request.url.endIndex])
+    assetPath = String(assetPath[assetPath.index(assetPath.firstIndex(of: "/")!, offsetBy: 1)..<assetPath.endIndex])
+    onFileAvailableRead(file: assetPath, request: request, buffer: buffer, maxBytes: maxBytes, completion: completion)
+  }
+
+  private func onFileAvailableRead(file: String, request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
+    openFile(file: file, request: request, buffer: buffer, maxBytes: maxBytes, completion: completion)
+  }
+
+  private func openFile(file: String, request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
+    guard let files = page else {
+      print("MainHandler.onResponseStarted: \(request.callId) - \(request.url) => site is not here. really bad")
+      completion(-2)
+      return
+    }
+    files.readAll(from: file, {[self] (fstatus, mmap) in  
+      if fstatus == 0 {
+        guard let mappedFile = mmap else {
+          print("\n'/hello' => reading \(file) error: failed to mmap file")
+          completion(-2)
+          return
+        }
+        readMappedFile(mappedFile, request: request, buffer: buffer, maxBytes: maxBytes, completion: completion)           
+      } else {
+        print("\n'/hello' => reading \(file) error: readAll failed => \(fstatus)")
+        completion(-2)
+      }
+    })
+  }
+
+  private func readMappedFile(_ file: SharedMemory, request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
+    file.map({ (buf, size) in
+      if request.readSize == 0 {
+        request.readSize = size
+      }
+      let amount = size - request.readOffset
+      let wr = amount > maxBytes ? maxBytes : amount
+      let readbuf = buf! + request.readOffset
+      memcpy(buffer!, readbuf, wr)
+      request.readOffset += wr
+      completion(wr)
+    })
+  }
+
+  // FIXME: this should go away now with read() converge RPC handler + IPC handler
+  public func onSucceeded(request: RouteRequest, info: RouteResponseInfo) {}
+  public func onFailed(request: RouteRequest, info: RouteResponseInfo, error: RouteRequestError) {}
+  public func onCanceled(request: RouteRequest, info: RouteResponseInfo) {}
+  private func loadIcon() -> Data {
+    let len = 3136
+    let buf = malloc(len)
+    var fd: Int32 = -1
+    /// FIXME: ugly and hackish.. now that we have the bundle.. its easiar to use it
+    fd = open("/home/fabiok/pages/savory/assets/apple-icon-180x180.png", O_RDONLY)
+    assert(fd != -1)
+    let readed = SwiftGlibc.read(fd, buf, len)
+    SwiftGlibc.close(fd)
+    return Data(bytesNoCopy: buf!, count: readed, deallocator: .free)
+  }
 }

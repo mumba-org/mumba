@@ -14,6 +14,15 @@
 #include "base/synchronization/waitable_event.h"
 #include "net/base/net_errors.h"
 #include "storage/proto/storage.pb.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include "third_party/zetasql/parser/parse_tree.h"
+#include "third_party/zetasql/parser/ast_node_kind.h"
+#include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
+#include "third_party/zetasql/base/status.h"
+#pragma clang diagnostic pop
 
 namespace storage {
 class Torrent;
@@ -80,6 +89,7 @@ public:
   virtual bool ShouldSeed(const storage_proto::Info& info) = 0;
   virtual void OpenDatabase(scoped_refptr<Torrent> torrent, base::Callback<void(int64_t)> cb, bool sync) = 0;
   virtual void CreateDatabase(scoped_refptr<Torrent> torrent, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb) = 0;
+  virtual void CreateDatabase(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) = 0;
   virtual Future<int> CreateTorrent(scoped_refptr<Torrent> torrent, bool is_journal = false, int jrn_seq = -1) = 0;
   virtual Future<int> OpenTorrent(scoped_refptr<Torrent> torrent) = 0;
   virtual Future<int> CloseTorrent(scoped_refptr<Torrent> torrent, bool is_journal = false, int jrn_seq = -1) = 0;

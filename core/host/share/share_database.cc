@@ -13,14 +13,14 @@ scoped_refptr<ShareDatabase> ShareDatabase::Open(Delegate* delegate) {
   return new ShareDatabase(delegate, db, false);
 }
 
-scoped_refptr<ShareDatabase> ShareDatabase::Create(Delegate* delegate, const std::vector<std::string>& keyspaces) {
-  storage::Database* db = storage::Database::Create(delegate->torrent(), keyspaces);
+scoped_refptr<ShareDatabase> ShareDatabase::Create(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value) {
+  storage::Database* db = storage::Database::Create(delegate->torrent(), keyspaces, key_value);
   return new ShareDatabase(delegate, db, false);  
 }
 
 // static 
-scoped_refptr<ShareDatabase> ShareDatabase::CreateMemory(Delegate* delegate, const std::vector<std::string>& keyspaces) {
-  std::unique_ptr<storage::Database> db = storage::Database::CreateMemory(keyspaces);
+scoped_refptr<ShareDatabase> ShareDatabase::CreateMemory(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value) {
+  std::unique_ptr<storage::Database> db = storage::Database::CreateMemory(keyspaces, key_value);
   return new ShareDatabase(delegate, std::move(db), true);
 }
 

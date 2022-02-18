@@ -1203,12 +1203,10 @@ bool Transaction::Rollback() {
 Database::Database(              
   const base::UUID& id,
   csqlite* sqlite, 
-  Btree* btree,
-  int table_count): 
+  Btree* btree): 
     sqlite_(sqlite), 
     btree_(btree),
     id_(id),
-//    table_count_(table_count),
     readonly_(false),
     fragment_values_(false),
     largest_root_page_(0),
@@ -1405,6 +1403,19 @@ bool Database::ExecuteStatement(const std::string& stmt) {
   return r == SQLITE_ROW || r == SQLITE_DONE;
 }
 
+bool Database::ExecuteQuery(const std::string& query) {
+  char *err_msg = 0;
+  db_lock_.Acquire();
+  std::string fmt_query = query + ";";
+  int r = csqlite_exec(sqlite_, fmt_query.c_str(), 0, 0, &err_msg);
+  db_lock_.Release();
+  if (r != SQLITE_OK) {
+    DLOG(ERROR) << "SQLite error: rc = " << r << " => " << err_msg;
+    csqlite_free(err_msg);
+  }
+  return r == SQLITE_OK;
+}
+
 void DbInit() {
   csqlite_initialize();
 }
@@ -1508,7 +1519,7 @@ Database* Database::Open(scoped_refptr<Torrent> torrent) {
 
   btree = db->aDb[0].pBt;
  
-  std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(torrent->id(), db, btree, 0));
+  std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(torrent->id(), db, btree));
 
   if (!handle->Init()) {
     LOG(ERROR) << "Database initialization failed";
@@ -1520,24 +1531,11 @@ Database* Database::Open(scoped_refptr<Torrent> torrent) {
   return db_ptr;
 }
 
-Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces) {
+Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, bool key_value) {
   int rc;
   csqlite* db;
   Btree* btree;
-  std::vector<std::string> at_least_global_keyspace;
-  bool has_global = false;
-  for (auto it = keyspaces.begin(); it != keyspaces.end(); ++it) {
-    if (*it == ".global") {
-      has_global = true;
-    }
-    at_least_global_keyspace.push_back(*it);
-  }
-
-  if (!has_global)
-    at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".global");
-
-  at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".meta");
-
+  
   disk_vfs.pAppData = torrent.get();
     
   DCHECK(csqlite_vfs_register(&disk_vfs, 1) == SQLITE_OK);
@@ -1559,19 +1557,38 @@ Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std
 
   btree = db->aDb[0].pBt;
 
-  std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(torrent->id(), db, btree, at_least_global_keyspace.size()));
+  std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(torrent->id(), db, btree));
 
-  if (!handle->CreateTables(at_least_global_keyspace)) {
-   LOG(ERROR) << "CreateTables failed";
-   return {};
+  if (key_value) {
+    std::vector<std::string> at_least_global_keyspace;
+    bool has_global = false;
+    for (auto it = keyspaces.begin(); it != keyspaces.end(); ++it) {
+      if (*it == ".global") {
+        has_global = true;
+      }
+      at_least_global_keyspace.push_back(*it);
+    }
+
+    if (!has_global)
+      at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".global");
+
+    at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".meta");
+    if (!handle->CreateTables(at_least_global_keyspace)) {
+      LOG(ERROR) << "CreateTables failed";
+      return {};
+    }
+  } else {
+    for (const auto& stmt : keyspaces) {
+      DCHECK(handle->ExecuteStatement("PRAGMA page_size = 65536"));
+      DCHECK(handle->ExecuteStatement("PRAGMA auto_vacuum = 2"));
+      DCHECK(handle->ExecuteStatement("PRAGMA journal_mode=WAL"));
+      handle->ExecuteStatement("PRAGMA wal_autocheckpoint=4096");
+      handle->ExecuteStatement("PRAGMA synchronous = FULL"); 
+      handle->ExecuteStatement("PRAGMA locking_mode=EXCLUSIVE");
+      csqlite_extended_result_codes(db, 1);
+      handle->ExecuteStatement(stmt);
+    }
   }
-
-  // std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(torrent->id(), db, btree, keyspaces.size()));
-
-  // if (!handle->CreateTables(keyspaces)) {
-  //   LOG(ERROR) << "CreateTables failed";
-  //   return {};
-  // }
 
   Database* db_ptr = handle.get();
 
@@ -1581,23 +1598,10 @@ Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std
 }
 
 // static 
-std::unique_ptr<Database> Database::CreateMemory(const std::vector<std::string>& keyspaces) {
+std::unique_ptr<Database> Database::CreateMemory(const std::vector<std::string>& keyspaces, bool key_value) {
   int rc;
   csqlite* db;
   Btree* btree;
-  std::vector<std::string> at_least_global_keyspace;
-  bool has_global = false;
-  for (auto it = keyspaces.begin(); it != keyspaces.end(); ++it) {
-    if (*it == ".global") {
-      has_global = true;
-    }
-    at_least_global_keyspace.push_back(*it);
-  }
-
-  if (!has_global)
-    at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".global");
-
-  at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".meta");
 
   rc = csqlite_open_v2(
     ":memory:",
@@ -1612,11 +1616,39 @@ std::unique_ptr<Database> Database::CreateMemory(const std::vector<std::string>&
 
   btree = db->aDb[0].pBt;
 
-  std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(base::UUID::generate(), db, btree, at_least_global_keyspace.size()));
+  std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(base::UUID::generate(), db, btree));
 
-  if (!handle->CreateTables(at_least_global_keyspace)) {
-   LOG(ERROR) << "CreateTables failed";
-   return {};
+  if (key_value) {
+    std::vector<std::string> at_least_global_keyspace;
+    bool has_global = false;
+    for (auto it = keyspaces.begin(); it != keyspaces.end(); ++it) {
+      if (*it == ".global") {
+        has_global = true;
+      }
+      at_least_global_keyspace.push_back(*it);
+    }
+
+    if (!has_global)
+      at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".global");
+
+    at_least_global_keyspace.insert(at_least_global_keyspace.begin(), ".meta");
+    if (!handle->CreateTables(at_least_global_keyspace)) {
+      LOG(ERROR) << "CreateTables failed";
+      return {};
+    }
+  } else {
+    for (const auto& stmt : keyspaces) {
+      DCHECK(handle->ExecuteStatement("PRAGMA page_size = 65536"));
+      DCHECK(handle->ExecuteStatement("PRAGMA auto_vacuum = 2"));
+      DCHECK(handle->ExecuteStatement("PRAGMA journal_mode=WAL"));
+      handle->ExecuteStatement("PRAGMA wal_autocheckpoint=4096");
+      handle->ExecuteStatement("PRAGMA synchronous = FULL"); 
+      handle->ExecuteStatement("PRAGMA locking_mode=EXCLUSIVE");
+      csqlite_extended_result_codes(db, 1);
+      handle->ExecuteStatement(stmt);
+      //DLOG(INFO) << "executing '"<< stmt << "' OK ? " << (ok ? 1 : 0);
+      //DCHECK(ok);
+    }
   }
 
   return handle;

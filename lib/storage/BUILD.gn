@@ -105,6 +105,7 @@ component("storage") {
     "//third_party/zlib/google:zip",
     #"//third_party/libxml",
     "//third_party/libtorrent",
+    #"//third_party/zetasql",
     "//third_party/boost:boost_system",
     #"//v8"
   ]
@@ -122,6 +123,7 @@ component("storage") {
   ]
   include_dirs = [
       "//third_party",
+      "//third_party/abseil-cpp",
       "$root_gen_dir/third_party"
   ]
   sources = [

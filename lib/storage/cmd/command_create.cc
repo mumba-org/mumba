@@ -58,7 +58,7 @@ void OnBootstrap(StorageManager* manager, base::Closure quit, const std::string&
     keyspaces.push_back("luizinho");
     manager->CreateTorrent(
       name, 
-      storage_proto::INFO_DATA, 
+      storage_proto::INFO_KVDB, 
       "system", 
       std::move(keyspaces), 
       base::Bind(&OnTorrentCreate, base::Unretained(manager), name, base::Passed(std::move(quit))));

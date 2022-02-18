@@ -33,7 +33,7 @@ storage_proto::InfoKind ToInfoKind(common::mojom::StorageType mojo_type) {
     case common::mojom::StorageType::kRaw:
       return storage_proto::INFO_RAW;
     case common::mojom::StorageType::kData:
-      return storage_proto::INFO_DATA;
+      return storage_proto::INFO_KVDB;
     case common::mojom::StorageType::kFile:
       return storage_proto::INFO_FILE;
   }
@@ -583,7 +583,7 @@ void StorageContext::ListShareEntriesImpl(uint32_t context_id, int32_t req, cons
   
   Share* parent = workspace_->share_manager()->GetShare(uuid);//domain_->name(), uuid);
   // theres a share with this name? and it is the database kind? 
-  //if (t && t->info().kind() == storage_proto::INFO_DATA) {
+  //if (t && t->info().kind() == storage_proto::INFO_KVDB) {
   if (!parent) {
     //DLOG(INFO) << "StorageContext::ShareExist: share not found for '" << tid << "'";
     std::move(cb).Run(std::move(result));
@@ -1003,7 +1003,7 @@ void StorageContext::DataDropImpl(uint32_t context_id, int32_t req, const std::s
   base::UUID uuid(reinterpret_cast<const uint8_t *>(tid.data()));
   ShareManager* share_manager = workspace_->share_manager();
   Share* share = share_manager->GetShare(uuid);
-  if (!share || share->info().kind() != storage_proto::INFO_DATA) {
+  if (!share || share->info().kind() != storage_proto::INFO_KVDB) {
     r = net::ERR_FAILED;
   } else {
     r = share_manager->DropShare(share) ? net::OK : net::ERR_FAILED;

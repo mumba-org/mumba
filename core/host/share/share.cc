@@ -213,7 +213,7 @@ std::string Share::public_key_hex() const {
 
 scoped_refptr<ShareDatabase> Share::db() {
   if (!db_ && in_memory_) {
-    db_ = ShareDatabase::CreateMemory(this, keyspaces_);
+    db_ = ShareDatabase::CreateMemory(this, keyspaces_, true /* key-value */);
   } else if (!db_ && torrent_->is_data()) {
     DCHECK(torrent_->db_ref());
     db_ = new ShareDatabase(this, torrent_->db_ref(), in_memory_);

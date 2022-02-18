@@ -937,7 +937,7 @@ void TorrentManager::OnTorrentPaused(lt::torrent_handle handle) {
   // DLOG(INFO) << "TorrentManager::OnTorrentPaused (" << storage_id << ")";
   scoped_refptr<Torrent> torrent = GetTorrent((int)storage_id);
   if (!torrent) {
-    LOG(ERROR) << "TorrentManager::OnTorrentPaused: torrent with id " << (int)storage_id << " not found";
+    //LOG(ERROR) << "TorrentManager::OnTorrentPaused: torrent with id " << (int)storage_id << " not found";
     return;
   }
   //DLOG(INFO) << "TorrentManager::OnTorrentPaused: " << torrent->id().to_string();

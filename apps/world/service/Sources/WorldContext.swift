@@ -67,39 +67,55 @@ public class WorldContext : EngineContext,
   }
 
   public func getRouteHeader(url: String) -> String {
-    return String()
+    print("WorldContext: getRouteHeader")
+    guard var handler = getRouteHandler(url: url) else {
+      return String()
+    }
+    return handler.getResponseHeaders(url: url)
   }
   
   public func createRequestHandler(id: Int, url: String) -> RouteRequestHandler {
-    let request = WorldRouteRequestHandler(id: id, url: url)
+    print("WorldContext: createRequestHandler: \(id) \(url)")
+    let request = WorldRouteRequestHandler(context: self, id: id, url: url)
     requests[id] = request
     return request
   }
 
   public func getRouteHandler(url: String) -> RouteHandler? {
+    print("WorldContext: getRouteHandler: \(url)")
     var route = String(url[url.index(url.firstIndex(of: "/")!, offsetBy: 2)..<url.endIndex])
     route = "/" + String(route[route.startIndex..<route.firstIndex(of: "/")!])
     return provider?.routes.handler(at: route)
   }
 
   public func getRequestHandler(id: Int) -> RouteRequestHandler? {
+    print("WorldContext: getRequestHandler: \(id)")
     return requests[id]
   }
 
   public func lookupRoute(path: String) -> RouteEntry? {
-    return nil
+    print("WorldContext: lookupRoute => \(path)")
+    guard let handler = provider?.routes.handler(at: path) else {
+      return nil
+    }
+    return handler.entry
   }
   
   public func lookupRoute(url: String) -> RouteEntry? {
-    return nil
+    print("WorldContext: lookupRoute => \(url)")
+    guard let handler = provider?.routes.handler(at: url) else {
+      return nil
+    }
+    return handler.entry
   }
   
   public func lookupRoute(uuid: String) -> RouteEntry? {
+    print("WorldContext: lookupRoute => \(uuid)")
     return nil
   }
 
   public func onComplete(id: Int, status: Int) {
-
+    print("WorldContext: onComplete => \(id) \(status)")
   }
 
   open func onShareDHTAnnounceReply(uuid: String, peers: Int) {
@@ -170,24 +186,94 @@ class WorldRouteRequestHandler : RouteRequestHandler {
   public private(set) var id: Int
   public private(set) var url: String
   public private(set) var status: Int = 0
-  public private(set) var responseInfo: String = String()
-  public private(set) var method: String = String()
-  public private(set) var mimeType: String = String()
-  public private(set) var creationTime: Int64 = 0
-  public private(set) var totalReceivedBytes: Int64 = 0 
-  public private(set) var rawBodyBytes: Int64 = 0
-  public private(set) var expectedContentSize: Int64 = 0
-  public private(set) var responseHeaders: String = String()
+  
+  public var responseInfo: String {
+    return String()
+  }
+  
+  public var method: String {
+    return String("GET")
+  }
+  
+  public var mimeType: String {
+    return handler.contentType
+  }
+  
+  public var creationTime: Int64 {
+    return created.microseconds
+  }
+  
+  public var totalReceivedBytes: Int64 = 0
 
-  public init(id: Int, url: String) {
-    self.id = id
-    self.url = url
+  public var rawBodyBytes: Int64 {
+    return handler.getRawBodyBytes(url: url)
   }
 
-  public func start() -> Int { return 0 }
-  public func followDeferredRedirect() {}
-  public func cancelWithError(error: Int) -> Int { return 0 }
-  public func read(buffer: UnsafeMutableRawPointer?, maxBytes: Int, bytesRead: inout Int) -> Int { return 0 }
+  public var expectedContentSize: Int64 {
+    return handler.getExpectedContentSize(url: url)
+  }
+
+  public var responseHeaders: String {
+    return handler.getResponseHeaders(url: url) 
+  }
+
+  private var handler: RouteHandler!
+  private weak var context: WorldContext?
+  private var routeRequest: RouteRequest?
+  private let created: TimeTicks
+  private let doneReadingEvent: WaitableEvent = WaitableEvent(resetPolicy: .manual, initialState: .notSignaled)
+
+  public init(context: WorldContext, id: Int, url: String) {
+    self.context = context
+    self.id = id
+    self.url = url
+    self.created = TimeTicks.now
+    self.handler = context.getRouteHandler(url: url)                            
+    if self.handler == nil {
+      print("no handler for \(url) found")
+      return
+    }
+  }
+
+  public func start() -> Int {
+    print("WorldRouteRequestHandler.start")
+    routeRequest = RouteRequest()
+    routeRequest!.url = url
+    routeRequest!.callId = id
+    var result = -99
+    let startCompletion = RouteCompletion({
+      result = $0
+    })
+    postTask { [self] in
+      self.handler.onResponseStarted(request: routeRequest!, info: RouteResponseInfo(), completion: startCompletion)
+    }
+    startCompletion.wait()
+    return result
+  }
+  
+  public func followDeferredRedirect() {
+    print("WorldRouteRequestHandler.followDeferredRedirect")
+  }
+  
+  public func cancelWithError(error: Int) -> Int { 
+    print("WorldRouteRequestHandler.cancelWithError: \(error)")
+    return 0 
+  }
+  
+  public func read(buffer: UnsafeMutableRawPointer?, maxBytes: Int, bytesRead: inout Int) -> Int { 
+    print("WorldRouteRequestHandler.read")
+    var result = -99
+    let readCompletion = RouteCompletion({
+      result = $0
+    })
+    postTask { [self] in
+      self.handler.read(request: self.routeRequest!, buffer: buffer, maxBytes: maxBytes, completion: readCompletion)
+    }
+    readCompletion.wait()
+    bytesRead = result
+    totalReceivedBytes += Int64(bytesRead)
+    return bytesRead
+  }
 }
 
 

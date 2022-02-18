@@ -510,7 +510,7 @@ bool MerkleTree::Build() {
   while (level_start > 0) {
     int parent = GetMerkleParent(level_start);
     for (int i = level_start; i < level_start + level_size; i += 2, ++parent) {
-     // DLOG(INFO) << "parent: " << parent << " at " << (intptr_t)ptr << " buf offset: " << offset << " left " << i << ":" << (intptr_t)nodes_[i]->hash_ << " init: " << nodes_[i]->initialized_ << " right: " << i + 1 << ":" << (intptr_t)nodes_[i+1]->hash_ << " init: " << nodes_[i+1]->initialized_;
+      //DLOG(INFO) << "parent: " << parent << " at " << (intptr_t)ptr << " buf offset: " << offset << " left " << i << ":" << (intptr_t)nodes_[i]->hash_ << " init: " << nodes_[i]->initialized_ << " right: " << i + 1 << ":" << (intptr_t)nodes_[i+1]->hash_ << " init: " << nodes_[i+1]->initialized_;
       nodes_[parent]->level_ = parent;
       nodes_[parent]->Init(ptr);
       nodes_[parent]->Update(nodes_[i].get());
@@ -579,7 +579,7 @@ bool MerkleTree::Build(const void* input_data, size_t input_size) {
 }
 
 bool MerkleTree::Build(FileSet* fileset) {
-  ////D//LOG(INFO) << "MerkleTree::Build(FileSet): nodes_.size(): " << nodes_.size() << " node_count_: " << node_count_ << " digest_buffer size/nodes: " << digest_allocated_size_ << " = " << (digest_allocated_size_ / kHashSize) << " nodes";
+  //DLOG(INFO) << "MerkleTree::Build(FileSet): nodes_.size(): " << nodes_.size() << " node_count_: " << node_count_ << " digest_buffer size/nodes: " << digest_allocated_size_ << " = " << (digest_allocated_size_ / kHashSize) << " nodes";
   char* ptr = digest_buffer_;
   // global block offset
   int block_offset = 0;
@@ -595,12 +595,12 @@ bool MerkleTree::Build(FileSet* fileset) {
     const char* hash_start = reinterpret_cast<const char*>(input_data);
     const char* hash_end = hash_start + file_size;
     int hash_size = kBlockSize > file_size ? file_size : kBlockSize;
-    ////D//LOG(INFO) << "MerkleTree::Build(FileSet) processing file " << i << " size: " << file_size << " blocks: " << blk_cnt_pfile;
+    //DLOG(INFO) << "MerkleTree::Build(FileSet) processing file " << i << " size: " << file_size << " blocks: " << blk_cnt_pfile;
 
     for (int x = 0; x < blk_cnt_pfile; ++x) {
       DCHECK((uintptr_t)ptr < (uintptr_t)(digest_buffer_ + digest_allocated_size_));
       int leaf_offset = first_leaf_ + block_offset;
-      ////D//LOG(INFO) << "MerkleTree::Build(FileSet) compute block " << x << " len " << hash_size << " file " << i << " len " << file_size << " : node [" << leaf_offset << "]";
+      //DLOG(INFO) << "MerkleTree::Build(FileSet) compute block " << x << " len " << hash_size << " file " << i << " len " << file_size << " : node [" << leaf_offset << "]";
       nodes_[leaf_offset]->level_ = leaf_offset;
       nodes_[leaf_offset]->Init(ptr);
       nodes_[leaf_offset]->Update(hash_start, hash_size);
@@ -614,9 +614,9 @@ bool MerkleTree::Build(FileSet* fileset) {
   }
 
   int last_leaf_offset = first_leaf_ + (block_offset - 1);
-  ////D//LOG(INFO) << "MerkleTree::Build(FileSet): block_count_ = " << block_count_ << " last leaf computed = " << block_offset << " offset: " << last_leaf_offset << " leaf_count_ = " << leaf_count_;  
+  //DLOG(INFO) << "MerkleTree::Build(FileSet): block_count_ = " << block_count_ << " last leaf computed = " << block_offset << " offset: " << last_leaf_offset << " leaf_count_ = " << leaf_count_;  
   for (int i = block_count_; i < leaf_count_; ++i) {
-    ////D//LOG(INFO) << "MerkleTree::Build(FileSet): clearing node [" << first_leaf_ + i << "]";
+    //DLOG(INFO) << "MerkleTree::Build(FileSet): clearing node [" << first_leaf_ + i << "]";
     nodes_[first_leaf_ + i]->level_ = first_leaf_ + i;
     nodes_[first_leaf_ + i]->Init(ptr);
     nodes_[first_leaf_ + i]->Clear();
@@ -628,7 +628,7 @@ bool MerkleTree::Build(FileSet* fileset) {
   while (level_start > 0) {
     int parent = GetMerkleParent(level_start);
     for (int i = level_start; i < level_start + level_size; i += 2, ++parent) {
-    //  //D//LOG(INFO) << "MerkleTree::Build(FileSet): parent node [" << parent << "] = left[" << i << "] + right[" << i + 1 << "]";
+      //DLOG(INFO) << "MerkleTree::Build(FileSet): parent node [" << parent << "] = left[" << i << "] + right[" << i + 1 << "]";
       nodes_[parent]->level_ = parent;
       nodes_[parent]->Init(ptr);
       nodes_[parent]->Update(nodes_[i].get());

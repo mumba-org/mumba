@@ -110,7 +110,7 @@ private:
 class DBCreateCloser {
 public:
   DBCreateCloser(scoped_refptr<Torrent> torrent, std::vector<std::string> keyspaces = std::vector<std::string>()): torrent_(torrent) {
-    Database::Create(torrent, std::move(keyspaces));
+    Database::Create(torrent, std::move(keyspaces), true);
     //if (torrent_->db_policy() == Torrent::kOPEN_CLOSE) {}
   }
 
@@ -461,7 +461,7 @@ void Storage::OnBackendInit(base::Callback<void(Storage*, int)> callback, int64_
         // the path of the root tree = the disk's 'name'
         //root_tree_->mutable_info()->set_path(path_.BaseName().value());
         root_tree_->mutable_info()->set_path("root");
-        root_tree_->mutable_info()->set_kind(storage_proto::INFO_DATA);
+        root_tree_->mutable_info()->set_kind(storage_proto::INFO_KVDB);
         context->create_db_params.keyspaces.push_back("keyspaces");
         context->create_db_params.keyspaces.push_back("inodes");
         context->create_db_params.keyspaces.push_back("index");
@@ -561,7 +561,7 @@ void Storage::OpenRootTreeOnInit(scoped_refptr<StorageContext> context, bool cre
      return;
    }
    Database* db = create ? 
-     Database::Create(root_tree_, context->create_db_params.keyspaces) : 
+     Database::Create(root_tree_, context->create_db_params.keyspaces, true) : 
      Database::Open(root_tree_);
 
    if (!db) {
@@ -759,6 +759,14 @@ void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, std::vector<std::st
   scoped_refptr<StorageContext> context = CreateContext(StorageContext::kCREATE_DATABASE, torrent, std::move(cb));
   context->create_db_params.keyspaces = std::move(keyspaces);
   context->create_db_params.keyspaces.push_back(".global");
+  RunIO(context);
+}
+
+void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) {
+  std::string uuid_str = torrent->id().to_string();
+  scoped_refptr<StorageContext> context = CreateContext(StorageContext::kCREATE_DATABASE, torrent, std::move(cb));
+  context->create_db_params.type = key_value ? storage_proto::InfoKind::INFO_KVDB : storage_proto::InfoKind::INFO_SQLDB;
+  context->create_db_params.create_table_stmts = create_table_stmts;
   RunIO(context);
 }
 
@@ -1950,9 +1958,14 @@ void Storage::OpenSQLiteDatabase(scoped_refptr<StorageContext> context) {
 void Storage::CreateSQLiteDatabase(scoped_refptr<StorageContext> context) {
   //Torrent* torrent = manager_->NewTorrent(this, context->key);
   const scoped_refptr<Torrent>& torrent = context->torrent;
-  torrent->mutable_info()->set_kind(storage_proto::INFO_DATA);
+  torrent->mutable_info()->set_kind(context->create_db_params.type);
   torrent->set_is_opening_db(true);
-  Database* db = Database::Create(torrent, context->create_db_params.keyspaces);
+  Database* db = nullptr; 
+  if (context->create_db_params.type == storage_proto::INFO_KVDB) {
+    db = Database::Create(torrent, context->create_db_params.keyspaces, true);
+  } else {
+    db = Database::Create(torrent, context->create_db_params.create_table_stmts, false);
+  }
   int64_t result = net::OK;
   
   if (!db) { // return early
@@ -2089,6 +2102,7 @@ Future<int> Storage::WriteTorrent(scoped_refptr<Torrent> torrent, const void* bu
   scoped_refptr<StorageContext> parent_context = GetContext(StorageContext::kCREATE_DATABASE, torrent->id());
   if (parent_context) {
     context->create_db_params.keyspaces = parent_context->create_db_params.keyspaces;
+    context->create_db_params.create_table_stmts = parent_context->create_db_params.create_table_stmts;
     context->parent = parent_context;
   }
   RunIO(context);
@@ -2096,23 +2110,26 @@ Future<int> Storage::WriteTorrent(scoped_refptr<Torrent> torrent, const void* bu
 }
 
 void Storage::WriteTorrentImpl(scoped_refptr<StorageContext> context) {
-  ////DLOG(INFO) << "Storage::WriteTorrentImpl: " << context->torrent->id().to_string() << " offset = " << context->write_torrent.offset << " size = " << context->write_torrent.size << " piece_length: " << context->torrent->piece_length();
+  //DLOG(INFO) << "Storage::WriteTorrentImpl: " << context->torrent->id().to_string() << " offset = " << context->write_torrent.offset << " size = " << context->write_torrent.size << " piece_length: " << context->torrent->piece_length();
   CompletionCallback callback = base::Bind(&Storage::OnWriteTorrent, weak_this_for_task_, context, context->write_torrent.size);
   const scoped_refptr<Torrent>& torrent = context->torrent;
   context->iobuf = new IOBufferWrapper(context->write_torrent.buf, context->write_torrent.size);
   if (!context->is_journal) {
     MerkleTree* merkle_tree = torrent->merkle_tree();
     if (!merkle_tree) {
-      int table_count = context->create_db_params.keyspaces.size();
+      int table_count = context->create_db_params.keyspaces.size() > 0 ? context->create_db_params.keyspaces.size() : context->create_db_params.create_table_stmts.size();
       bool ok = false;
       int piece_count = torrent->piece_count();
-      if (table_count) {
+      //DLOG(INFO) << " table count: " << table_count << " piece count: " << piece_count << " create_table_stmts: " << context->create_db_params.create_table_stmts.size();
+      if (table_count && context->create_db_params.keyspaces.size()) {
         ok = torrent->CreateMerkleTreeTables(table_count);
+      } else if (table_count && context->create_db_params.create_table_stmts.size()) {
+        ok = torrent->CreateMerkleTreeSQLTables(table_count);
       } else if (piece_count > 0) {
         ok = torrent->CreateMerkleTreePieces(piece_count);
       }
       if (!ok) {
-        DLOG(ERROR) << "error while creating merkle tree for torrent " << context->key.to_string();
+        //DLOG(ERROR) << "error while creating merkle tree for torrent " << context->key.to_string();
         context->Signal(-1);
         TerminateContext(context);
         return;
@@ -2123,10 +2140,10 @@ void Storage::WriteTorrentImpl(scoped_refptr<StorageContext> context) {
     int64_t leaf_offset = merkle_tree->first_leaf_offset() + block_offset;
     // get the block offset
     if (!merkle_tree->NodeIsSet(leaf_offset)) {
-      ////DLOG(INFO) << "adding leaf: leaf_offset = " << leaf_offset << " context->write_torrent.offset = " << context->write_torrent.offset << " block offset = " << block_offset << " adding leaf = " << leaf_offset << " blocks: " << merkle_tree->block_count() << " nodes: "  << merkle_tree->node_count();
+      //DLOG(INFO) << "adding leaf: leaf_offset = " << leaf_offset << " context->write_torrent.offset = " << context->write_torrent.offset << " block offset = " << block_offset << " adding leaf = " << leaf_offset << " blocks: " << merkle_tree->block_count() << " nodes: "  << merkle_tree->node_count();
       merkle_tree->AddLeaf(leaf_offset, context->write_torrent.buf, context->write_torrent.size);
     } else {
-      ////DLOG(INFO) << "updating leaf: offset = " << leaf_offset << " block offset = " << block_offset << " updating leaf = " << leaf_offset<< " blocks: " << merkle_tree->block_count() << " nodes: "  << merkle_tree->node_count();
+      //DLOG(INFO) << "updating leaf: offset = " << leaf_offset << " block offset = " << block_offset << " updating leaf = " << leaf_offset<< " blocks: " << merkle_tree->block_count() << " nodes: "  << merkle_tree->node_count();
       merkle_tree->UpdateLeaf(leaf_offset, context->write_torrent.buf, context->write_torrent.size);
     }
   }
@@ -2976,7 +2993,7 @@ void Storage::OnCreateDatabase(scoped_refptr<StorageContext> context, int64_t re
   
     // form the header
     storage_proto::Info header;
-    header.set_kind(storage_proto::INFO_DATA);
+    header.set_kind(context->create_db_params.type);
     header.set_state(storage_proto::STATE_FINISHED);
     header.set_id(torrent->id().string());
     header.set_comment(torrent->info().path()  + " database");
@@ -2987,6 +3004,8 @@ void Storage::OnCreateDatabase(scoped_refptr<StorageContext> context, int64_t re
     //std::string table_id = base32::Base32Encode("hello_table", base32::Base32EncodePolicy::OMIT_PADDING);;
 
     const std::vector<std::string>& keyspaces = context->create_db_params.keyspaces;
+    // FIXME: what about the sql tables => create_table_stmts
+    //const std::vector<std::string>& statements = context->create_db_params.create_table_stmts;
     //header.set_inode_count(keyspaces.size());
     // one for each keyspace in the database
     // as we start with at least one
@@ -3004,7 +3023,21 @@ void Storage::OnCreateDatabase(scoped_refptr<StorageContext> context, int64_t re
       net::GetMimeTypeFromExtension("db", &content_type);
 #endif
       inode->set_content_type(content_type.empty() ? "application/octet-stream" : content_type);
-//      inode->set_type(storage_proto::INODE_KEYSPACE);
+      offset++;
+    }
+    for (auto it = keyspaces.begin(); it != keyspaces.end(); ++it) {
+      auto* inode = header.add_inodes();
+      inode->set_name(*it);
+      inode->set_offset(offset + 1);
+      inode->set_path(torrent->info().path() + "/" + *it);
+      inode->set_creation_date(creation_time.ToInternalValue());
+      inode->set_mtime(creation_time.ToInternalValue());
+#if defined(OS_WIN)
+      net::GetMimeTypeFromExtension(L"db", &content_type);
+#else
+      net::GetMimeTypeFromExtension("db", &content_type);
+#endif
+      inode->set_content_type(content_type.empty() ? "application/octet-stream" : content_type);
       offset++;
     }
 

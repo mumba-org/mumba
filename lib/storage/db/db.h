@@ -16,6 +16,15 @@
 #include "storage/db/memory.h"
 #include "storage/proto/storage.pb.h"
 #include "storage/storage_export.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include "third_party/zetasql/parser/parse_tree.h"
+#include "third_party/zetasql/parser/ast_node_kind.h"
+#include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
+#include "third_party/zetasql/base/status.h"
+#pragma clang diagnostic pop
 
 typedef struct Btree Btree;
 typedef struct BtCursor BtCursor;
@@ -180,14 +189,13 @@ private:
 class STORAGE_EXPORT Database : public Transaction::Delegate {
 public:
   static Database* Open(scoped_refptr<Torrent> torrent);
-  static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces);
-  static std::unique_ptr<Database> CreateMemory(const std::vector<std::string>& keyspaces);
+  static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, bool key_value);
+  static std::unique_ptr<Database> CreateMemory(const std::vector<std::string>& keyspaces, bool key_value);
 
   Database(
     const base::UUID& id,
     csqlite* sqlite, 
-    Btree* btree,
-    int table_count);
+    Btree* btree);
   
   ~Database() override;
 
@@ -237,6 +245,7 @@ public:
   void GetKeyspaceList(std::vector<std::string>* out, bool include_hidden = false);
 
   bool ExecuteStatement(const std::string& stmt);
+  bool ExecuteQuery(const std::string& query);
 
 private:
   friend class Transaction;
@@ -259,7 +268,6 @@ private:
   csqlite* sqlite_;
   Btree* btree_;
   base::UUID id_;
-  //int table_count_;
   bool readonly_;
   bool fragment_values_;
   std::unordered_map<std::string, int> keyspaces_;

@@ -579,7 +579,7 @@ scoped_refptr<Torrent> StorageManager::CreateTorrent(const std::string& disk_nam
 
   torrent->mutable_info()->set_path(name);
 
-  if (type == storage_proto::INFO_DATA) {
+  if (type == storage_proto::INFO_KVDB) {
     storage->CreateDatabase(torrent, std::move(keyspaces), std::move(cb));
   } else {
     storage->AddEntry(torrent, std::move(cb));    
@@ -674,7 +674,7 @@ bool StorageManager::OpenTorrent(const scoped_refptr<Torrent>& torrent, base::Ca
     }
   }
 
-  if (torrent->info().kind() == storage_proto::INFO_DATA && !torrent->db_is_open()) {
+  if (torrent->info().kind() == storage_proto::INFO_KVDB && !torrent->db_is_open()) {
     //base::WaitableEvent waiter{base::WaitableEvent::ResetPolicy::MANUAL, base::WaitableEvent::InitialState::NOT_SIGNALED};
     // torrent->io_handler()->OpenDatabase(
     //   torrent,
@@ -783,6 +783,21 @@ void StorageManager::CreateDatabase(const std::string& disk_name, const std::str
   }
   t->mutable_info()->set_path(db_name);
   disk->CreateDatabase(t, std::move(keyspaces), std::move(cb));
+}
+
+void StorageManager::CreateDatabase(const std::string& disk_name, const std::string& db_name, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) {
+  Storage* disk = GetStorage(disk_name);
+  if (!disk) {
+    cb.Run(net::ERR_FAILED);
+    return;
+  }
+  scoped_refptr<Torrent> t = torrent_manager_->NewTorrent(disk, base::UUID::generate());
+  if (!t) {
+    cb.Run(net::ERR_FAILED);
+    return; 
+  }
+  t->mutable_info()->set_path(db_name);
+  disk->CreateDatabase(t, create_table_stmts, key_value, std::move(cb));
 }
 
 void StorageManager::CloseDatabase(const std::string& disk_name, const std::string& name, base::Callback<void(int64_t)> cb) {

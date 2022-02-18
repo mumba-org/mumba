@@ -19,6 +19,15 @@
 #include "storage/storage.h"
 #include "storage/storage_manager.h"
 #include "third_party/protobuf/src/google/protobuf/descriptor.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-compare"
+#pragma clang diagnostic ignored "-Wignored-qualifiers"
+#include "third_party/zetasql/parser/parse_tree.h"
+#include "third_party/zetasql/parser/ast_node_kind.h"
+#include "third_party/zetasql/parser/parser.h"
+#include "third_party/zetasql/public/parse_resume_location.h"
+#include "third_party/zetasql/base/status.h"
+#pragma clang diagnostic pop
 
 namespace storage {
 class Torrent;
@@ -66,6 +75,14 @@ public:
   Share* CreateShare(scoped_refptr<storage::Torrent> torrent, bool in_memory = false);
   Share* CreateShare(const std::string& domain, storage_proto::InfoKind type, const std::string& name, std::vector<std::string> keyspaces = std::vector<std::string>(), base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), bool in_memory = false);
   Share* CreateShare(const std::string& domain, storage_proto::InfoKind type, const base::UUID& id, const std::string& name, std::vector<std::string> keyspaces = std::vector<std::string>(), base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), bool in_memory = false);
+  Share* CreateShare(const std::string& domain, 
+                     storage_proto::InfoKind type, 
+                     const base::UUID& id, 
+                     const std::string& name, 
+                     const std::vector<std::string>& statements, 
+                     bool key_value,
+                     base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), 
+                     bool in_memory = false);
   Share* CreateShareWithInfohash(const std::string& domain, storage_proto::InfoKind type, const base::UUID& id, const std::string& name, const std::string& infohash, base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), bool in_memory = false);
   Share* GetShare(const base::UUID& uuid);
   Share* GetShare(const std::string& domain, const base::UUID& uuid);
@@ -92,6 +109,7 @@ private:
 
   Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::string& domain_name, const std::vector<std::string>& keyspaces, bool in_memory);
   Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::vector<std::string>& keyspaces, bool in_memory);
+  Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::vector<const zetasql::ASTCreateTableStatement*>& statements, bool in_memory);
 
   void InitImpl(std::unique_ptr<Share> system_share);
   void ShutdownImpl();

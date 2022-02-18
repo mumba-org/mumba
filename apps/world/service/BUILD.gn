@@ -8,6 +8,7 @@ swift_shared("world_service") {
     "//kit/swift/Data",
     "//kit/swift/Engine",
     "//kit/swift/Channel",
+    "//kit/swift/Collection",
     "//kit/swift/Javascript",
     "//kit/swift/Python",
     "//kit/swift/Service",

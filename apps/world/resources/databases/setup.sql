@@ -1,0 +1,2 @@
+CREATE DATABASE world;
+CREATE TABLE pods (id INT, name STRING, status STRING);

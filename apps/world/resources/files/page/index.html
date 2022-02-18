@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Overview - Kubernetes Resource Report</title>
+        <link rel="stylesheet" href="assets/bulma.min.css">
+        <!-- <script defer src="assets/all.js"></script>
+        <script defer src="assets/sortable.min.js"></script>
+        <script src="assets/anchor.min.js"></script>
+        <script src="assets/kube-resource-report.js"></script> -->
+        <link rel="stylesheet" href="assets/sortable-theme-minimal.css" />
+        <link rel="stylesheet" href="assets/kube-resource-report.css" />
+        <link rel="shortcut icon" href="assets/favicon.png">
+        <link rel="icon" type="image/png" href="assets/favicon.png">
+    </head>
+    <body class="has-navbar-fixed-top">
+        <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a role="button" class="navbar-burger" data-target="nav-menu" aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu" id="nav-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item {{ 'is-active' if page == 'index' }}" href="index.html">Overview</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'clusters' }}" href="clusters.html">Clusters</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'nodes' }}" href="nodes.html">Nodes</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'ingresses' }}" href="ingresses.html">Ingresses</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'routegroups' }}" href="routegroups.html">RouteGroups</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'teams' }}" href="teams.html">Teams</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'applications' }}" href="applications.html">Applications</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'namespaces' }}" href="namespaces.html">Namespaces</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'pods' }}" href="pods.html">Pods</a>
+                </div>
+            </div>
+        </nav>
+        <section class="section">
+            <main class="container">
+                <nav class="level">
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Clusters</p>
+                            <p class="title">{{ cluster_summaries|count }}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Worker Nodes</p>
+                            <p class="title">{{ total_worker_nodes }}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Teams</p>
+                            <p class="title">{{ teams|count }}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Applications</p>
+                            <p class="title">{{ applications|count }}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Pods</p>
+                            <p class="title">{{ total_pods }}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Monthly Cost</p>
+                            <p class="title">{{ total_cost|money }} USD</p>
+                        </div>
+                    </div>
+                </nav>
+                
+                <div class="notification is-warning">
+                    You can potentially save <strong>{{ total_slack_cost|money }} USD</strong> every month by optimizing resource requests and reducing slack.
+                </div>
+                
+                {% if alpha_ema < 1 %}
+                <div class="notification">
+                    Remember that you are using EMA (<a href="https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average">Exponential Moving Average</a>). What you see are not current values, these values are averaged.
+                </div>
+                {% endif %}
+                
+                <h2 class="title is-5">CPU</h2>
+                <div class="resource-labels">
+                    <span>{{ total_usage['cpu']|cpu }} used</span>
+                    <span>{{ total_requests['cpu']|cpu }} requested</span>
+                    <span>{{ total_allocatable['cpu']|cpu }} allocatable</span>
+                </div>
+                <div class="resource-bar" title="Usage in green; requested in black; allocatable in grey.">
+                    <progress class="progress" value="{{ total_requests['cpu'] }}" max="{{ total_allocatable['cpu'] }}"></progress>
+                    <progress class="progress is-primary" value="{{ total_usage['cpu'] }}" max="{{ total_allocatable['cpu'] }}"></progress>
+                </div>
+                
+                <h2 class="title is-5">Memory</h2>
+                <div class="resource-labels">
+                    <span>{{ total_usage['memory']|filesizeformat(True) }} used</span>
+                    <span>{{ total_requests['memory']|filesizeformat(True) }} requested</span>
+                    <span>{{ total_allocatable['memory']|filesizeformat(True) }} allocatable</span>
+                </div>
+                <div class="resource-bar" title="Usage in green; requested in black; allocatable in grey.">
+                    <progress class="progress" value="{{ total_requests['memory'] }}" max="{{ total_allocatable['memory'] }}"></progress>
+                    <progress class="progress is-primary" value="{{ total_usage['memory'] }}" max="{{ total_allocatable['memory'] }}"></progress>
+                </div>
+                
+                <h2 class="title is-5">Resource-based Pricing</h2>
+                
+                <p class="content">Price per vCPU is {{ '{:,.04f}'.format(total_cost_per_user_request_hour.cpu) }} USD per hour and per GiB memory is {{ '{:,.04f}'.format(total_cost_per_user_request_hour.memory) }} USD per hour.</p>
+                
+                <h2 class="title is-5">Notifications</h2>
+                <!-- {% for notification in notifications: %}
+                <div class="notification is-{{ 'danger' if notification[0] == 'error' }}">
+                    {{ notification[1] }}
+                </div>
+                {% else %} -->
+                <p>No warnings or errors to report.</p>
+                <!-- {% endfor %} -->
+            </main>
+        </section>
+        <footer class="footer">
+            <div class="container">
+                <div class="has-text-centered">
+                    <p><a href="https://github.com/hjacobs/kube-resource-report">Kubernetes Resource Report</a> {{ version }}</p>
+                    <p class="has-text-grey is-size-7">Page generated on {{ now.strftime('%Y-%m-%d %H:%M UTC') }}. {% if duration: %} Data collection took {{ duration|round(1) }}s. {% endif %}</p>
+                </div>
+            </div>
+        </footer>        
+    </body>
+</html>

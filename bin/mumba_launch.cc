@@ -154,6 +154,7 @@ int main(int argc, char** argv) {
   grpc_metadata_array_init(&end_metadata);
 
   printf("application install: sending '%s'\n", args[0].c_str());
+  
   grpc_slice input_buffer_slice = grpc_slice_from_static_string(args[0].c_str());
   input_buffer = grpc_raw_byte_buffer_create(&input_buffer_slice, 1);
 
@@ -176,7 +177,7 @@ int main(int argc, char** argv) {
   }
  
   grpc_slice host = grpc_slice_from_static_string(full_address.c_str());
-  grpc_slice method = grpc_slice_from_static_string("/mumba.Shell/LaunchApplication");
+  grpc_slice method = grpc_slice_from_static_string("/mumba.Mumba/ApplicationInstanceLaunch");
 
   grpc_completion_queue* completion_queue = grpc_completion_queue_create_for_pluck(nullptr);
 

@@ -1422,6 +1422,7 @@ void ApplicationWindowHost::SubmitCompositorFrame(
   // requests because they could use this to gain access to content from another
   // domain (e.g., in a child frame).
   if (frame.HasCopyOutputRequests()) {
+    DLOG(INFO) << "ApplicationWindowHost::SubmitCompositorFrame: ReceivedBadMessage";
     bad_message::ReceivedBadMessage(GetProcess(),
                                     bad_message::RWH_COPY_REQUEST_ATTEMPT);
     return;
@@ -1553,6 +1554,7 @@ void ApplicationWindowHost::DidAllocateSharedBitmap(
   //DLOG(INFO) << "ApplicationWindowHost::DidAllocateSharedBitmap";
   if (!viz::ServerSharedBitmapManager::current()->ChildAllocatedSharedBitmap(
           std::move(buffer), id)) {
+    DLOG(INFO) << "ApplicationWindowHost::DidAllocateSharedBitmap: ReceivedBadMessage";
     bad_message::ReceivedBadMessage(GetProcess(),
                                     bad_message::RWH_SHARED_BITMAP);
   }
@@ -1594,6 +1596,7 @@ void ApplicationWindowHost::OnImeCancelComposition() {
 
 void ApplicationWindowHost::OnInvalidFrameToken(uint32_t frame_token) {
   //DLOG(INFO) << "ApplicationWindowHost::OnInvalidFrameToken";
+  DLOG(INFO) << "ApplicationWindowHost::OnInvalidFrameToken: ReceivedBadMessage";
   bad_message::ReceivedBadMessage(GetProcess(),
                                   bad_message::RWH_INVALID_FRAME_TOKEN);
 }
@@ -4563,6 +4566,7 @@ void ApplicationWindowHost::OnGestureEventAckImpl(const common::GestureEventWith
 
 void ApplicationWindowHost::OnUnexpectedEventAck(UnexpectedEventAckType type) {
   if (type == BAD_ACK_MESSAGE) {
+    DLOG(INFO) << "ApplicationWindowHost::OnUnexpectedEventAck: ReceivedBadMessage";
     bad_message::ReceivedBadMessage(process_, bad_message::RWH_BAD_ACK_MESSAGE);
   } else if (type == UNEXPECTED_EVENT_TYPE) {
     suppress_events_until_keydown_ = false;

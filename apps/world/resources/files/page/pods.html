@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Pods - Kubernetes Resource Report</title>
+        <link rel="stylesheet" href="assets/bulma.min.css">
+        <script defer src="assets/all.js"></script>
+        <script defer src="assets/sortable.min.js"></script>
+        <script src="assets/anchor.min.js"></script>
+        <script src="assets/kube-resource-report.js"></script>
+        <link rel="stylesheet" href="assets/sortable-theme-minimal.css" />
+        <link rel="stylesheet" href="assets/kube-resource-report.css" />
+        <link rel="shortcut icon" href="assets/favicon.png">
+        <link rel="icon" type="image/png" href="assets/favicon.png">
+    </head>
+    <body class="has-navbar-fixed-top">
+        <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a role="button" class="navbar-burger" data-target="nav-menu" aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu" id="nav-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item {{ 'is-active' if page == 'index' }}" href="index.html">Overview</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'clusters' }}" href="clusters.html">Clusters</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'nodes' }}" href="nodes.html">Nodes</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'ingresses' }}" href="ingresses.html">Ingresses</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'routegroups' }}" href="routegroups.html">RouteGroups</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'teams' }}" href="teams.html">Teams</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'applications' }}" href="applications.html">Applications</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'namespaces' }}" href="namespaces.html">Namespaces</a>
+                    <a class="navbar-item {{ 'is-active' if page == 'pods' }}" href="pods.html">Pods</a>
+                </div>
+            </div>
+        </nav>
+        <section class="section">
+            <main class="container">
+                {% block content %}{% endblock %}
+            </main>
+        </section>
+        {% include "partials/footer.html" %}
+    </body>
+</html>
+<h1 class="title">All Pods
+    <span class="links">
+        <a href="./pods.tsv"
+           title="Download Pods as Tab-Separated-Values (TSV)"
+           class="button is-light">
+            <span class="icon"><i class="fas fa-file-download"></i></span>
+        </a>
+    </span>
+</h1>
+
+<table class="table is-striped is-hoverable is-fullwidth" data-sortable>
+    <thead>
+        <tr>
+            <th>Cluster</th>
+            <th>Namespace</th>
+            <th>Name</th>
+            <th>Application</th>
+            <th>Component</th>
+            <th><abbr title="CPU Requests">CR</abbr></th>
+            <th><abbr title="Memory Requests">MR</abbr></th>
+            <th>CPU</th>
+            <th>Memory (MiB)</th>
+            <th class="has-text-right">Cost</th>
+            {% if links['pod']: %}
+            <th></th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for cluster_id, summary in cluster_summaries.items(): %}
+        {% for namespace_name, pod in summary.pods.items(): %}
+        <tr>
+            <td><a href="./cluster-{{ cluster_id }}.html">{{ summary.cluster.name }}</a></td>
+            <td>{{ namespace_name[0] }}</td>
+            <td>{{ namespace_name[1] }}</td>
+            <td>{{ pod.application }}</td>
+            <td>{{ pod.component }}</td>
+            <td>{{ pod.requests.cpu|round(3) }}</td>
+            <td data-value="{{ pod.requests.memory }}">{{ pod.requests.memory|filesizeformat(True) }}</td>
+
+            <td style="font-size: 0.75rem" data-value="{{ pod.usage.cpu }}">
+                {{ elements.resource_bar_cpu(pod) }}
+            </td>
+            <td style="font-size: 0.75rem" data-value="{{ pod.usage.memory }}">
+                {{ elements.resource_bar_memory(pod) }}
+            </td>
+
+            <td class="has-text-right">{{ pod.cost|money }}</td>
+
+            {% if links['pod']: %}
+            <td class="links">
+                <div class="buttons has-addons">
+                    {% for link in links['pod']: %}
+                    <a href="{{ link.href.format(cluster=summary.cluster.name, namespace=namespace_name[0], name=namespace_name[1]) }}"
+                       title="{{ link.title.format(cluster=summary.cluster.name, namespace=namespace_name[0], name=namespace_name[1]) }}"
+                       class="button is-small">
+                        <span class="icon"><i class="fas fa-{{ link.icon }}"></i></span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </td>
+            {% endif %}
+        </tr>
+        {%endfor %}
+        {%endfor %}
+    </tbody>
+
+</table>
+{% endblock %}

@@ -188,7 +188,7 @@ public:
   }
 
   bool is_data() const {
-    return info_->kind() == storage_proto::INFO_DATA;
+    return info_->kind() == storage_proto::INFO_KVDB;
   }
 
   bool is_file() const {
@@ -329,6 +329,7 @@ public:
   void CloseJournal(int seq);
   std::pair<std::string, StorageEntry*> PopJournalFromDeleteList();
   bool CreateMerkleTreeTables(int table_count);
+  bool CreateMerkleTreeSQLTables(int table_count);
   bool CreateMerkleTreePieces(int piece_count);
 
   void Pause();
