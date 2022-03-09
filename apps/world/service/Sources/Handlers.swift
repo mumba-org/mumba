@@ -211,6 +211,7 @@ public class MainHandler : RouteHandler {
   public var writeCompletion: WriteCompletion?
   public var writeRawCompletion: WriteRawCompletion?
   public var closeCompletion: CloseCompletion?
+  private var pageData: String = String()
 
   public init(context: WorldContext) {
     self.context = context
@@ -230,54 +231,50 @@ public class MainHandler : RouteHandler {
       return
     } 
     if page == nil {
-      context!.storage.openFilebase("page", { [self, completion] (status, filebase) in
+      context!.storage.openFilebase("page", { [self, complete] (status, filebase) in
         if status == 0 {
           self.page = filebase
-          completion!(0)
+          complete(0)
         } else {
-          completion!(-2)
+          complete(-2)
         }
       })
     } else {
-      completion!(0)
+      complete(0)
     }
   }
 
   public func onReadCompleted(request: RouteRequest, info: RouteResponseInfo, buffer: RouteBuffer, bytesRead: UInt64) {
-   print("MainHandler.onReadCompleted")
+   //print("MainHandler.onReadCompleted")
   }
 
   public func getRawBodyBytes(url: String) -> Int64 {
-    print("MainHandler.getRawBodyBytes: url: \(url)")
+    //print("MainHandler.getRawBodyBytes: url: \(url)")
     return 3072
   }
 
   public func getExpectedContentSize(url: String) -> Int64 {
-    print("MainHandler.getExpectedContentSize: url: \(url)")
+    //print("MainHandler.getExpectedContentSize: url: \(url)")
     return 3072
   }
 
   public func getResponseHeaders(url: String) -> String { 
     // fixed for now
-    print("MainHandler.getResponseHeaders: url: \(url)")
+    //print("MainHandler.getResponseHeaders: url: \(url)")
     return String("HTTP 1.1 200 OK\n\nContent-Length: 3072\n Content-Type: \(self.contentType); charset=UTF-8")
   }
 
   public func read(request: RouteRequest, buffer: UnsafeMutableRawPointer?, maxBytes: Int, completion: RouteCompletion) {
-    print("MainHandler.read: \(request.url)")
     var isMain = false
     if let offset = request.url.lastIndex(of: ":") {
-      var path = String(request.url[request.url.index(offset, offsetBy: 3)..<request.url.endIndex])
-      print(path)
+      let path = String(request.url[request.url.index(offset, offsetBy: 3)..<request.url.endIndex])
       if path == "main/" || path == "main" {
         isMain = true
       }
     }
     if isMain {
-      print("MainHandler.read: isMain = true => opening index.html")
       onFileAvailableRead(file: "index.html", request: request, buffer: buffer, maxBytes: maxBytes, completion: completion)
     } else {
-      print("MainHandler.read: isMain = false => reading asset")
       processAsset(request: request, buffer: buffer, maxBytes: maxBytes, completion: completion)
     }
   }
@@ -321,9 +318,13 @@ public class MainHandler : RouteHandler {
       let amount = size - request.readOffset
       let wr = amount > maxBytes ? maxBytes : amount
       let readbuf = buf! + request.readOffset
-      memcpy(buffer!, readbuf, wr)
-      request.readOffset += wr
-      completion(wr)
+      if self.isDynamic(request) {
+        self.processDynamicBuffer(request, buffer, readbuf, wr, completion)
+      } else {
+        memcpy(buffer!, readbuf, wr)
+        request.readOffset += wr
+        completion(wr)
+      }
     })
   }
 
@@ -331,6 +332,63 @@ public class MainHandler : RouteHandler {
   public func onSucceeded(request: RouteRequest, info: RouteResponseInfo) {}
   public func onFailed(request: RouteRequest, info: RouteResponseInfo, error: RouteRequestError) {}
   public func onCanceled(request: RouteRequest, info: RouteResponseInfo) {}
+
+  // note: this is very raw
+  private func isDynamic(_ request: RouteRequest) -> Bool {
+    if request.url.contains("pods.html") {
+      return true
+    } 
+    return false
+  }
+
+  // note: this is very raw
+  private func processDynamicBuffer(_ request: RouteRequest, _ writeBuffer: UnsafeMutableRawPointer?, _ readBuffer: UnsafeMutableRawPointer?, _ readed: Int, _ completion: RouteCompletion) {
+    if request.url.contains("pods.html") {
+      self.pageData = String(cString: readBuffer!.bindMemory(to: CChar.self, capacity: readed))
+      context!.storage.openDatabase("sys", { (status, db) in 
+        if status == 0 {
+          db!.executeQuery("select id, name, status from pods", { cursor in
+            self.processPods(request, writeBuffer, self.pageData, completion, cursor!)
+          })
+        } else {
+          print("failed to open database 'sys'")
+        }
+      })
+    }
+  }
+
+  private func processPods(_ request: RouteRequest, _ writeBuffer: UnsafeMutableRawPointer?, _ readString: String, _ completion: RouteCompletion, _ cursor: SqlCursor) {
+    var pods: [Pod] = []
+    var podString = String()
+    while cursor.isValid {
+      var pod = Pod()
+      pod.id = cursor.getInt("id") ?? -1
+      pod.name = cursor.getString("name") ?? String()
+      pod.status = cursor.getString("status") ?? String()
+      pods.append(pod)
+      cursor.next()
+    }
+    for pod in pods {
+      podString.append("<tr><td>") 
+      podString.append(String(pod.id))
+      podString.append("</td>\n<td>")
+      podString.append(pod.name)
+      podString.append("</td>\n<td>")
+      podString.append(pod.status)
+      podString.append("</td>\n<td data-value=\"?\">?</td>\n<td style=\"font-size: 0.75rem\" data-value=\"?\"> ?</td>\n<td style=\"font-size: 0.75rem\" data-value=\"?\"></td>\n<td class=\"has-text-right\">?</td>\n</tr>")
+    }
+    if let range = readString.range(of: "{% pods summary %}") {
+      let transformedString = readString.replacingCharacters(in: range, with: podString)
+      let _ = transformedString.withCString { cstr in
+        memcpy(writeBuffer!, cstr, transformedString.count)
+      }
+      request.readOffset += transformedString.count
+      completion(transformedString.count)
+    } else {
+      completion(0)
+    }
+  }
+
   private func loadIcon() -> Data {
     let len = 3136
     let buf = malloc(len)
@@ -342,4 +400,11 @@ public class MainHandler : RouteHandler {
     SwiftGlibc.close(fd)
     return Data(bytesNoCopy: buf!, count: readed, deallocator: .free)
   }
+}
+
+public struct Pod {
+  public var id: Int = 0
+  public var name: String = String()
+  public var status: String = String()
+  public init() {}
 }

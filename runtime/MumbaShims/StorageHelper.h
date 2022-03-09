@@ -64,7 +64,7 @@ public:
     int32_t*,
     int64_t*));
 
-  void DatabaseCreate(void*, const std::string& name, const std::vector<std::string>& keyspaces, void(*)(void*, int, DatabaseRef));
+  void DatabaseCreate(void*, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory, void(*)(void*, int, DatabaseRef));
   void DatabaseOpen(void*, const std::string& name, bool create_if_not_exists, void(*)(void*, int, DatabaseRef));
   void DatabaseExists(void*, const std::string& name, void(*)(void*, int));
   void DatabaseDrop(void*, const std::string& name, void(*)(void*, int));
@@ -103,7 +103,7 @@ private:
     int64_t*));
 
 
-  void DatabaseCreateImpl(void*, const std::string& name, const std::vector<std::string>& keyspaces, void(*)(void*, int, DatabaseRef));
+  void DatabaseCreateImpl(void*, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory, void(*)(void*, int, DatabaseRef));
   void DatabaseOpenImpl(void*, const std::string& name, bool create_if_not_exists, void(*)(void*, int, DatabaseRef));
   void DatabaseExistsImpl(void*, const std::string& name, void(*)(void*, int));
   void DatabaseDropImpl(void*, const std::string& name, void(*)(void*, int));
@@ -312,7 +312,8 @@ public:
   void Rollback(void* state, void(*callback)(void*, int), bool blocking);
 
   void OnCursorAvailable(common::mojom::DataCursorPtr cursor) override;
-
+  void OnSQLCursorAvailable(common::mojom::SQLCursorPtr cursor) override {}
+  
 private:
 
   void IsValidImpl(void* state, void(*callback)(void*, int), bool blocking);
@@ -356,6 +357,65 @@ private:
   DISALLOW_COPY_AND_ASSIGN(DatabaseCursorState);
 };
 
+class SQLCursorState : public domain::StorageDataCursorDelegate {
+public:
+  SQLCursorState(
+    const scoped_refptr<domain::StorageContext>& context, 
+    scoped_refptr<base::SingleThreadTaskRunner> module_task_runner,
+    void* state, void (*callback)(void*, void*));
+  ~SQLCursorState() override;
+
+  void IsValid(void* state, void(*callback)(void*, int), bool blocking);
+  void First(void* state, void(*callback)(void*, int), bool blocking);
+  void Last(void* state, void(*callback)(void*, int), bool blocking);
+  void Previous(void* state, void(*callback)(void*, int), bool blocking);
+  void Next(void* state, void(*callback)(void*, int), bool blocking);
+  void GetBlob(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const uint8_t*, int), bool blocking);
+  void GetString(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const int8_t*, int), bool blocking);
+  void GetInt(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, int), bool blocking);
+  void GetDouble(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, double), bool blocking);
+  void Commit(void* state, void(*callback)(void*, int), bool blocking);
+  void Rollback(void* state, void(*callback)(void*, int), bool blocking);
+
+  void OnCursorAvailable(common::mojom::DataCursorPtr cursor) override {}
+  void OnSQLCursorAvailable(common::mojom::SQLCursorPtr cursor) override;
+
+private:
+
+  void IsValidImpl(void* state, void(*callback)(void*, int), bool blocking);
+  void FirstImpl(void* state, void(*callback)(void*, int), bool blocking);
+  void LastImpl(void* state, void(*callback)(void*, int), bool blocking);
+  void PreviousImpl(void* state, void(*callback)(void*, int), bool blocking);
+  void NextImpl(void* state, void(*callback)(void*, int), bool blocking);
+  void GetBlobImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const uint8_t*, int), bool blocking);
+  void GetStringImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const int8_t*, int), bool blocking);
+  void GetIntImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, int), bool blocking);
+  void GetDoubleImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, double), bool blocking);
+  void CommitImpl(void* state, void(*callback)(void*, int), bool blocking);
+  void RollbackImpl(void* state, void(*callback)(void*, int), bool blocking);
+
+  void OnIsValid(bool blocking, void* state, void(*callback)(void*, int), bool valid);
+  void OnFirst(bool blocking, void* state, void(*callback)(void*, int), int32_t status);
+  void OnLast(bool blocking, void* state, void(*callback)(void*, int), int32_t status);
+  void OnPrevious(bool blocking, void* state, void(*callback)(void*, int), int32_t status);
+  void OnNext(bool blocking, void* state, void(*callback)(void*, int), int32_t status);
+  void OnGetBlob(bool blocking, void* state, void(*callback)(void*, int, const uint8_t*, int), int32_t status, const std::vector<uint8_t>& data);
+  void OnGetString(bool blocking, void* state, void(*callback)(void*, int, const int8_t*, int), int32_t status, const std::string& data);
+  void OnGetInt(bool blocking, void* state, void(*callback)(void*, int, int), int32_t status, int32_t kv);
+  void OnGetDouble(bool blocking, void* state, void(*callback)(void*, int, double), int32_t status, double v);
+  void OnCommit(bool blocking, void* state, void(*callback)(void*, int), int32_t status);
+  void OnRollback(bool blocking, void* state, void(*callback)(void*, int), int32_t status);
+  
+  scoped_refptr<domain::StorageContext> context_;
+  scoped_refptr<base::SingleThreadTaskRunner> main_task_runner_;
+  scoped_refptr<base::SingleThreadTaskRunner> module_task_runner_;
+  common::mojom::SQLCursorPtr sql_cursor_;
+  void* state_;
+  void(*callback_)(void*, void*);
+
+  DISALLOW_COPY_AND_ASSIGN(SQLCursorState);
+};
+
 class DatabaseState {
 public:
   DatabaseState(
@@ -381,6 +441,7 @@ public:
   void DatabaseKeyspaceDrop(void*, const std::string& keyspace, void(*)(void*, int));
   void DatabaseKeyspaceList(void*, void(*)(void*, int, int, const char**));
   void DatabaseCursorCreate(void*, const std::string& keyspace, common::mojom::Order order, bool write, void (*)(void*, void*));
+  void DatabaseExecuteQuery(void*, const std::string& query, void (*)(void*, void*));
 
 private:
 
@@ -393,6 +454,7 @@ private:
   void DatabaseKeyspaceDropImpl(void*, const std::string& keyspace, void(*)(void*, int));
   void DatabaseKeyspaceListImpl(void*, void(*)(void*, int, int, const char**));
   void DatabaseCursorCreateImpl(const std::string& keyspace, common::mojom::Order order, bool write, DatabaseCursorState* cursor);
+  void DatabaseExecuteQueryImpl(const std::string& query, SQLCursorState* cursor);
 
   void OnDatabaseClose(void* ptr, void(*cb)(void*, int), int result);
   void OnDatabaseGet(void* ptr, void(*cb)(void*, int, SharedMemoryRef), int result, mojo::ScopedSharedBufferHandle, int bytes);
@@ -407,6 +469,7 @@ private:
   scoped_refptr<domain::StorageContext> context_;
   domain::ModuleState* module_;
   std::vector<std::unique_ptr<DatabaseCursorState>> cursors_;
+  std::vector<std::unique_ptr<SQLCursorState>> sql_cursors_;
 
   DISALLOW_COPY_AND_ASSIGN(DatabaseState);
 };

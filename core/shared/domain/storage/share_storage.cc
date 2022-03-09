@@ -17,10 +17,10 @@ ShareStorage::~ShareStorage() {
   
 }
 
-void ShareStorage::CreateShareWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, base::Callback<void(int)> cb) {
+void ShareStorage::CreateShareWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, bool in_memory, base::Callback<void(int)> cb) {
   const auto& task_runner = context_->GetMainTaskRunner();
   if (task_runner->RunsTasksInCurrentSequence()) {
-    context_->ShareCreateWithPath(type, name, std::move(keyspaces), source_path, std::move(cb));
+    context_->ShareCreateWithPath(type, name, std::move(keyspaces), source_path, in_memory, std::move(cb));
   } else {
     task_runner->PostTask(
       FROM_HERE, 
@@ -30,6 +30,7 @@ void ShareStorage::CreateShareWithPath(common::mojom::StorageType type, const st
         name,
         base::Passed(std::move(keyspaces)), 
         source_path,
+        in_memory,
         base::Passed(std::move(cb))));
   }
 }

@@ -161,7 +161,7 @@ private:
   void OnTorrentFileRenamed(scoped_refptr<storage::Torrent> torrent, int file_offset, const std::string& name) override;
   void OnTorrentFileRenamedError(scoped_refptr<storage::Torrent> torrent, int index, int error) override;
 
-  void OpenDatabaseSync() override;
+  void OpenDatabaseSync(bool key_value) override;
 
   void LoadInfoFromTorrent();
   

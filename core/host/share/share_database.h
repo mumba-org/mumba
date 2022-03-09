@@ -23,10 +23,10 @@ public:
     virtual ~Delegate() {}
     virtual const scoped_refptr<storage::Torrent>& torrent() const = 0;
     virtual const std::string& name() const = 0;
-    virtual void OpenDatabaseSync() = 0;
+    virtual void OpenDatabaseSync(bool key_value) = 0;
   };
   
-  static scoped_refptr<ShareDatabase> Open(Delegate* delegate);
+  static scoped_refptr<ShareDatabase> Open(Delegate* delegate, bool key_value);
   static scoped_refptr<ShareDatabase> Create(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value);
   static scoped_refptr<ShareDatabase> CreateMemory(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value);
 
@@ -56,9 +56,9 @@ public:
   const base::UUID& id() const;
   int table_count() const;
   
-  bool Init();
+  bool Init(bool key_value);
   bool CreateTables(const std::vector<std::string>& keyspaces);
-  void Open();
+  void Open(bool key_value);
   void Close();
 
   storage::Transaction* Begin(bool write);
@@ -70,6 +70,7 @@ public:
   bool Delete(storage::Transaction* tr, const std::string& keyspace, base::StringPiece key);
 
   bool ExecuteStatement(const std::string& stmt);
+  csqlite_stmt* ExecuteQuery(const std::string& query, int* rc);
   
   bool EraseAll(storage::Transaction* tr);
   bool Check();

@@ -342,6 +342,9 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
       // FIXME: this is a very raw pure string substitution on create table ddl's
       create_table_sql = FormatForSqlite(create_table_sql);
       current->create_table_stmts.push_back(create_table_sql);
+    } else if (kind == zetasql::AST_INSERT_STATEMENT) {
+      std::string insert_table_sql = zetasql::Unparse(statement);
+      current->insert_table_stmts.push_back(insert_table_sql);
     }
   }
 
@@ -355,11 +358,12 @@ void Bundle::CreateDatabase(scoped_refptr<Workspace> workspace, DatabaseCreation
   base::UUID uuid = base::UUID::generate();
   workspace->share_manager()->CreateShare(
     name(), 
-    creation->type == 0 ? storage_proto::InfoKind::INFO_KVDB : storage_proto::InfoKind::INFO_SQLDB, 
+    creation->type, 
     uuid,
     creation->database_name, 
     creation->create_table_stmts,
-    creation->type == 0 ? true : false,
+    creation->insert_table_stmts,
+    creation->type == storage_proto::InfoKind::INFO_KVDB,
     base::Bind(&Bundle::OnDatabaseCreated, 
       base::Unretained(this), 
       workspace,

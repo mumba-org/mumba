@@ -56,6 +56,22 @@ public class Database : CallbackOwner {
     }
   }
 
+  public func executeQuery(_ sqlQuery: String, _ callback: @escaping SqlCursorCallback) {
+    let state = CallbackState(self, callback)
+    let statePtr = unsafeBitCast(Unmanaged.passUnretained(state).takeUnretainedValue(), to: UnsafeMutableRawPointer.self)
+    sqlQuery.withCString { sqlQueryBytes in
+      _DatabaseExecuteQuery(reference, sqlQueryBytes, statePtr, { (handle: UnsafeMutableRawPointer?, cursor: SQLCursorRef?) in
+        let cb = unsafeBitCast(handle, to: CallbackState.self)
+        if cursor != nil {
+          cb.sqlCursorCallback!(SqlCursor(reference: cursor!))
+        } else {
+          cb.sqlCursorCallback!(nil)
+        }
+        cb.deallocate()
+      })
+    }
+  }
+
   public func createKeyspace(keyspace: String, _ callback: @escaping StatusCallback) {
     let state = CallbackState(self, callback)
     let statePtr = unsafeBitCast(Unmanaged.passUnretained(state).takeUnretainedValue(), to: UnsafeMutableRawPointer.self)

@@ -79,7 +79,7 @@ void _StorageDatabaseCreateWithKeyspaces(StorageRef handle, void* ptr, const cha
     keyspace_vec.push_back(std::string(keyspaces[i]));
     free(keyspaces[i]);
   }
-  state->DatabaseCreate(ptr, std::string(name), std::move(keyspace_vec), cb);
+  state->DatabaseCreate(ptr, std::string(name), std::move(keyspace_vec), false, cb);
 }
 
 void _StorageDatabaseOpen(StorageRef handle, void* ptr, const char* name, int create, void(*cb)(void*, int, DatabaseRef)) {
@@ -95,13 +95,13 @@ void _StorageDatabaseExists(StorageRef handle, void* ptr, const char* name, void
   state->DatabaseExists(ptr, name_string, cb); 
 }
 
-void _StorageDatabaseCreate(StorageRef handle, void* ptr, const char* name, const char* keyspace, void(*cb)(void*, int, DatabaseRef)) {
+void _StorageDatabaseCreate(StorageRef handle, void* ptr, const char* name, const char* keyspace, int in_memory, void(*cb)(void*, int, DatabaseRef)) {
   StorageState* state = reinterpret_cast<StorageState *>(handle);
   std::vector<std::string> keyspaces;
   if (keyspace) {
     keyspaces.push_back(std::string(keyspace));
   }
-  state->DatabaseCreate(ptr, std::string(name), keyspaces, cb);
+  state->DatabaseCreate(ptr, std::string(name), keyspaces, in_memory != 0, cb);
 }
 
 void _StorageDatabaseDrop(StorageRef handle, void* ptr, const char* name, void(*cb)(void*, int)) {
@@ -197,6 +197,11 @@ void _DatabaseKeyspaceList(DatabaseRef handle, void* ptr, void(*cb)(void*, int, 
 void _DatabaseCursorCreate(DatabaseRef handle, const char* keyspace, int order, int write, void* ptr, void (*callback)(void*, DatabaseCursorRef)) {
   DatabaseState* state = reinterpret_cast<DatabaseState *>(handle);
   state->DatabaseCursorCreate(ptr, std::string(keyspace), static_cast<common::mojom::Order>(order), write != 0, callback);
+}
+
+void _DatabaseExecuteQuery(DatabaseRef handle, const char* query, void* ptr, void (*callback)(void*, DatabaseCursorRef)) {
+  DatabaseState* state = reinterpret_cast<DatabaseState *>(handle);
+  state->DatabaseExecuteQuery(ptr, std::string(query), callback);
 }
 
 void _DatabaseCursorDestroy(DatabaseCursorRef cursor) {
@@ -458,4 +463,66 @@ void _SharedMemoryMap(SharedMemoryRef handle, void* state, void(*cb)(void*, char
 void _SharedMemoryConstMap(SharedMemoryRef handle, void* state, void(*cb)(void*, const char*, int)) {
   SharedMemoryState* sharedmem_state = reinterpret_cast<SharedMemoryState *>(handle);
   sharedmem_state->ConstMap(state, cb);
+}
+
+void _SQLCursorDestroy(SQLCursorRef cursor) {
+  SQLCursorState* state = reinterpret_cast<SQLCursorState*>(cursor);
+  delete state;
+}
+
+void _SQLCursorIsValidBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  cursor_state->IsValid(state, callback, true); 
+}
+
+void _SQLCursorFirstBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  cursor_state->First(state, callback, true);
+}
+
+void _SQLCursorLastBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  cursor_state->Last(state, callback, true);
+}
+
+void _SQLCursorPreviousBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  cursor_state->Previous(state, callback, true);
+}
+
+void _SQLCursorNextBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  cursor_state->Next(state, callback, true);
+}
+
+void _SQLCursorGetBlobBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, const uint8_t*, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  std::vector<int8_t> key_vec;
+  key_vec.reserve(key_size);
+  key_vec.insert(key_vec.end(), reinterpret_cast<const int8_t*>(key), reinterpret_cast<const int8_t*>(key + key_size));
+  cursor_state->GetBlob(key_vec, state, callback, true);
+}
+
+void _SQLCursorGetStringBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, const int8_t*, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  std::vector<int8_t> key_vec;
+  key_vec.reserve(key_size);
+  key_vec.insert(key_vec.end(), reinterpret_cast<const int8_t*>(key), reinterpret_cast<const int8_t*>(key + key_size));
+  cursor_state->GetString(key_vec, state, callback, true);
+}
+
+void _SQLCursorGetIntBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, int)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  std::vector<int8_t> key_vec;
+  key_vec.reserve(key_size);
+  key_vec.insert(key_vec.end(), reinterpret_cast<const int8_t*>(key), reinterpret_cast<const int8_t*>(key + key_size));
+  cursor_state->GetInt(key_vec, state, callback, true);
+}
+
+void _SQLCursorGetDoubleBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, double)) {
+  SQLCursorState* cursor_state = reinterpret_cast<SQLCursorState *>(cursor);
+  std::vector<int8_t> key_vec;
+  key_vec.reserve(key_size);
+  key_vec.insert(key_vec.end(), reinterpret_cast<const int8_t*>(key), reinterpret_cast<const int8_t*>(key + key_size));
+  cursor_state->GetDouble(key_vec, state, callback, true);
 }

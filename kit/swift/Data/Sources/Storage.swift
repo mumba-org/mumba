@@ -16,6 +16,7 @@ public typealias GetCallback = (_: Int, _: Data?) -> Void
 public typealias ExistsCallback = (_: Bool) -> Void
 public typealias StringListCallback = (_: Int, _: [String]) -> Void
 public typealias CursorCallback = (_: DatabaseCursor?) -> Void
+public typealias SqlCursorCallback = (_: SqlCursor?) -> Void
 public typealias ListFilesCallback = (_: [ShareEntry]) -> Void
 public typealias ReadCallback = (_: Int, _: SharedMemory?) -> Void
 public typealias BufferCallback = (_: UnsafeMutablePointer<Int8>?, _: Int) -> Void
@@ -40,6 +41,7 @@ public class CallbackState {
   public var filebaseCallback: FilebaseCallback?
   public var stringListCallback: StringListCallback?
   public var cursorCallback: CursorCallback?
+  public var sqlCursorCallback: SqlCursorCallback?
   public var readCallback: ReadCallback?
   public var bufferCallback: BufferCallback?
   public var constBufferCallback: ConstBufferCallback?
@@ -132,6 +134,13 @@ public class CallbackState {
     self.context = context
     self.id = context.generateId()
     self.cursorCallback = callback
+    self.context!.add(self)
+  }
+
+  public init(_ context: CallbackOwner, _ callback: @escaping SqlCursorCallback) {
+    self.context = context
+    self.id = context.generateId()
+    self.sqlCursorCallback = callback
     self.context!.add(self)
   }
 
@@ -277,17 +286,17 @@ public class Storage : CallbackOwner {
     })
   }
 
-  public func createDatabase(_ db: String, _ callback: @escaping DatabaseCallback) {
-    createDatabase(db, keyspace: nil, callback)
+  public func createDatabase(_ db: String, _ inMemory: Bool = false, _ callback: @escaping DatabaseCallback) {
+    createDatabase(db, inMemory, keyspace: nil, callback)
   }
 
-  public func createDatabase(_ db: String, keyspace: String?, _ callback: @escaping DatabaseCallback) {
+  public func createDatabase(_ db: String, _ inMemory: Bool = false, keyspace: String?, _ callback: @escaping DatabaseCallback) {
     let state = CallbackState(self, callback)
     let statePtr = unsafeBitCast(Unmanaged.passUnretained(state).takeUnretainedValue(), to: UnsafeMutableRawPointer.self)
     db.withCString { nameCString in 
       if let ks = keyspace {
         ks.withCString { keyspaceCString in
-          _StorageDatabaseCreate(reference, statePtr, nameCString, keyspaceCString, { (handle: UnsafeMutableRawPointer?, statusCode: CInt, db: UnsafeMutableRawPointer?) in
+          _StorageDatabaseCreate(reference, statePtr, nameCString, keyspaceCString, inMemory ? 1 : 0, { (handle: UnsafeMutableRawPointer?, statusCode: CInt, db: UnsafeMutableRawPointer?) in
             let cb = unsafeBitCast(handle, to: CallbackState.self)
             var database: Database?
             if statusCode == 0 {
@@ -300,7 +309,7 @@ public class Storage : CallbackOwner {
           })       
         }
       } else {
-        _StorageDatabaseCreate(reference, statePtr, nameCString, nil, { (handle: UnsafeMutableRawPointer?, statusCode: CInt, db: UnsafeMutableRawPointer?) in
+        _StorageDatabaseCreate(reference, statePtr, nameCString, nil, inMemory ? 1 : 0, { (handle: UnsafeMutableRawPointer?, statusCode: CInt, db: UnsafeMutableRawPointer?) in
           let cb = unsafeBitCast(handle, to: CallbackState.self)
           var database: Database?
           if statusCode == 0 {

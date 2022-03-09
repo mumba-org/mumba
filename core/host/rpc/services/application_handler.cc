@@ -223,7 +223,6 @@ void ApplicationInstanceLaunchHandler::HandleCall(std::vector<char> data, base::
     url_string = encoded_data;
   }
   GURL url(url_string);
-  DLOG(INFO) << "ApplicationInstanceLaunchHandler::HandleCall: url = " << url;
   int app_id = workspace->generate_next_application_id();
   // FIXME: this is the reply.. its crude and we could also make it async
   //        instead..

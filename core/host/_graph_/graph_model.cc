@@ -174,7 +174,7 @@ void GraphModel::MaybeOpen() {
     return;
   }
   if (!db_->is_open()) {
-    db_->Open();
+    db_->Open(true);
   }
 }
 

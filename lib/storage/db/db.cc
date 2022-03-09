@@ -1244,22 +1244,29 @@ bool Database::CreateTables(const std::vector<std::string>& keyspaces) {
   return true;
 }
 
-bool Database::Init() {
+bool Database::Init(bool key_value) {
   ExecuteStatement("PRAGMA journal_mode=WAL");
   ExecuteStatement("PRAGMA synchronous = FULL"); 
   ExecuteStatement("PRAGMA wal_autocheckpoint=4096");
   ExecuteStatement("PRAGMA schema.wal_checkpoint");
   ExecuteStatement("PRAGMA locking_mode=EXCLUSIVE");
+  
+  if (key_value) {
+    if (!LoadMetaTable()) {
+      return false;
+    }
+    // now lets get the keyspaces on table[0] 
+    if (!LoadKeyspaces()) {
+      return false;
+    }
+  } else {
+    // FIXME: dont know why but csqliteGlobalConfig.pcache2.xUnpin is null when we have a sql database
+    // so just calling it here again
+    //DbInit();
+    DCHECK(csqlitePcacheInitialize() == SQLITE_OK);
+  }
 
   csqlite_extended_result_codes(sqlite_, 1);
-  
-  if (!LoadMetaTable()) {
-    return false;
-  }
-  // now lets get the keyspaces on table[0] 
-  if (!LoadKeyspaces()) {
-    return false;
-  }
   
   return true; 
 }
@@ -1403,17 +1410,19 @@ bool Database::ExecuteStatement(const std::string& stmt) {
   return r == SQLITE_ROW || r == SQLITE_DONE;
 }
 
-bool Database::ExecuteQuery(const std::string& query) {
-  char *err_msg = 0;
+csqlite_stmt* Database::ExecuteQuery(const std::string& query, int* rc) {
+  csqlite_stmt* stmt_ptr = nullptr;
   db_lock_.Acquire();
   std::string fmt_query = query + ";";
-  int r = csqlite_exec(sqlite_, fmt_query.c_str(), 0, 0, &err_msg);
+  csqlite_prepare_v2(sqlite_, fmt_query.c_str(), -1, &stmt_ptr, nullptr);
+  int r = csqlite_step(stmt_ptr);
   db_lock_.Release();
-  if (r != SQLITE_OK) {
-    DLOG(ERROR) << "SQLite error: rc = " << r << " => " << err_msg;
-    csqlite_free(err_msg);
+  *rc = r; 
+  if (r == SQLITE_ROW || r == SQLITE_DONE) {
+    return stmt_ptr;
   }
-  return r == SQLITE_OK;
+  csqlite_finalize(stmt_ptr);
+  return nullptr;
 }
 
 void DbInit() {
@@ -1495,7 +1504,7 @@ bool Database::GetKeyspaceValue(const std::string& keyspace, int* value) {
   return true;
 }
 
-Database* Database::Open(scoped_refptr<Torrent> torrent) {
+Database* Database::Open(scoped_refptr<Torrent> torrent, bool key_value) {
   int rc;
   csqlite* db;
   Btree* btree;
@@ -1521,7 +1530,7 @@ Database* Database::Open(scoped_refptr<Torrent> torrent) {
  
   std::unique_ptr<Database> handle = std::unique_ptr<Database>(new Database(torrent->id(), db, btree));
 
-  if (!handle->Init()) {
+  if (!handle->Init(key_value)) {
     LOG(ERROR) << "Database initialization failed";
     return {};
   }
@@ -1532,6 +1541,10 @@ Database* Database::Open(scoped_refptr<Torrent> torrent) {
 }
 
 Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, bool key_value) {
+  return Database::Create(torrent, keyspaces, std::vector<std::string>(), key_value);
+}
+
+Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, const std::vector<std::string>& insert_stmts, bool key_value) {
   int rc;
   csqlite* db;
   Btree* btree;
@@ -1578,6 +1591,9 @@ Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std
       return {};
     }
   } else {
+    // FIXME: dont know why but csqliteGlobalConfig.pcache2.xUnpin is null when we have a sql database
+    // so just calling it here again
+    DCHECK(csqlitePcacheInitialize() == SQLITE_OK);
     for (const auto& stmt : keyspaces) {
       DCHECK(handle->ExecuteStatement("PRAGMA page_size = 65536"));
       DCHECK(handle->ExecuteStatement("PRAGMA auto_vacuum = 2"));
@@ -1586,6 +1602,10 @@ Database* Database::Create(scoped_refptr<Torrent> torrent, const std::vector<std
       handle->ExecuteStatement("PRAGMA synchronous = FULL"); 
       handle->ExecuteStatement("PRAGMA locking_mode=EXCLUSIVE");
       csqlite_extended_result_codes(db, 1);
+      handle->ExecuteStatement(stmt);
+    }
+    // execute the inserts
+    for (const auto& stmt : insert_stmts) {
       handle->ExecuteStatement(stmt);
     }
   }

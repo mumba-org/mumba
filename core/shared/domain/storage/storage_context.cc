@@ -86,9 +86,21 @@ void StorageContext::CreateDatabaseCursor(
       base::Unretained(cursor_delegate)));
 }
 
-void StorageContext::ShareCreateWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, base::Callback<void(int)> cb) {
+void StorageContext::ExecuteQuery(const std::string& db_name, const std::string& query, StorageDataCursorDelegate* cursor_delegate) {
+  int req = CreateRequest();
+  dispatcher_->GetStorageDispatcherHostInterface()->DataExecuteQuery(
+    shared_context_->id, 
+    req,
+    db_name,
+    query,
+    base::Bind(&StorageContext::ExecuteQueryImpl, 
+      this, 
+      base::Unretained(cursor_delegate)));
+}
+
+void StorageContext::ShareCreateWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, bool in_memory, base::Callback<void(int)> cb) {
   int req = CreateRequest(std::move(cb));
-  dispatcher_->GetStorageDispatcherHostInterface()->ShareCreateWithPath(shared_context_->id, req, type, name, std::move(keyspaces), source_path);
+  dispatcher_->GetStorageDispatcherHostInterface()->ShareCreateWithPath(shared_context_->id, req, type, name, std::move(keyspaces), source_path, in_memory);
 }
 
 void StorageContext::ShareCreateWithInfohash(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& infohash, base::Callback<void(int)> cb) {
@@ -271,6 +283,10 @@ void StorageContext::DataGetOnce(const std::string& db_name, const std::string& 
 void StorageContext::CreateDatabaseCursorImpl(StorageDataCursorDelegate* cursor_delegate, common::mojom::DataCursorPtr in_cursor) {
   //DLOG(INFO) << "StorageContext::CreateDatabaseCursorImpl: cursor handed over to us. calling delegate. (" << cursor_delegate << ")";
   cursor_delegate->OnCursorAvailable(std::move(in_cursor));
+}
+
+void StorageContext::ExecuteQueryImpl(StorageDataCursorDelegate* cursor_delegate, common::mojom::SQLCursorPtr in_cursor) {
+  cursor_delegate->OnSQLCursorAvailable(std::move(in_cursor));
 }
 
 void StorageContext::IndexResolveId(const std::string& address, base::Callback<void(base::UUID, int)> callback) {

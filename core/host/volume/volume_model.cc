@@ -237,7 +237,7 @@ void VolumeModel::MaybeOpen() {
   }
   if (!db_->is_open()) {
     DLOG(INFO) << "VolumeModel::MaybeOpen: db is not open, reopening...";
-    db_->Open();
+    db_->Open(true);
   }
 }
 

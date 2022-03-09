@@ -23,6 +23,7 @@ config("sqlite_warnings") {
 }
 
 static_library("sqlite_btree") { 
+#shared_library("sqlite_btree") { 
   configs -= [ "//build/config/compiler:chromium_code" ]
   configs += [
     "//build/config/compiler:no_chromium_code",
@@ -50,7 +51,7 @@ static_library("sqlite_btree") {
     #"SQLITE_MMAP_READ_ONLY=1",
     "SQLITE_THREADSAFE=2",
     #"SQLITE_THREADSAFE=1",
-    "SQLITE_OMIT_AUTOINIT",
+    #"SQLITE_OMIT_AUTOINIT",
     "SQLITE_CORE",
     "SQLITE_DEFAULT_PAGE_SIZE=65536"
   ]

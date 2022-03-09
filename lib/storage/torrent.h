@@ -188,7 +188,7 @@ public:
   }
 
   bool is_data() const {
-    return info_->kind() == storage_proto::INFO_KVDB;
+    return info_->kind() == storage_proto::INFO_KVDB || info_->kind() == storage_proto::INFO_SQLDB;
   }
 
   bool is_file() const {

@@ -156,7 +156,7 @@ void WorkspaceStorage::OpenDatabaseSync(const base::UUID& uuid) {
   //DLOG(INFO) << "WorkspaceStorage::OpenDatabaseSync: done. db opened";
   scoped_refptr<storage::Torrent> torrent = storage_manager_->torrent_manager()->GetTorrent(uuid);
   if (torrent) {
-    storage::Database::Open(torrent);
+    storage::Database::Open(torrent, true);
   } else {
     DLOG(INFO) << "WorkspaceStorage::OpenDatabaseSync: didnt found torrent with id " << uuid.to_string();
   }

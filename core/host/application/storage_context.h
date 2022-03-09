@@ -56,6 +56,33 @@ private:
   bool is_write_;
 };
 
+class StorageSQLCursor : public common::mojom::SQLCursor {
+public:
+  StorageSQLCursor(csqlite_stmt* stmt, int rc, scoped_refptr<base::SequencedTaskRunner> task_runner);
+  ~StorageSQLCursor() override;
+
+  void IsValid(IsValidCallback callback) override;
+  void First(FirstCallback callback) override;
+  void Last(LastCallback callback) override;
+  void Previous(PreviousCallback callback) override;
+  void Next(NextCallback callback) override;
+  void GetBlob(const std::vector<int8_t>& row, GetBlobCallback callback) override;
+  void GetString(const std::vector<int8_t>& row, GetStringCallback callback) override;
+  void GetInt32(const std::vector<int8_t>& row, GetInt32Callback callback) override;
+  void GetInt64(const std::vector<int8_t>& row, GetInt64Callback callback) override;
+  void GetDouble(const std::vector<int8_t>& row, GetDoubleCallback callback) override;
+  
+private:
+
+  int GetColumnIndex(const std::string& name);
+
+  base::Lock lock_;
+  csqlite_stmt* stmt_;
+  int rc_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  std::unordered_map<std::string, int> colname_map_;
+};
+
 // The contexts created by the shells to manage the file io
 // each context will be responsible for dispatching the ops
 // asked by the shells  
@@ -76,13 +103,14 @@ public:
   }
 
   common::mojom::DataCursorPtr CreateBinding(StorageDataCursor* cursor);
+  common::mojom::SQLCursorPtr CreateSQLBinding(StorageSQLCursor* cursor);
 
   // Requests
   int64_t GetAllocatedSize(uint32_t context_id, int32_t req);
   void ListShares(uint32_t context_id, int32_t req, base::OnceCallback<void(std::vector<common::mojom::ShareInfoPtr>)> cb);
   void ListShareEntries(uint32_t context_id, int32_t req, const std::string& tid, base::OnceCallback<void(std::vector<common::mojom::ShareStorageEntryPtr>)> cb);
   void ShareExists(uint32_t context_id, int32_t req, const std::string& tid, base::OnceCallback<void(bool)> cb);
-  void ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path);
+  void ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path, bool in_memory);
   void ShareCreateWithInfohash(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& infohash);
   void ShareAdd(uint32_t context_id, int32_t req, const std::string& tid, const std::string& url);
   void ShareOpen(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& tid, bool create_if_not_exists);
@@ -105,9 +133,7 @@ public:
   void FileWriteOnce(uint32_t context_id, int32_t req, const std::string& tid, const std::string& file, int64_t offset, int64_t size, const std::vector<uint8_t>& data);
   void FileClose(uint32_t context_id, int32_t req, const std::string& tid, const std::string& file);
  
-  //void DataOpen(uint32_t context_id, int32_t req, const std::string& tid);
   void DataClose(uint32_t context_id, int32_t req, const std::string& tid);
-  //void DataCreate(uint32_t context_id, int32_t req, const std::string& tid);
   void DataDrop(uint32_t context_id, int32_t req, const std::string& tid);
   void DataCreateKeyspace(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace);
   void DataDeleteKeyspace(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace);
@@ -118,6 +144,7 @@ public:
   void DataGetOnce(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, const std::string& key);
   void DataGet(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, const std::string& key, int64_t size, mojo::ScopedSharedBufferHandle data);
   void DataCreateCursor(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, common::mojom::Order order, bool write, common::mojom::StorageDispatcherHost::DataCreateCursorCallback callback);
+  void DataExecuteQuery(uint32_t context_id, int32_t req, const std::string& tid, const std::string& query, common::mojom::StorageDispatcherHost::DataExecuteQueryCallback callback);
   void IndexResolveId(uint32_t context_id, int32_t req, const std::string& address);
 
 private:
@@ -129,7 +156,7 @@ private:
   void ListShareEntriesImpl(uint32_t context_id, int32_t req, const std::string& tid, base::OnceCallback<void(std::vector<common::mojom::ShareStorageEntryPtr>)> cb, std::vector<std::unique_ptr<storage_proto::Info>>, int64_t);
 
   void ShareExistsImpl(uint32_t context_id, int32_t req, const std::string& tid, base::OnceCallback<void(bool)> cb);
-  void ShareCreateWithPathImpl(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path);
+  void ShareCreateWithPathImpl(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path, bool in_memory);
   void ShareCreateWithInfohashImpl(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& infohash);
   void ShareAddImpl(const std::string& tid, const std::string& url);
   void ShareOpenImpl(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& tid, bool create_if_not_exists);
@@ -167,6 +194,7 @@ private:
   void DataGetImpl(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, const std::string& key, int64_t size, mojo::ScopedSharedBufferHandle data);
   void DataGetOnceImpl(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, const std::string& key);
   void DataCreateCursorImpl(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, common::mojom::Order order, bool write, common::mojom::StorageDispatcherHost::DataCreateCursorCallback callback);
+  void DataExecuteQueryImpl(uint32_t context_id, int32_t req, const std::string& tid, const std::string& query, common::mojom::StorageDispatcherHost::DataExecuteQueryCallback callback);
   void IndexResolveIdImpl(uint32_t context_id, int32_t req, const std::string& address);
   
   // Responses
@@ -219,6 +247,7 @@ private:
   void ReplyDataDeleteAll(uint32_t context_id, int32_t req, base::UUID uuid, const std::string& keyspace, int64_t status);
   void ReplyIndexResolveId(uint32_t context_id, int32_t req, const std::string& address, base::UUID resolved, int64_t status);
   void ReplyCreateCursor(common::mojom::StorageDispatcherHost::DataCreateCursorCallback callback, bool ok, common::mojom::DataCursorPtr cursor);
+  void ReplyExecuteQuery(common::mojom::StorageDispatcherHost::DataExecuteQueryCallback callback, bool ok, common::mojom::SQLCursorPtr cursor);
   
   void ReplySharePieceRead(uint32_t context_id, int32_t req, base::UUID uuid, int piece, int64_t offset, int64_t size, int64_t block_size, int result);
   void ReplySharePieceWrite(uint32_t context_id, int32_t req, base::UUID uuid, int piece, int64_t offset, int64_t size, int64_t block_size, int result);
@@ -269,7 +298,9 @@ private:
   //scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::vector<std::unique_ptr<StorageDataCursor>> cursors_;
+  std::vector<std::unique_ptr<StorageSQLCursor>> sql_cursors_;
   mojo::BindingSet<common::mojom::DataCursor> cursor_bindings_;
+  mojo::BindingSet<common::mojom::SQLCursor> sql_cursor_bindings_;
   base::Lock domain_lock_;
   base::Lock workspace_lock_;
 

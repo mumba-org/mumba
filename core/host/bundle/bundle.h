@@ -16,6 +16,7 @@
 #include "core/host/bundle/bundle_info.h"
 #include "core/host/bundle/bundle_package.h"
 #include "core/shared/common/mojom/bundle.mojom.h"
+#include "storage/storage.h"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-compare"
 #pragma clang diagnostic ignored "-Wignored-qualifiers"
@@ -93,12 +94,13 @@ public:
 private:
   
   struct DatabaseCreationInfo {
-    int type; // 0 = KEY-VALUE, 1 = SQL
+    storage_proto::InfoKind type;
     std::string database_name;
     // keyspaces or table names
     // lifetime: as long as parser_output_ is live these statements will be ok
     //std::vector<const zetasql::ASTCreateTableStatement*> create_table_stmts;
     std::vector<std::string> create_table_stmts;
+    std::vector<std::string> insert_table_stmts;
   };
 
   void ResolvePackages();

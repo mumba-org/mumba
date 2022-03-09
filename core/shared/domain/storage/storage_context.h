@@ -27,6 +27,7 @@ class CONTENT_EXPORT StorageDataCursorDelegate {
 public:
   virtual ~StorageDataCursorDelegate() {}
   virtual void OnCursorAvailable(common::mojom::DataCursorPtr cursor) = 0;
+  virtual void OnSQLCursorAvailable(common::mojom::SQLCursorPtr cursor) = 0;
 };
 
 class CONTENT_EXPORT StorageFileCursorDelegate {
@@ -104,6 +105,11 @@ public:
     bool write, 
     StorageDataCursorDelegate* cursor_delegate);
 
+  void ExecuteQuery(
+    const std::string& db_name, 
+    const std::string& query, 
+    StorageDataCursorDelegate* cursor_delegate);  
+
   void AddShareObserver(base::WeakPtr<StorageShareObserver> observer);
   void RemoveShareObserver(StorageShareObserver* observer);
 
@@ -125,7 +131,7 @@ private:
 
   ~StorageContext();
 
-  void ShareCreateWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, base::Callback<void(int)> cb);
+  void ShareCreateWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, bool in_memory, base::Callback<void(int)> cb);
   void ShareCreateWithInfohash(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& infohash, base::Callback<void(int)> cb);
   void ShareAdd(const base::UUID& tid, const std::string& url, base::Callback<void(int)> cb);
   void ShareOpen(common::mojom::StorageType type, const std::string& name, bool create_if_not_exists, base::Callback<void(int)> cb);
@@ -164,6 +170,7 @@ private:
   void DataDeleteAll(const std::string& db_name, const std::string& keyspace, base::Callback<void(int)> cb);
   void IndexResolveId(const std::string& address, base::Callback<void(base::UUID, int)> callback);
   void CreateDatabaseCursorImpl(StorageDataCursorDelegate* cursor_delegate, common::mojom::DataCursorPtr in_cursor);
+  void ExecuteQueryImpl(StorageDataCursorDelegate* cursor_delegate, common::mojom::SQLCursorPtr in_cursor);
 
   // response handlers
   void OnDestroy(common::mojom::DomainStatus status);

@@ -67,7 +67,6 @@ public class WorldContext : EngineContext,
   }
 
   public func getRouteHeader(url: String) -> String {
-    print("WorldContext: getRouteHeader")
     guard var handler = getRouteHandler(url: url) else {
       return String()
     }
@@ -75,26 +74,22 @@ public class WorldContext : EngineContext,
   }
   
   public func createRequestHandler(id: Int, url: String) -> RouteRequestHandler {
-    print("WorldContext: createRequestHandler: \(id) \(url)")
     let request = WorldRouteRequestHandler(context: self, id: id, url: url)
     requests[id] = request
     return request
   }
 
   public func getRouteHandler(url: String) -> RouteHandler? {
-    print("WorldContext: getRouteHandler: \(url)")
     var route = String(url[url.index(url.firstIndex(of: "/")!, offsetBy: 2)..<url.endIndex])
     route = "/" + String(route[route.startIndex..<route.firstIndex(of: "/")!])
     return provider?.routes.handler(at: route)
   }
 
   public func getRequestHandler(id: Int) -> RouteRequestHandler? {
-    print("WorldContext: getRequestHandler: \(id)")
     return requests[id]
   }
 
   public func lookupRoute(path: String) -> RouteEntry? {
-    print("WorldContext: lookupRoute => \(path)")
     guard let handler = provider?.routes.handler(at: path) else {
       return nil
     }
@@ -102,7 +97,6 @@ public class WorldContext : EngineContext,
   }
   
   public func lookupRoute(url: String) -> RouteEntry? {
-    print("WorldContext: lookupRoute => \(url)")
     guard let handler = provider?.routes.handler(at: url) else {
       return nil
     }
@@ -110,12 +104,11 @@ public class WorldContext : EngineContext,
   }
   
   public func lookupRoute(uuid: String) -> RouteEntry? {
-    print("WorldContext: lookupRoute => \(uuid)")
     return nil
   }
 
   public func onComplete(id: Int, status: Int) {
-    print("WorldContext: onComplete => \(id) \(status)")
+    
   }
 
   open func onShareDHTAnnounceReply(uuid: String, peers: Int) {
@@ -236,7 +229,6 @@ class WorldRouteRequestHandler : RouteRequestHandler {
   }
 
   public func start() -> Int {
-    print("WorldRouteRequestHandler.start")
     routeRequest = RouteRequest()
     routeRequest!.url = url
     routeRequest!.callId = id
@@ -261,7 +253,6 @@ class WorldRouteRequestHandler : RouteRequestHandler {
   }
   
   public func read(buffer: UnsafeMutableRawPointer?, maxBytes: Int, bytesRead: inout Int) -> Int { 
-    print("WorldRouteRequestHandler.read")
     var result = -99
     let readCompletion = RouteCompletion({
       result = $0

@@ -29,6 +29,7 @@
 typedef struct Btree Btree;
 typedef struct BtCursor BtCursor;
 typedef struct csqlite csqlite;
+typedef struct csqlite_stmt csqlite_stmt;
 typedef struct KeyInfo KeyInfo;
 
 namespace storage {
@@ -188,8 +189,9 @@ private:
 
 class STORAGE_EXPORT Database : public Transaction::Delegate {
 public:
-  static Database* Open(scoped_refptr<Torrent> torrent);
+  static Database* Open(scoped_refptr<Torrent> torrent, bool key_value);
   static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, bool key_value);
+  static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_statements, const std::vector<std::string>& insert_statements, bool key_value);
   static std::unique_ptr<Database> CreateMemory(const std::vector<std::string>& keyspaces, bool key_value);
 
   Database(
@@ -199,7 +201,7 @@ public:
   
   ~Database() override;
 
-  bool Init();
+  bool Init(bool key_value);
   bool CreateTables(const std::vector<std::string>& keyspaces);
 
   bool readonly() const {
@@ -245,7 +247,8 @@ public:
   void GetKeyspaceList(std::vector<std::string>* out, bool include_hidden = false);
 
   bool ExecuteStatement(const std::string& stmt);
-  bool ExecuteQuery(const std::string& query);
+  // FIXME: wrap this up in a ResultSet
+  csqlite_stmt* ExecuteQuery(const std::string& query, int* rc);
 
 private:
   friend class Transaction;

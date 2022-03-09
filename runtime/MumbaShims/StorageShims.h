@@ -10,6 +10,7 @@
 typedef void* StorageRef;
 typedef void* DatabaseRef;
 typedef void* DatabaseCursorRef;
+typedef void* SQLCursorRef;
 typedef void* FilebaseRef;
 typedef void* FilebaseCursorRef;
 typedef void* SharedMemoryRef;
@@ -49,7 +50,7 @@ EXPORT void _StorageFilebaseListFiles(StorageRef handle, void*, const char* name
     int32_t*,
     int64_t*));
 
-EXPORT void _StorageDatabaseCreate(StorageRef handle, void*, const char* name, const char* keyspace, void(*)(void*, int, DatabaseRef));
+EXPORT void _StorageDatabaseCreate(StorageRef handle, void*, const char* name, const char* keyspace, int in_memory, void(*)(void*, int, DatabaseRef));
 EXPORT void _StorageDatabaseCreateWithKeyspaces(StorageRef handle, void*, const char* name, char** keyspaces, int keyspaces_count, void(*)(void*, int, DatabaseRef));
 EXPORT void _StorageDatabaseExists(StorageRef handle, void*, const char* name, void(*)(void*, int));
 EXPORT void _StorageDatabaseOpen(StorageRef handle, void*, const char* name, int create, void(*)(void*, int, DatabaseRef));
@@ -65,6 +66,7 @@ EXPORT void _DatabaseKeyspaceCreate(DatabaseRef handle, void*, const char* keysp
 EXPORT void _DatabaseKeyspaceDrop(DatabaseRef handle, void*, const char* keyspace, void(*)(void*, int));
 EXPORT void _DatabaseKeyspaceList(DatabaseRef handle, void*, void(*)(void*, int, int, const char**));
 EXPORT void _DatabaseCursorCreate(DatabaseRef handle, const char* keyspace, int order, int write, void* state, void (*callback)(void*, DatabaseCursorRef));
+EXPORT void _DatabaseExecuteQuery(DatabaseRef handle, const char* query, void* state, void (*callback)(void*, DatabaseCursorRef));
 
 EXPORT void _DatabaseCursorDestroy(DatabaseCursorRef cursor);
 EXPORT void _DatabaseCursorIsValid(DatabaseCursorRef cursor, void* state, void(*callback)(void*, int));
@@ -124,5 +126,16 @@ EXPORT void _SharedMemoryDestroy(SharedMemoryRef handle);
 EXPORT int _SharedMemoryGetSize(SharedMemoryRef handle);
 EXPORT void _SharedMemoryMap(SharedMemoryRef handle, void* state, void(*cb)(void*, char*, int));
 EXPORT void _SharedMemoryConstMap(SharedMemoryRef handle, void* state, void(*cb)(void*, const char*, int));
+
+EXPORT void _SQLCursorDestroy(SQLCursorRef cursor);
+EXPORT void _SQLCursorIsValidBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int));
+EXPORT void _SQLCursorFirstBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int));
+EXPORT void _SQLCursorLastBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int));
+EXPORT void _SQLCursorPreviousBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int));
+EXPORT void _SQLCursorNextBlocking(SQLCursorRef cursor, void* state, void(*callback)(void*, int));
+EXPORT void _SQLCursorGetBlobBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, const uint8_t*, int));
+EXPORT void _SQLCursorGetStringBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, const int8_t*, int));
+EXPORT void _SQLCursorGetIntBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, int));
+EXPORT void _SQLCursorGetDoubleBlocking(SQLCursorRef cursor, const uint8_t* key, int key_size, void* state, void(*callback)(void*, int, double));
 
 #endif

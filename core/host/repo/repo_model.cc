@@ -235,7 +235,7 @@ void RepoModel::MaybeOpen() {
   }
   if (!db_->is_open()) {
     DLOG(INFO) << "RepoModel::MaybeOpen: db is not open, reopening...";
-    db_->Open();
+    db_->Open(true);
   }
 }
 

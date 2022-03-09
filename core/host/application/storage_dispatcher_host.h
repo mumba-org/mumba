@@ -34,7 +34,7 @@ public:
 
   // shares
   void ShareExists(uint32_t context_id, int32_t req, const std::string& tid, ShareExistsCallback cb) override;
-  void ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path) override;
+  void ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path, bool in_memory) override;
   void ShareCreateWithInfohash(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& infohash) override;
   void ShareAdd(uint32_t context_id, int32_t req, const std::string& tid, const std::string& file) override;
   void ShareOpen(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& tid, bool create_if_not_exists) override;
@@ -72,7 +72,7 @@ public:
   void DataDelete(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, const std::string& key) override;
   void DataDeleteAll(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace) override;
   void DataCreateCursor(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, common::mojom::Order order, bool write, DataCreateCursorCallback callback) override;
-  
+  void DataExecuteQuery(uint32_t context_id, int32_t req, const std::string& tid, const std::string& query, DataExecuteQueryCallback callback) override;
   // index
   void IndexResolveId(uint32_t context_id, int32_t req, const std::string& address) override;
 

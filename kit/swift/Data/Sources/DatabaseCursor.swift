@@ -261,6 +261,40 @@ public class DatabaseCursor {
     print("Cursor.getValue: waiting...")
     return state.value ?? nil
   }
+
+  public func get(_ k: String) -> Data? {
+    let state = SingleValue<Data?>()
+    let selfPtr = unsafeBitCast(Unmanaged.passUnretained(state).takeUnretainedValue(), to: UnsafeMutableRawPointer.self)
+    k.withCString { cstr in
+      cstr.withMemoryRebound(to: UInt8.self, capacity: k.count) {
+        _DatabaseCursorGetBlocking(reference, $0, CInt(k.count), selfPtr, {
+          (handle: UnsafeMutableRawPointer?, status: CInt, value: UnsafePointer<UInt8>?, size: CInt) in 
+          let stateRef = unsafeBitCast(handle, to: SingleValue<Data?>.self)
+          print("Cursor.getValue: done. signalling.")
+          status == 0 ? stateRef.value = Data(bytes: value!, count: Int(size)) : nil
+        })
+      }
+    }
+    print("Cursor.getValue: waiting...")
+    return state.value ?? nil
+  }
+
+  public func getString(_ k : String) -> String {
+    if let d = get(k) {
+      return String(bytes: d, encoding: .utf8)!
+    }
+    return String()
+  }
+
+  public func getInt(_ k : String) -> Int {
+    if let d = get(k) {
+      let number = d.withUnsafeBytes { pointer in
+        return pointer.load(as: Int.self)
+      }
+      return number
+    }
+    return -1
+  }
   
   public func insert(key k: String, value v: String) -> Bool {
     return insert(key: Data(k.utf8), value: Data(v.utf8))

@@ -90,9 +90,9 @@ void StorageDispatcherHost::ShareExists(uint32_t context_id, int32_t req, const 
   storage_context->ShareExists(context_id, req, tid, std::move(cb));
 }
 
-void StorageDispatcherHost::ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path) {
+void StorageDispatcherHost::ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path, bool in_memory) {
   scoped_refptr<StorageContext> storage_context = storage_manager_->GetContext(context_id); 
-  storage_context->ShareCreateWithPath(context_id, req, type, name, std::move(keyspaces), source_path);
+  storage_context->ShareCreateWithPath(context_id, req, type, name, std::move(keyspaces), source_path, in_memory);
 }
 
 void StorageDispatcherHost::ShareCreateWithInfohash(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& infohash) {
@@ -280,6 +280,11 @@ void StorageDispatcherHost::DataDeleteAll(uint32_t context_id, int32_t req, cons
 void StorageDispatcherHost::DataCreateCursor(uint32_t context_id, int32_t req, const std::string& tid, const std::string& keyspace, common::mojom::Order order, bool write, DataCreateCursorCallback callback) {
   scoped_refptr<StorageContext> storage_context = storage_manager_->GetContext(context_id); 
   storage_context->DataCreateCursor(context_id, req, tid, keyspace, order, write, std::move(callback));
+}
+
+void StorageDispatcherHost::DataExecuteQuery(uint32_t context_id, int32_t req, const std::string& tid, const std::string& query, DataExecuteQueryCallback callback) {
+  scoped_refptr<StorageContext> storage_context = storage_manager_->GetContext(context_id); 
+  storage_context->DataExecuteQuery(context_id, req, tid, query, std::move(callback));
 }
 
 void StorageDispatcherHost::IndexResolveId(uint32_t context_id, int32_t req, const std::string& address) {

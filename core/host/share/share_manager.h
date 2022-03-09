@@ -79,7 +79,8 @@ public:
                      storage_proto::InfoKind type, 
                      const base::UUID& id, 
                      const std::string& name, 
-                     const std::vector<std::string>& statements, 
+                     const std::vector<std::string>& create_statements, 
+                     const std::vector<std::string>& insert_statements, 
                      bool key_value,
                      base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), 
                      bool in_memory = false);
@@ -109,7 +110,7 @@ private:
 
   Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::string& domain_name, const std::vector<std::string>& keyspaces, bool in_memory);
   Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::vector<std::string>& keyspaces, bool in_memory);
-  Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::vector<const zetasql::ASTCreateTableStatement*>& statements, bool in_memory);
+  Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::vector<std::string>& create_stmts, const std::vector<std::string>& insert_stmts, bool in_memory);
 
   void InitImpl(std::unique_ptr<Share> system_share);
   void ShutdownImpl();

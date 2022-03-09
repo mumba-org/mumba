@@ -23,6 +23,11 @@
 #include "core/host/share/share_database.h"
 #include "core/host/share/share_manager.h"
 #include "storage/proto/storage.pb.h"
+#include "storage/db/sqlite3.h"
+
+// forward decl
+
+extern "C" void csqlitePCacheSetDefault(void);
 
 namespace host {
 
@@ -267,6 +272,133 @@ void StorageDataCursor::Rollback(RollbackCallback callback) {
   std::move(callback).Run(r ? net::OK : net::ERR_FAILED);
 }
 
+StorageSQLCursor::StorageSQLCursor(csqlite_stmt* stmt, int rc, scoped_refptr<base::SequencedTaskRunner> task_runner): 
+  stmt_(stmt), 
+  rc_(rc),
+  task_runner_(task_runner) {
+
+  csqlitePCacheSetDefault();
+}
+
+StorageSQLCursor::~StorageSQLCursor() {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  csqlite_finalize(stmt_);
+}
+
+void StorageSQLCursor::IsValid(IsValidCallback callback) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  std::move(callback).Run(rc_ == SQLITE_ROW);
+}
+
+void StorageSQLCursor::First(FirstCallback callback) {
+
+}
+
+void StorageSQLCursor::Last(LastCallback callback) {
+
+}
+
+void StorageSQLCursor::Previous(PreviousCallback callback) {
+
+}
+
+void StorageSQLCursor::Next(NextCallback callback) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock lock(lock_);
+  rc_ = csqlite_step(stmt_);
+  std::move(callback).Run(rc_ == SQLITE_ROW);
+}
+
+void StorageSQLCursor::GetBlob(const std::vector<int8_t>& row, GetBlobCallback callback) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock lock(lock_);
+  std::string col_name(row.begin(), row.end());
+  int col_index = GetColumnIndex(col_name);
+  if (col_index == -1) {
+    std::move(callback).Run(net::ERR_FAILED, std::vector<uint8_t>());
+    return;
+  }
+  const void* data = csqlite_column_blob(stmt_, col_index);
+  size_t size = csqlite_column_bytes(stmt_, col_index);
+  std::vector<uint8_t> vec_data;
+  vec_data.insert(vec_data.end(), reinterpret_cast<const uint8_t *>(data), reinterpret_cast<const uint8_t *>(data) + size);
+  std::move(callback).Run(net::OK, vec_data);
+}
+
+void StorageSQLCursor::GetString(const std::vector<int8_t>& row, GetStringCallback callback) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock lock(lock_);
+  std::string col_name(row.begin(), row.end());
+  int col_index = GetColumnIndex(col_name);
+  if (col_index == -1) {
+    std::move(callback).Run(net::ERR_FAILED, std::string());
+    return;
+  }
+  const uint8_t* data = csqlite_column_text(stmt_, col_index);
+  size_t size = csqlite_column_bytes(stmt_, col_index);
+  std::move(callback).Run(net::OK, std::string(reinterpret_cast<const char*>(data), size));
+}
+
+void StorageSQLCursor::GetInt32(const std::vector<int8_t>& row, GetInt32Callback callback) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock lock(lock_);
+  std::string col_name(row.begin(), row.end());
+  int col_index = GetColumnIndex(col_name);
+  if (col_index == -1) {
+    std::move(callback).Run(net::ERR_FAILED, -1);
+    return;
+  }
+  int data = csqlite_column_int(stmt_, col_index);
+  std::move(callback).Run(net::OK, data);
+}
+
+void StorageSQLCursor::GetInt64(const std::vector<int8_t>& row, GetInt64Callback callback) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock lock(lock_);
+  std::string col_name(row.begin(), row.end());
+  int col_index = GetColumnIndex(col_name);
+  if (col_index == -1) {
+    std::move(callback).Run(net::ERR_FAILED, -1);
+    return;
+  }
+  int64_t data = csqlite_column_int64(stmt_, col_index);
+  std::move(callback).Run(net::OK, data);
+}
+
+void StorageSQLCursor::GetDouble(const std::vector<int8_t>& row, GetDoubleCallback callback) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock lock(lock_);
+  std::string col_name(row.begin(), row.end());
+  int col_index = GetColumnIndex(col_name);
+  if (col_index == -1) {
+    std::move(callback).Run(net::ERR_FAILED, 0.0);
+    return;
+  }
+  double data = csqlite_column_double(stmt_, col_index);
+  std::move(callback).Run(net::OK, data);
+}
+
+int StorageSQLCursor::GetColumnIndex(const std::string& name) {
+  DCHECK(task_runner_->RunsTasksInCurrentSequence());
+  //base::AutoLock lock(lock_);
+  int index = -1;
+  auto it = colname_map_.find(name);
+  // not cached
+  if (it == colname_map_.end()) {
+    for (int i = 0; i < csqlite_column_count(stmt_); i++) {
+      const char* cname = csqlite_column_name(stmt_, i);
+      if (strcmp(cname, name.c_str()) == 0) {
+        colname_map_.emplace(std::make_pair(name, i));
+        index = i;
+        break;
+      }
+    }
+  } else {
+    index = it->second;
+  }
+  return index;
+}
+
 StorageContext::StorageContext(int id, scoped_refptr<Workspace> workspace, Domain* domain):
   id_(id),
   workspace_(workspace),
@@ -305,6 +437,12 @@ common::mojom::DataCursorPtr StorageContext::CreateBinding(StorageDataCursor* cu
   return cursor_ptr;
 }
 
+common::mojom::SQLCursorPtr StorageContext::CreateSQLBinding(StorageSQLCursor* cursor) {
+  common::mojom::SQLCursorPtr cursor_ptr;
+  sql_cursor_bindings_.AddBinding(cursor, mojo::MakeRequest(&cursor_ptr));
+  return cursor_ptr;
+}
+
 int64_t StorageContext::GetAllocatedSize(uint32_t context_id, int32_t req) {
   Volume* volume = domain_->main_volume();//workspace_->volume_storage()->storage_manager()->GetStorage(domain_->name());
   // should not fail. severe logic fault of it does
@@ -331,10 +469,10 @@ void StorageContext::ShareExists(uint32_t context_id, int32_t req, const std::st
     base::Bind(&StorageContext::ShareExistsImpl, this, context_id, req, tid, base::Passed(std::move(cb))));
 }
 
-void StorageContext::ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path) {
+void StorageContext::ShareCreateWithPath(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path, bool in_memory) {
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&StorageContext::ShareCreateWithPathImpl, this, context_id, req, type, name, keyspaces, source_path));
+    base::Bind(&StorageContext::ShareCreateWithPathImpl, this, context_id, req, type, name, keyspaces, source_path, in_memory));
 }
 
 void StorageContext::ShareCreateWithInfohash(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& infohash) {
@@ -529,6 +667,12 @@ void StorageContext::DataCreateCursor(uint32_t context_id, int32_t req, const st
     base::BindOnce(&StorageContext::DataCreateCursorImpl, this, context_id, req, tid, keyspace, order, write, base::Passed(std::move(callback))));
 }
 
+void StorageContext::DataExecuteQuery(uint32_t context_id, int32_t req, const std::string& tid, const std::string& query, common::mojom::StorageDispatcherHost::DataExecuteQueryCallback callback) {
+  task_runner_->PostTask(
+    FROM_HERE,
+    base::BindOnce(&StorageContext::DataExecuteQueryImpl, this, context_id, req, tid, query, base::Passed(std::move(callback))));
+}
+
 void StorageContext::IndexResolveId(uint32_t context_id, int32_t req, const std::string& address) {
   task_runner_->PostTask(
     FROM_HERE,
@@ -639,7 +783,7 @@ void StorageContext::ShareExistsImpl(uint32_t context_id, int32_t req, const std
       exists));
 }
 
-void StorageContext::ShareCreateWithPathImpl(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path) {
+void StorageContext::ShareCreateWithPathImpl(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& name, const std::vector<std::string>& keyspaces, const std::string& source_path, bool in_memory) {
   //base::UUID uuid = base::UUID::generate();
   //storage::StorageManager* manager = workspace_->volume_storage()->storage_manager();
   ShareManager* share_manager = workspace_->share_manager();
@@ -1353,6 +1497,78 @@ void StorageContext::DataCreateCursorImpl(uint32_t context_id, int32_t req, cons
         base::Passed(std::move(cursor_proxy))));
 }
 
+void StorageContext::DataExecuteQueryImpl(uint32_t context_id, int32_t req, const std::string& tid, const std::string& query, common::mojom::StorageDispatcherHost::DataExecuteQueryCallback callback) {
+  ShareManager* share_manager = workspace_->share_manager();
+  common::mojom::SQLCursorPtr cursor_proxy;
+  base::UUID uuid;
+  bool found = share_manager->GetUUID(domain_->name(), tid, &uuid);
+  if (!found) {
+    HostThread::PostTask(
+      HostThread::IO,
+      FROM_HERE,
+      base::BindOnce(
+        &StorageContext::ReplyExecuteQuery, 
+        this, 
+        base::Passed(std::move(callback)),
+        false, 
+        base::Passed(std::move(cursor_proxy))));
+    return;
+  }
+  Share* share = share_manager->GetShare(domain_name(), uuid);
+  if (!share) {
+    HostThread::PostTask(
+      HostThread::IO,
+      FROM_HERE,
+      base::BindOnce(
+        &StorageContext::ReplyExecuteQuery, 
+        this, 
+        base::Passed(std::move(callback)),
+        false, 
+        base::Passed(std::move(cursor_proxy))));
+    return;
+  }
+  if (!share->is_open() || !share->db_is_open()) {
+    DLOG(INFO) << "StorageContext::ExecuteQueryImpl: error => " << tid << " is not open" ;
+    HostThread::PostTask(
+      HostThread::IO,
+      FROM_HERE,
+      base::BindOnce(
+        &StorageContext::ReplyExecuteQuery, 
+        this, 
+        base::Passed(std::move(callback)),
+        false, 
+        base::Passed(std::move(cursor_proxy))));
+    return; 
+  }
+  int rc = 0;
+  auto* stmt = share->db()->ExecuteQuery(query, &rc);
+  if (stmt == nullptr) {
+    DLOG(INFO) << "StorageContext::DataExecuteQueryImpl: failed to execute statement '" << query << "'" ;
+    HostThread::PostTask(
+      HostThread::IO,
+      FROM_HERE,
+      base::BindOnce(
+        &StorageContext::ReplyExecuteQuery, 
+        this, 
+        base::Passed(std::move(callback)),
+        false,
+        base::Passed(std::move(cursor_proxy))));
+    return; 
+  }
+  auto cursor = std::make_unique<StorageSQLCursor>(stmt, rc, task_runner_);
+  cursor_proxy = CreateSQLBinding(cursor.get());
+  sql_cursors_.push_back(std::move(cursor));
+  HostThread::PostTask(
+      HostThread::IO,
+      FROM_HERE,
+      base::BindOnce(
+        &StorageContext::ReplyExecuteQuery, 
+        this, 
+        base::Passed(std::move(callback)),
+        true,
+        base::Passed(std::move(cursor_proxy))));
+}
+
 void StorageContext::IndexResolveIdImpl(uint32_t context_id, int32_t req, const std::string& address) {
   DCHECK(domain_);
   DCHECK(workspace_);
@@ -1428,7 +1644,6 @@ void StorageContext::ReplyShareOpen(uint32_t context_id, int32_t req, base::UUID
     ShareManager* share_manager = workspace_->share_manager();
     auto share = share_manager->GetShare(uuid);
     DCHECK(share);
-    //DLOG(INFO) << "StorageContext::ReplyShareOpen: adding this context as observer to share " << share->id().to_string();
     share->AddObserver(this);
   }
   HostThread::PostTask(
@@ -1617,6 +1832,10 @@ void StorageContext::ReplyIndexResolveId(uint32_t context_id, int32_t req, const
 
 void StorageContext::ReplyCreateCursor(common::mojom::StorageDispatcherHost::DataCreateCursorCallback callback, bool ok, common::mojom::DataCursorPtr cursor) {
   std::move(callback).Run(std::move(cursor));     
+}
+
+void StorageContext::ReplyExecuteQuery(common::mojom::StorageDispatcherHost::DataExecuteQueryCallback callback, bool ok, common::mojom::SQLCursorPtr cursor) {
+  std::move(callback).Run(std::move(cursor));
 }
 
 // ShareObserver

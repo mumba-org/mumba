@@ -8,8 +8,8 @@
 
 namespace host {
 
-scoped_refptr<ShareDatabase> ShareDatabase::Open(Delegate* delegate) {
-  storage::Database* db = storage::Database::Open(delegate->torrent());
+scoped_refptr<ShareDatabase> ShareDatabase::Open(Delegate* delegate, bool key_value) {
+  storage::Database* db = storage::Database::Open(delegate->torrent(), key_value);
   return new ShareDatabase(delegate, db, false);
 }
 
@@ -51,12 +51,12 @@ bool ShareDatabase::CreateTables(const std::vector<std::string>& keyspaces) {
   return impl_->CreateTables(keyspaces);
 }
 
-bool ShareDatabase::Init() {
-  return impl_->Init();
+bool ShareDatabase::Init(bool key_value) {
+  return impl_->Init(key_value);
 }
 
-void ShareDatabase::Open() {
-  delegate_->OpenDatabaseSync();
+void ShareDatabase::Open(bool key_value) {
+  delegate_->OpenDatabaseSync(key_value);
 }
 
 void ShareDatabase::Close() {
@@ -113,6 +113,10 @@ void ShareDatabase::GetKeyspaceList(std::vector<std::string>* out, bool include_
 
 bool ShareDatabase::ExecuteStatement(const std::string& stmt) {
   return impl_->ExecuteStatement(stmt); 
+}
+
+csqlite_stmt* ShareDatabase::ExecuteQuery(const std::string& query, int* rc) {
+  return impl_->ExecuteQuery(query, rc); 
 }
 
 bool ShareDatabase::Checkpoint(int* result_code) {

@@ -2617,6 +2617,7 @@ component("host") {
     "//lib/base/third_party/dynamic_annotations",
     "//lib/storage",
     "//lib/storage/host",
+    "//lib/storage:sqlite_btree",
     "//lib/gpu",
     "//lib/gpu/command_buffer/client:gles2_implementation",
     "//lib/gpu/command_buffer/client:gles2_interface",

@@ -77,7 +77,8 @@ Share* ShareManager::CreateShare(const std::string& domain,
                                  storage_proto::InfoKind type, 
                                  const base::UUID& id, 
                                  const std::string& name, 
-                                 const std::vector<std::string>& statements,
+                                 const std::vector<std::string>& create_statements,
+                                 const std::vector<std::string>& insert_statements,
                                  bool key_value,
                                  base::Callback<void(int64_t)> cb, 
                                  bool in_memory) {
@@ -98,8 +99,8 @@ Share* ShareManager::CreateShare(const std::string& domain,
   }
 
   torrent->mutable_info()->set_path(name);
-  storage->CreateDatabase(torrent, statements, key_value, std::move(cb));
-  return CreateShareInternal(torrent, statements, in_memory);  
+  storage->CreateDatabase(torrent, create_statements, insert_statements, key_value, std::move(cb));
+  return CreateShareInternal(torrent, create_statements, insert_statements, in_memory);  
 }
 
 Share* ShareManager::CreateDatabaseShare(const std::string& domain, const std::vector<std::string>& keyspaces, bool in_memory) {
@@ -222,7 +223,11 @@ Share* ShareManager::OpenShare(const std::string& domain, const base::UUID& id, 
     scoped_refptr<storage::Torrent> t = share->torrent();
     if (!t->is_open()) {
       int r = t->Open();
-      std::move(cb).Run(r);
+      if ((t->info().kind() == storage_proto::INFO_KVDB || t->info().kind() == storage_proto::INFO_SQLDB) && !t->db_is_open()) {
+        t->io_handler()->OpenDatabase(t, t->info().kind() == storage_proto::INFO_KVDB, std::move(cb), false);
+      } else {
+        std::move(cb).Run(r);
+      }  
     } else {
       std::move(cb).Run(net::OK);
     }
@@ -325,9 +330,9 @@ Share* ShareManager::CreateShareInternal(scoped_refptr<storage::Torrent> share_t
   return reference;
 }
 
-Share* ShareManager::CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::vector<const zetasql::ASTCreateTableStatement*>& statements, bool in_memory) {
+Share* ShareManager::CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::vector<std::string>& create_stmts, const std::vector<std::string>& insert_stmts, bool in_memory) {
   const std::string& domain = torrent->io_handler()->GetName();
-  std::unique_ptr<Share> share = std::make_unique<Share>(this, domain, torrent, std::vector<std::string>(), in_memory);
+  std::unique_ptr<Share> share = std::make_unique<Share>(this, domain, torrent, create_stmts, in_memory);
   Share* reference = share.get();
   InsertShare(std::move(share));  
   return reference;

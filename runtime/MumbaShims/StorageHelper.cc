@@ -21,6 +21,10 @@ void RunCursorAvailableCallback(void* state, void* cursor, void (*callback)(void
   callback(state, cursor);
 }
 
+void RunSQLCursorAvailableCallback(void* state, void* cursor, void (*callback)(void*, void*)) {
+  callback(state, cursor);
+}
+
 void RunCursorIsValidCallback(void* state, int valid, void(*callback)(void*, int)) {
   callback(state, valid);
 }
@@ -47,6 +51,22 @@ void RunCursorGetKeyValueCallback(void* state, int32_t result, common::mojom::Ke
 
 void RunCursorGetCallback(void* state, int32_t result, common::mojom::KeyValuePtr kv, void(*callback)(void*, int, const uint8_t*, int)) {
   callback(state, result, kv->value.data(), static_cast<int>(kv->value.size()));
+}
+
+void RunCursorGetBlobCallback(void* state, int32_t result, const std::vector<uint8_t>& data, void(*callback)(void*, int, const uint8_t*, int)) {
+  callback(state, result, data.data(), static_cast<int>(data.size()));
+}
+
+void RunCursorGetStringCallback(void* state, int32_t result, const std::string& data, void(*callback)(void*, int, const int8_t*, int)) {
+  callback(state, result, reinterpret_cast<const int8_t*>(data.data()), static_cast<int>(data.size()));
+}
+
+void RunCursorGetIntCallback(void* state, int32_t result, int data, void(*callback)(void*, int, int)) {
+  callback(state, result, data);
+}
+
+void RunCursorGetDoubleCallback(void* state, int32_t result, double data, void(*callback)(void*, int, double)) {
+  callback(state, result, data);
 }
 
 void RunStatusCallback(void* state, int status, void(*callback)(void*, int)) {
@@ -192,6 +212,11 @@ void RunListFilesCallback(
     &blockstarts[0],
     &blockends[0],
     &createtimes[0]);
+}
+
+void DeleteSQLCursorOnMainThread(common::mojom::SQLCursorPtr cursor) {
+  // just let it vanish here
+  common::mojom::SQLCursorPtr local = std::move(cursor);
 }
 
 } // namespace
@@ -754,6 +779,441 @@ void DatabaseCursorState::OnRollback(bool blocking, void* state, void(*callback)
   }
 }
 
+
+//
+//
+//
+//
+//
+//
+
+SQLCursorState::SQLCursorState(
+  const scoped_refptr<domain::StorageContext>& context, 
+  scoped_refptr<base::SingleThreadTaskRunner> module_task_runner,
+  void* state, void (*callback)(void*, void*)):
+ context_(context),
+ module_task_runner_(module_task_runner),
+ state_(state),
+ callback_(callback) {
+
+}
+
+SQLCursorState::~SQLCursorState() {
+  module_task_runner_ = nullptr;
+  if (main_task_runner_) {
+    main_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&DeleteSQLCursorOnMainThread, base::Passed(std::move(sql_cursor_))));
+  }
+}
+
+void SQLCursorState::IsValid(void* state, void(*callback)(void*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::IsValidImpl,
+      base::Unretained(this),
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking)); 
+}
+
+void SQLCursorState::First(void* state, void(*callback)(void*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::FirstImpl, base::Unretained(this), 
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}
+
+void SQLCursorState::Last(void* state, void(*callback)(void*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::Last, base::Unretained(this), 
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}
+
+void SQLCursorState::Previous(void* state, void(*callback)(void*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::PreviousImpl,
+      base::Unretained(this), 
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}
+
+void SQLCursorState::Next(void* state, void(*callback)(void*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::NextImpl,
+      base::Unretained(this), 
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}
+
+void SQLCursorState::GetBlob(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const uint8_t*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::GetBlobImpl,
+      base::Unretained(this),
+      key,
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}
+
+void SQLCursorState::GetString(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const int8_t*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::GetStringImpl,
+      base::Unretained(this),
+      key,
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}
+
+void SQLCursorState::GetInt(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::GetIntImpl,
+      base::Unretained(this),
+      key,
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}
+
+void SQLCursorState::GetDouble(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, double), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::GetDoubleImpl,
+      base::Unretained(this),
+      key,
+      base::Unretained(state), 
+      base::Unretained(callback),
+      blocking));
+}  
+
+void SQLCursorState::Commit(void* state, void(*callback)(void*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::CommitImpl,
+    base::Unretained(this), 
+    base::Unretained(state), 
+    base::Unretained(callback),
+    blocking));
+}
+
+void SQLCursorState::Rollback(void* state, void(*callback)(void*, int), bool blocking) {
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&SQLCursorState::RollbackImpl,
+    base::Unretained(this), 
+    base::Unretained(state), 
+    base::Unretained(callback),
+    blocking));
+}
+
+void SQLCursorState::IsValidImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  sql_cursor_->IsValid(
+    base::Bind(&SQLCursorState::OnIsValid, 
+        base::Unretained(this),
+        blocking,
+        base::Unretained(state),
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::FirstImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  sql_cursor_->First(
+    base::Bind(&SQLCursorState::OnFirst, 
+        base::Unretained(this),
+        blocking, 
+        base::Unretained(state), 
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::LastImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  sql_cursor_->Last(
+    base::Bind(&SQLCursorState::OnLast, 
+        base::Unretained(this),
+        blocking, 
+        base::Unretained(state), 
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::PreviousImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  sql_cursor_->Previous(
+    base::Bind(&SQLCursorState::OnPrevious, 
+        base::Unretained(this),
+        blocking, 
+        base::Unretained(state), 
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::NextImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  sql_cursor_->Next(
+    base::Bind(&SQLCursorState::OnNext, 
+        base::Unretained(this),
+        blocking, 
+        base::Unretained(state), 
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::GetBlobImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const uint8_t*, int), bool blocking) {
+  sql_cursor_->GetBlob(
+    key,
+    base::Bind(&SQLCursorState::OnGetBlob, 
+      base::Unretained(this),
+        blocking,
+        base::Unretained(state), 
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::GetStringImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const int8_t*, int), bool blocking) {
+  sql_cursor_->GetString(
+    key,
+    base::Bind(&SQLCursorState::OnGetString, 
+      base::Unretained(this),
+        blocking,
+        base::Unretained(state), 
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::GetIntImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, int), bool blocking) {
+  sql_cursor_->GetInt32(
+    key,
+    base::Bind(&SQLCursorState::OnGetInt, 
+      base::Unretained(this),
+        blocking,
+        base::Unretained(state), 
+        base::Unretained(callback)));
+}
+
+void SQLCursorState::GetDoubleImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, double), bool blocking) {
+  sql_cursor_->GetDouble(
+    key,
+    base::Bind(&SQLCursorState::OnGetDouble, 
+      base::Unretained(this),
+        blocking,
+        base::Unretained(state), 
+        base::Unretained(callback)));
+} 
+
+void SQLCursorState::CommitImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  // sql_cursor_->Commit(
+  //   base::Bind(&SQLCursorState::OnCommit, 
+  //       base::Unretained(this),
+  //       blocking, 
+  //       base::Unretained(state), 
+  //       base::Unretained(callback)));
+}
+
+void SQLCursorState::RollbackImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  // sql_cursor_->Rollback(
+  //   base::Bind(&SQLCursorState::OnRollback, 
+  //       base::Unretained(this),
+  //       blocking, 
+  //       base::Unretained(state), 
+  //       base::Unretained(callback)));
+}
+
+void SQLCursorState::OnSQLCursorAvailable(common::mojom::SQLCursorPtr cursor) {
+  sql_cursor_ = std::move(cursor);
+  main_task_runner_ = base::ThreadTaskRunnerHandle::Get();
+  module_task_runner_->PostTask(
+    FROM_HERE, 
+    base::BindOnce(&RunSQLCursorAvailableCallback, 
+      base::Unretained(state_), 
+      base::Unretained(this), 
+      base::Unretained(callback_)));
+}
+
+void SQLCursorState::OnIsValid(bool blocking, void* state, void(*callback)(void*, int), bool valid) {
+  //DLOG(INFO) << "SQLCursorState::OnIsValid";
+  if (blocking) {
+    base::PostTaskWithTraits(
+      FROM_HERE,
+      { base::MayBlock(), 
+        base::WithBaseSyncPrimitives() },
+      base::BindOnce(&RunCursorIsValidCallback, 
+        base::Unretained(state), 
+        valid ?  1 : 0, 
+        base::Unretained(callback)));
+    //RunCursorIsValidCallback(state, valid ?  1 : 0, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunCursorIsValidCallback, 
+        base::Unretained(state), 
+        valid ?  1 : 0, 
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnFirst(bool blocking, void* state, void(*callback)(void*, int), int32_t status) {
+  if (blocking) {
+    base::PostTaskWithTraits(
+      FROM_HERE,
+      { base::MayBlock(), 
+        base::WithBaseSyncPrimitives() },
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+    //RunStatusCallback(state, status, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnLast(bool blocking, void* state, void(*callback)(void*, int), int32_t status) {
+  if (blocking) {
+    base::PostTaskWithTraits(
+      FROM_HERE,
+      { base::MayBlock(), 
+        base::WithBaseSyncPrimitives() },
+       base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+    //RunStatusCallback(state, status, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnPrevious(bool blocking, void* state, void(*callback)(void*, int), int32_t status) {
+  if (blocking) {
+    base::PostTaskWithTraits(
+      FROM_HERE,
+      { base::MayBlock(), 
+        base::WithBaseSyncPrimitives() },
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));  
+    //RunStatusCallback(state, status, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnNext(bool blocking, void* state, void(*callback)(void*, int), int32_t status) {
+  if (blocking) {
+    RunStatusCallback(state, status, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnGetBlob(bool blocking, void* state, void(*callback)(void*, int, const uint8_t*, int), int32_t status, const std::vector<uint8_t>& data) {
+  if (blocking) {
+    RunCursorGetBlobCallback(state, status, data, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunCursorGetBlobCallback, 
+        base::Unretained(state), 
+        status, 
+        data,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnGetString(bool blocking, void* state, void(*callback)(void*, int, const int8_t*, int), int32_t status, const std::string& data) {
+  if (blocking) {
+    RunCursorGetStringCallback(state, status, data, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunCursorGetStringCallback, 
+        base::Unretained(state), 
+        status, 
+        data,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnGetInt(bool blocking, void* state, void(*callback)(void*, int,  int), int32_t status, int32_t value) {
+  if (blocking) {
+    RunCursorGetIntCallback(state, status, value, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunCursorGetIntCallback, 
+        base::Unretained(state), 
+        status, 
+        value,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnGetDouble(bool blocking, void* state, void(*callback)(void*, int, double), int32_t status, double v) {
+  if (blocking) {
+    RunCursorGetDoubleCallback(state, status, v, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunCursorGetDoubleCallback, 
+        base::Unretained(state), 
+        status, 
+        v,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnCommit(bool blocking, void* state, void(*callback)(void*, int), int32_t status) {
+  if (blocking) {
+    RunStatusCallback(state, status, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+  }
+}
+
+void SQLCursorState::OnRollback(bool blocking, void* state, void(*callback)(void*, int), int32_t status) {
+  if (blocking) {
+    RunStatusCallback(state, status, callback);
+  } else {
+    module_task_runner_->PostTask(
+      FROM_HERE, 
+      base::BindOnce(&RunStatusCallback, 
+        base::Unretained(state),
+        status,
+        base::Unretained(callback)));
+  }
+}
+
+
 StorageState::StorageState(
   scoped_refptr<domain::StorageContext> context,
   domain::ModuleState* module,
@@ -801,7 +1261,7 @@ void StorageState::ListShares(void* ptr, void(*cb)(void*,
       base::Unretained(cb)));
 }
 
-void StorageState::DatabaseCreate(void* ptr, const std::string& name, const std::vector<std::string>& keyspaces, void(*cb)(void*, int, DatabaseRef)) {
+void StorageState::DatabaseCreate(void* ptr, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory, void(*cb)(void*, int, DatabaseRef)) {
   context_->GetMainTaskRunner()->PostTask(
     FROM_HERE,
     base::BindOnce(&StorageState::DatabaseCreateImpl,
@@ -809,6 +1269,7 @@ void StorageState::DatabaseCreate(void* ptr, const std::string& name, const std:
       base::Unretained(ptr),
       name,
       keyspaces,
+      in_memory,
       base::Unretained(cb))); 
 }
 
@@ -917,13 +1378,14 @@ void StorageState::GetAllocatedSizeImpl(void* ptr, void(*cb)(void*, int64_t)) {
       base::Unretained(cb)));
 }
 
-void StorageState::DatabaseCreateImpl(void* ptr, const std::string& name, const std::vector<std::string>& keyspaces, void(*cb)(void*, int, DatabaseRef)) {
+void StorageState::DatabaseCreateImpl(void* ptr, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory, void(*cb)(void*, int, DatabaseRef)) {
   // its basically a create share, with type of DATA
   context_->share().CreateShareWithPath(
     common::mojom::StorageType::kData,
     name,
     keyspaces,
     std::string(),
+    in_memory,
     base::Bind(&StorageState::OnDatabaseCreate, 
       base::Unretained(this),
       name,
@@ -995,6 +1457,7 @@ void StorageState::FilebaseCreateWithPathImpl(void* ptr, const std::string& name
     name,
     std::vector<std::string>(),
     source_path,
+    false,
     base::Bind(&StorageState::OnFilebaseCreate, 
       base::Unretained(this),
       name,
@@ -1311,6 +1774,18 @@ void DatabaseState::DatabaseCursorCreate(
   cursors_.push_back(std::move(cursor));
 }
 
+void DatabaseState::DatabaseExecuteQuery(void* state, const std::string& query, void(*callback)(void*, void*)) {
+  auto cursor = std::make_unique<SQLCursorState>(context_, module_->GetModuleTaskRunner(), state, callback);
+  SQLCursorState* ref = cursor.get();
+  context_->GetMainTaskRunner()->PostTask(
+    FROM_HERE,
+    base::BindOnce(&DatabaseState::DatabaseExecuteQueryImpl,
+      base::Unretained(this),
+      query,
+      base::Unretained(ref)));
+  sql_cursors_.push_back(std::move(cursor));
+}
+
 void DatabaseState::DatabaseGet(void* ptr, const std::string& keyspace, const std::string& key, void(*cb)(void*, int, SharedMemoryRef)) {
   context_->GetMainTaskRunner()->PostTask(
     FROM_HERE,
@@ -1476,6 +1951,12 @@ void DatabaseState::DatabaseCursorCreateImpl(const std::string& keyspace, common
     cursor);
 }
 
+void DatabaseState::DatabaseExecuteQueryImpl(const std::string& query, SQLCursorState* cursor) {
+  context_->ExecuteQuery(
+    share_,
+    query,
+    cursor);
+}
 
 void DatabaseState::OnDatabaseClose(void* ptr, void(*cb)(void*, int), int result) {
   module_->GetModuleTaskRunner()->PostTask(

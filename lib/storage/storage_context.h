@@ -72,6 +72,7 @@ struct CreateDbParams {
   storage_proto::InfoKind type = storage_proto::InfoKind::INFO_KVDB;
   std::vector<std::string> keyspaces;
   std::vector<std::string> create_table_stmts;
+  std::vector<std::string> insert_table_stmts;
 };
 
 // A shared-over-threads context to hold important handles both in Read and Write scenarios
@@ -136,6 +137,7 @@ public:
   scoped_refptr<StorageContext> parent;
   //SHA256_CTX sha2_ctx;
   CreateDbParams create_db_params;
+  CreateDbParams open_db_params;
   IOHandler* storage;
   std::unique_ptr<StorageIterator> iterator;
   scoped_refptr<WaitableEvent<int>> sync_event;

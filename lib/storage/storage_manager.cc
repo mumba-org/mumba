@@ -674,13 +674,13 @@ bool StorageManager::OpenTorrent(const scoped_refptr<Torrent>& torrent, base::Ca
     }
   }
 
-  if (torrent->info().kind() == storage_proto::INFO_KVDB && !torrent->db_is_open()) {
+  if ((torrent->info().kind() == storage_proto::INFO_KVDB || torrent->info().kind() == storage_proto::INFO_SQLDB) && !torrent->db_is_open()) {
     //base::WaitableEvent waiter{base::WaitableEvent::ResetPolicy::MANUAL, base::WaitableEvent::InitialState::NOT_SIGNALED};
     // torrent->io_handler()->OpenDatabase(
     //   torrent,
     //   base::Bind(&OnDatabaseOpen, base::Unretained(&waiter)), false);
     // waiter.Wait();
-    torrent->io_handler()->OpenDatabase(torrent, std::move(cb), false);
+    torrent->io_handler()->OpenDatabase(torrent, torrent->info().kind() == storage_proto::INFO_KVDB, std::move(cb), false);
   }
   if (!cb.is_null()) {  
     std::move(cb).Run(net::OK);
@@ -766,7 +766,7 @@ void StorageManager::OpenDatabase(Storage* disk, const base::UUID& key, base::Ca
       std::move(cb).Run(net::OK);
     return;
   }
-  disk->OpenDatabase(t, std::move(cb)); 
+  disk->OpenDatabase(t, t->info().kind() == storage_proto::INFO_KVDB, std::move(cb)); 
 }
 
 void StorageManager::CreateDatabase(const std::string& disk_name, const std::string& db_name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb) {
@@ -797,7 +797,7 @@ void StorageManager::CreateDatabase(const std::string& disk_name, const std::str
     return; 
   }
   t->mutable_info()->set_path(db_name);
-  disk->CreateDatabase(t, create_table_stmts, key_value, std::move(cb));
+  disk->CreateDatabase(t, create_table_stmts, std::vector<std::string>(), key_value, std::move(cb));
 }
 
 void StorageManager::CloseDatabase(const std::string& disk_name, const std::string& name, base::Callback<void(int64_t)> cb) {
@@ -1270,6 +1270,7 @@ void StorageManager::CloneTorrentsFromRoot(const scoped_refptr<Torrent>& torrent
     base::WaitableEvent waiter{base::WaitableEvent::ResetPolicy::MANUAL, base::WaitableEvent::InitialState::NOT_SIGNALED};
     handler->OpenDatabase(
       torrent,
+      torrent->info().kind() == storage_proto::INFO_KVDB,
       base::Bind(&OnDatabaseOpen, base::Unretained(&waiter)), false);
     LOG(INFO) << "CloneTorrentsFromRoot: FIXME! waiting for '" << torrent->id().to_string() << "' to open as a catalog..";
     waiter.Wait();

@@ -19,7 +19,7 @@ public:
   ShareStorage(scoped_refptr<StorageContext> context);
   ~ShareStorage();
 
-  void CreateShareWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, base::Callback<void(int)> cb);
+  void CreateShareWithPath(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& source_path, bool in_memory, base::Callback<void(int)> cb);
   void CreateShareWithInfohash(common::mojom::StorageType type, const std::string& name, std::vector<std::string> keyspaces, const std::string& infohash, base::Callback<void(int)> cb);
   void AddShare(const base::UUID& id, const std::string& url, base::Callback<void(int)> cb);
   void OpenShare(common::mojom::StorageType type, const std::string& name, bool create_if_not_exists, base::Callback<void(int)> cb);

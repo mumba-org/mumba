@@ -85,47 +85,6 @@ std::unique_ptr<MerkleTree> GenerateMerkleTreeForFiles(FileSet* fileset) {
   return merkle;
 }
 
-class DBOpenCloser {
-public:
-  DBOpenCloser(scoped_refptr<Torrent> torrent): torrent_(torrent) {
-    //if (torrent_->db_policy() == Torrent::kOPEN_CLOSE && !torrent_->db_is_open()) {
-    //  Database::Open(torrent_);
-    //}
-    if (!torrent_->db_is_open()) {
-      Database::Open(torrent_);
-    }
-  }
-
-  ~DBOpenCloser() {
-    //if (torrent_->db_policy() == Torrent::kOPEN_CLOSE && torrent_->db_is_open()) {
-    //  torrent_->db().Close();
-    //}
-  }
-
-private:
-  scoped_refptr<Torrent> torrent_;
-  DISALLOW_COPY_AND_ASSIGN(DBOpenCloser);
-};
-
-class DBCreateCloser {
-public:
-  DBCreateCloser(scoped_refptr<Torrent> torrent, std::vector<std::string> keyspaces = std::vector<std::string>()): torrent_(torrent) {
-    Database::Create(torrent, std::move(keyspaces), true);
-    //if (torrent_->db_policy() == Torrent::kOPEN_CLOSE) {}
-  }
-
-  ~DBCreateCloser() {
-    if (torrent_->db_policy() == Torrent::kOPEN_CLOSE && torrent_->db_is_open()) {
-      //D//LOG(INFO) << "closing " << torrent_->id().to_string();
-      torrent_->db().Close();
-    }
-  }
-
-private:
-  scoped_refptr<Torrent> torrent_;
-  DISALLOW_COPY_AND_ASSIGN(DBCreateCloser);
-};
-
 // Used to leak a strong reference to an StorageEntry to the user of disk_cache.
 // StorageEntry* LeakStorageEntry(scoped_refptr<StorageEntry> entry) {
 //    // Balanced on OP_CLOSE_ENTRY handling in BackendIO::ExecuteBackendOperation.
@@ -562,7 +521,7 @@ void Storage::OpenRootTreeOnInit(scoped_refptr<StorageContext> context, bool cre
    }
    Database* db = create ? 
      Database::Create(root_tree_, context->create_db_params.keyspaces, true) : 
-     Database::Open(root_tree_);
+     Database::Open(root_tree_, true);
 
    if (!db) {
      LOG(ERROR) << "Storage::OpenRootTreeOnInit: failed to open/create root tree db";
@@ -580,7 +539,7 @@ void Storage::OpenRootTreeOnInit(scoped_refptr<StorageContext> context, bool cre
 void Storage::OpenRootTreeOnClone(scoped_refptr<StorageContext> context, base::Callback<void(int64_t)> callback) {
   //DLOG(INFO) << "Storage::OpenRootTreeOnClone";
    int64_t r = 0;
-   Database* db = Database::Open(root_tree_);
+   Database* db = Database::Open(root_tree_, true);
    if (!db) {
      LOG(ERROR) << "Storage::OpenRootTreeOnClone: failed to open/create root tree db";
      r = -2;
@@ -738,9 +697,10 @@ void Storage::ListAllEntriesInfoImpl(scoped_refptr<StorageContext> context, base
 }
 
 
-void Storage::OpenDatabase(scoped_refptr<Torrent> torrent, base::Callback<void(int64_t)> cb, bool sync) {
+void Storage::OpenDatabase(scoped_refptr<Torrent> torrent, bool key_value, base::Callback<void(int64_t)> cb, bool sync) {
   //DLOG(INFO) << "Storage::OpenDatabase";
   scoped_refptr<StorageContext> context = CreateContext(StorageContext::kOPEN_DATABASE, torrent, std::move(cb));
+  context->open_db_params.type = key_value ? storage_proto::InfoKind::INFO_KVDB : storage_proto::InfoKind::INFO_SQLDB;
   context->is_sync = sync;
   RunIO(context);
 }
@@ -762,11 +722,12 @@ void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, std::vector<std::st
   RunIO(context);
 }
 
-void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) {
+void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_table_stmts, const std::vector<std::string>& insert_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) {
   std::string uuid_str = torrent->id().to_string();
   scoped_refptr<StorageContext> context = CreateContext(StorageContext::kCREATE_DATABASE, torrent, std::move(cb));
   context->create_db_params.type = key_value ? storage_proto::InfoKind::INFO_KVDB : storage_proto::InfoKind::INFO_SQLDB;
   context->create_db_params.create_table_stmts = create_table_stmts;
+  context->create_db_params.insert_table_stmts = insert_table_stmts;
   RunIO(context);
 }
 
@@ -1939,7 +1900,7 @@ void Storage::OpenSQLiteDatabase(scoped_refptr<StorageContext> context) {
   int64_t result = net::OK;
   const scoped_refptr<Torrent>& torrent = context->torrent;//manager_->NewTorrent(this, context->key);
   torrent->set_is_opening_db(true);
-  Database* db = Database::Open(torrent);
+  Database* db = Database::Open(torrent, context->open_db_params.type == storage_proto::INFO_KVDB);
 
   if (!db) {
     // //D//LOG(INFO) << "Storage::OpenSQLiteDatabase: open sqlite db failed";
@@ -1964,7 +1925,7 @@ void Storage::CreateSQLiteDatabase(scoped_refptr<StorageContext> context) {
   if (context->create_db_params.type == storage_proto::INFO_KVDB) {
     db = Database::Create(torrent, context->create_db_params.keyspaces, true);
   } else {
-    db = Database::Create(torrent, context->create_db_params.create_table_stmts, false);
+    db = Database::Create(torrent, context->create_db_params.create_table_stmts, context->create_db_params.insert_table_stmts, false);
   }
   int64_t result = net::OK;
   
@@ -2409,7 +2370,7 @@ void Storage::AddIndexOnTreeOnDbThread(scoped_refptr<StorageContext> context) {
   std::string uuid_str = context->key.to_string();
   DCHECK(root_tree_);
   if (!root_tree_->db_is_open()) {
-    Database::Open(root_tree_);
+    Database::Open(root_tree_, true);
   }
   Transaction* tr = root_tree_->db().Begin(true);
   bool result = root_tree_->db().Put(tr, "inodes", base::StringPiece(uuid_str), context->encoded_header);
@@ -3419,7 +3380,6 @@ bool Storage::GetUUID(const std::string& name, base::UUID* id) {
 }
 
 bool Storage::ResolveUUID(const std::string& name, base::UUID* out) {
-  //DBOpenCloser closer(root_tree_);
   storage::Transaction* tr = root_tree_->db().Begin(false);
   auto cursor = tr->CreateCursor("index");
   DCHECK(cursor);
@@ -3431,7 +3391,7 @@ bool Storage::ResolveUUID(const std::string& name, base::UUID* out) {
   }
   DCHECK(data_view.size());
   bool ok = false;
-  *out = base::UUID::from_string(data_view.as_string(), &ok);//base::UUID(reinterpret_cast<const uint8_t *>(data_view.data()));
+  *out = base::UUID::from_string(data_view.as_string(), &ok);
   if (!ok) {
     tr->Rollback();
     return false;

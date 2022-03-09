@@ -214,10 +214,10 @@ std::string Share::public_key_hex() const {
 scoped_refptr<ShareDatabase> Share::db() {
   if (!db_ && in_memory_) {
     db_ = ShareDatabase::CreateMemory(this, keyspaces_, true /* key-value */);
-  } else if (!db_ && torrent_->is_data()) {
-    DCHECK(torrent_->db_ref());
+  } else if (!db_ && torrent_->is_data()) {  
     db_ = new ShareDatabase(this, torrent_->db_ref(), in_memory_);
   }
+  DCHECK(db_);
   return db_;
 }
 
@@ -459,8 +459,8 @@ void Share::OnTorrentFileRenamedError(scoped_refptr<storage::Torrent> torrent, i
   }  
 }
 
-void Share::OpenDatabaseSync() {
-  storage::Database::Open(torrent_);
+void Share::OpenDatabaseSync(bool key_value) {
+  storage::Database::Open(torrent_, key_value);
 }
 
 void Share::LoadInfoFromTorrent() {

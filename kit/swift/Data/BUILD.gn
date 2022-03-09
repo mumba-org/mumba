@@ -17,6 +17,7 @@ swift_static("Data") {
     "Sources/FilebaseCursor.swift",
     "Sources/SharedMemory.swift",
     "Sources/Storage.swift",
+    "Sources/SqlCursor.swift",
     "Sources/Share.swift"
   ]
 }

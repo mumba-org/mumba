@@ -136,6 +136,23 @@ interface FileCursor {
   Delete() => (int32 r);
 };
 
+interface SQLCursor {
+  IsValid() => (bool valid);
+  [sync]
+  First() => (int32 r);
+  [sync]
+  Last() => (int32 r);
+  [sync]
+  Previous() => (int32 r);
+  [sync]
+  Next() => (int32 r);
+  GetBlob(array<int8> row) => (int32 r, array<uint8> value);
+  GetString(array<int8> row) => (int32 r, string value);
+  GetInt32(array<int8> row) => (int32 r, int32 value);
+  GetInt64(array<int8> row) => (int32 r, int64 value);
+  GetDouble(array<int8> row) => (int32 r, double value);
+};
+
 interface StorageDispatcher {
   // context
   OnContextDestroy(uint32 context_id, DomainStatus status);
@@ -213,7 +230,7 @@ interface StorageDispatcherHost {
   StorageListShareEntries(uint32 context_id, int32 req, string tid) => (uint32 context_id, int32 req, array<ShareStorageEntry> entries);
 
   // share
-  ShareCreateWithPath(uint32 context_id, int32 req, StorageType type, string name, array<string> keyspaces, string source_path);
+  ShareCreateWithPath(uint32 context_id, int32 req, StorageType type, string name, array<string> keyspaces, string source_path, bool in_memory);
   ShareCreateWithInfohash(uint32 context_id, int32 req, StorageType type, string name, array<string> keyspaces, string infohash);
   ShareAdd(uint32 context_id, int32 req, string tid, string url);
   ShareOpen(uint32 context_id, int32 req, StorageType type, string tid, bool create_if_not_exists);
@@ -254,6 +271,9 @@ interface StorageDispatcherHost {
 
   [sync]
   DataCreateCursor(uint32 context_id, int32 req, string tid, string keyspace, Order order, bool write) => (DataCursor? cursor);
+
+  [sync]
+  DataExecuteQuery(uint32 context_id, int32 req, string tid, string query) => (SQLCursor? cursor);
 
   // index
   IndexResolveId(uint32 context_id, int32 req, string address);
