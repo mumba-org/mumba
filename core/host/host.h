@@ -22,6 +22,7 @@
 #include "core/host/host_delegate.h"
 #include "core/host/host_options.h"
 #include "core/host/workspace/workspace.h"
+#include "core/host/data/resource.h"
 //#include "core/host/container/container_manager.h"
 #include "core/host/application/domain_management_service_impl.h"
 #include "core/host/application/mojo_domain_management_service.h"
@@ -50,7 +51,8 @@ class SystemNetworkContextManager;
 // TODO: Implementar um URLRequest como no chrome
 // para processar url's que vao fazer operacoes fora do filesystem local
 
-class Host : public base::SupportsUserData {//,
+class Host :  public ResourceManager, // Host is the resource manager of workspaces
+              public base::SupportsUserData {//,
 //              public VolumeManager::Delegate {
 public:
 
@@ -129,6 +131,14 @@ public:
 //#endif
 
  void CreateStatusTray();
+
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override;
+  bool HaveResource(const std::string& name) override;
+  Resource* GetResource(const base::UUID& id) override;
+  Resource* GetResource(const std::string& name) override;
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
 
 private:
 

@@ -194,7 +194,7 @@ void Application::ApplicationProcessReady(ApplicationProcessHost* process) {
   DCHECK(domain_);
   // bind clients
 
-  domain_->automation_host()->BindClientInterfaces(id(), domain_->process()->GetChannelProxy());
+  domain_->automation_host()->BindClientInterfaces(rid(), domain_->process()->GetChannelProxy());
   
   application_driver()->BindInterfaces();
   domain_->OnApplicationLaunched(this);

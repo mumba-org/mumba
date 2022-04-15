@@ -11,6 +11,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "core/host/byte_stream.h"
+#include "core/host/data/resource.h"
 #include "core/shared/common/content_export.h"
 #include "url/gurl.h"
 
@@ -34,6 +35,7 @@ class StreamWriteObserver;
 // multiple clients, but only one can be reading at a time. This allows a
 // reader to consume part of the stream, then pass it along to another client
 // to continue processing the stream.
+
 class CONTENT_EXPORT Stream : public base::RefCountedThreadSafe<Stream> {
  public:
   enum StreamState {

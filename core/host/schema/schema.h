@@ -14,6 +14,7 @@
 #include "base/uuid.h"
 #include "core/common/proto/objects.pb.h"
 #include "core/host/serializable.h"
+#include "core/host/data/resource.h"
 #include "third_party/protobuf/src/google/protobuf/descriptor.h"
 #include "third_party/protobuf/src/google/protobuf/descriptor.pb.h"
 
@@ -21,7 +22,7 @@ namespace host {
 class SchemaRegistry;
 class ServiceHandler;
 
-class Schema : public Serializable {
+class Schema : public Resource {
 public:
   static char kClassName[];
   static std::string CalculateHash(const base::StringPiece& content);
@@ -31,12 +32,12 @@ public:
   
   ~Schema() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
   const std::string& package();
-  const std::string& name();
+  const std::string& name() const override;
   const std::string& filename();
 
   const std::string& root_hash() const {
@@ -55,7 +56,7 @@ public:
     return content().size();
   }
 
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

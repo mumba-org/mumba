@@ -21,6 +21,7 @@
 #include "core/host/route/route_entry.h"
 #include "core/host/route/route_model.h"
 #include "core/host/route/route_observer.h"
+#include "core/host/data/resource.h"
 #include "core/shared/common/content_export.h"
 #include "core/shared/common/mojom/route.mojom.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -52,6 +53,7 @@ class RouteScheme;
  *        in the registry
  */
 class CONTENT_EXPORT RouteRegistry final : public common::mojom::RouteRegistry,
+                                           public ResourceManager,
                                            public WorkspaceObserver {
 public:
   RouteRegistry(scoped_refptr<Workspace> workspace);
@@ -83,6 +85,10 @@ public:
   void GetRouteCountByScheme(const std::string& scheme, GetRouteCountBySchemeCallback callback) final;
   void GetRouteHeader(const std::string& scheme, const std::string& path, GetRouteHeaderCallback callback) final;
 
+  bool HaveRouteByName(const std::string& name);
+  bool HaveRouteById(const base::UUID& uuid);
+  RouteEntry* LookupRouteByName(const std::string& name);
+  RouteEntry* LookupRouteById(const base::UUID& id);
   
   void Subscribe(const std::string& scheme, common::mojom::RouteSubscriberPtr subscriber, SubscribeCallback callback) final;
   void Unsubscribe(int subscriber_id) final;
@@ -104,6 +110,26 @@ public:
 
   void Init();
   void Shutdown();
+
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return HaveRouteById(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return HaveRouteByName(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return LookupRouteById(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return LookupRouteByName(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
 
 private:
 

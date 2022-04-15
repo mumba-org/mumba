@@ -39,6 +39,20 @@ public:
     return MLModelType::kML_MODEL_MXNET;
   }
 
+  // Resource
+  const std::string& name() const override { 
+    return model_name_;
+  }
+
+  const base::UUID& id() const override {
+    return uuid_;
+  }
+
+  // for now we are not making it persistent
+  bool is_managed() const override {
+    return false;
+  }
+
   const std::string& model_name() const override;
 
   void set_model_name(const std::string& model_name) {
@@ -87,6 +101,7 @@ private:
   
   friend class MXNetPredictor;
 
+  base::UUID uuid_;
   std::string model_name_;
   base::FilePath model_path_;
   std::string description_;

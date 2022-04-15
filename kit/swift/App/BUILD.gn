@@ -3,10 +3,10 @@ swift_static("Application") {
     "//runtime/MumbaShims",
     "//kit/swift/Base",
     "//kit/swift/PosixShim",
-    "//kit/swift/ThirdParty/Libevent",
     "//kit/swift/Graphics",
     "//kit/swift/Compositor",
     "//kit/swift/Route",
+    "//kit/swift/ThirdParty/Libevent",
   ]
   sources = [
     "Sources/Application/Application.swift",
@@ -57,6 +57,7 @@ swift_static("UI") {
     "//kit/swift/Base",
     "//kit/swift/PosixShim",
     "//kit/swift/ThirdParty/Libevent",
+    "//kit/swift/ThirdParty/ProtocolBuffers",
     "//kit/swift/Javascript",
     "//kit/swift/Graphics",
     "//kit/swift/Channel",

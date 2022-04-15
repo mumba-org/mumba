@@ -1,0 +1,23 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//common-mk/pkg_config.gni")
+
+group("all") {
+  deps = [ ":arcvm-forward-pstore" ]
+}
+
+executable("arcvm-forward-pstore") {
+  sources = [
+    "main.cc",
+    "service.cc",
+  ]
+  deps = [ "//vm_tools:libvm_tools_common" ]
+  pkg_deps = [
+    "libbrillo",
+    "libchrome",
+    "protobuf",
+    "system_api",
+  ]
+}

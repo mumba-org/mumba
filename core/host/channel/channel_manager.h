@@ -16,6 +16,8 @@
 #include "base/single_thread_task_runner.h"
 #include "base/uuid.h"
 #include "core/host/database_policy.h"
+#include "core/host/data/resource.h"
+#include "core/host/channel/channel.h"
 #include "core/shared/common/mojom/channel.mojom.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/associated_binding_set.h"
@@ -23,15 +25,16 @@
 #include "core/host/channel/channel_manager_observer.h"
 
 namespace host {
+class Workspace;
 class ChannelModel;
-class Channel;
 class ChannelClient;
 class ShareDatabase;
 
-class ChannelManager : public common::mojom::ChannelRegistry {
+class ChannelManager : public ResourceManager,
+                       public common::mojom::ChannelRegistry {
 public:
-  ChannelManager();
-  ~ChannelManager();
+  ChannelManager(scoped_refptr<Workspace> workspace);
+  ~ChannelManager() override;
 
   void AddBinding(common::mojom::ChannelRegistryAssociatedRequest request);
 
@@ -72,6 +75,31 @@ public:
 
   void ReceivedMessageOnChannel(ChannelClient* client, common::CloneableMessage message);
 
+  bool HaveChannel(const std::string& name);
+  bool HaveChannel(const base::UUID& id);
+  Channel* GetChannel(const std::string& name);
+  Channel* GetChannel(const base::UUID& uuid);
+  
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return HaveChannel(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return HaveChannel(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return GetChannel(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return GetChannel(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
+
 private:
 
   void InitImpl();
@@ -92,6 +120,7 @@ private:
   void NotifyChannelRemoved(Channel* channel);
   void NotifyChannelsLoad(int r, int count);
   
+  scoped_refptr<Workspace> workspace_;
   std::unique_ptr<ChannelModel> channels_;
   std::vector<ChannelManagerObserver*> observers_;
   mojo::AssociatedBindingSet<common::mojom::ChannelRegistry> channel_registry_binding_;

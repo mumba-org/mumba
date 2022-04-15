@@ -8,10 +8,13 @@
 #include "base/callback.h"
 #include "core/host/device/device_model.h"
 #include "core/host/device/device.h"
+#include "core/host/schema/schema.h"
+#include "core/host/schema/schema_registry.h"
+#include "core/host/workspace/workspace.h"
 
 namespace host {
 
-DeviceManager::DeviceManager() {
+DeviceManager::DeviceManager(scoped_refptr<Workspace> workspace): workspace_(workspace) {
 
 }
 
@@ -75,6 +78,16 @@ void DeviceManager::NotifyDevicesLoad(int r, int count) {
     Observer* observer = *it;
     observer->OnDevicesLoad(r, count);
   }
+}
+
+const google::protobuf::Descriptor* DeviceManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Device");
+}
+
+std::string DeviceManager::resource_classname() const {
+  return Device::kClassName;
 }
 
 }

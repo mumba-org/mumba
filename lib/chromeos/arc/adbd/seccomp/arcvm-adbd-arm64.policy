@@ -1,0 +1,9 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This file lists out the seccomp policy for allowed syscalls on arc-adbd
+# when it works with arcvm
+
+# TODO(yusukes): populate the file.
+

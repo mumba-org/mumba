@@ -9,7 +9,6 @@
 #include "base/files/file_util.h"
 #include "base/task_scheduler/post_task.h"
 #include "core/shared/common/paths.h"
-#include "core/host/application/domain.h"
 #include "core/host/application/domain_process_host.h"
 #include "core/host/share/share_database.h"
 #include "core/host/host.h"
@@ -325,6 +324,16 @@ void DomainManager::NotifyApplicationsLoad(int r, int count) {
     Observer* observer = *it;
     observer->OnApplicationsLoad(r, count);
   }
+}
+
+const google::protobuf::Descriptor* DomainManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Domain");
+}
+
+std::string DomainManager::resource_classname() const {
+  return Domain::kClassName;
 }
 
 

@@ -70,14 +70,15 @@ std::unique_ptr<Bundle> Bundle::Deserialize(net::IOBuffer* buffer, int size) {
   return std::unique_ptr<Bundle>(new Bundle(std::move(bundle_proto)));
 }
 
-Bundle::Bundle(): managed_(false) {
+Bundle::Bundle(): managed_(false), just_unpacked_(false) {
   id_ = base::UUID::generate();
 }
 
 Bundle::Bundle(const std::string& name, const std::string& path, const std::string& executable_path, const std::string& resources_path):
   resource_package_(nullptr),
   application_package_(nullptr),
-  managed_(false) {
+  managed_(false),
+  just_unpacked_(false) {
   
   id_ = base::UUID::generate();
   bundle_proto_.set_uuid(id_.data, 16);
@@ -90,7 +91,8 @@ Bundle::Bundle(protocol::Bundle bundle_proto):
   application_package_(nullptr),
   id_(reinterpret_cast<const uint8_t *>(bundle_proto.uuid().data())),
   bundle_proto_(std::move(bundle_proto)),
-  managed_(false)  {
+  managed_(false),
+  just_unpacked_(false)  {
   
   for (int i = 0; i < bundle_proto_.packages_size(); i++) {
     protocol::BundlePackage proto = bundle_proto_.packages(i);
@@ -191,6 +193,7 @@ scoped_refptr<net::IOBufferWithSize> Bundle::Serialize() const {
 }
 
 void Bundle::PostUnpackActions(scoped_refptr<Workspace> workspace, const base::FilePath& path) {
+  just_unpacked_ = true;
   InstallSchemaAfterBundleUnpack(workspace, path.AppendASCII(resources_path()));
   InstallLibrariesAfterBundleUnpack(workspace, path.AppendASCII(application_path()));
 
@@ -206,7 +209,7 @@ void Bundle::PostUnpackActions(scoped_refptr<Workspace> workspace, const base::F
   base::FilePath dbs_path = path.AppendASCII(resources_path()).AppendASCII("databases");
   base::FileEnumerator dbs_files(dbs_path, false, base::FileEnumerator::FILES);
   for (base::FilePath db_file = dbs_files.Next(); !db_file.empty(); db_file = dbs_files.Next()) {
-    CreateDatabases(workspace, db_file);
+    CreateDatabases(workspace, db_file, true);
   }
   
   // now create the shares
@@ -214,6 +217,19 @@ void Bundle::PostUnpackActions(scoped_refptr<Workspace> workspace, const base::F
   base::FileEnumerator shares_files(shares_path, false, base::FileEnumerator::FILES);
   for (base::FilePath share_file = shares_files.Next(); !share_file.empty(); share_file = shares_files.Next()) {
     CreateShare(workspace, share_file);
+  }
+}
+
+void Bundle::OnInitActions(scoped_refptr<Workspace> workspace, const base::FilePath& path) {
+  if (just_unpacked_) {
+    DLOG(INFO) << "Bundle::OnInitActions: bundle was just unpacked. ignoring because we already executed those";
+    return;
+  }
+  // create only the in-memory databases (as persistent ones are alredy there)
+  base::FilePath dbs_path = path.AppendASCII(resources_path()).AppendASCII("databases");
+  base::FileEnumerator dbs_files(dbs_path, false, base::FileEnumerator::FILES);
+  for (base::FilePath db_file = dbs_files.Next(); !db_file.empty(); db_file = dbs_files.Next()) {
+    CreateDatabases(workspace, db_file, false);
   }
 }
 
@@ -294,7 +310,7 @@ void Bundle::CreateFileset(scoped_refptr<Workspace> workspace, const base::FileP
     files_dir.BaseName().value());
 }
 
-void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::FilePath& db_file) {
+void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::FilePath& db_file, bool install_phase) {
   std::string sql_statement;
   if (!base::ReadFileToString(db_file, &sql_statement)) {
     DLOG(INFO) << "Bundle::CreateDatabase: failed to read file " << db_file << " to string";
@@ -325,16 +341,27 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
     if (kind == zetasql::AST_CREATE_DATABASE_STATEMENT) {
       const zetasql::ASTCreateDatabaseStatement* create_db = statement->GetAsOrNull<zetasql::ASTCreateDatabaseStatement>();
       std::unique_ptr<DatabaseCreationInfo> info = std::make_unique<DatabaseCreationInfo>();
+      info->in_memory = false;
       current = info.get();
       info->database_name = create_db->name()->first_name()->GetAsString();
       infos.push_back(std::move(info));
-      // FIXME: only having options is not enough to detect the key-value sort of database
       const zetasql::ASTOptionsList* options = create_db->options_list();
-      if (options && options->options_entries().size() > 0) {
-        key_value_database = true;
-        current->type = storage_proto::InfoKind::INFO_KVDB;
-      } else {
-        current->type = storage_proto::InfoKind::INFO_SQLDB;
+      current->type = storage_proto::InfoKind::INFO_SQLDB;
+      for (const zetasql::ASTOptionsEntry* const entry : options->options_entries()) {
+        if (entry->name()->GetAsString() == "type") {
+          const zetasql::ASTStringLiteral* value = entry->value()->GetAsOrDie<zetasql::ASTStringLiteral>();
+          DLOG(INFO) << "TYPE = " << value->string_value();
+          if (value->string_value() == "key-value") {
+            DLOG(INFO) << "defining the database as key-value type";
+            current->type = storage_proto::InfoKind::INFO_KVDB;
+            key_value_database = true;
+          }
+        }
+        if (entry->name()->GetAsString() == "memory") {
+          const zetasql::ASTBooleanLiteral* value = entry->value()->GetAsOrDie<zetasql::ASTBooleanLiteral>();
+          DLOG(INFO) << "IN-MEMORY = " << (value->value() ? "true" : "false");
+          current->in_memory = value->value();
+        } 
       }
     } else if (kind == zetasql::AST_CREATE_TABLE_STATEMENT) {
       const zetasql::ASTCreateTableStatement* create_table = statement->GetAsOrNull<zetasql::ASTCreateTableStatement>();
@@ -349,7 +376,10 @@ void Bundle::CreateDatabases(scoped_refptr<Workspace> workspace, const base::Fil
   }
 
   for (auto it = infos.begin(); it != infos.end(); it++) {
-    CreateDatabase(workspace, it->get());
+    bool should_create = !install_phase && !current->in_memory ? false : true;
+    if (should_create) {
+      CreateDatabase(workspace, it->get());
+    }
   }
   
 }
@@ -364,6 +394,7 @@ void Bundle::CreateDatabase(scoped_refptr<Workspace> workspace, DatabaseCreation
     creation->create_table_stmts,
     creation->insert_table_stmts,
     creation->type == storage_proto::InfoKind::INFO_KVDB,
+    creation->in_memory,
     base::Bind(&Bundle::OnDatabaseCreated, 
       base::Unretained(this), 
       workspace,

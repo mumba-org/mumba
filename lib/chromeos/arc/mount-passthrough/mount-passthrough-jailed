@@ -1,0 +1,41 @@
+#!/bin/bash
+# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Runs mount-passthrough with minijail0 as chronos.
+
+set -e
+
+if [ $# -ne 6 ]; then
+  echo "Usage: $0 source dest fuse_umask fuse_uid fuse_gid"\
+    "android_app_access_type"
+  exit 1
+fi
+
+. /usr/share/arc/mount-passthrough-jailed-utils.sh
+
+# Run mount-passthrough as chronos.
+set -- "$@" chronos chronos
+
+# Inherit supplementary groups.
+set -- "$@" "true" # inherit_supplementary_groups
+
+# Do not grant CAP_DAC_OVERRIDE.
+set -- "$@" "false" # grant_cap_dac_override
+
+# Do not force group access permission.
+# TODO(b/123669632): Remove the argument |force_group_permission| and related
+# logic once we start to run the daemon as MediaProvider UID and GID from
+# mount-passthrough-jailed-play.
+set -- "$@" "false" # force_group_permission
+
+# Do not enter the concierge namespace.
+set -- "$@" "false" # enter_concierge_namespace
+
+# Set the maximum number of open file descriptors to 8192.
+# This is larger than the default value 1024 because this process handles many
+# open files. See b/30236190 for more context.
+set -- "$@" "8192" # max_number_of_open_fds
+
+run_mount_passthrough_with_minijail0 "$@"

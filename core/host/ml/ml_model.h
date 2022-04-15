@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/macros.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 
@@ -16,7 +17,7 @@ enum class MLModelType {
   kML_MODEL_MXNET = 1
 };
 
-class MLModel {
+class MLModel : public Resource {
 public:
  virtual ~MLModel() {}
  virtual const std::string& model_name() const = 0;
@@ -25,6 +26,8 @@ public:
  virtual void Load(const std::vector<int>& bucket_keys) = 0;
  virtual void LoadParameters(const std::string& params_name) = 0;
  virtual void Compile() = 0;
+
+ scoped_refptr<net::IOBufferWithSize> Serialize() const override { return scoped_refptr<net::IOBufferWithSize>(); }
 };
 
 }

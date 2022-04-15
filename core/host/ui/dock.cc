@@ -335,6 +335,7 @@ class Dock::InterstitialObserver : public ApplicationContentsObserver {
 Dock::Dock(const Dock::CreateParams& params):
   workspace_(params.workspace),
   window_(params.window),
+  id_(base::UUID::generate()),
   app_name_(params.app_name),
   page_name_(params.page_name),
   override_bounds_(params.initial_bounds),
@@ -386,6 +387,10 @@ void Dock::Init(const Dock::CreateParams& params) {
 
 scoped_refptr<Workspace> Dock::workspace() const {
   return workspace_;
+}
+
+scoped_refptr<net::IOBufferWithSize> Dock::Serialize() const {
+  return scoped_refptr<net::IOBufferWithSize>();
 }
 
 void Dock::OnWindowClosing() {

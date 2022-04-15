@@ -15,6 +15,9 @@
 #include "base/single_thread_task_runner.h"
 #include "base/uuid.h"
 #include "core/host/database_policy.h"
+#include "core/host/data/resource.h"
+#include "core/host/volume/volume.h"
+#include "core/host/volume/volume_model.h"
 
 namespace storage {
 class Storage;
@@ -25,13 +28,13 @@ namespace host {
 class VolumeStorage;
 class VolumeSourceModel;
 class VolumeModel;
-class Volume;
 class VolumeSource;
 class ShareDatabase;
 class BundleManager;
 class Bundle;
+class Workspace;
 
-class VolumeManager {
+class VolumeManager : public ResourceManager {
 public:
   class Delegate {
   public:
@@ -49,8 +52,8 @@ public:
     virtual void OnVolumeRemoved(Volume* volume) {}
   };
 
-  VolumeManager(Delegate* delegate);
-  ~VolumeManager();
+  VolumeManager(scoped_refptr<Workspace> workspace);
+  ~VolumeManager() override;
 
   VolumeModel* volumes() const {
     return volumes_.get();
@@ -94,6 +97,26 @@ public:
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return volumes()->VolumeExists(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return volumes()->VolumeExists(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return volumes()->GetVolumeById(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return volumes()->GetVolumeByName(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
+
 private:
   
   void OnLoad(int r, int count);
@@ -105,7 +128,8 @@ private:
   std::pair<bool, base::UUID> AddVolumeImpl(storage::Storage* volume_storage, Bundle* bundle);
   std::pair<bool, Volume*> InstallVolumeImpl(storage::Storage* volume_storage, Bundle* bundle);
 
-  Delegate* delegate_;
+  //Delegate* delegate_;
+  scoped_refptr<Workspace> workspace_;
   
   std::unique_ptr<VolumeModel> volumes_;
 

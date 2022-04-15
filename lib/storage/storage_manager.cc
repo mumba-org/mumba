@@ -579,8 +579,8 @@ scoped_refptr<Torrent> StorageManager::CreateTorrent(const std::string& disk_nam
 
   torrent->mutable_info()->set_path(name);
 
-  if (type == storage_proto::INFO_KVDB) {
-    storage->CreateDatabase(torrent, std::move(keyspaces), std::move(cb));
+  if (type == storage_proto::INFO_KVDB || type == storage_proto::INFO_SQLDB) {
+    storage->CreateDatabase(torrent, std::move(keyspaces), false, std::move(cb));
   } else {
     storage->AddEntry(torrent, std::move(cb));    
   }
@@ -769,7 +769,7 @@ void StorageManager::OpenDatabase(Storage* disk, const base::UUID& key, base::Ca
   disk->OpenDatabase(t, t->info().kind() == storage_proto::INFO_KVDB, std::move(cb)); 
 }
 
-void StorageManager::CreateDatabase(const std::string& disk_name, const std::string& db_name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb) {
+void StorageManager::CreateDatabase(const std::string& disk_name, const std::string& db_name, std::vector<std::string> keyspaces, bool in_memory, base::Callback<void(int64_t)> cb) {
   Storage* disk = GetStorage(disk_name);
   if (!disk) {
     cb.Run(net::ERR_FAILED);
@@ -782,10 +782,10 @@ void StorageManager::CreateDatabase(const std::string& disk_name, const std::str
     return; 
   }
   t->mutable_info()->set_path(db_name);
-  disk->CreateDatabase(t, std::move(keyspaces), std::move(cb));
+  disk->CreateDatabase(t, std::move(keyspaces), in_memory, std::move(cb));
 }
 
-void StorageManager::CreateDatabase(const std::string& disk_name, const std::string& db_name, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) {
+void StorageManager::CreateDatabase(const std::string& disk_name, const std::string& db_name, const std::vector<std::string>& create_table_stmts, bool key_value, bool in_memory, base::Callback<void(int64_t)> cb) {
   Storage* disk = GetStorage(disk_name);
   if (!disk) {
     cb.Run(net::ERR_FAILED);
@@ -797,7 +797,7 @@ void StorageManager::CreateDatabase(const std::string& disk_name, const std::str
     return; 
   }
   t->mutable_info()->set_path(db_name);
-  disk->CreateDatabase(t, create_table_stmts, std::vector<std::string>(), key_value, std::move(cb));
+  disk->CreateDatabase(t, create_table_stmts, std::vector<std::string>(), key_value, in_memory, std::move(cb));
 }
 
 void StorageManager::CloseDatabase(const std::string& disk_name, const std::string& name, base::Callback<void(int64_t)> cb) {

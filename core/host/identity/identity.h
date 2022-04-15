@@ -12,6 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/string_piece.h"
 #include "base/uuid.h"
+#include "core/host/data/resource.h"
 #include "core/common/proto/objects.pb.h"
 #include "core/host/serializable.h"
 
@@ -19,22 +20,22 @@ namespace host {
 class Credential;
 class IdentityManager;
 
-class Identity : public Serializable {
+class Identity : public Resource {
 public:
   static char kClassName[];
   static std::unique_ptr<Identity> Deserialize(net::IOBuffer* buffer, int size);
   
   ~Identity() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
-  const std::string& name() const;
+  const std::string& name() const override;
   const std::string& login() const;
   const std::string& description() const;
   
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

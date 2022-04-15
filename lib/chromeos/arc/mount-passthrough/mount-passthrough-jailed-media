@@ -1,0 +1,115 @@
+#!/bin/bash
+# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Runs mount-passthrough with minijail0 as chronos. The owner of the files
+# in FUSE is set to Android's MediaProvider, wherease their GID is set to
+# Android's external_storage.
+# Expected to be used for mount-passthrough processes for files shared with
+# ARCVM using virtio-fs.
+
+set -e
+
+if [ $# -ne 3 ]; then
+  echo "Usage: $0 source dest fuse_umask"
+  exit 1
+fi
+
+. /usr/share/arc/mount-passthrough-jailed-utils.sh
+
+# Shift width for Android users/groups inside Chrome OS. For example, Android's
+# external_storage UID and GID (1077) becomes 656437 inside Chrome OS.
+AID_SHIFT_WIDTH=655360
+
+# Android's external_storage GID (not shifted).
+ANDROID_EXTERNAL_STORAGE_GID=1077
+
+# The start and end values for Android's app UID range (not shifted). Note that
+# these values only apply for the first Android user, since UIDs inside Android
+# are shifted by 100000 per user when multple users are supported. However, for
+# us it is okay to assume apps including MediaProvider have UIDs inside this
+# range, since ARC does not support multiple Android users.
+ANDROID_APP_UID_START=10000
+ANDROID_APP_UID_END=19999
+
+# Android's /data/data directory inside the concierge namespace.
+ANDROID_DATA_DATA_DIR=/run/arcvm/android-data/mount/data/data
+
+# Android's MediaProvider package id (defined in its AndroidManifest.xml)
+ANDROID_MEDIA_PROVIDER_PACKAGE_ID=com.android.providers.media.module
+
+# Target directory to poll and get the MediaProvider UID.
+TARGET_DIR="${ANDROID_DATA_DATA_DIR}/${ANDROID_MEDIA_PROVIDER_PACKAGE_ID}"
+
+# Wait for the MediaProvider package directory to appear up to 2 minutes.
+# This should finish immediately except for the cases where MediaProvider is
+# newly installed (typically the first boot after opt-in or upgrade).
+# For the cases where it does not finish immediately, experiments show that it
+# can take ~25 seconds on betty after opt-in, while other faster devices can
+# finish it within 10 seconds. Given these results, we (almost baselessly) set
+# the timeout value to 2 minutes to allow unexpectedly slow devices and/or busy
+# states.
+timeout_millisecs=120000
+while ! nsenter --mount=/run/namespaces/mnt_concierge --no-fork -- \
+        test -d "${TARGET_DIR}"; do
+  if [ "${timeout_millisecs}" -le 0 ]; then
+    # The MediaProvider package directory does not appear before timeout.
+    # Mount-passthrough mount cannot be performed, which makes external storage
+    # files (MyFiles, Downloads, and/or removable media) inaccessible for
+    # Android apps.
+    echo "Timed out while waiting for ${TARGET_DIR}"
+    exit 1
+  fi
+  sleep 0.5
+  timeout_millisecs=$((timeout_millisecs-500))
+done
+
+# Obtain the MediaProvider UID by stat.
+android_media_provider_uid="$(nsenter --mount=/run/namespaces/mnt_concierge \
+                              --no-fork -- stat -c '%u' ${TARGET_DIR})"
+
+# Unshift the UID value by 655360.
+android_media_provider_uid="$((android_media_provider_uid-AID_SHIFT_WIDTH))"
+
+# Check whether the UID is within the Android app UID range [10000,19999].
+if ! [[ "${android_media_provider_uid}" -ge "${ANDROID_APP_UID_START}" &&
+        "${android_media_provider_uid}" -le "${ANDROID_APP_UID_END}" ]]; then
+  echo "Invalid MediaProvider UID ${android_media_provider_uid}"
+  exit 1
+fi
+
+# Set UID and GID in FUSE to Android's MediaProvider and external_storage, resp.
+set -- "$@" "${android_media_provider_uid}" "${ANDROID_EXTERNAL_STORAGE_GID}"
+
+# Set Android app access type to full.
+set -- "$@" "full"
+
+# Run mount-passthrough as chronos.
+set -- "$@" chronos chronos
+
+# Inherit supplementary groups.
+set -- "$@" "true" # inherit_supplementary_groups
+
+# Do not grant CAP_DAC_OVERRIDE.
+set -- "$@" "false" # grant_cap_dac_override
+
+# Do not force group access permission.
+# TODO(b/123669632): Remove the argument |force_group_permission| and related
+# logic once we start to run the daemon as MediaProvider UID and GID from
+# mount-passthrough-jailed-play.
+set -- "$@" "false" # force_group_permission
+
+# Enter the concierge namespace.
+set -- "$@" "true" # enter_concierge_namespace
+
+# Set the maximum number of open file descriptors to 262144.
+# The number is taken from vm_concierge.conf, which defines the maximum number
+# of fds that can be opened by virtio-fs devices.
+# We specify the same number here because files opened by this mount-passthrough
+# process are expected to be the ones opend by a virtio-fs device, and we'd like
+# to let virtio-fs devices open as many files as they like without imposing a
+# new restriction on the number of files they can open.
+set -- "$@" "262144" # max_number_of_open_fds
+
+run_mount_passthrough_with_minijail0 "$@"

@@ -41,7 +41,7 @@ common::mojom::RouteEntryRPCMethodType GetEntryFromRpcMethodType(net::RpcMethodT
   return common::mojom::RouteEntryRPCMethodType::kRPC_METHOD_NORMAL;
 }
 
-char RouteEntry::kClassName[] = "url";
+char RouteEntry::kClassName[] = "route";
 
 
 GURL RouteEntry::ResolveRpcRoute(const GURL& input_url) const {

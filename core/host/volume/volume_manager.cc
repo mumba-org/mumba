@@ -26,8 +26,8 @@ namespace host {
 //   const char kCONTAINERS_DIR[] = "volumes";
 //  }
 
-VolumeManager::VolumeManager(Delegate* delegate):
-  delegate_(delegate),
+VolumeManager::VolumeManager(scoped_refptr<Workspace> workspace):
+  workspace_(workspace),
   clean_shutdown_(false),
   weak_factory_(this) {
 
@@ -41,13 +41,13 @@ VolumeManager::~VolumeManager(){
 void VolumeManager::Init(scoped_refptr<ShareDatabase> db, DatabasePolicy policy, storage::StorageManager* storage_manager, BundleManager* bundle_manager) { 
   volumes_.reset(new VolumeModel(db, policy));
   sources_.reset(new VolumeSourceModel(db, policy));
-  volumes_->Load(delegate_->GetVolumeStorage(), bundle_manager, base::Bind(&VolumeManager::OnLoad, base::Unretained(this)));
+  volumes_->Load(workspace_->GetVolumeStorage(), bundle_manager, base::Bind(&VolumeManager::OnLoad, base::Unretained(this)));
 
   HostThread::PostTask(
     HostThread::UI, 
     FROM_HERE, 
-    base::BindOnce(&Delegate::OnVolumeManagerInitCompleted, 
-      base::Unretained(delegate_)));
+    base::BindOnce(&Workspace::OnVolumeManagerInitCompleted, 
+      workspace_));
 
 }
 
@@ -59,7 +59,7 @@ void VolumeManager::Shutdown() {
 }
 
 VolumeStorage* VolumeManager::volume_storage() {
-  return delegate_->GetVolumeStorage();
+  return workspace_->GetVolumeStorage();
 }
 
 void VolumeManager::AddVolume(storage::Storage* volume_storage, Bundle* bundle, const base::Callback<void(std::pair<bool, base::UUID>)>& callback) {
@@ -96,12 +96,12 @@ void VolumeManager::InstallVolumeSync(
 
 void VolumeManager::InsertVolume(Volume* volume) {
   volumes_->InsertVolume(volume->id(), volume);
-  delegate_->GetVolumeStorage()->PutVolume(volume);
+  workspace_->GetVolumeStorage()->PutVolume(volume);
 }
 
 void VolumeManager::RemoveVolume(Volume* volume) {
   volumes_->RemoveVolume(volume->id());
-  delegate_->GetVolumeStorage()->DropVolume(volume->name());
+  workspace_->GetVolumeStorage()->DropVolume(volume->name());
 }
 
   // source
@@ -128,7 +128,7 @@ std::pair<bool, base::UUID> VolumeManager::AddVolumeImpl(storage::Storage* volum
   Volume* volume = owned_volume.release();
 
   volumes_->InsertVolume(volume->id(), volume);
-  delegate_->GetVolumeStorage()->PutVolume(volume, true);
+  workspace_->GetVolumeStorage()->PutVolume(volume, true);
   result = volume->id();
   return std::make_pair(true, result);
 }
@@ -186,6 +186,16 @@ void VolumeManager::NotifyVolumesLoad(int r, int count) {
     Observer* observer = *it;
     observer->OnVolumesLoad(r, count);
   }
+}
+
+const google::protobuf::Descriptor* VolumeManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Volume");
+}
+
+std::string VolumeManager::resource_classname() const {
+  return Volume::kClassName;
 }
 
 }

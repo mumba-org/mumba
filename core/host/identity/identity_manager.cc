@@ -18,7 +18,7 @@
 
 namespace host {
 
-IdentityManager::IdentityManager(): weak_factory_(this) {
+IdentityManager::IdentityManager(scoped_refptr<Workspace> workspace): weak_factory_(this) {
   
 }
 
@@ -115,6 +115,16 @@ void IdentityManager::NotifyIdentitiesLoad(int r, int count) {
     Observer* observer = *it;
     observer->OnIdentitiesLoad(r, count);
   }
+}
+
+const google::protobuf::Descriptor* IdentityManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Identity");
+}
+
+std::string IdentityManager::resource_classname() const {
+  return Identity::kClassName;
 }
 
 }

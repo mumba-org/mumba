@@ -62,9 +62,36 @@ Device* DeviceModel::GetDeviceById(const base::UUID& id) {
   return nullptr;
 }
 
+Device* DeviceModel::GetDevice(const std::string& name) {
+  for (auto it = devices_.begin(); it != devices_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return it->get();
+    }
+  }
+  return nullptr;
+}
+
 bool DeviceModel::DeviceExists(Device* device) const {
   for (auto it = devices_.begin(); it != devices_.end(); ++it) {
-    if ((*it)->name() == device->name()) {
+    if (it->get() == device) {
+      return true;
+    }
+  }
+  return false; 
+}
+
+bool DeviceModel::DeviceExists(const std::string& name) const {
+  for (auto it = devices_.begin(); it != devices_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return true;
+    }
+  }
+  return false; 
+}
+
+bool DeviceModel::DeviceExists(const base::UUID& id) const {
+  for (auto it = devices_.begin(); it != devices_.end(); ++it) {
+    if ((*it)->id() == id) {
       return true;
     }
   }

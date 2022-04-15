@@ -819,6 +819,7 @@ void StorageContext::ShareCreateWithPathImpl(uint32_t context_id, int32_t req, c
       uuid, 
       name, 
       keyspaces,
+      in_memory,
       base::Bind(&StorageContext::ReplyShareCreate, 
         this, 
         context_id, 
@@ -852,9 +853,18 @@ void StorageContext::ShareAddImpl(const std::string& tid, const std::string& url
 void StorageContext::ShareOpenImpl(uint32_t context_id, int32_t req, common::mojom::StorageType type, const std::string& tid, bool create_if_not_exists) {
   base::UUID uuid;
   //storage::StorageManager* manager = workspace_->volume_storage()->storage_manager();
+  DLOG(INFO) << "StorageContext::ShareOpen: opening share for '" << tid << "'";
   ShareManager* share_manager = workspace_->share_manager();
   bool found = share_manager->GetUUID(domain_->name(), tid, &uuid);
+  // it might be the system databases, so try it
+  if (!found) {
+    found = workspace_->storage_manager().GetUUID(
+      workspace_->workspace_storage()->workspace_disk_name(), 
+      tid, 
+      &uuid);
+  }
   if (found) {
+    DLOG(INFO) << "StorageContext::ShareOpen: opening share for '" << tid << "' => found => " << uuid.to_string();
     share_manager->OpenShare(
       domain_->name(),
       uuid,
@@ -872,12 +882,14 @@ void StorageContext::ShareOpenImpl(uint32_t context_id, int32_t req, common::moj
       uuid, 
       tid, 
       keyspaces,
+      false,
       base::Bind(&StorageContext::ReplyShareCreate, 
         this, 
         context_id, 
         req, 
         base::Passed(std::move(uuid))));
   } else { // share does not exists, and create_if_not_exists = false. just fail
+    DLOG(INFO) << "StorageContext::ShareOpen: opening share for '" << tid << "' => NOT found";
     ReplyShareOpen(context_id, req, std::move(uuid), net::ERR_FAILED);
   }
 }
@@ -1498,11 +1510,22 @@ void StorageContext::DataCreateCursorImpl(uint32_t context_id, int32_t req, cons
 }
 
 void StorageContext::DataExecuteQueryImpl(uint32_t context_id, int32_t req, const std::string& tid, const std::string& query, common::mojom::StorageDispatcherHost::DataExecuteQueryCallback callback) {
+  DLOG(INFO) << "StorageContext::DataExecuteQueryImpl";
   ShareManager* share_manager = workspace_->share_manager();
+  std::string ns = domain_->name();
   common::mojom::SQLCursorPtr cursor_proxy;
   base::UUID uuid;
-  bool found = share_manager->GetUUID(domain_->name(), tid, &uuid);
+  bool found = share_manager->GetUUID(ns, tid, &uuid);
   if (!found) {
+    DLOG(INFO) << "StorageContext::DataExecuteQueryImpl: uuid for '" << tid << "' not found.. trying system databases now";
+    ns = workspace_->workspace_storage()->workspace_disk_name();
+    found = workspace_->storage_manager().GetUUID(
+      ns, 
+      tid, 
+      &uuid);
+  }
+  if (!found) {
+    DLOG(INFO) << "StorageContext::ExecuteQueryImpl: error => uuid for '" << tid << "' not found";
     HostThread::PostTask(
       HostThread::IO,
       FROM_HERE,
@@ -1514,8 +1537,9 @@ void StorageContext::DataExecuteQueryImpl(uint32_t context_id, int32_t req, cons
         base::Passed(std::move(cursor_proxy))));
     return;
   }
-  Share* share = share_manager->GetShare(domain_name(), uuid);
+  Share* share = share_manager->GetShare(ns, uuid);
   if (!share) {
+    DLOG(INFO) << "StorageContext::ExecuteQueryImpl: error => share for " << uuid.to_string() << " => '" << tid << "' not found";
     HostThread::PostTask(
       HostThread::IO,
       FROM_HERE,
@@ -1543,7 +1567,7 @@ void StorageContext::DataExecuteQueryImpl(uint32_t context_id, int32_t req, cons
   int rc = 0;
   auto* stmt = share->db()->ExecuteQuery(query, &rc);
   if (stmt == nullptr) {
-    DLOG(INFO) << "StorageContext::DataExecuteQueryImpl: failed to execute statement '" << query << "'" ;
+    DLOG(INFO) << "StorageContext::DataExecuteQueryImpl: failed to execute statement '" << query << "' on db " << share->db()->db();
     HostThread::PostTask(
       HostThread::IO,
       FROM_HERE,

@@ -137,9 +137,36 @@ Identity* IdentityModel::GetIdentityById(const base::UUID& id) {
   return nullptr;
 }
 
+Identity* IdentityModel::GetIdentityByName(const std::string& name) {
+  for (auto it = identities_.begin(); it != identities_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return *it;
+    }
+  }
+  return nullptr;
+}
+
 bool IdentityModel::IdentityExists(Identity* identity) const {
   for (auto it = identities_.begin(); it != identities_.end(); ++it) {
-    if ((*it)->name() == identity->name()) {
+    if (*it == identity) {
+      return true;
+    }
+  }
+  return false; 
+}
+
+bool IdentityModel::IdentityExists(const base::UUID& id) const {
+  for (auto it = identities_.begin(); it != identities_.end(); ++it) {
+    if ((*it)->id() == id) {
+      return true;
+    }
+  }
+  return false; 
+}
+
+bool IdentityModel::IdentityExists(const std::string& name) const {
+  for (auto it = identities_.begin(); it != identities_.end(); ++it) {
+    if ((*it)->name() == name) {
       return true;
     }
   }

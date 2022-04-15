@@ -7,6 +7,7 @@
 
 #include "base/macros.h"
 #include "core/host/route/route_observer.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 
@@ -14,7 +15,8 @@ namespace host {
  * The index frontend. its the one the consumer see and deals with
  * but that delegates the IO to the backend in the backend thread
  */
-class Index : public RouteObserver {
+class Index : public Resource,
+              public RouteObserver {
 public:
   Index();
   Index() override;

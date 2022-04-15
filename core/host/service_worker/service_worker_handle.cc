@@ -167,6 +167,8 @@ ServiceWorkerHandle::ServiceWorkerHandle(
     : context_(context),
       provider_host_(provider_host),
       provider_origin_(CreateUrlOrigin(provider_host->document_url())),
+      id_(base::UUID::generate()),
+      name_(id_.to_string()),
       provider_id_(provider_host->provider_id()),
       handle_id_(context->GetNewServiceWorkerHandleId()),
       version_(std::move(version)),

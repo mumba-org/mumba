@@ -12,6 +12,9 @@
 #include "base/strings/string_piece.h"
 #include "base/files/file_path.h"
 #include "core/host/bundle/bundle_info.h"
+#ifdef LOCK_WRITE
+#undef LOCK_WRITE
+#endif
 #include "third_party/msix/src/inc/public/AppxPackaging.hpp"
 
 namespace host {

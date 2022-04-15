@@ -88,6 +88,7 @@ void StorageContext::CreateDatabaseCursor(
 
 void StorageContext::ExecuteQuery(const std::string& db_name, const std::string& query, StorageDataCursorDelegate* cursor_delegate) {
   int req = CreateRequest();
+  DLOG(INFO) << "StorageContext::ExecuteQuery: calling StorageDispatcherHost->DataExecuteQuery(): '" << query << "'";
   dispatcher_->GetStorageDispatcherHostInterface()->DataExecuteQuery(
     shared_context_->id, 
     req,
@@ -286,6 +287,7 @@ void StorageContext::CreateDatabaseCursorImpl(StorageDataCursorDelegate* cursor_
 }
 
 void StorageContext::ExecuteQueryImpl(StorageDataCursorDelegate* cursor_delegate, common::mojom::SQLCursorPtr in_cursor) {
+  DLOG(INFO) << "StorageContext::ExecuteQueryImpl: passing the cursor";
   cursor_delegate->OnSQLCursorAvailable(std::move(in_cursor));
 }
 

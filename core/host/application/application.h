@@ -17,6 +17,7 @@
 #include "core/host/application/automation/application_driver.h"
 #include "core/host/ui/dock.h"
 #include "core/host/host_thread.h"
+#include "core/host/data/resource.h"
 #include "core/common/proto/objects.pb.h"
 #include "ui/base/window_open_disposition.h"
 

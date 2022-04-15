@@ -13,6 +13,8 @@
 #include "base/files/file_path.h"
 #include "base/strings/string_piece.h"
 #include "base/memory/ref_counted.h"
+#include "base/single_thread_task_runner.h"
+#include "base/threading/thread_task_runner_handle.h"
 #include "storage/db/memory.h"
 #include "storage/proto/storage.pb.h"
 #include "storage/storage_export.h"
@@ -30,6 +32,7 @@ typedef struct Btree Btree;
 typedef struct BtCursor BtCursor;
 typedef struct csqlite csqlite;
 typedef struct csqlite_stmt csqlite_stmt;
+typedef struct csqlite_module csqlite_module;
 typedef struct KeyInfo KeyInfo;
 
 namespace storage {
@@ -190,14 +193,16 @@ private:
 class STORAGE_EXPORT Database : public Transaction::Delegate {
 public:
   static Database* Open(scoped_refptr<Torrent> torrent, bool key_value);
-  static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, bool key_value);
-  static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_statements, const std::vector<std::string>& insert_statements, bool key_value);
-  static std::unique_ptr<Database> CreateMemory(const std::vector<std::string>& keyspaces, bool key_value);
+  static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, bool key_value, bool in_memory);
+  static Database* Create(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_statements, const std::vector<std::string>& insert_statements, bool key_value, bool in_memory);
+  static Database* CreatePersistent(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_statements, const std::vector<std::string>& insert_statements, bool key_value);
+  static Database* CreateMemory(scoped_refptr<Torrent> torrent, const std::vector<std::string>& keyspaces, const std::vector<std::string>& insert_stmts, bool key_value);
 
   Database(
     const base::UUID& id,
     csqlite* sqlite, 
-    Btree* btree);
+    Btree* btree,
+    bool in_memory);
   
   ~Database() override;
 
@@ -212,6 +217,10 @@ public:
     return closed_;
   }
 
+  bool in_memory() const {
+    return in_memory_;
+  }
+
   const base::UUID& id() const {
     return id_;
   }
@@ -222,6 +231,14 @@ public:
 
   uint32_t largest_root_page() const {
     return largest_root_page_;
+  }
+
+  csqlite* conn() const {
+    return sqlite_;
+  }
+
+  const scoped_refptr<base::SingleThreadTaskRunner>& task_runner() const {
+    return task_runner_;
   }
 
   void Close();
@@ -249,6 +266,8 @@ public:
   bool ExecuteStatement(const std::string& stmt);
   // FIXME: wrap this up in a ResultSet
   csqlite_stmt* ExecuteQuery(const std::string& query, int* rc);
+  //
+  bool CreateVirtualTable(const std::string& name, void* peer, csqlite_module* callbacks);
 
 private:
   friend class Transaction;
@@ -275,8 +294,10 @@ private:
   bool fragment_values_;
   std::unordered_map<std::string, int> keyspaces_;
   std::vector<std::unique_ptr<Transaction>> transactions_;
+  scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   uint32_t largest_root_page_;
   bool closed_;
+  bool in_memory_;
   mutable bool inside_checkpoint_;
     
  

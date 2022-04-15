@@ -94,7 +94,7 @@ void RouteModel::AddEntry(OwnedEntry entry) {
   int index = ++entry_next_index_;
   entries_path_index_.emplace(std::make_pair(entry->path(), index));
   entries_route_index_.emplace(std::make_pair(entry->url().spec(), index));
-  entries_uuid_index_.emplace(std::make_pair(entry->uuid(), index));
+  entries_uuid_index_.emplace(std::make_pair(entry->id(), index));
   entries_.emplace(std::make_pair(index, std::move(entry)));
 }
 
@@ -130,7 +130,7 @@ RouteModel::OwnedEntry RouteModel::RemoveEntryInternal(int id, common::mojom::Ro
   if (it != entries_.end()) {
     OwnedEntry entry = std::move(it->second);
     entries_route_index_.erase(entries_route_index_.find(entry->url().spec()));
-    entries_uuid_index_.erase(entries_uuid_index_.find(entry->uuid()));
+    entries_uuid_index_.erase(entries_uuid_index_.find(entry->id()));
     entries_path_index_.erase(entries_path_index_.find(entry->path()));
     *entry_ptr = std::move(entry->entry_);
     entries_.erase(it);

@@ -1142,6 +1142,12 @@ component("host") {
     "cache_storage/cache_storage_scheduler.cc",
     "cache_storage/cache_storage_scheduler.h",
     "cache_storage/cache_storage_scheduler_client.h",
+    "data/system_table.cc",
+    "data/system_table.h",
+    "data/system_tables.cc",
+    "data/system_tables.h",
+    "data/table.cc",
+    "data/table.h",
     "bundle/bundle.cc",
     "bundle/bundle.h",
     "bundle/bundle_builder.cc",
@@ -1884,6 +1890,10 @@ component("host") {
     "websockets/websocket_handshake_request_info_impl.h",
     "websockets/websocket_manager.cc",
     "websockets/websocket_manager.h",
+    "vm/vm_controller.cc",
+    "vm/vm_controller.h",
+    "vm/vm_manager.cc",
+    "vm/vm_manager.h",
     #"ui/launcher/launcher_view.h",
     #"ui/launcher/launcher_view.cc",
     #"ui/launcher/launcher_controller.h",
@@ -2817,7 +2827,8 @@ component("host") {
   if (is_linux) {
     include_dirs += [
       "/usr/include/dbus-1.0",
-      "/usr/lib/x86_64-linux-gnu/dbus-1.0/include"
+      "/usr/lib/x86_64-linux-gnu/dbus-1.0/include",
+      "//chromeos"
     ]
     #public_deps += [ "//lib/remoting/host/linux" ]
     libs = [ 
@@ -2845,6 +2856,11 @@ component("host") {
       "ui/global_menu_bar_registrar_x11.h",
       "ui/global_menu_bar_x11.cc",
       "ui/global_menu_bar_x11.h",
+      #"vm/vm_manager_linux.cc",
+      #"vm/vm_manager_linux.h",
+    ]
+    deps += [ 
+      "//lib/chromeos/vm_tools/host:libconcierge"
     ]
   }
   if (is_mac) {

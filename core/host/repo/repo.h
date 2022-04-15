@@ -12,6 +12,7 @@
 #include "core/host/serializable.h"
 #include "core/shared/common/mojom/repo.mojom.h"
 #include "core/common/proto/objects.pb.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 
@@ -21,7 +22,7 @@ enum class RepoState {
   kVALID,
 };
 
-class Repo : public Serializable {
+class Repo : public Resource {
 public:
   static char kClassName[];
   static std::unique_ptr<Repo> Deserialize(net::IOBuffer* buffer, int size);
@@ -31,11 +32,11 @@ public:
   Repo(protocol::Repo repo_proto);
   ~Repo() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
-  const std::string& name() const;
+  const std::string& name() const override;
   void set_name(const std::string& name);
   protocol::RepoType type() const;
   void set_type(protocol::RepoType type);
@@ -58,7 +59,7 @@ public:
     return state_;
   }
 
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

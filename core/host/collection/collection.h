@@ -18,17 +18,19 @@
 #include "base/uuid.h"
 #include "core/common/proto/objects.pb.h"
 #include "core/host/database_policy.h"
+#include "core/host/data/resource.h"
+#include "core/host/collection/collection_entry.h"
 
 namespace host {
-class CollectionEntry;
 class CollectionModel;
 class CollectionObserver;
 class ShareDatabase;
+class Workspace;
 
-class Collection {
+class Collection : public ResourceManager {
 public:
-  Collection();
-  ~Collection();
+  Collection(scoped_refptr<Workspace> workspace);
+  ~Collection() override;
   
   CollectionModel* model() const {
     return entries_.get();
@@ -51,6 +53,26 @@ public:
   void AddObserver(CollectionObserver* observer);
   void RemoveObserver(CollectionObserver* observer);
 
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return EntryExists(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return EntryExists(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return GetEntryById(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return GetEntryByName(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
+
 private:
 
   void InitImpl();
@@ -62,6 +84,7 @@ private:
   void NotifyEntryRemoved(CollectionEntry* entry);
   void NotifyEntriesLoad(int r, int count);
 
+  scoped_refptr<Workspace> workspace_;
   std::unique_ptr<CollectionModel> entries_;  
   std::vector<CollectionObserver*> observers_;
 

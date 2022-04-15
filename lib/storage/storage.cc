@@ -520,7 +520,7 @@ void Storage::OpenRootTreeOnInit(scoped_refptr<StorageContext> context, bool cre
      return;
    }
    Database* db = create ? 
-     Database::Create(root_tree_, context->create_db_params.keyspaces, true) : 
+     Database::Create(root_tree_, context->create_db_params.keyspaces, true, false) : 
      Database::Open(root_tree_, true);
 
    if (!db) {
@@ -710,7 +710,7 @@ void Storage::OpenDatabaseImpl(scoped_refptr<StorageContext> context) {
   OpenSQLiteDatabase(context);
 }
 
-void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb) {
+void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, std::vector<std::string> keyspaces, bool in_memory, base::Callback<void(int64_t)> cb) {
   //DLOG(INFO) << "Storage::CreateDatabase";
   // bug check: sometimes theres a empty uuid string getting called
   // to create the database. make a check
@@ -719,15 +719,21 @@ void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, std::vector<std::st
   scoped_refptr<StorageContext> context = CreateContext(StorageContext::kCREATE_DATABASE, torrent, std::move(cb));
   context->create_db_params.keyspaces = std::move(keyspaces);
   context->create_db_params.keyspaces.push_back(".global");
+  context->create_db_params.in_memory = in_memory;
   RunIO(context);
 }
 
-void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_table_stmts, const std::vector<std::string>& insert_table_stmts, bool key_value, base::Callback<void(int64_t)> cb) {
+void Storage::CreateDatabase(scoped_refptr<Torrent> torrent, const std::vector<std::string>& create_table_stmts, const std::vector<std::string>& insert_table_stmts, bool key_value, bool in_memory, base::Callback<void(int64_t)> cb) {
   std::string uuid_str = torrent->id().to_string();
   scoped_refptr<StorageContext> context = CreateContext(StorageContext::kCREATE_DATABASE, torrent, std::move(cb));
   context->create_db_params.type = key_value ? storage_proto::InfoKind::INFO_KVDB : storage_proto::InfoKind::INFO_SQLDB;
   context->create_db_params.create_table_stmts = create_table_stmts;
   context->create_db_params.insert_table_stmts = insert_table_stmts;
+  if (key_value) {
+    context->create_db_params.keyspaces = create_table_stmts;
+    context->create_db_params.keyspaces.push_back(".global");
+  }
+  context->create_db_params.in_memory = in_memory;
   RunIO(context);
 }
 
@@ -1921,11 +1927,11 @@ void Storage::CreateSQLiteDatabase(scoped_refptr<StorageContext> context) {
   const scoped_refptr<Torrent>& torrent = context->torrent;
   torrent->mutable_info()->set_kind(context->create_db_params.type);
   torrent->set_is_opening_db(true);
-  Database* db = nullptr; 
+  Database* db = nullptr;
   if (context->create_db_params.type == storage_proto::INFO_KVDB) {
-    db = Database::Create(torrent, context->create_db_params.keyspaces, true);
+    db = Database::Create(torrent, context->create_db_params.keyspaces, true, context->create_db_params.in_memory);
   } else {
-    db = Database::Create(torrent, context->create_db_params.create_table_stmts, context->create_db_params.insert_table_stmts, false);
+    db = Database::Create(torrent, context->create_db_params.create_table_stmts, context->create_db_params.insert_table_stmts, false, context->create_db_params.in_memory);
   }
   int64_t result = net::OK;
   

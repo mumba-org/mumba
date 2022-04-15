@@ -17,15 +17,18 @@
 #include "core/host/workspace/workspace.h"
 #include "core/host/bundle/bundle_model.h"
 #include "core/host/bundle/bundle_creator.h"
-#include "core/host/bundle/bundle_utils.h"
 #include "core/host/share/share_database.h"
 #include "core/host/bundle/bundle.h"
 #include "storage/storage_utils.h"
 #include "base/sha1.h"
+#ifdef LOCK_WRITE
+#undef LOCK_WRITE
+#endif
 #include "third_party/msix/src/inc/public/AppxPackaging.hpp"
 #include "third_party/msix/src/inc/shared/ComHelper.hpp"
 #include "third_party/msix/src/inc/internal/StringStream.hpp"
 #include "third_party/msix/src/inc/internal/VectorStream.hpp"
+#include "core/host/bundle/bundle_utils.h"
 
 namespace host {
 
@@ -43,8 +46,8 @@ std::string SanitizeName(const std::string& name) {
 
 }
 
-BundleManager::BundleManager(Workspace* workspace): 
-  workspace_(workspace) {
+BundleManager::BundleManager(scoped_refptr<Workspace> workspace): 
+  workspace_(std::move(workspace)) {
   
 }
 
@@ -505,6 +508,16 @@ void BundleManager::NotifyBundlesLoad(int r, int count) {
     BundleManagerObserver* observer = *it;
     observer->OnBundlesLoad(r, count);
   }
+}
+
+const google::protobuf::Descriptor* BundleManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Bundle");
+}
+
+std::string BundleManager::resource_classname() const {
+  return Bundle::kClassName;
 }
 
 }

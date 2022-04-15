@@ -33,7 +33,10 @@ public:
 
   void Load(base::Callback<void(int, int)> cb);
   bool ShareExists(Share* share) const;
+  bool ShareExists(const std::string& name) const;
+  bool ShareExists(const base::UUID& id) const;
   Share* GetShare(const std::string& domain, const std::string& name);
+  Share* GetShare(const std::string& name);
   Share* GetShareById(const base::UUID& id);
   void InsertShare(const base::UUID& id, std::unique_ptr<Share> share, bool persist = false);
   void RemoveShare(const base::UUID& id);

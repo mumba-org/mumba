@@ -15,12 +15,13 @@
 #include "base/containers/flat_map.h"
 #include "core/host/serializable.h"
 #include "core/common/proto/objects.pb.h"
+#include "core/host/data/resource.h"
 #include "core/host/channel/channel_client.h"
 #include "core/shared/common/mojom/channel.mojom.h"
 
 namespace host {
 class ChannelClient;
-class Channel : public Serializable {
+class Channel : public Resource {
 public:
   static char kClassName[];
   static std::unique_ptr<Channel> Deserialize(net::IOBuffer* buffer, int size);
@@ -28,15 +29,15 @@ public:
   Channel(protocol::Channel channel_proto);
   ~Channel() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
   const std::string& scheme() const;
 
-  const std::string& name() const;
+  const std::string& name() const override;
 
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

@@ -15,6 +15,7 @@
 #include "storage/storage.h"
 #include "storage/torrent.h"
 #include "storage/storage_manager.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 class VolumeSource;
@@ -33,7 +34,7 @@ enum class VolumeState : int {
  * A Volume is a 'proto-domain'
  * Something that can become a app-host with one or more apps in it
  */
-class Volume : public Serializable {
+class Volume : public Resource {
 public:
   static char kClassName[];
   
@@ -50,7 +51,7 @@ public:
   Volume(storage::Storage* volume_storage, Bundle* bundle);
   ~Volume() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
@@ -58,7 +59,7 @@ public:
     return valid_;
   }
 
-  const std::string& name() const {
+  const std::string& name() const override {
     return volume_proto_.name();
   }
 
@@ -135,7 +136,7 @@ public:
   }
 
   // managed = persisted on DB
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

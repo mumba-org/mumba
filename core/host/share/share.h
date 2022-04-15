@@ -15,6 +15,7 @@
 #include "storage/torrent_observer.h"
 #include "core/host/share/share_observer.h"
 #include "core/host/share/share_database.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 class Repo;
@@ -22,7 +23,7 @@ class SharePeer;
 class ShareManager;
 
 class Share : public ShareDatabase::Delegate,
-              public Serializable,
+              public Resource,
               public storage::TorrentObserver {
 public:
   static char kClassName[];
@@ -32,7 +33,7 @@ public:
   Share(ShareManager* manager, protocol::Share share_proto, const std::vector<std::string>& keyspaces, bool in_memory);
   ~Share() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
@@ -99,7 +100,7 @@ public:
     return peers_;
   }
 
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

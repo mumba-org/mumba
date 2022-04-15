@@ -1,0 +1,50 @@
+#!/bin/bash
+# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Runs mount-passthrough with minijail0 as Android's media_rw, with
+# CAP_DAC_OVERRIDE additionally granted. It enables us to use mount-passthrough
+# for setting up "Play files" by allowing chronos to access Android files. Note
+# that the ordinary usage of mount-passthrough (via mount-passthrough-jailed) is
+# to allow Android to access files owned by chronos.
+
+set -e
+
+if [ $# -ne 5 ]; then
+  echo "Usage: $0 source dest fuse_umask fuse_uid fuse_gid"
+  exit 1
+fi
+
+. /usr/share/arc/mount-passthrough-jailed-utils.sh
+
+# Android's media_rw UID and GID shifted by 655360.
+AID_MEDIA_RW_UID=656383
+AID_MEDIA_RW_GID=656383
+
+# Set Android app access type to full.
+set -- "$@" "full"
+
+# Run mount-passthrough as Android's media_rw.
+set -- "$@" "${AID_MEDIA_RW_UID}" "${AID_MEDIA_RW_GID}"
+
+# Do not inherit supplementary groups.
+set -- "$@" "false" # interit_supplementary_groups
+
+# Grant CAP_DAC_OVERRIDE.
+set -- "$@" "true" # grant_cap_dac_override
+
+# Forcefully grant full group access permission.
+# TODO(b/123669632): Remove the argument |force_group_permission| and related
+# logic once we start to run the daemon as MediaProvider UID and GID.
+set -- "$@" "true" # force_group_permission
+
+# Do not enter the concierge namespace.
+set -- "$@" "false" # enter_concierge_namespace
+
+# Set the maximum number of open file descriptors to 8192.
+# This is larger than the default value 1024 because this process handles many
+# open files. See b/30236190 for more context.
+set -- "$@" "8192" # max_number_of_open_fds
+
+run_mount_passthrough_with_minijail0 "$@"

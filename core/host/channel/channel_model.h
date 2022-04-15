@@ -35,8 +35,10 @@ public:
   size_t Count() const;
   bool ChannelExists(Channel* channel) const;
   bool ChannelExists(const std::string& scheme, const std::string& name) const;
+  bool ChannelExists(const std::string& name) const;
   bool ChannelExists(const base::UUID& id) const;
   Channel* GetChannel(const std::string& scheme, const std::string& name);
+  Channel* GetChannelByName(const std::string& name);
   Channel* GetChannelById(const base::UUID& id);
   void InsertChannel(const base::UUID& id, std::unique_ptr<Channel> channel, bool persist, base::Callback<void(int)> cb = base::Callback<void(int)>());
   void RemoveChannel(Channel* channel, base::Callback<void(int)> cb = base::Callback<void(int)>());

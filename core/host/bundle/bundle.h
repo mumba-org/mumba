@@ -15,6 +15,7 @@
 #include "core/common/proto/objects.pb.h"
 #include "core/host/bundle/bundle_info.h"
 #include "core/host/bundle/bundle_package.h"
+#include "core/host/data/resource.h"
 #include "core/shared/common/mojom/bundle.mojom.h"
 #include "storage/storage.h"
 #pragma clang diagnostic push
@@ -44,7 +45,7 @@ class Share;
  * we need them ALL serialized in the database after they are installed
  */
 
-class Bundle : public Serializable {
+class Bundle : public Resource {
 public:
   static char kClassName[];
   static std::unique_ptr<Bundle> Deserialize(net::IOBuffer* buffer, int size);
@@ -56,11 +57,11 @@ public:
   Bundle(protocol::Bundle bundle_proto);
   ~Bundle() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
-  const std::string& name() const;
+  const std::string& name() const override;
   void set_name(const std::string& name);
 
   const std::string& path() const;
@@ -72,7 +73,7 @@ public:
   const std::string& application_path();
   const std::string& resources_path();
 
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 
@@ -90,6 +91,7 @@ public:
 
   // FIXME: maybe to be on a BundleController instead of Bundle
   void PostUnpackActions(scoped_refptr<Workspace> workspace, const base::FilePath& path);
+  void OnInitActions(scoped_refptr<Workspace> workspace, const base::FilePath& path);
 
 private:
   
@@ -101,6 +103,7 @@ private:
     //std::vector<const zetasql::ASTCreateTableStatement*> create_table_stmts;
     std::vector<std::string> create_table_stmts;
     std::vector<std::string> insert_table_stmts;
+    bool in_memory;
   };
 
   void ResolvePackages();
@@ -112,7 +115,7 @@ private:
   void InjectCoreMethods(std::string* proto) const;
 
   void CreateFileset(scoped_refptr<Workspace> workspace, const base::FilePath& files_dir);
-  void CreateDatabases(scoped_refptr<Workspace> workspace, const base::FilePath& db_file);
+  void CreateDatabases(scoped_refptr<Workspace> workspace, const base::FilePath& db_file, bool install_phase);
   void CreateDatabase(scoped_refptr<Workspace> workspace, DatabaseCreationInfo* creation);
   void CreateShare(scoped_refptr<Workspace> workspace, const base::FilePath& share_file);
 
@@ -130,6 +133,7 @@ private:
   std::unique_ptr<zetasql::ParserOutput> parser_output_;
   
   bool managed_;
+  bool just_unpacked_;
 
   DISALLOW_COPY_AND_ASSIGN(Bundle);
 };

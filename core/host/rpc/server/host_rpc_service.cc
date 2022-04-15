@@ -263,4 +263,8 @@ std::unique_ptr<net::RpcMessageEncoder> HostRpcService::BuildEncoder() {
   return std::make_unique<RpcMessageEncoderImpl>(schema_);
 }
 
+scoped_refptr<net::IOBufferWithSize> HostRpcService::Serialize() const {
+  return scoped_refptr<net::IOBufferWithSize>();
+}
+
 }

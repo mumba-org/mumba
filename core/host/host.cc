@@ -253,4 +253,35 @@ void Host::CreateNotificationUIManager() {
 #endif
 }
 
+bool Host::HaveResource(const base::UUID& id) {
+  return workspace_->id() == id;
+}
+
+bool Host::HaveResource(const std::string& name) {
+  return workspace_->name() == name;
+}
+
+Resource* Host::GetResource(const base::UUID& id) {
+  if (workspace_->id() == id) {
+    return workspace_.get();
+  }
+  return nullptr;
+}
+
+Resource* Host::GetResource(const std::string& name) {
+  if (workspace_->name() == name) {
+    return workspace_.get();
+  }
+  return nullptr;
+}
+
+const google::protobuf::Descriptor* Host::resource_descriptor() {
+  // FIXME: implement
+  return nullptr;
+}
+
+std::string Host::resource_classname() const {
+  return Workspace::kClassName;
+}
+
 }

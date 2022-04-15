@@ -1,0 +1,32 @@
+This kit implements the client part of the vm/container ipc api
+where the "container_host" aka. the container dispatcher ipc is in the host process
+
+the "domain process" is the client that receives the ipc from host and is actually 
+encharged of launching and managing the containers (though it need to route back some calls as only the host can execute them)
+
+As seen on resources directory 'api.proto' is a custom gRPC protobuf api
+inherited from the Kubernetes control api.
+
+The idea here is that we have the IPC api + RPC api that is exposed (and handled) by this module
+Note how the pattern here is the same; the domain process exposing a RPC api to the outside world
+
+But the difference here is that it will be routed back to the host process through IPC calls
+as only the host process can do some things (as launching new processes)
+
+---
+
+vanilla linux, ARC, browser and KVM - this container kit should be able to launch containers
+with vanilla linux, android, chrome and VM containers
+
+Giving they are containers but they have distinct flavors is expected that we design a IPC
+api to each one of them so that the host can control them in a more fine-grained manner
+according to their flavor
+
+So the container IPC api will have a generic control api for managing and launching them
+but each container process might have distinct api's according to their "flavors"
+
+for instance a browser container instance can have a browser api, automation together
+with the vanilla linux api that all the three of them have
+
+For chrome this might be a "BrowserControl" api with things like "Go(url)" 
+and automation api to talk to the inspector protocol 

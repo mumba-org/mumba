@@ -30,6 +30,9 @@ public:
 
   void Load(base::Callback<void(int, int)> cb);
   bool DeviceExists(Device* device) const;
+  bool DeviceExists(const std::string& name) const;
+  bool DeviceExists(const base::UUID& id) const;
+  Device* GetDevice(const std::string& name);
   Device* GetDeviceById(const base::UUID& id);
   void InsertDevice(const base::UUID& id, std::unique_ptr<Device> device);
   void RemoveDevice(const base::UUID& id);

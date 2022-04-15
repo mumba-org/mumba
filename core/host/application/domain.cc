@@ -13,6 +13,7 @@
 #include "core/host/host_controller.h"
 #include "core/shared/common/mojom/application.mojom.h"
 #include "core/host/workspace/workspace.h"
+#include "core/host/workspace/app_storage.h"
 #include "core/host/volume/volume.h"
 #include "core/host/ui/dock_commands.h"
 #include "core/host/application/application_contents.h"
@@ -43,6 +44,7 @@
 #include "core/host/notifications/platform_notification_context_impl.h"
 #include "core/host/route/route_registry.h"
 #include "core/host/route/route_model.h"
+#include "core/host/bundle/bundle.h"
 #include "core/host/io_thread.h"
 #include "core/host/host_controller.h"
 #include "storage/host/quota/quota_settings.h"
@@ -227,8 +229,18 @@ void Domain::Init() {
 
   url_loader_factory_getter_->Initialize(this);
 
+  base::FilePath bundle_path = workspace_->app_storage()->GetDirectory(id());
+
   HostThread::PostTask(HostThread::IO, FROM_HERE,
                        base::BindOnce(&Domain::InitOnIO, base::Unretained(this)));
+  base::PostTaskWithTraits(
+    FROM_HERE,
+    { base::WithBaseSyncPrimitives(), base::MayBlock() },
+    base::BindOnce(
+      &Bundle::OnInitActions,
+        base::Unretained(bundle()),
+        workspace_, 
+        path));
 }
 
 void Domain::InitOnIO() {

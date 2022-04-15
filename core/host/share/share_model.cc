@@ -134,6 +134,15 @@ Share* ShareModel::GetShare(const std::string& domain, const std::string& name) 
   return nullptr;  
 }
 
+Share* ShareModel::GetShare(const std::string& name) {
+  for (auto it = shares_.begin(); it != shares_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return it->get();
+    }
+  }
+  return nullptr;  
+}
+
 Share* ShareModel::GetShareById(const base::UUID& id) {
   for (auto it = shares_.begin(); it != shares_.end(); ++it) {
     if ((*it)->id() == id) {
@@ -151,6 +160,24 @@ bool ShareModel::ShareExists(Share* share) const {
   }
   return false; 
 }
+
+bool ShareModel::ShareExists(const std::string& name) const {
+  for (auto it = shares_.begin(); it != shares_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return true;
+    }
+  }
+  return false;  
+}
+
+bool ShareModel::ShareExists(const base::UUID& id) const {
+  for (auto it = shares_.begin(); it != shares_.end(); ++it) {
+    if ((*it)->id() == id) {
+      return true;
+    }
+  }
+  return false;
+}  
 
 void ShareModel::AddToCache(const base::UUID& id, std::unique_ptr<Share> share) {
   share->set_managed(true);

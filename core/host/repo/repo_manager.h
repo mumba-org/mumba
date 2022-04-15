@@ -16,18 +16,20 @@
 #include "base/single_thread_task_runner.h"
 #include "base/uuid.h"
 #include "core/host/database_policy.h"
+#include "core/host/data/resource.h"
+#include "core/host/repo/repo.h"
 #include "third_party/protobuf/src/google/protobuf/descriptor.h"
 
 namespace host {
 class RepoModel;
-class Repo;
 class ShareDatabase;
 class RepoManagerObserver;
+class Workspace;
 
-class RepoManager {
+class RepoManager : public ResourceManager {
 public:
-  RepoManager();
-  ~RepoManager();
+  RepoManager(scoped_refptr<Workspace> workspace);
+  ~RepoManager() override;
 
   RepoModel* model() const {
     return repos_.get();
@@ -53,6 +55,26 @@ public:
   void AddObserver(RepoManagerObserver* observer);
   void RemoveObserver(RepoManagerObserver* observer);
 
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return RepoExistsById(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return RepoExistsByName(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return GetRepoById(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return GetRepoByName(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
+
 private:
 
   void InitImpl();
@@ -64,6 +86,7 @@ private:
   void NotifyRepoRemoved(Repo* repo);
   void NotifyReposLoad(int r, int count);
 
+  scoped_refptr<Workspace> workspace_;
   std::unique_ptr<RepoModel> repos_;
   std::vector<RepoManagerObserver*> observers_;
 

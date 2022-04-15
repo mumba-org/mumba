@@ -31,6 +31,7 @@
 #include "core/host/service_worker/service_worker_type.h"
 #include "core/host/shared_worker/shared_worker_service_impl.h"
 #include "core/host/share/share_observer.h"
+#include "core/host/data/resource.h"
 #include "core/host/url_loader_factory_getter.h"
 #include "core/host/ui/dock.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -88,8 +89,8 @@ class Bundle;
 // A managed domain
 
 class Domain : public DomainProcessHost::Observer,
-               public ShareObserver,
-               public Serializable {
+               public Resource,
+               public ShareObserver {
 public:
   class Observer {
   public:
@@ -108,11 +109,11 @@ public:
 
   ~Domain() override;
 
-  const std::string& name() const {
+  const std::string& name() const override {
     return domain_proto_.name();
   }
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
@@ -223,7 +224,7 @@ public:
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
 
   // managed = persisted on DB
-  bool IsManaged() const {
+  bool is_managed() const override {
     return managed_;
   }
 

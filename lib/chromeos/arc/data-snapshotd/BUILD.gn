@@ -1,0 +1,162 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//common-mk/generate-dbus-adaptors.gni")
+import("//common-mk/pkg_config.gni")
+import("//common-mk/proto_library.gni")
+
+group("all") {
+  deps = [
+    ":arc-data-snapshotd",
+    ":arc-data-snapshotd-worker",
+  ]
+  if (use.test) {
+    deps += [
+      ":arc-data-snapshotd-worker_test",
+      ":arc-data-snapshotd_test",
+    ]
+  }
+}
+
+pkg_config("common_pkg_deps") {
+  defines = [ "USE_SELINUX=${use.selinux}" ]
+
+  # NOSORT
+  pkg_deps = [
+    "libbootlockbox-client",
+    "libbrillo",
+    "libchrome",
+    "libselinux",
+    "openssl",
+
+    # system_api depends on protobuf (or protobuf-lite). It must appear
+    # before protobuf here or the linker flags won't be in the right
+    # order.
+    "system_api",
+    "protobuf",
+  ]
+  if (use.selinux) {
+    pkg_deps += [ "libselinux" ]
+  }
+}
+
+# Generates proto definitions.
+proto_library("arc-data-snapshotd-protos") {
+  sources = [ "proto/directory.proto" ]
+  proto_in_dir = "proto/"
+  proto_out_dir = "include/proto"
+  standalone = true
+}
+
+source_set("libarc-data-snapshotd") {
+  sources = [
+    "block_ui_controller.cc",
+    "dbus_adaptor.cc",
+    "esc_key_watcher.cc",
+    "file_utils.cc",
+    "upstart_client.cc",
+    "worker_bridge.cc",
+    "worker_client.cc",
+  ]
+  configs += [ ":common_pkg_deps" ]
+  deps = [ ":arc-data-snapshotd-protos" ]
+}
+
+generate_dbus_adaptors("data_snapshotd_adaptors") {
+  sources = [ "dbus_bindings/org.chromium.ArcDataSnapshotd.xml" ]
+  dbus_service_config = "dbus_bindings/dbus-service-config.json"
+  dbus_adaptors_out_dir = "include/dbus_adaptors"
+}
+
+generate_dbus_adaptors("data_snapshotd_worker_adaptors") {
+  sources = [ "worker/dbus_bindings/org.chromium.ArcDataSnapshotdWorker.xml" ]
+  dbus_service_config = "worker/dbus_bindings/dbus-service-config.json"
+  dbus_adaptors_out_dir = "include/dbus_adaptors"
+}
+
+executable("arc-data-snapshotd") {
+  sources = [
+    "daemon.cc",
+    "main.cc",
+  ]
+  configs += [ ":common_pkg_deps" ]
+  deps = [
+    ":data_snapshotd_adaptors",
+    ":libarc-data-snapshotd",
+  ]
+}
+
+source_set("libarc-data-snapshotd-worker") {
+  sources = [
+    "file_utils.cc",
+    "worker/dbus_adaptor.cc",
+  ]
+  configs += [ ":common_pkg_deps" ]
+  deps = [
+    ":arc-data-snapshotd-protos",
+    ":data_snapshotd_worker_adaptors",
+  ]
+}
+
+executable("arc-data-snapshotd-worker") {
+  sources = [
+    "worker/daemon.cc",
+    "worker/main.cc",
+  ]
+  configs += [ ":common_pkg_deps" ]
+  deps = [
+    ":data_snapshotd_worker_adaptors",
+    ":libarc-data-snapshotd-worker",
+  ]
+}
+
+if (use.test) {
+  pkg_config("test_pkg_deps") {
+    # NOSORT
+    pkg_deps = [
+      "libbootlockbox-client",
+      "libbrillo",
+      "libchrome",
+      "libchrome-test",
+
+      # system_api depends on protobuf (or protobuf-lite). It must appear
+      # before protobuf here or the linker flags won't be in the right
+      # order.
+      "system_api",
+      "protobuf",
+    ]
+  }
+  executable("arc-data-snapshotd_test") {
+    sources = [
+      "block_ui_controller_test.cc",
+      "dbus_adaptor_test.cc",
+      "esc_key_watcher_test.cc",
+      "fake_process_launcher.cc",
+      "upstart_client_test.cc",
+      "worker_bridge_test.cc",
+      "worker_client_test.cc",
+    ]
+    configs += [
+      ":test_pkg_deps",
+      "//common-mk:test",
+    ]
+    deps = [
+      ":data_snapshotd_adaptors",
+      ":libarc-data-snapshotd",
+      "//common-mk/testrunner:testrunner",
+    ]
+  }
+  executable("arc-data-snapshotd-worker_test") {
+    sources = [ "worker/dbus_adaptor_test.cc" ]
+    configs += [
+      ":test_pkg_deps",
+      "//common-mk:test",
+    ]
+    deps = [
+      ":data_snapshotd_worker_adaptors",
+      ":libarc-data-snapshotd-worker",
+      "//common-mk/testrunner:testrunner",
+    ]
+  }
+}

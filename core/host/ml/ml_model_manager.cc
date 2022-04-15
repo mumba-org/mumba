@@ -23,6 +23,16 @@ bool MLModelManager::HaveModel(const std::string& model_name) {
   return models_.find(model_name) != models_.end();
 }
 
+bool MLModelManager::HaveModel(const base::UUID& id) {
+  base::AutoLock lock(model_lock_);
+  for (auto it = models_.begin(); it != models_.end(); ++it) {
+    if (it->second->id() == id) {
+      return true;
+    }  
+  }
+  return false;
+}
+
 void MLModelManager::AddModel(std::unique_ptr<MLModel> model) {
   base::AutoLock lock(model_lock_);
   const std::string& model_name = model->model_name(); 
@@ -34,6 +44,16 @@ MLModel* MLModelManager::GetModel(const std::string& model_name) {
   auto it = models_.find(model_name);
   if (it != models_.end()) {
     return it->second.get();
+  }
+  return nullptr;
+}
+
+MLModel* MLModelManager::GetModel(const base::UUID& id) {
+  base::AutoLock lock(model_lock_);
+  for (auto it = models_.begin(); it != models_.end(); ++it) {
+    if (it->second->id() == id) {
+      return it->second.get();
+    }  
   }
   return nullptr;
 }
@@ -99,6 +119,18 @@ void MLModelManager::CopyModelFileImpl(const base::FilePath& input_path) {
   }
   bool copied = base::CopyFile(input_path, models_path_);
   DCHECK(copied);
+}
+
+const google::protobuf::Descriptor* MLModelManager::resource_descriptor() {
+  //Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  //DCHECK(schema);
+  //return schema->GetMessageDescriptorNamed("MLModel");
+  // FIXME
+  return nullptr;
+}
+
+std::string MLModelManager::resource_classname() const {
+  return "ml_model";
 }
 
 }

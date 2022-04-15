@@ -158,6 +158,15 @@ Channel* ChannelModel::GetChannel(const std::string& scheme, const std::string& 
   return nullptr; 
 }
 
+Channel* ChannelModel::GetChannelByName(const std::string& name) {
+  for (auto it = channels_.begin(); it != channels_.end(); ++it) {
+    if ((*it)->name() == name) {
+      return it->get();
+    }
+  }
+  return nullptr; 
+}
+
 Channel* ChannelModel::GetChannelById(const base::UUID& id) {
   for (auto it = channels_.begin(); it != channels_.end(); ++it) {
     if ((*it)->id() == id) {
@@ -183,6 +192,15 @@ bool ChannelModel::ChannelExists(Channel* channel) const {
 bool ChannelModel::ChannelExists(const std::string& scheme, const std::string& name) const {
   for (auto it = channels_.begin(); it != channels_.end(); ++it) {
     if ((*it)->scheme() == scheme && (*it)->name() == name) {
+      return true;
+    }
+  }
+  return false; 
+}
+
+bool ChannelModel::ChannelExists(const std::string& name) const {
+  for (auto it = channels_.begin(); it != channels_.end(); ++it) {
+    if ((*it)->name() == name) {
       return true;
     }
   }

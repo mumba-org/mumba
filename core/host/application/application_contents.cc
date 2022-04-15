@@ -840,7 +840,7 @@ const std::string& ApplicationContents::GetApplicationName() const {
 }
 
 const base::UUID& ApplicationContents::GetApplicationUUID() const {
-  return application_->uuid();
+  return application_->id();
 }
 
 const std::string& ApplicationContents::GetPageName() const {

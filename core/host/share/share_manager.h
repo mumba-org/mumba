@@ -15,9 +15,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/single_thread_task_runner.h"
 #include "base/uuid.h"
+#include "core/host/data/resource.h"
 #include "core/host/database_policy.h"
 #include "storage/storage.h"
 #include "storage/storage_manager.h"
+#include "core/host/share/share.h"
 #include "third_party/protobuf/src/google/protobuf/descriptor.h"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wsign-compare"
@@ -35,9 +37,9 @@ class Torrent;
 
 namespace host {
 class ShareModel;
-class Share;
+class Workspace;
 
-class ShareManager {
+class ShareManager : public ResourceManager {
 public:
   class Observer {
   public:
@@ -46,8 +48,8 @@ public:
     virtual void OnShareAdded(Share* share) {}
     virtual void OnShareRemoved(Share* share) {}
   };
-  ShareManager(storage::StorageManager* storage_manager);
-  ~ShareManager();
+  ShareManager(scoped_refptr<Workspace> workspace, storage::StorageManager* storage_manager);
+  ~ShareManager() override;
 
   ShareModel* model() const {
     return shares_.get();
@@ -70,11 +72,11 @@ public:
   bool HasUUID(const std::string& name, const base::UUID& uuid);
   bool GetUUID(const std::string& storage_name, const std::string& uuid_str, base::UUID* id);
   void CloneStorageWithDHTAddress(const std::string& dht_address_bytes, base::Callback<void(int)> callback);
-  Share* CreateDatabaseShare(const std::string& domain, const std::vector<std::string>& keyspaces, bool in_memory = false);
-  Share* CreateDatabaseShare(const std::string& domain, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory = false);
-  Share* CreateShare(scoped_refptr<storage::Torrent> torrent, bool in_memory = false);
-  Share* CreateShare(const std::string& domain, storage_proto::InfoKind type, const std::string& name, std::vector<std::string> keyspaces = std::vector<std::string>(), base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), bool in_memory = false);
-  Share* CreateShare(const std::string& domain, storage_proto::InfoKind type, const base::UUID& id, const std::string& name, std::vector<std::string> keyspaces = std::vector<std::string>(), base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), bool in_memory = false);
+  Share* CreateDatabaseShare(const std::string& domain, const std::vector<std::string>& keyspaces, bool in_memory);
+  Share* CreateDatabaseShare(const std::string& domain, const std::string& name, const std::vector<std::string>& keyspaces, bool in_memory);
+  Share* CreateShare(scoped_refptr<storage::Torrent> torrent, bool in_memory);
+  Share* CreateShare(const std::string& domain, storage_proto::InfoKind type, const std::string& name, std::vector<std::string> keyspaces, bool in_memory, base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>());
+  Share* CreateShare(const std::string& domain, storage_proto::InfoKind type, const base::UUID& id, const std::string& name, std::vector<std::string> keyspaces, bool in_memory, base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>());
   Share* CreateShare(const std::string& domain, 
                      storage_proto::InfoKind type, 
                      const base::UUID& id, 
@@ -82,12 +84,16 @@ public:
                      const std::vector<std::string>& create_statements, 
                      const std::vector<std::string>& insert_statements, 
                      bool key_value,
-                     base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), 
-                     bool in_memory = false);
+                     bool in_memory,
+                     base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>());
   Share* CreateShareWithInfohash(const std::string& domain, storage_proto::InfoKind type, const base::UUID& id, const std::string& name, const std::string& infohash, base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>(), bool in_memory = false);
+  bool ShareExists(Share* share) const;
+  bool ShareExists(const std::string& name) const;
+  bool ShareExists(const base::UUID& id) const;
   Share* GetShare(const base::UUID& uuid);
   Share* GetShare(const std::string& domain, const base::UUID& uuid);
   Share* GetShare(const std::string& domain, const std::string& name);
+  Share* GetShare(const std::string& name);
   Share* OpenShare(const std::string& domain, const base::UUID& id, base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>());
   Share* OpenShare(const std::string& domain, const std::string& name, base::Callback<void(int64_t)> cb = base::Callback<void(int64_t)>());
   void InsertShare(std::unique_ptr<Share> share);
@@ -106,6 +112,26 @@ public:
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return ShareExists(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return ShareExists(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return GetShare(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return GetShare(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
+
 private:
 
   Share* CreateShareInternal(scoped_refptr<storage::Torrent> torrent, const std::string& domain_name, const std::vector<std::string>& keyspaces, bool in_memory);
@@ -121,6 +147,7 @@ private:
   void NotifyShareRemoved(Share* share);
   void NotifySharesLoad(int r, int count);
 
+  scoped_refptr<Workspace> workspace_;
   storage::StorageManager* storage_manager_;
   std::unique_ptr<ShareModel> shares_;
   std::vector<Observer*> observers_;

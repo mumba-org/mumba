@@ -70,6 +70,8 @@
 #include "core/host/ml/ml_model.h"
 #include "core/host/ml/ml_model_manager.h"
 #include "core/host/ml/ml_service_manager.h"
+#include "core/host/vm/vm_manager.h"
+#include "core/host/vm/vm_controller.h"
 #include "core/host/api/api_dispatcher.h"
 #include "core/host/api/api_manager.h"
 #include "core/host/bundle/bundle_manager.h"
@@ -86,6 +88,7 @@
 #include "mumba/app/resources/grit/content_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "core/host/workspace/workspace_service_dispatcher.h"
+#include "core/host/data/system_tables.h"
 #include "core/host/repo/repo_manager.h"
 #if defined(OS_WIN)
 #undef uuid_t
@@ -118,6 +121,8 @@ std::vector<std::string> GetSystemKeyspaces() {
 void OnBundleApplicationInstalledFromVolume(int result) {}
 
 }
+
+char Workspace::kClassName[] = "workspace";
 
 scoped_refptr<Workspace> Workspace::GetCurrent() {
   scoped_refptr<HostController> controller = HostController::Instance();
@@ -201,7 +206,7 @@ bool Workspace::Init(const WorkspaceParams& params,
   domain_manager_.reset(new DomainManager(this, controller));
   bundle_manager_.reset(new BundleManager(this));
   volume_manager_.reset(new VolumeManager(this));
-  identity_manager_.reset(new IdentityManager());
+  identity_manager_.reset(new IdentityManager(this));
   rpc_manager_.reset(new RpcManager(this));
   schema_registry_.reset(new SchemaRegistry());
   storage_manager_.reset(new storage::StorageManager(real_path));
@@ -212,10 +217,10 @@ bool Workspace::Init(const WorkspaceParams& params,
     this,
     params.admin_service_host,
     params.admin_service_port));
-  repo_manager_.reset(new RepoManager());
+  repo_manager_.reset(new RepoManager(this));
   repo_registry_.reset(new RepoRegistry(this, repo_manager_.get()));
-  channel_manager_.reset(new ChannelManager());
-  device_manager_.reset(new DeviceManager());
+  channel_manager_.reset(new ChannelManager(this));
+  device_manager_.reset(new DeviceManager(this));
 
   application_controller_.reset(new ApplicationController(this));
 
@@ -224,9 +229,9 @@ bool Workspace::Init(const WorkspaceParams& params,
   ml_model_service_dispatcher_.reset(new MLModelServiceDispatcher(ml_model_manager_.get()));
   ml_prediction_service_dispatcher_.reset(new MLPredictionServiceDispatcher(ml_model_manager_.get(), ml_service_manager_.get()));
   ml_controller_.reset(new MLController(ml_model_manager_.get(), ml_service_manager_.get()));
-  runnable_manager_.reset(new RunnableManager());
+  runnable_manager_.reset(new RunnableManager(this));
 
-  share_manager_.reset(new ShareManager(volume_storage()->storage_manager()));
+  share_manager_.reset(new ShareManager(this, volume_storage()->storage_manager()));
   share_registry_.reset(new ShareRegistry(this, share_manager_.get()));
 
   api_manager_.reset(new APIManager());
@@ -234,7 +239,12 @@ bool Workspace::Init(const WorkspaceParams& params,
   market_manager_.reset(new MarketManager());
   market_dispatcher_.reset(new MarketDispatcher());
 
-  collection_.reset(new Collection());
+  system_tables_.reset(new SystemTables());
+
+  vm_manager_.reset(new VMManager());
+  vm_controller_.reset(new VMController());
+
+  collection_.reset(new Collection(this));
   collection_dispatcher_.reset(new CollectionDispatcher(this, collection_.get()));
 
   domain_manager_->AddObserver(this);
@@ -335,6 +345,10 @@ const base::FilePath& Workspace::root_path() const {
 
 VolumeStorage* Workspace::volume_storage() {
   return storage_->volume_storage(); 
+}
+
+AppStorage* Workspace::app_storage() {
+  return storage_->app_storage(); 
 }
 
 bool Workspace::HasDomain(const std::string& name) const {
@@ -977,7 +991,7 @@ scoped_refptr<ShareDatabase> Workspace::GetDatabase(const base::UUID& uuid) {
     return share->db();
   }
   scoped_refptr<storage::Torrent> torrent = storage_manager_->torrent_manager()->GetTorrent(uuid);
-  share = share_manager_->CreateShare(torrent);
+  share = share_manager_->CreateShare(torrent, false);
   return share->db();
 }
 
@@ -991,13 +1005,13 @@ scoped_refptr<ShareDatabase> Workspace::GetDatabase(const std::string& name) {
   // the share manager owns the share, so is safe to pass the share database
   // as parent object lifetime is garanteed 
   scoped_refptr<storage::Torrent> torrent = storage_manager_->GetTorrent(workspace_storage()->workspace_disk_name(), name);
-  share = share_manager_->CreateShare(torrent);
+  share = share_manager_->CreateShare(torrent, false);
   return share->db(); 
 }
 
 scoped_refptr<ShareDatabase> Workspace::CreateDatabase(const std::string& name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb) {
   scoped_refptr<storage::Torrent> torrent = CreateTorrent(workspace_storage()->workspace_disk_name(), storage_proto::INFO_KVDB, name, keyspaces, std::move(cb));
-  Share* share = share_manager_->CreateShare(torrent);
+  Share* share = share_manager_->CreateShare(torrent, false);
   return share->db();
 }
 
@@ -1008,7 +1022,7 @@ scoped_refptr<ShareDatabase> Workspace::OpenDatabase(const base::UUID& uuid, bas
     return share->db();
   }
   scoped_refptr<storage::Torrent> torrent = OpenTorrent(workspace_storage()->workspace_disk_name(), uuid, std::move(cb));
-  share = share_manager_->CreateShare(torrent);
+  share = share_manager_->CreateShare(torrent, false);
   return share->db();
 }
 
@@ -1019,7 +1033,7 @@ scoped_refptr<ShareDatabase> Workspace::OpenDatabase(const std::string& name, ba
     return share->db();
   }
   scoped_refptr<storage::Torrent> torrent = OpenTorrent(workspace_storage()->workspace_disk_name(), name, std::move(cb));
-  share = share_manager_->CreateShare(torrent);
+  share = share_manager_->CreateShare(torrent, false);
   return share->db();
 }
 
@@ -1204,6 +1218,7 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
   // we can just provide the database api, but with the awareness of some sync logic
   // (example: if its using open/close and two concurrent threads try to open the db handle
   //  at the same time.. we need to process one and delay the other.. its the same on close)
+
   scoped_refptr<storage::Torrent> system_db_torrent = storage_manager_->torrent_manager()->GetTorrent(id);
   DCHECK(system_db_torrent);
   // create the share that wraps the system torrent
@@ -1226,6 +1241,9 @@ void Workspace::InitializeDatabases(IOThread* io_thread, const base::UUID& id, D
   channel_manager_->Init(system_db, db_policy_);
   share_manager_->Init(std::move(system_share), db_policy_);
   collection_->Init(system_db, db_policy_);
+  vm_manager_->Init(this, system_db);
+  system_tables_->Init(system_db->db());
+
   //Share* system_graph = share_manager_->CreateShare(storage_->workspace_disk_name(), "system_graph", true /* in_memory*/);
   //scoped_refptr<ShareDatabase> system_graph_db = system_graph->db();
   //DCHECK(system_graph_db);

@@ -11,6 +11,7 @@
 #include "base/uuid.h"
 #include "core/common/proto/objects.pb.h"
 #include "core/host/serializable.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 class CredentialKey;
@@ -33,7 +34,7 @@ enum class SessionType {
    kSESSION_TYPE_APPLICATION = 1,
 };
 
-class Session : public Serializable {
+class Session : public Resource {
 public:
   static char kClassName[];
   static std::unique_ptr<Session> Deserialize(net::IOBuffer* buffer, int size);
@@ -48,8 +49,16 @@ public:
   // associated key -> from credential
   CredentialKey* credential_key() const;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
+  }
+
+  const std::string& name() const override {
+    return id_.to_string();
+  }
+
+  bool is_managed() const override {
+    return false;
   }
 
   SessionType type() const {

@@ -1,0 +1,43 @@
+// Copyright 2020 The Chromium OS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+syntax = "proto3";
+
+package arc.data_snapshotd;
+
+// Holds all files in snapshot directory.
+message SnapshotDirectory {
+  // Lexicographically sorted files by name.
+  repeated SnapshotFile files = 1;
+}
+
+// Holds file information required for integrity.
+message SnapshotFile {
+  // File name.
+  string name = 1;
+  // Selinux context from getfilecon().
+  bytes selinux_context = 2;
+  // File statistics from stat().
+  Stat stat = 3;
+  // SHA256 hash of file content.
+  bytes content_hash = 5;
+}
+
+// Holds information from stat() required to ensure integrity.
+message Stat {
+  // Inode number.
+  uint64 ino = 1;
+  // Protection mode.
+  uint32 mode = 2;
+  // User ID of owner.
+  uint32 uid = 3;
+  // Group ID of owner.
+  uint32 gid = 4;
+  // Total size in bytes.
+  int64 size = 5;
+  // Time of last modification.
+  int64 modification_time = 6;
+  // Do not add time of last access & change, because these values change
+  // when the file is open or copied.
+}

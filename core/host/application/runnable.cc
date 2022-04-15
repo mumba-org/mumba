@@ -9,6 +9,9 @@
 
 namespace host {
 
+//static 
+char Runnable::kClassName[] = "runnable";  
+
 Runnable::Runnable(
   RunnableManager* manager, 
   Domain* domain,
@@ -41,11 +44,11 @@ Runnable::~Runnable() {
 
 }
 
-int Runnable::id() const {
+int Runnable::rid() const {
   return proto_.id();
 }
 
-const base::UUID& Runnable::uuid() const {
+const base::UUID& Runnable::id() const {
   return uuid_;
 }
   

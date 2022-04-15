@@ -1,0 +1,278 @@
+# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+#import("//common-mk/pkg_config.gni")
+
+group("host") {
+  deps = [
+    ":cicerone_client",
+    ":concierge_client",
+    ":maitred_client",
+    ":seneschal",
+    ":seneschal_client",
+    ":vm_cicerone",
+    ":vm_concierge",
+    ":vmlog_forwarder",
+    ":vsh",
+    #"//lib/chromeos/sirenia/manatee-client:libmanatee-client-headers",
+    "//lib/chromeos/vm_tools:vshd",
+  ]
+  #if (use.arcvm) {
+    deps += [ ":vm_pstore_dump" ]
+  #}
+}
+
+#pkg_config("host_target_defaults_pkgs") {
+#  pkg_deps = [
+#    "libbrillo",
+#    "libchrome",
+#    "libpatchpanel-client",
+#    "libpatchpanel-util",
+#  ]
+#}
+
+config("host_target_defaults") {
+  #configs = [ ":host_target_defaults_pkgs" ]
+  defines = [
+    #"USE_CROSVM_VIRTIO_VIDEO=${use.crosvm_virtio_video}",
+    #"USE_CROSVM_VULKAN=${use.vulkan}",
+    #"USE_BIG_GL=${use.libglvnd}",
+    #"USE_CROSVM_SIBLINGS=${use.crosvm_siblings}",
+
+    "USE_CROSVM_VIRTIO_VIDEO=1",
+    "USE_CROSVM_VULKAN=1",
+    "USE_BIG_GL=1",
+    "USE_CROSVM_SIBLINGS=0",
+  ]
+  if (current_cpu == "x64") {
+    defines += [
+      "USE_PMEM_DEVICE_FOR_ROOTFS=1",
+    ]
+  } else {
+    defines += [
+      "USE_PMEM_DEVICE_FOR_ROOTFS=0",
+    ]
+  }
+}
+
+executable("maitred_client") {
+  sources = [ "../maitred/client.cc" ]
+  configs += [ ":host_target_defaults" ]
+  libs = [ "grpc" ]
+  #pkg_deps = [
+  #  "grpc++",
+  #  "protobuf",
+  #  "vm_protos",
+  #]
+}
+
+static_library("libforwarder") {
+  sources = [
+    "../syslog/collector.cc",
+    "../syslog/forwarder.cc",
+    "../syslog/host_collector.cc",
+    "../syslog/log_pipe.cc",
+    "../syslog/parser.cc",
+    "../syslog/rotator.cc",
+    "../syslog/scrubber.cc",
+  ]
+  configs += [ ":host_target_defaults" ]
+  #all_dependent_pkg_deps = [
+  #  "grpc++",
+  #  "protobuf",
+  #  "system_api",
+  #  "vm_protos",
+  #]
+}
+
+executable("vmlog_forwarder") {
+  sources = [ "../syslog/host_server.cc" ]
+  configs += [ ":host_target_defaults" ]
+  deps = [
+    ":libforwarder",
+    #"//lib/chromeos/vm_tools:libvm_tools_common",
+  ]
+}
+
+static_library("libvsh-client") {
+  sources = [
+    "../vsh/scoped_termios.cc",
+    "../vsh/vsh_client.cc",
+  ]
+  configs += [ ":host_target_defaults" ]
+  #pkg_deps = [
+  #  "system_api",
+  #  "vm_protos",
+  #]
+  deps = [ "//lib/chromeos/vm_tools:libvsh" ]
+  #all_dependent_pkg_deps = [ "vm_protos", "protobuf" ]
+}
+
+executable("vsh") {
+  sources = [ "../vsh/vsh.cc" ]
+  configs += [ ":host_target_defaults" ]
+  #pkg_deps = [
+  #  "system_api",
+  #  "vm_protos",
+  #]
+  deps = [ ":libvsh-client" ]
+}
+
+static_library("libconcierge") {
+  sources = [
+    "../concierge/arc_vm.cc",
+    "../concierge/balloon_policy.cc",
+    "../concierge/disk_image.cc",
+    "../concierge/dlc_helper.cc",
+    "../concierge/manatee_memory_service.cc",
+    "../concierge/plugin_vm.cc",
+    "../concierge/plugin_vm_helper.cc",
+    "../concierge/power_manager_client.cc",
+    "../concierge/seneschal_server_proxy.cc",
+    "../concierge/service.cc",
+    "../concierge/service_arc.cc",
+    "../concierge/service_plugin.cc",
+    "../concierge/shared_data.cc",
+    "../concierge/shill_client.cc",
+    "../concierge/ssh_keys.cc",
+    "../concierge/startup_listener_impl.cc",
+    "../concierge/tap_device_builder.cc",
+    "../concierge/termina_vm.cc",
+    "../concierge/untrusted_vm_utils.cc",
+    "../concierge/vm_base_impl.cc",
+    "../concierge/vm_builder.cc",
+    "../concierge/vm_launch_interface.cc",
+    "../concierge/vm_permission_interface.cc",
+    "../concierge/vm_util.cc",
+    "../concierge/vmplugin_dispatcher_interface.cc",
+    "../concierge/vsock_cid_pool.cc",
+  ]
+  configs += [ ":host_target_defaults" ]
+  libs = [ "grpc" ]
+  #all_dependent_pkg_deps = [
+  #  "grpc++",
+  #  "libarchive",
+  #  "libdlcservice-client",
+  #  "libminijail",
+  #  "libqcow_utils",
+  #  "libshill-client",
+  #  "protobuf",
+  #  "system_api",
+  #  "vboot_host",
+  #  "vm_protos",
+  #]
+  include_dirs = [
+    "//lib/chromeos"
+  ]
+  public_configs = [ "//build/config/linux/dbus" ]
+
+  # TODO(crbug.com/1082873): Remove after fixing usage of deprecated
+  # declarations.
+  cflags_cc = [ "-Wno-error=deprecated-declarations" ]
+  #deps = [ "//featured:libfeatures" ]
+  deps = [
+    "//lib/dbus"
+  ]
+}
+
+executable("vm_concierge") {
+  sources = [ "../concierge/main.cc" ]
+  configs += [ ":host_target_defaults" ]
+  deps = [
+    ":libconcierge",
+    "//lib/chromeos/vm_tools:libvm_tools_common",
+  ]
+}
+
+executable("concierge_client") {
+  sources = [ "../concierge/client.cc" ]
+  configs += [ ":host_target_defaults" ]
+  deps = [ "//lib/chromeos/vm_tools:libvm_tools_common" ]
+  #pkg_deps = [
+  #  "libqcow_utils",
+  #  "protobuf",
+  #  "system_api",
+  #  "vboot_host",
+  #]
+}
+
+static_library("libcicerone") {
+  sources = [
+    "../cicerone/container.cc",
+    "../cicerone/container_listener_impl.cc",
+    "../cicerone/crash_listener_impl.cc",
+    "../cicerone/service.cc",
+    "../cicerone/shill_client.cc",
+    "../cicerone/tremplin_listener_impl.cc",
+    "../cicerone/virtual_machine.cc",
+  ]
+  configs += [ ":host_target_defaults" ]
+  libs = [ "grpc" ]
+  #all_dependent_pkg_deps = [
+  #  "grpc++",
+  #  "libmetrics",
+  #  "libshill-client",
+  #  "protobuf",
+  #  "system_api",
+  #  "vm_protos",
+  #]
+}
+
+executable("vm_cicerone") {
+  sources = [ "../cicerone/main.cc" ]
+  configs += [ ":host_target_defaults" ]
+  deps = [ ":libcicerone" ]
+}
+
+executable("cicerone_client") {
+  sources = [ "../cicerone/client.cc" ]
+  configs += [ ":host_target_defaults" ]
+  #pkg_deps = [
+  #  "protobuf",
+  #  "system_api",
+  #]
+
+  # TODO(crbug.com/1082873): Remove after fixing usage of deprecated
+  # declarations.
+  cflags_cc = [ "-Wno-error=deprecated-declarations" ]
+}
+
+#if (use.arcvm) {
+  static_library("libvm_pstore_dump") {
+    sources = [ "../pstore_dump/persistent_ram_buffer.cc" ]
+    configs += [ ":host_target_defaults" ]
+    deps = [ "//lib/chromeos/vm_tools:libvm_tools_common" ]
+  }
+
+  executable("vm_pstore_dump") {
+    sources = [ "../pstore_dump/main.cc" ]
+    configs += [ ":host_target_defaults" ]
+    deps = [ ":libvm_pstore_dump" ]
+  }
+#}
+
+static_library("libseneschal") {
+  sources = [ "../seneschal/service.cc" ]
+  configs += [ ":host_target_defaults" ]
+  #all_dependent_pkg_deps = [
+  #  "libminijail",
+  #  "protobuf",
+  #  "system_api",
+  #]
+}
+
+executable("seneschal") {
+  sources = [ "../seneschal/main.cc" ]
+  configs += [ ":host_target_defaults" ]
+  deps = [ ":libseneschal" ]
+}
+
+executable("seneschal_client") {
+  sources = [ "../seneschal/client.cc" ]
+  configs += [ ":host_target_defaults" ]
+  #pkg_deps = [
+  #  "protobuf",
+  #  "system_api",
+  #]
+}

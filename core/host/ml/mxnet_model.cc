@@ -14,6 +14,7 @@
 namespace host {
 
 MXNetModel::MXNetModel(const std::string& model_name, const base::FilePath& model_path):
+ uuid_(base::UUID::generate()), 
  model_name_(model_name),
  model_path_(model_path),
  //global_ctx_(mxnet::cpp::Context::cpu()),

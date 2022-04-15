@@ -40,6 +40,7 @@
 #include "core/host/volume/volume_manager.h"
 #include "storage/proto/storage.pb.h"
 #include "core/host/ui/dock_list_observer.h"
+#include "core/host/data/resource.h"
 #include "core/host/ui/tablist/tablist_model_observer.h"
 
 namespace storage {
@@ -84,6 +85,9 @@ class BundleManager;
 class Bundle;
 class CollectionDispatcher;
 class Collection;
+class VMManager;
+class VMController;
+class SystemTables;
 
 struct WorkspaceParams {
   base::FilePath profile_path;
@@ -92,7 +96,7 @@ struct WorkspaceParams {
   int admin_service_port = 27761;
 };
 
-class Workspace : public Serializable,
+class Workspace : public Resource,
                   public VolumeManager::Delegate,
                   public DomainManager::Observer,
                   public DeviceManager::Observer,
@@ -113,16 +117,25 @@ public:
   // creating the disk first and then 'bootstraping' the 
   // workspace from there
 
+  static char kClassName[];
+
   static scoped_refptr<Workspace> New(const std::string& name);
   static scoped_refptr<Workspace> GetCurrent();
   static scoped_refptr<Workspace> Deserialize(net::IOBuffer* buffer, int size);
   
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
-  const std::string& name() const {
+  const std::string& name() const override {
     return workspace_schema_.name();
+  }
+
+  // for now workspaces are not indexed in databases.. we instantiate them
+  // from their directories on the filesystem
+
+  bool is_managed() const override {
+    return false;
   }
 
   bool is_current() const {
@@ -255,6 +268,14 @@ public:
     return collection_dispatcher_.get();
   }
 
+  VMManager* vm_manager() const {
+    return vm_manager_.get();
+  }
+
+  VMController* vm_controller() const {
+    return vm_controller_.get(); 
+  }
+
   int generate_next_application_id();
 
   void set_theme_service(std::unique_ptr<ThemeService> service) {
@@ -285,6 +306,10 @@ public:
   const base::FilePath& tmp_dir() const;
   IOThread* io_thread() const {
     return io_thread_;
+  }
+
+  SystemTables* system_tables() const {
+    return system_tables_.get();
   }
 
   bool Init(
@@ -435,6 +460,9 @@ public:
     observers_.RemoveObserver(observer);
   }
 
+  void OnVolumeManagerInitError() override;
+  void OnVolumeManagerInitCompleted() override;
+
 private:
   friend class RpcManager;
   friend class base::RefCountedThreadSafe<Workspace>;
@@ -443,9 +471,6 @@ private:
   Workspace(const std::string& name);
 
   ~Workspace() override;
-
-  void OnVolumeManagerInitError() override;
-  void OnVolumeManagerInitCompleted() override;
 
   void OnRpcServiceStarted(HostRpcService* service);
   void OnRpcServiceStopped(HostRpcService* service);
@@ -660,6 +685,9 @@ private:
   std::unique_ptr<BundleManager> bundle_manager_;
   std::unique_ptr<Collection> collection_;
   std::unique_ptr<CollectionDispatcher> collection_dispatcher_;
+  std::unique_ptr<SystemTables> system_tables_;
+  std::unique_ptr<VMManager> vm_manager_;
+  std::unique_ptr<VMController> vm_controller_;
    
   scoped_refptr<base::SingleThreadTaskRunner> domain_socket_acceptor_;
   

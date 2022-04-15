@@ -52,6 +52,7 @@ Share::Share(ShareManager* manager, const std::string& domain, scoped_refptr<sto
   db_(nullptr),
   keyspaces_(keyspaces),
   in_memory_(in_memory) {
+  DCHECK(torrent);
   torrent_->AddObserver(this);
   LoadInfoFromTorrent();
 }
@@ -212,9 +213,7 @@ std::string Share::public_key_hex() const {
 }
 
 scoped_refptr<ShareDatabase> Share::db() {
-  if (!db_ && in_memory_) {
-    db_ = ShareDatabase::CreateMemory(this, keyspaces_, true /* key-value */);
-  } else if (!db_ && torrent_->is_data()) {  
+  if (!db_ && torrent_->is_data()) {  
     db_ = new ShareDatabase(this, torrent_->db_ref(), in_memory_);
   }
   DCHECK(db_);

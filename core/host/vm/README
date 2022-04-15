@@ -1,0 +1,22 @@
+Following the two-process architecture of mumba where one of it is a daemon
+this container host is actually a dispatcher that negotiate oci-container
+ipc messages with the domain process.
+
+The domain process in turn loads a lxc/crun or kvm api + bookeeping code (container control)
+to manage the containers, which are launched as application processes
+just as the normal UI ones
+
+---
+
+vanilla linux, ARC, browser, KVM - this container kit should be able to launch containers
+with vanilla linux, android, chrome and VM containers
+
+Giving they are containers but they have distinct flavors is expected that we design a IPC
+api to each one of them so that the host can control them in a more fine-grained manner
+according to their flavor
+
+So the container IPC api will have a generic control api for managing and launching them
+but each container process might have distinct api's according to their "flavors"
+
+for instance a browser container instance can have a browser api, automation together
+with the vanilla linux api that all the three of them have

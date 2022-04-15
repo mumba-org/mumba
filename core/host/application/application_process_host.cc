@@ -470,7 +470,7 @@ ApplicationProcessHost::ApplicationProcessHost(base::WeakPtr<Application> applic
   application_->AttachProcess(this);
   domain_ = application_->domain();
   application_name_ = application_->name();
-  application_uuid_ = application_->uuid();
+  application_uuid_ = application_->id();
   application_url_ = application_->initial_url();
   application_driver_ = application_->application_driver();
   

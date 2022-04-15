@@ -854,6 +854,22 @@ bool RouteRegistry::HasScheme(const std::string& scheme_name) {
   return model_.HasScheme(scheme_name);
 }
 
+bool RouteRegistry::HaveRouteByName(const std::string& name) {
+  return model_.HaveEntry(name);
+}
+
+bool RouteRegistry::HaveRouteById(const base::UUID& uuid) {
+  return model_.HaveEntry(uuid);
+}
+
+RouteEntry* RouteRegistry::LookupRouteByName(const std::string& name) {
+  return model_.GetEntry(name);
+}
+
+RouteEntry* RouteRegistry::LookupRouteById(const base::UUID& id) {
+  return model_.GetEntry(id);
+}
+
 void RouteRegistry::AddObserver(RouteObserver* observer) {
   //DCHECK(HostThread::CurrentlyOn(HostThread::UI));
   //observers_.AddObserver(observer);
@@ -947,6 +963,16 @@ void RouteRegistry::BindEntriesToRPCServiceMethods(HostRpcService* host_service,
     // NOW lets make ROUTE entries linked
     LinkRouteEntriesWithRPCServiceMethod(host_service, scheme_name, descr, *entries);
   }
+}
+
+const google::protobuf::Descriptor* RouteRegistry::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Route");
+}
+
+std::string RouteRegistry::resource_classname() const {
+  return RouteEntry::kClassName;
 }
 
 }

@@ -2732,6 +2732,8 @@ SQLITE_API void *csqlite_realloc64(void*, csqlite_uint64);
 SQLITE_API void csqlite_free(void*);
 SQLITE_API csqlite_uint64 csqlite_msize(void*);
 
+SQLITE_API int csqliteMallocInit(void);
+SQLITE_API void csqliteMemSetDefault(void);
 /*
 ** CAPI3REF: Memory Allocator Statistics
 **

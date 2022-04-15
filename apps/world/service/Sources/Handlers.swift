@@ -345,13 +345,15 @@ public class MainHandler : RouteHandler {
   private func processDynamicBuffer(_ request: RouteRequest, _ writeBuffer: UnsafeMutableRawPointer?, _ readBuffer: UnsafeMutableRawPointer?, _ readed: Int, _ completion: RouteCompletion) {
     if request.url.contains("pods.html") {
       self.pageData = String(cString: readBuffer!.bindMemory(to: CChar.self, capacity: readed))
-      context!.storage.openDatabase("sys", { (status, db) in 
+      //context!.storage.openDatabase("sys", { (status, db) in 
+      context!.storage.openDatabase("system", { (status, db) in 
         if status == 0 {
-          db!.executeQuery("select id, name, status from pods", { cursor in
+          //db!.executeQuery("select id, name, status from pods", { cursor in
+          db!.executeQuery("select uuid, name, status from domain", { cursor in
             self.processPods(request, writeBuffer, self.pageData, completion, cursor!)
           })
         } else {
-          print("failed to open database 'sys'")
+          print("failed to open database 'system'")
         }
       })
     }

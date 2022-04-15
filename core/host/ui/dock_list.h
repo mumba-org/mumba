@@ -14,6 +14,7 @@
 #include "base/lazy_instance.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
+#include "core/host/data/resource.h"
 
 namespace base {
 class FilePath;
@@ -25,7 +26,7 @@ class DockListObserver;
 class Workspace;
 
 // Maintains a list of Dock objects.
-class DockList {
+class DockList : public ResourceManager {
  public:
   using DockSet = base::flat_set<Dock*>;
   using DockVector = std::vector<Dock*>;
@@ -59,6 +60,14 @@ class DockList {
   const DockSet& currently_closing_docks() const {
     return currently_closing_docks_;
   }
+
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override;
+  bool HaveResource(const std::string& name) override;
+  Resource* GetResource(const base::UUID& id) override;
+  Resource* GetResource(const std::string& name) override;
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
 
   static DockList* GetInstance();
 
@@ -117,7 +126,7 @@ class DockList {
   static bool IsIncognitoSessionActiveForWorkspace(scoped_refptr<Workspace> workspace);
 
  private:
-  DockList();
+  DockList(scoped_refptr<Workspace> workspace);
   ~DockList();
 
   // Helper method to remove a dock instance from a list of docks
@@ -151,6 +160,8 @@ class DockList {
       const bool skip_beforeunload,
       bool tab_close_confirmed);
 
+  scoped_refptr<Workspace> workspace_;
+  
   // A vector of the docks in this list, in the order they were added.
   DockVector docks_;
   // A vector of the docks in this list that have been activated, in the

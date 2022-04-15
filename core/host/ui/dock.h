@@ -16,6 +16,7 @@
 #include "core/host/ui/dock_application_modal_dialog_manager_delegate.h"
 #include "core/host/ui/exclusive_access/exclusive_access_manager.h"
 #include "core/host/ui/navigator_params.h"
+#include "core/host/data/resource.h"
 #include "core/host/notification_observer.h"
 #include "core/host/notification_registrar.h"
 #include "components/zoom/zoom_observer.h"
@@ -44,7 +45,8 @@ class Dock : public ApplicationContentsDelegate,
              public TablistModelObserver,
              public CoreTabHelperDelegate,
              public DockApplicationModalDialogManagerDelegate,
-             public zoom::ZoomObserver {
+             public zoom::ZoomObserver,
+             public Resource {
 public:
   // SessionService::WindowType mirrors these values.  If you add to this
   // enum, look at SessionService::WindowType to see if it needs to be
@@ -172,6 +174,22 @@ public:
   }
 
   scoped_refptr<Workspace> workspace() const;
+
+  const base::UUID& id() const override {
+    return id_;
+  }
+
+  const std::string& name() const override {
+    return app_name();
+  }
+
+  bool is_managed() const override {
+    return false;
+  }
+
+  // FIXME: design the 'dock' on the protobuf as a message and then
+  //        deserialize it here 
+  scoped_refptr<net::IOBufferWithSize> Serialize() const;
 
   DockWindow* window() const { 
     return window_; 
@@ -429,6 +447,7 @@ private:
   //std::string name_;
   scoped_refptr<Workspace> workspace_;
   DockWindow* window_;
+  base::UUID id_;
   std::string app_name_;
   std::string page_name_;
   gfx::Rect override_bounds_;

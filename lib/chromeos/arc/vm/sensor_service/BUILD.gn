@@ -1,0 +1,85 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//common-mk/generate-dbus-adaptors.gni")
+import("//common-mk/mojom_bindings_generator.gni")
+import("//common-mk/pkg_config.gni")
+
+group("all") {
+  deps = [
+    ":arc_sensor_service",
+    ":install_init",
+    ":install_systemd",
+  ]
+  if (use.test) {
+    deps += [ ":arc_sensor_service_testrunner" ]
+  }
+}
+
+pkg_config("target_defaults") {
+  pkg_deps = [
+    "libbrillo",
+    "libchrome",
+  ]
+}
+
+generate_mojom_bindings("arc_sensor_service_mojo_bindings") {
+  mojo_root = "${platform2_root}"
+  sources = [ "sensor_service.mojom" ]
+}
+
+generate_dbus_adaptors("arc_sensor_service_adaptors") {
+  dbus_service_config = "dbus_bindings/dbus-service-config.json"
+  dbus_adaptors_out_dir = "include/arc/vm/sensor_service/dbus_adaptors"
+  sources = [ "dbus_bindings/org.chromium.ArcSensorService.xml" ]
+}
+
+static_library("libarc_sensor_service") {
+  sources = [
+    "sensor_data_forwarder.cc",
+    "sensor_data_forwarder.h",
+    "sensor_device_impl.cc",
+    "sensor_device_impl.h",
+    "sensor_service_impl.cc",
+    "sensor_service_impl.h",
+  ]
+  configs += [ ":target_defaults" ]
+  deps = [ ":arc_sensor_service_mojo_bindings" ]
+}
+
+executable("arc_sensor_service") {
+  sources = [ "arc_sensor_service.cc" ]
+  configs += [ ":target_defaults" ]
+  install_path = "bin"
+  deps = [
+    ":arc_sensor_service_adaptors",
+    ":arc_sensor_service_mojo_bindings",
+    ":libarc_sensor_service",
+  ]
+}
+
+install_config("install_init") {
+  sources = [ "init/arc-sensor-service.conf" ]
+  install_path = "/etc/init"
+}
+
+install_config("install_systemd") {
+  sources = [ "init/dbus-1/org.chromium.ArcSensorService.conf" ]
+  install_path = "/etc/dbus-1/system.d"
+}
+
+if (use.test) {
+  executable("arc_sensor_service_testrunner") {
+    sources = [ "sensor_data_forwarder_test.cc" ]
+    configs += [
+      "//common-mk:test",
+      ":target_defaults",
+    ]
+    run_test = true
+    deps = [
+      ":libarc_sensor_service",
+      "//common-mk/testrunner:testrunner",
+    ]
+  }
+}

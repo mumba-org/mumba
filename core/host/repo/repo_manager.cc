@@ -19,7 +19,9 @@
 
 namespace host {
 
-RepoManager::RepoManager(): weak_factory_(this) {
+RepoManager::RepoManager(scoped_refptr<Workspace> workspace): 
+  workspace_(workspace),
+  weak_factory_(this) {
   
 }
 
@@ -145,6 +147,16 @@ void RepoManager::NotifyRepoRemoved(Repo* repo) {
     RepoManagerObserver* observer = *it;
     observer->OnRepoRemoved(repo);
   }
+}
+
+const google::protobuf::Descriptor* RepoManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Repo");
+}
+
+std::string RepoManager::resource_classname() const {
+  return Repo::kClassName;
 }
 
 }

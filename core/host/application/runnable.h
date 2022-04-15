@@ -11,7 +11,7 @@
 #include "base/uuid.h"
 #include "core/shared/common/mojom/application.mojom.h"
 #include "core/common/proto/objects.pb.h"
-#include "core/host/serializable.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 class Domain;
@@ -35,12 +35,15 @@ enum class RunnableState : int {
   IDLE = 5
 };
 
-class Runnable : public Serializable {
+class Runnable : public Resource {
 public:
+  static char kClassName[]; 
   virtual ~Runnable();
-  int id() const;
-  const base::UUID& uuid() const;
-  const std::string& name() const;
+  int rid() const;
+  const base::UUID& id() const override;
+  const std::string& name() const override;
+  // we never keep runnables on persistent databases (at least for now)
+  bool is_managed() const override { return false; }
   const std::string& url_string() const;
   GURL url() const;
   RunnableState state();

@@ -9,12 +9,14 @@
 
 #include "base/macros.h"
 #include "base/uuid.h"
+#include "core/host/data/resource.h"
+#include "core/host/device/device_model.h"
+#include "core/host/device/device.h"
 
 namespace host {
-class DeviceModel;
-class Device;
+class Workspace;
 
-class DeviceManager {
+class DeviceManager : public ResourceManager {
 public:
   class Observer {
   public:
@@ -23,8 +25,8 @@ public:
     virtual void OnDeviceAdded(Device* device) {}
     virtual void OnDeviceRemoved(Device* device) {}
   };
-  DeviceManager();
-  ~DeviceManager();
+  DeviceManager(scoped_refptr<Workspace> workspace);
+  ~DeviceManager() override;
 
   DeviceModel* devices() const {
     return devices_.get();
@@ -40,6 +42,26 @@ public:
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return devices()->DeviceExists(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return devices()->DeviceExists(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return devices()->GetDeviceById(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return devices()->GetDevice(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
+
 private:
 
   void OnLoad(int r, int count);
@@ -48,6 +70,7 @@ private:
   void NotifyDeviceRemoved(Device* device);
   void NotifyDevicesLoad(int r, int count);
 
+  scoped_refptr<Workspace> workspace_;
   std::unique_ptr<DeviceModel> devices_;
   std::vector<Observer*> observers_;
 

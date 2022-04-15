@@ -5,6 +5,7 @@ swift_executable("world_app") {
     "//kit/swift/Base",
     "//kit/swift/Graphics",
     "//kit/swift/Data",
+    "//kit/swift/Collection",
     "//kit/swift/Channel",
     "//kit/swift/App:Application",
     "//kit/swift/Compositor",

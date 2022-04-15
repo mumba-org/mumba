@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright 2020 The Chromium Authors. All rights reserved.
+  Use of this source code is governed by a BSD-style license that can be
+  found in the LICENSE file.
+-->
+<node name="/org/chromium/ArcDataSnapshotd">
+  <interface name="org.chromium.ArcDataSnapshotd">
+    <method name="GenerateKeyPair">
+      <tp:docstring>
+        Generates key pair.
+        Public key is stored in BootlockBox.
+        The method should be called before the start of user session.
+        Shows an update ARC data snapshot system UI screen.
+      </tp:docstring>
+      <annotation name="org.chromium.DBus.Method.Kind" value="simple"/>
+      <arg type="b" name="success" direction="out">
+        <tp:docstring>
+          Result of the operation.
+        </tp:docstring>
+      </arg>
+    </method>
+    <method name="ClearSnapshot">
+      <tp:docstring>
+        Clears snapshot.
+      </tp:docstring>
+      <annotation name="org.chromium.DBus.Method.Kind" value="simple"/>
+      <arg type="b" name="last" direction="in">
+        <tp:docstring>
+          Specifies a snapshot to clear.
+          If true, the last snapshot directory is cleared.
+        </tp:docstring>
+      </arg>
+      <arg type="b" name="success" direction="out">
+        <tp:docstring>
+          Result of the operation.
+        </tp:docstring>
+      </arg>
+    </method>
+    <method name="TakeSnapshot">
+      <tp:docstring>
+        Saves and signs a snapshot.
+      </tp:docstring>
+      <annotation name="org.chromium.DBus.Method.Kind" value="async"/>
+      <arg type="s" name="account_id" direction="in">
+        <tp:docstring>
+          Specifies an account ID of a user, that a snapshot is taken for.
+          The caller (Chrome) is responsible for executing this method only for
+          managed guest session account.
+        </tp:docstring>
+      </arg>
+      <arg type="b" name="success" direction="out">
+        <tp:docstring>
+          Result of the operation.
+        </tp:docstring>
+      </arg>
+    </method>
+    <method name="LoadSnapshot">
+      <tp:docstring>
+        Loads and verifies a snapshot.
+        If the last taken snapshot is not verified or any other error occurs
+        during the snapshot loading operation, the previous snapshot is
+        attempted to be loaded instead.
+      </tp:docstring>
+      <annotation name="org.chromium.DBus.Method.Kind" value="async"/>
+      <arg type="s" name="account_id" direction="in">
+        <tp:docstring>
+          Specifies an account ID of a user, that a snapshot is loaded for.
+          The caller (Chrome) isresponsible for executing this method only for
+          managed guest session account.
+        </tp:docstring>
+      </arg>
+      <arg type="b" name="last" direction="out">
+        <tp:docstring>
+          Specifies the loaded snapshot in case of success.
+          If true, the last snapshot directory has been loaded.
+        </tp:docstring>
+      </arg>
+      <arg type="b" name="success" direction="out">
+        <tp:docstring>
+          Result of the operation.
+        </tp:docstring>
+      </arg>
+    </method>
+    <method name="Update">
+      <tp:docstring>
+        Updates a progress bar on an update ARC data snapshot system UI screen.
+      </tp:docstring>
+      <annotation name="org.chromium.DBus.Method.Kind" value="simple"/>
+      <arg type="i" name="percent" direction="in">
+        <tp:docstring>
+          A percentage of installed required ARC apps [0..100] to be used to
+          update a progress bar.
+        </tp:docstring>
+      </arg>
+      <arg type="b" name="success" direction="out">
+        <tp:docstring>
+          Result of the operation.
+        </tp:docstring>
+      </arg>
+    </method>
+    <signal name="UiCancelled">
+      <tp:docstring>
+        Detected ESC key press on the blocked UI screen. The snapshot creation
+        flow must be cancelled.
+      </tp:docstring>
+    </signal>
+  </interface>
+</node>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<node name="/org/chromium/ArcSensorService"
+      xmlns:tp="http://telepathy.freedesktop.org/wiki/DbusSpec#extensions-v0">
+  <interface name="org.chromium.ArcSensorService">
+    <method name="BootstrapMojoConnection">
+      <tp:docstring>
+        Initializes a mojo connection.
+      </tp:docstring>
+      <arg name="handle" type="h" direction="in"></arg>
+      <arg name="token" type="s" direction="in"></arg>
+    </method>
+  </interface>
+</node>

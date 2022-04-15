@@ -7,6 +7,7 @@
 namespace host {
 
 ONNXModel::ONNXModel(const std::string& model_name): 
+ uuid_(base::UUID::generate()), 
  model_name_(model_name),
  model_loaded_(false) {
 

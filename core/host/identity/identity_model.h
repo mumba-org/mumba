@@ -32,7 +32,10 @@ public:
 
   void Load(base::Callback<void(int, int)> cb);
   bool IdentityExists(Identity* identity) const;
+  bool IdentityExists(const base::UUID& id) const;
+  bool IdentityExists(const std::string& name) const;
   Identity* GetIdentityById(const base::UUID& id);
+  Identity* GetIdentityByName(const std::string& name);
   void InsertIdentity(const base::UUID& id, Identity* identity, bool persist = true);
   void RemoveIdentity(const base::UUID& id);
  

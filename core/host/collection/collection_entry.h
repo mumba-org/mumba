@@ -12,13 +12,14 @@
 #include "base/strings/string_util.h"
 #include "base/strings/string_piece.h"
 #include "base/uuid.h"
+#include "core/host/data/resource.h"
 #include "core/common/proto/objects.pb.h"
 #include "core/host/serializable.h"
 #include "core/shared/common/mojom/collection.mojom.h"
 
 namespace host {
 
-class CollectionEntry : public Serializable {
+class CollectionEntry : public Resource {
 public:
   static char kClassName[];
   static std::unique_ptr<CollectionEntry> Deserialize(net::IOBuffer* buffer, int size);
@@ -28,11 +29,11 @@ public:
 
   ~CollectionEntry() override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
-  const std::string& name() const;
+  const std::string& name() const override;
   const std::string& description() const;
   const std::string& version() const;
   const std::string& license() const;
@@ -51,7 +52,7 @@ public:
   const std::vector<protocol::CollectionSupportedPlatform>& supported_platforms();
   const std::vector<std::string>& supported_languages();
 
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

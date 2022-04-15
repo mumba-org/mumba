@@ -25,6 +25,20 @@ public:
 
   const std::string& model_name() const override;
 
+  // Resource
+  const std::string& name() const override { 
+    return model_name_;
+  }
+
+  const base::UUID& id() const override {
+    return uuid_;
+  }
+
+  // for now we are not making it persistent
+  bool is_managed() const override {
+    return false;
+  }
+
   bool is_loaded() const override {
     return model_loaded_;
   }
@@ -34,6 +48,7 @@ public:
 
 private:
 
+  base::UUID uuid_;
   std::string model_name_;  
 
   // int64_t ir_version_;

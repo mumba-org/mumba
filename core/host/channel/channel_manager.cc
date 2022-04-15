@@ -10,7 +10,6 @@
 #include "base/task_scheduler/post_task.h"
 #include "core/shared/common/paths.h"
 #include "core/host/host_thread.h"
-#include "core/host/channel/channel.h"
 #include "core/host/channel/channel_model.h"
 #include "core/host/share/share_database.h"
 #include "core/host/workspace/workspace.h"
@@ -39,7 +38,8 @@ void OnChannelInserted(common::mojom::ChannelRegistry::ConnectToChannelCallback 
 
 }
 
-ChannelManager::ChannelManager(): 
+ChannelManager::ChannelManager(scoped_refptr<Workspace> workspace): 
+  workspace_(workspace),
   shutdown_event_(base::WaitableEvent::ResetPolicy::MANUAL, base::WaitableEvent::InitialState::NOT_SIGNALED),
   weak_factory_(this) {
   
@@ -242,6 +242,22 @@ void ChannelManager::HaveChannelByUUID(const std::string& uuid, HaveChannelByUUI
   std::move(callback).Run(have);
 }
 
+Channel* ChannelManager::GetChannel(const std::string& name) {
+  return channels_->GetChannelByName(name);
+}
+
+Channel* ChannelManager::GetChannel(const base::UUID& uuid) {
+  return channels_->GetChannelById(uuid);
+}
+
+bool ChannelManager::HaveChannel(const std::string& name) {
+  return channels_->ChannelExists(name);
+}
+
+bool ChannelManager::HaveChannel(const base::UUID& uuid) {
+  return channels_->ChannelExists(uuid);
+}
+
 void ChannelManager::GetChannelCount(GetChannelCountCallback callback) {
   int count = channels_->Count();
   std::move(callback).Run(count);
@@ -268,6 +284,16 @@ void ChannelManager::ReceivedMessageOnChannel(ChannelClient* client, common::Clo
       }
     }
   }
+}
+
+const google::protobuf::Descriptor* ChannelManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Channel");
+}
+
+std::string ChannelManager::resource_classname() const {
+  return Channel::kClassName;
 }
 
 }

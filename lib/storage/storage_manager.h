@@ -143,8 +143,8 @@ public:
   void OpenDatabase(const std::string& disk, const base::UUID& key, base::Callback<void(int64_t)> cb);
   void OpenDatabase(const std::string& disk, const std::string& name, base::Callback<void(int64_t)> cb);
   void OpenDatabase(Storage* disk, const base::UUID& key, base::Callback<void(int64_t)> cb);
-  void CreateDatabase(const std::string& disk, const std::string& db_name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb);
-  void CreateDatabase(const std::string& disk, const std::string& db_name, const std::vector<std::string>& create_table_stmts, bool key_value, base::Callback<void(int64_t)> cb);
+  void CreateDatabase(const std::string& disk, const std::string& db_name, std::vector<std::string> keyspaces, bool in_memory, base::Callback<void(int64_t)> cb);
+  void CreateDatabase(const std::string& disk, const std::string& db_name, const std::vector<std::string>& create_table_stmts, bool key_value, bool in_memory, base::Callback<void(int64_t)> cb);
   void GetEntryInfo(const std::string& disk, const base::UUID& key, base::Callback<void(storage_proto::Info, int64_t)> cb);
   void ListEntries(const std::string& disk, base::Callback<void(std::vector<std::unique_ptr<storage_proto::Info>>, int64_t)> cb);
   void CloseDatabase(const std::string& disk, const std::string& name, base::Callback<void(int64_t)> cb);

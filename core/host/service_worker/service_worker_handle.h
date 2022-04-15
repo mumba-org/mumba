@@ -11,6 +11,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "core/host/service_worker/service_worker_version.h"
+#include "core/host/data/resource.h"
 #include "core/shared/common/content_export.h"
 #include "core/shared/common/service_worker/service_worker_types.h"
 #include "mojo/public/cpp/bindings/associated_binding_set.h"
@@ -36,7 +37,8 @@ class ServiceWorkerHandleTest;
 // that the version is alive while this handle is around.
 class CONTENT_EXPORT ServiceWorkerHandle
     : public blink::mojom::ServiceWorkerObjectHost,
-      public ServiceWorkerVersion::Listener {
+      public ServiceWorkerVersion::Listener,
+      public Resource {
  public:
   ServiceWorkerHandle(base::WeakPtr<ServiceWorkerContextCore> context,
                       ServiceWorkerProviderHost* provider_host,
@@ -52,6 +54,23 @@ class CONTENT_EXPORT ServiceWorkerHandle
   int provider_id() const { return provider_id_; }
   int handle_id() const { return handle_id_; }
   ServiceWorkerVersion* version() { return version_.get(); }
+
+  // Resource
+  const base::UUID& id() const override {
+    return id_;
+  }
+
+  const std::string& name() const override {
+    return name_;
+  }
+
+  bool is_managed() const override {
+    return false;
+  }
+
+  scoped_refptr<net::IOBufferWithSize> Serialize() const override {
+    return scoped_refptr<net::IOBufferWithSize>();
+  }
 
  private:
   friend class service_worker_handle_unittest::ServiceWorkerHandleTest;
@@ -82,6 +101,8 @@ class CONTENT_EXPORT ServiceWorkerHandle
   // object.
   //const url::Origin provider_origin_;
   const GURL provider_origin_;
+  base::UUID id_;
+  std::string name_;
   const int provider_id_;
   const int handle_id_;
   scoped_refptr<ServiceWorkerVersion> version_;

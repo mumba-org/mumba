@@ -7,3 +7,9 @@ which in our case is who act as the host api handler
 except if we proxify, as in:
  client(application process A) -> (TerminalHost proxy)(host process) -> (real TerminalHost) application process B
 
+NOTE: giving we have a VM now, despite the fact that the terminal UI will be web-based using GL etc.. 
+      we might use the VM to be the engine behind the terminal if this is a linux host
+
+      the UI and the terminal IPC will be shared, but the implementation might change accordingly
+      (is something we nee to think about)
+

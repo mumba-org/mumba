@@ -6,12 +6,12 @@
 
 #include "core/host/application/domain.h"
 #include "core/host/application/application.h"
-#include "core/host/application/runnable.h"
 #include "core/host/application/application.h"
+#include "core/host/workspace/workspace.h"
 
 namespace host {
 
-RunnableManager::RunnableManager() {
+RunnableManager::RunnableManager(scoped_refptr<Workspace> workspace): workspace_(std::move(workspace)) {
 
 }
 
@@ -64,6 +64,15 @@ Runnable* RunnableManager::GetRunnable(int id) {
   return nullptr;
 }
 
+Runnable* RunnableManager::GetRunnable(const base::UUID& id) {
+  for (auto it = runnables_.begin(); it != runnables_.end(); it++) {
+    if (it->second->id() == id) {
+      return it->second.get();
+    }
+  }
+  return nullptr;
+}
+
 Runnable* RunnableManager::GetRunnable(const std::string& name) {
   base::AutoLock lock(runnables_lock_);
   auto name_it = runnable_names_.find(name);
@@ -104,6 +113,15 @@ bool RunnableManager::HaveRunnable(int id) {
   return false;
 }
 
+bool RunnableManager::HaveRunnable(const base::UUID& id) {
+  for (auto it = runnables_.begin(); it != runnables_.end(); it++) {
+    if (it->second->id() == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool RunnableManager::HaveRunnable(const std::string& name) {
   base::AutoLock lock(runnables_lock_);
   auto name_it = runnable_names_.find(name);
@@ -127,7 +145,17 @@ void RunnableManager::RemoveRunnable(int id) {
 }
 
 void RunnableManager::RemoveRunnable(Runnable* runnable) {
-  RemoveRunnable(runnable->id());  
+  RemoveRunnable(runnable->rid());  
+}
+
+const google::protobuf::Descriptor* RunnableManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Application");
+}
+
+std::string RunnableManager::resource_classname() const {
+  return Runnable::kClassName;
 }
 
 }

@@ -172,6 +172,9 @@ void Torrent::set_state(storage_proto::InfoState state) {
 
 void Torrent::set_db(Database* db) {
   db_ = db;
+  if (db_->in_memory()) {
+    opened_ = true;
+  }
 }
 
 bool Torrent::db_is_open() const { 
@@ -202,6 +205,9 @@ void Torrent::set_owned_db(std::unique_ptr<Database> db) {
   owned_db_ = std::move(db);
   db_ = owned_db_.get();
   is_opening_db_ = false;
+  if (db_->in_memory()) {
+    opened_ = true;
+  }
   //ScheduleCheckpoint();
 }
 

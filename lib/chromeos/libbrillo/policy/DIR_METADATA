@@ -1,0 +1,4 @@
+monorail {
+  component: "OS>Software>Enterprise"
+}
+team_email: "managed-devices@google.com"

@@ -920,6 +920,7 @@ void SQLCursorState::Rollback(void* state, void(*callback)(void*, int), bool blo
 }
 
 void SQLCursorState::IsValidImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->IsValid(
     base::Bind(&SQLCursorState::OnIsValid, 
         base::Unretained(this),
@@ -929,6 +930,7 @@ void SQLCursorState::IsValidImpl(void* state, void(*callback)(void*, int), bool 
 }
 
 void SQLCursorState::FirstImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->First(
     base::Bind(&SQLCursorState::OnFirst, 
         base::Unretained(this),
@@ -938,6 +940,7 @@ void SQLCursorState::FirstImpl(void* state, void(*callback)(void*, int), bool bl
 }
 
 void SQLCursorState::LastImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->Last(
     base::Bind(&SQLCursorState::OnLast, 
         base::Unretained(this),
@@ -947,6 +950,7 @@ void SQLCursorState::LastImpl(void* state, void(*callback)(void*, int), bool blo
 }
 
 void SQLCursorState::PreviousImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->Previous(
     base::Bind(&SQLCursorState::OnPrevious, 
         base::Unretained(this),
@@ -956,6 +960,7 @@ void SQLCursorState::PreviousImpl(void* state, void(*callback)(void*, int), bool
 }
 
 void SQLCursorState::NextImpl(void* state, void(*callback)(void*, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->Next(
     base::Bind(&SQLCursorState::OnNext, 
         base::Unretained(this),
@@ -965,6 +970,7 @@ void SQLCursorState::NextImpl(void* state, void(*callback)(void*, int), bool blo
 }
 
 void SQLCursorState::GetBlobImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const uint8_t*, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->GetBlob(
     key,
     base::Bind(&SQLCursorState::OnGetBlob, 
@@ -975,6 +981,7 @@ void SQLCursorState::GetBlobImpl(const std::vector<int8_t>& key, void* state, vo
 }
 
 void SQLCursorState::GetStringImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, const int8_t*, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->GetString(
     key,
     base::Bind(&SQLCursorState::OnGetString, 
@@ -985,6 +992,7 @@ void SQLCursorState::GetStringImpl(const std::vector<int8_t>& key, void* state, 
 }
 
 void SQLCursorState::GetIntImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, int), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->GetInt32(
     key,
     base::Bind(&SQLCursorState::OnGetInt, 
@@ -995,6 +1003,7 @@ void SQLCursorState::GetIntImpl(const std::vector<int8_t>& key, void* state, voi
 }
 
 void SQLCursorState::GetDoubleImpl(const std::vector<int8_t>& key, void* state, void(*callback)(void*, int, double), bool blocking) {
+  DCHECK(sql_cursor_);
   sql_cursor_->GetDouble(
     key,
     base::Bind(&SQLCursorState::OnGetDouble, 

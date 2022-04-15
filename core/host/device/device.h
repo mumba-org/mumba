@@ -10,11 +10,12 @@
 #include "base/macros.h"
 #include "base/uuid.h"
 #include "core/host/serializable.h"
+#include "core/host/data/resource.h"
 #include "core/common/proto/objects.pb.h"
 
 namespace host {
 
-class Device : public Serializable {
+class Device : public Resource {
 public:
   static char kClassName[];
   static std::unique_ptr<Device> Deserialize(net::IOBuffer* buffer, int size);
@@ -23,14 +24,14 @@ public:
 
   scoped_refptr<net::IOBufferWithSize> Serialize() const override;
 
-  const base::UUID& id() const {
+  const base::UUID& id() const override {
     return id_;
   }
 
   const std::string& type() const;
-  const std::string& name() const;
+  const std::string& name() const override;
 
-  bool is_managed() const {
+  bool is_managed() const override {
     return managed_;
   }
 

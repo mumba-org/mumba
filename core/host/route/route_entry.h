@@ -19,6 +19,7 @@
 #include "core/shared/common/content_export.h"
 #include "core/shared/common/mojom/route.mojom.h"
 #include "core/host/share/share_observer.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 class HostRpcService;
@@ -35,7 +36,7 @@ class Share;
 // of a storage
 
 class RouteEntry : public ShareObserver,
-                   public Serializable {
+                   public Resource {
 public:
   static char kClassName[];
 
@@ -109,19 +110,24 @@ public:
     entry_->content_hash_sha1 = content_hash;
   }
 
-  const std::string& name() const {
+  const std::string& name() const override {
     return entry_->name;
+  }
+
+  const base::UUID& id() const override {
+    return uuid_;
+  }
+
+  // for now they are never persisted
+  bool is_managed() const override {
+    return false;
   }
 
   void set_name(const std::string& name) {
     entry_->name = name;
   }
 
-  const base::UUID& uuid() const {
-    return uuid_;
-  }
-
-  void set_uuid(const base::UUID& uuid) {
+  void set_id(const base::UUID& uuid) {
     uuid_ = uuid;
     entry_->uuid = std::string(reinterpret_cast<const char*>(uuid_.data), 16);
   }

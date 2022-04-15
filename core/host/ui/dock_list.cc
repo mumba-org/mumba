@@ -58,9 +58,47 @@ Dock* DockList::GetLastActive() const {
 // static
 DockList* DockList::GetInstance() {
   DockList** list = &instance_;
-  if (!*list)
-    *list = new DockList;
+  if (!*list) {
+    auto workspace = Workspace::GetCurrent();
+    *list = new DockList(workspace);
+  }
   return *list;
+}
+
+bool DockList::HaveResource(const base::UUID& id) {
+  for (auto* dock : docks_) {
+    if (dock->id() == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool DockList::HaveResource(const std::string& name) {
+  for (auto* dock : docks_) {
+    if (dock->name() == name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Resource* DockList::GetResource(const base::UUID& id) {
+  for (auto* dock : docks_) {
+    if (dock->id() == id) {
+      return dock;
+    }
+  }
+  return nullptr;
+}
+
+Resource* DockList::GetResource(const std::string& name) {
+  for (auto* dock : docks_) {
+    if (dock->name() == name) {
+      return dock;
+    }
+  }
+  return nullptr;
 }
 
 // static
@@ -302,10 +340,21 @@ bool DockList::IsIncognitoSessionActiveForWorkspace(scoped_refptr<Workspace> wor
 ////////////////////////////////////////////////////////////////////////////////
 // DockList, private:
 
-DockList::DockList() {
+DockList::DockList(scoped_refptr<Workspace> workspace): workspace_(std::move(workspace)) {
 }
 
 DockList::~DockList() {
+}
+
+
+const google::protobuf::Descriptor* DockList::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Dock");
+}
+
+std::string DockList::resource_classname() const {
+  return "dock";
 }
 
 // static

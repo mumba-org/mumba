@@ -10,7 +10,6 @@
 #include "base/task_scheduler/post_task.h"
 #include "core/shared/common/paths.h"
 #include "core/host/host_thread.h"
-#include "core/host/collection/collection_entry.h"
 #include "core/host/collection/collection_model.h"
 #include "core/host/collection/collection_observer.h"
 #include "core/host/workspace/workspace.h"
@@ -19,7 +18,9 @@
 
 namespace host {
 
-Collection::Collection(): weak_factory_(this) {
+Collection::Collection(scoped_refptr<Workspace> workspace): 
+  workspace_(std::move(workspace)),
+  weak_factory_(this) {
   
 }
 
@@ -128,6 +129,16 @@ void Collection::NotifyEntryRemoved(CollectionEntry* entry) {
     CollectionObserver* observer = *it;
     observer->OnCollectionEntryRemoved(entry);
   }
+}
+
+const google::protobuf::Descriptor* Collection::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("CollectionEntry");
+}
+
+std::string Collection::resource_classname() const {
+  return CollectionEntry::kClassName;
 }
 
 }

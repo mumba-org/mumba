@@ -10,6 +10,7 @@
 #include "base/task_scheduler/post_task.h"
 #include "core/shared/common/paths.h"
 #include "core/host/host_thread.h"
+#include "core/host/workspace/workspace.h"
 #include "core/host/share/share.h"
 #include "core/host/share/share_model.h"
 #include "core/host/workspace/workspace.h"
@@ -19,7 +20,8 @@
 
 namespace host {
 
-ShareManager::ShareManager(storage::StorageManager* storage_manager): 
+ShareManager::ShareManager(scoped_refptr<Workspace> workspace, storage::StorageManager* storage_manager): 
+  workspace_(std::move(workspace)),
   storage_manager_(storage_manager),
   weak_factory_(this) {
   
@@ -80,8 +82,8 @@ Share* ShareManager::CreateShare(const std::string& domain,
                                  const std::vector<std::string>& create_statements,
                                  const std::vector<std::string>& insert_statements,
                                  bool key_value,
-                                 base::Callback<void(int64_t)> cb, 
-                                 bool in_memory) {
+                                 bool in_memory,
+                                 base::Callback<void(int64_t)> cb) {
   storage::Storage* storage = GetStorage(domain);
   
   if (!storage) {
@@ -99,7 +101,8 @@ Share* ShareManager::CreateShare(const std::string& domain,
   }
 
   torrent->mutable_info()->set_path(name);
-  storage->CreateDatabase(torrent, create_statements, insert_statements, key_value, std::move(cb));
+  DLOG(INFO) << "creating database '" << name << "' for uuid " << id.to_string();
+  storage->CreateDatabase(torrent, create_statements, insert_statements, key_value, in_memory, std::move(cb));
   return CreateShareInternal(torrent, create_statements, insert_statements, in_memory);  
 }
 
@@ -116,6 +119,18 @@ Share* ShareManager::CreateDatabaseShare(const std::string& domain, const std::v
 
 Share* ShareManager::CreateShare(scoped_refptr<storage::Torrent> torrent, bool in_memory) {
   return CreateShareInternal(std::move(torrent), std::vector<std::string>(), in_memory); 
+}
+
+bool ShareManager::ShareExists(Share* share) const {
+  return shares_->ShareExists(share);
+}
+
+bool ShareManager::ShareExists(const std::string& name) const {
+  return shares_->ShareExists(name);
+}
+
+bool ShareManager::ShareExists(const base::UUID& id) const {
+  return shares_->ShareExists(id);
 }
 
 Share* ShareManager::GetShare(const base::UUID& uuid) {
@@ -174,17 +189,22 @@ Share* ShareManager::GetShare(const std::string& domain_name, const base::UUID& 
   return reference;  
 }
 
+Share* ShareManager::GetShare(const std::string& name) {
+  // we cant cache in case its not cached given we dont have the domain name
+  return shares_->GetShare(name);
+}
+
 void ShareManager::InsertShare(std::unique_ptr<Share> share) {
   Share* reference = share.get();
   shares_->InsertShare(share->id(), std::move(share), false /* never persists as shares are 'cached torrents' */);
   NotifyShareAdded(reference);
 }
 
-Share* ShareManager::CreateShare(const std::string& domain_name, storage_proto::InfoKind type, const std::string& name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb, bool in_memory) {
-  return CreateShare(domain_name, type, base::UUID::generate(), name, std::move(keyspaces), std::move(cb));
+Share* ShareManager::CreateShare(const std::string& domain_name, storage_proto::InfoKind type, const std::string& name, std::vector<std::string> keyspaces, bool in_memory, base::Callback<void(int64_t)> cb) {
+  return CreateShare(domain_name, type, base::UUID::generate(), name, std::move(keyspaces), in_memory, std::move(cb));
 }
 
-Share* ShareManager::CreateShare(const std::string& domain_name, storage_proto::InfoKind type, const base::UUID& id, const std::string& name, std::vector<std::string> keyspaces, base::Callback<void(int64_t)> cb, bool in_memory) {
+Share* ShareManager::CreateShare(const std::string& domain_name, storage_proto::InfoKind type, const base::UUID& id, const std::string& name, std::vector<std::string> keyspaces, bool in_memory, base::Callback<void(int64_t)> cb) {
   storage::Storage* storage = GetStorage(domain_name);
   
   if (!storage) {
@@ -203,8 +223,8 @@ Share* ShareManager::CreateShare(const std::string& domain_name, storage_proto::
 
   torrent->mutable_info()->set_path(name);
 
-  if (type == storage_proto::INFO_KVDB) {
-    storage->CreateDatabase(torrent, std::move(keyspaces), std::move(cb));
+  if (type == storage_proto::INFO_KVDB || type == storage_proto::INFO_SQLDB) {
+    storage->CreateDatabase(torrent, std::move(keyspaces), in_memory, std::move(cb));
   } else {
     storage->AddEntry(torrent, std::move(cb));    
   }
@@ -220,19 +240,25 @@ Share* ShareManager::CreateShareWithInfohash(const std::string& domain, storage_
 Share* ShareManager::OpenShare(const std::string& domain, const base::UUID& id, base::Callback<void(int64_t)> cb) {
   Share* share = shares_->GetShareById(id);
   if (share) {
+    DLOG(INFO) << "ShareManager::OpenShare: share with id " << id.to_string() << " found";
     scoped_refptr<storage::Torrent> t = share->torrent();
     if (!t->is_open()) {
+      DLOG(INFO) << "ShareManager::OpenShare: torrent " << id.to_string() << " not open. opening..";
       int r = t->Open();
       if ((t->info().kind() == storage_proto::INFO_KVDB || t->info().kind() == storage_proto::INFO_SQLDB) && !t->db_is_open()) {
+        DLOG(INFO) << "ShareManager::OpenShare: torrent " << id.to_string() << " also a database. opening database";
         t->io_handler()->OpenDatabase(t, t->info().kind() == storage_proto::INFO_KVDB, std::move(cb), false);
       } else {
+        DLOG(INFO) << "ShareManager::OpenShare: torrent " << id.to_string() << " is a file. returning " << r;
         std::move(cb).Run(r);
       }  
     } else {
+      DLOG(INFO) << "ShareManager::OpenShare: torrent " << id.to_string() << " already open. returning ok";
       std::move(cb).Run(net::OK);
     }
     return share;
   }
+  DLOG(INFO) << "ShareManager::OpenShare: share with id " << id.to_string() << " not found. opening torrent..";
   scoped_refptr<storage::Torrent> torrent = storage_manager_->OpenTorrent(domain, id, std::move(cb));
   return CreateShareInternal(torrent, domain, std::vector<std::string>(), false);
 }
@@ -402,6 +428,16 @@ void ShareManager::NotifyShareRemoved(Share* share) {
     Observer* observer = *it;
     observer->OnShareRemoved(share);
   }
+}
+
+const google::protobuf::Descriptor* ShareManager::resource_descriptor() {
+  Schema* schema = workspace_->schema_registry()->GetSchemaByName("objects.proto");
+  DCHECK(schema);
+  return schema->GetMessageDescriptorNamed("Share");
+}
+
+std::string ShareManager::resource_classname() const {
+  return Share::kClassName;
 }
 
 }

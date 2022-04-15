@@ -27,8 +27,7 @@ public:
   };
   
   static scoped_refptr<ShareDatabase> Open(Delegate* delegate, bool key_value);
-  static scoped_refptr<ShareDatabase> Create(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value);
-  static scoped_refptr<ShareDatabase> CreateMemory(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value);
+  static scoped_refptr<ShareDatabase> Create(Delegate* delegate, const std::vector<std::string>& keyspaces, bool key_value, bool in_memory);
 
   ShareDatabase(Delegate* delegate, std::unique_ptr<storage::Database> db, bool in_memory);
   ShareDatabase(Delegate* delegate, storage::Database* db, bool in_memory);
@@ -55,6 +54,9 @@ public:
   }
   const base::UUID& id() const;
   int table_count() const;
+  storage::Database* db() const {
+    return impl_;
+  }
   
   bool Init(bool key_value);
   bool CreateTables(const std::vector<std::string>& keyspaces);

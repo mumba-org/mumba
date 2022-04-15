@@ -4,12 +4,13 @@ swift_static("Web") {
     "//kit/swift/_C",
     "//kit/swift/Base",
     "//kit/swift/PosixShim",
-    "//kit/swift/ThirdParty/Libevent",
     "//kit/swift/Javascript",
     "//kit/swift/GL",
     "//kit/swift/Gpu",
     "//kit/swift/Graphics",
     "//kit/swift/Compositor",
+    "//kit/swift/ThirdParty/ProtocolBuffers",
+    "//kit/swift/ThirdParty/Libevent"
   ]
   sources = [
     "Sources/ArrayBuffer.swift",

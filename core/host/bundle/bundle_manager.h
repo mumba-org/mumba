@@ -13,8 +13,10 @@
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece.h"
 #include "base/files/file_path.h"
+#include "core/host/data/resource.h"
 #include "base/single_thread_task_runner.h"
 #include "base/task_runner_util.h"
+#include "core/host/bundle/bundle.h"
 #include "core/host/bundle/bundle_manager_observer.h"
 #include "core/host/database_policy.h"
 
@@ -23,10 +25,10 @@ class Workspace;
 class BundleModel;
 class ShareDatabase;
 
-class BundleManager {
+class BundleManager : public ResourceManager {
 public:
-  BundleManager(Workspace* workspace);
-  ~BundleManager();
+  BundleManager(scoped_refptr<Workspace> workspace);
+  ~BundleManager() override;
 
   void Init(scoped_refptr<ShareDatabase> db, DatabasePolicy policy);
 
@@ -56,6 +58,26 @@ public:
   void AddObserver(BundleManagerObserver* observer);
   void RemoveObserver(BundleManagerObserver* observer);
 
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return HaveBundle(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return HaveBundle(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return GetBundle(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return GetBundle(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
+
 private:
   friend class Workspace;
   friend class BundleInitHandler;
@@ -82,7 +104,7 @@ private:
   void NotifyBundleRemoved(Bundle* bundle);
   void NotifyBundlesLoad(int r, int count);
 
-  Workspace* workspace_;
+  scoped_refptr<Workspace> workspace_;
 
   std::unique_ptr<BundleModel> model_;
   std::vector<BundleManagerObserver*> observers_;

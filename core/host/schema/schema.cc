@@ -225,7 +225,7 @@ const std::string& Schema::package() {
   return file_proto_->package();
 }
 
-const std::string& Schema::name() {
+const std::string& Schema::name() const {
   return schema_proto_.name();
 }
 

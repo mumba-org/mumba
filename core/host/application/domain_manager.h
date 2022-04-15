@@ -13,18 +13,19 @@
 #include "base/uuid.h"
 #include "core/common/common_data.h"
 #include "core/host/application/domain_model.h"
+#include "core/host/application/domain.h"
 #include "core/host/host_controller.h"
+#include "core/host/data/resource.h"
 #include "core/host/database_policy.h"
 #include "url/gurl.h"
 
 namespace host {
-class Domain;
 class VolumeManager;
 class IOThread;
 class StorageManager;
 class ShareDatabase;
 
-class DomainManager {
+class DomainManager : public ResourceManager {
 public:
   class Observer {
   public:
@@ -36,7 +37,7 @@ public:
     virtual void OnDomainShutdown(Domain* app) {}
   };
   DomainManager(scoped_refptr<Workspace> workspace, scoped_refptr<HostController> controller);
-  ~DomainManager();
+  ~DomainManager() override;
 
   void Init(scoped_refptr<ShareDatabase> db, DatabasePolicy policy, const base::FilePath& root_path, IOThread* io_thread);
   void Shutdown();
@@ -70,6 +71,26 @@ public:
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+
+  // ResourceManager 
+  bool HaveResource(const base::UUID& id) override {
+    return HasDomain(id);
+  }
+
+  bool HaveResource(const std::string& name) override {
+    return HasDomain(name);
+  }
+
+  Resource* GetResource(const base::UUID& id) override {
+    return GetDomain(id);
+  }
+
+  Resource* GetResource(const std::string& name) override {
+    return GetDomain(name);
+  }
+
+  const google::protobuf::Descriptor* resource_descriptor() override;
+  std::string resource_classname() const override;
 
 private:
   friend class VolumeManager;

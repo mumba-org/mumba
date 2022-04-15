@@ -73,6 +73,7 @@ struct CreateDbParams {
   std::vector<std::string> keyspaces;
   std::vector<std::string> create_table_stmts;
   std::vector<std::string> insert_table_stmts;
+  bool in_memory = false;
 };
 
 // A shared-over-threads context to hold important handles both in Read and Write scenarios

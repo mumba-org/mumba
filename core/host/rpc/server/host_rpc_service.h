@@ -22,10 +22,12 @@
 #include "net/rpc/server/rpc_handler.h"
 #include "net/rpc/server/rpc_service.h"
 #include "net/rpc/rpc_message_encoder.h"
+#include "core/host/data/resource.h"
 
 namespace host {
 
-class HostRpcService : public net::RpcService {
+class HostRpcService : public net::RpcService,
+                       public Resource {
 public:
   static char kClassName[];
   HostRpcService(
@@ -46,12 +48,17 @@ public:
     return plugin_service_descriptor_;
   }
 
+  const base::UUID& id() const override { return uuid(); }
+  const std::string& name() const override { return schema()->name(); }
+  bool is_managed() const override { return false; }
   // return schema associated with this service
   Schema* schema() const {
     return schema_;
   }
 
   std::unique_ptr<net::RpcMessageEncoder> BuildEncoder();
+
+  scoped_refptr<net::IOBufferWithSize> Serialize() const override;
 
 private:
   
