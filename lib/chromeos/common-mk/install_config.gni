@@ -1,0 +1,62 @@
+# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Defines a configs of ebuild installation.
+# Put this target into dependency tree, and it will install the files
+# automatically.
+# It is also created and put into dependency tree when install_path
+# is set in |executable|, |shared_library| and |static_library| targets.
+
+# Default of values below follows ebuild default.
+# See https://dev.gentoo.org/~zmedico/portage/doc/man/ebuild.5.html
+
+# Args:
+#     sources(required): A list of files to be installed.
+#     install_path(optional): An install destination path.
+#     options(optional): A string of options for installing files.
+#     outputs(optional): A list of new file names to be renamed to.
+#       When it is not specified, original names are used.
+#     recursive(optional): A boolean to install files recursively.
+#     symlinks(optional): A list of new symlinks to be created.
+#       When install_path is specified, symlinks are created
+#       in ${install_path}/${symlink}.
+#     type(optional): A target type that created this config. This was set
+#       when the install_config is defined by executable, shared_library or
+#       static_library.
+template("install_config") {
+  group(target_name) {
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "install_path",
+                             "metadata",
+                             "options",
+                             "outputs",
+                             "recursive",
+                             "sources",
+                             "symlinks",
+                             "type",
+                           ])
+    assert(defined(invoker.sources), "sources must be set")
+    metadata = {
+      if (defined(invoker.metadata)) {
+        forward_variables_from(invoker.metadata, "*")
+      }
+      _install_config = [
+        {
+          forward_variables_from(invoker,
+                                 [
+                                   "install_path",
+                                   "options",
+                                   "outputs",
+                                   "recursive",
+                                   "sources",
+                                   "symlinks",
+                                   "type",
+                                 ])
+        },
+      ]
+    }
+  }
+}

@@ -17,7 +17,6 @@
 #include <base/strings/string_util.h>
 #include <base/strings/stringprintf.h>
 #include <brillo/brillo_export.h>
-#include <gtest/gtest_prod.h>
 
 namespace brillo {
 // Manages a process.  Can create the process, attach to an existing
@@ -267,7 +266,7 @@ class BRILLO_EXPORT ProcessImpl : public Process {
   bool PopulatePipeMap();
 
  private:
-  FRIEND_TEST(ProcessTest, ResetPidByFile);
+  //FRIEND_TEST(ProcessTest, ResetPidByFile);
 
   bool IsFileDescriptorInPipeMap(int fd) const;
   void CloseUnusedFileDescriptors();

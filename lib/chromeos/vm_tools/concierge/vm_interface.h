@@ -95,7 +95,7 @@ class VmInterface {
   virtual Info GetInfo() = 0;
 
   // Returns balloon stats info retrieved from virtio-balloon device.
-  virtual std::optional<BalloonStats> GetBalloonStats() = 0;
+  virtual base::Optional<BalloonStats> GetBalloonStats() = 0;
 
   // Resize the balloon size.
   virtual void SetBalloonSize(int64_t byte_size) = 0;

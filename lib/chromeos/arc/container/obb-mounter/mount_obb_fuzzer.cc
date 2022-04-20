@@ -9,7 +9,7 @@
 #include <fuse/fuse.h>
 #include <string>
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/files/file.h>
 #include <base/files/file_path.h>
 #include <base/files/scoped_temp_dir.h>

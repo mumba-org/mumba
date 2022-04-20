@@ -1,0 +1,28 @@
+# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+mno {
+  data {
+    uuid : "hahaha"
+    country : "us"
+    localized_name {
+      name : "Faulker"
+    }
+    mccmnc : "00"
+    mccmnc : "02"
+    mobile_apn {
+      apn : "zeroes_override"
+      localized_name {
+        name : "Ovr0"
+      }
+    }
+    mobile_apn {
+      apn : "twosies_override"
+      localized_name {
+        name : "Ovr2"
+      }
+    }
+    sid : "0000"
+  }
+}

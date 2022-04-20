@@ -1,0 +1,42 @@
+# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//common-mk/pkg_config.gni")
+import("//common-mk/proto_library.gni")
+
+group("all") {
+  deps = [ ":ndproxyd" ]
+}
+
+pkg_config("target_defaults") {
+  pkg_deps = [
+    "libbrillo",
+    "libchrome",
+  ]
+  if (use.fuzzer) {
+    pkg_deps += [ "protobuf" ]
+  } else {
+    pkg_deps += [ "protobuf-lite" ]
+  }
+}
+
+proto_library("protos") {
+  proto_in_dir = ".."
+  proto_out_dir = "include/patchpanel"
+  sources = [ "${proto_in_dir}/ipc.proto" ]
+  configs = [ ":target_defaults" ]
+}
+
+executable("ndproxyd") {
+  sources = [
+    "../minijailed_process_runner.cc",
+    "../ndproxy.cc",
+    "../net_util.cc",
+    "../system.cc",
+    "main.cc",
+  ]
+  configs += [ ":target_defaults" ]
+  install_path = "bin"
+  deps = [ ":protos" ]
+}

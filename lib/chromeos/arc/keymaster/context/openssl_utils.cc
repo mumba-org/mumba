@@ -4,7 +4,7 @@
 
 #include "arc/keymaster/context/openssl_utils.h"
 
-#include <base/check_op.h>
+//#include <base/check_op.h>
 #include <base/stl_util.h>
 #include <openssl/aes.h>
 #include <openssl/rand.h>

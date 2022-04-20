@@ -12,7 +12,7 @@
 #include <vector>
 
 #include <base/bind.h>
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/run_loop.h>
 #include <base/synchronization/condition_variable.h>
 #include <base/task/task_runner.h>

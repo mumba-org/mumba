@@ -48,7 +48,7 @@ constexpr uint32_t kPrepareVmId = 3;
 constexpr uint32_t kFinishAddVmId = 4;
 constexpr uint32_t kRemoveVmId = 5;
 
-std::optional<base::Value> DoSynchronousCall(base::ScopedFD& fd,
+base::Optional<base::Value> DoSynchronousCall(base::ScopedFD& fd,
                                              uint32_t type,
                                              base::Value msg) {
   std::string msg_str;
@@ -98,7 +98,7 @@ std::optional<base::Value> DoSynchronousCall(base::ScopedFD& fd,
   return root_value;
 }
 
-bool check_simple_response(const std::optional<base::Value>& resp,
+bool check_simple_response(const base::Optional<base::Value>& resp,
                            const char* type) {
   auto res = resp ? resp->FindIntKey("res") : std::nullopt;
   if (!resp || !res) {

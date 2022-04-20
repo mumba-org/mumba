@@ -1,0 +1,96 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//common-mk/pkg_config.gni")
+import("//common-mk/proto_library.gni")
+
+group("all") {
+  deps = [ ":libpatchpanel-client" ]
+  if (use.fuzzer) {
+    deps += [ ":patchpanel_client_fuzzer" ]
+  }
+  if (use.test) {
+    deps += [ ":patchpanel-client_testrunner" ]
+  }
+}
+
+pkg_config("target_defaults") {
+  pkg_deps = [
+    "libbrillo",
+    "libchrome",
+    "system_api",
+  ]
+  if (use.fuzzer) {
+    pkg_deps += [ "protobuf" ]
+  } else {
+    pkg_deps += [ "protobuf-lite" ]
+  }
+  defines = [ "USE_ARCVM=${use.arcvm}" ]
+}
+
+proto_library("protos") {
+  proto_in_dir = ".."
+  proto_out_dir = "include/patchpanel"
+  sources = [ "${proto_in_dir}/ipc.proto" ]
+  configs = [ ":target_defaults" ]
+}
+
+libpatchpanel_client_sources = [
+  "../net_util.cc",
+  "client.cc",
+  "fake_client.cc",
+]
+
+static_library("libpatchpanel-client_test") {
+  sources = libpatchpanel_client_sources
+  configs += [ ":target_defaults" ]
+  all_dependent_pkg_deps = [
+    "protobuf",
+    "system_api",
+  ]
+  deps = [ ":protos" ]
+}
+
+shared_library("libpatchpanel-client") {
+  sources = libpatchpanel_client_sources
+  configs += [ ":target_defaults" ]
+  all_dependent_pkg_deps = [ "protobuf" ]
+  libs = [ "system_api" ]
+}
+
+if (use.fuzzer) {
+  pkg_config("fuzzing_config") {
+    pkg_deps = [ "libchrome-test" ]
+  }
+
+  executable("patchpanel_client_fuzzer") {
+    sources = [ "client_fuzzer.cc" ]
+    configs += [
+      "//common-mk/common_fuzzer",
+      ":target_defaults",
+      ":fuzzing_config",
+    ]
+    deps = [ ":libpatchpanel-client" ]
+  }
+}
+
+if (use.test) {
+  pkg_config("test_config") {
+    pkg_deps = [ "libchrome-test" ]
+  }
+
+  executable("patchpanel-client_testrunner") {
+    sources = [ "client_test.cc" ]
+    configs += [
+      "//common-mk:test",
+      ":target_defaults",
+      ":test_config",
+    ]
+    defines = [ "UNIT_TEST" ]
+    deps = [
+      ":libpatchpanel-client_test",
+      "//common-mk/testrunner",
+    ]
+  }
+}

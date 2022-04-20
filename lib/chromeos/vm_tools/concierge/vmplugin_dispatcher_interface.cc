@@ -6,7 +6,7 @@
 #include <optional>
 #include <utility>
 
-#include <base/check_op.h>
+//#include <base/check_op.h>
 #include <base/guid.h>
 #include <base/logging.h>
 #include <base/time/time.h>
@@ -83,7 +83,7 @@ VmOpResult ConvertDispatcherResult(plugin_dispatcher::VmErrorCode result,
 bool GetVmInfo(scoped_refptr<dbus::Bus> bus,
                dbus::ObjectProxy* proxy,
                const VmId& vm_id,
-               std::optional<vm_tools::plugin_dispatcher::VmInfo>* info) {
+               base::Optional<vm_tools::plugin_dispatcher::VmInfo>* info) {
   dbus::MethodCall method_call(
       vm_tools::plugin_dispatcher::kVmPluginDispatcherInterface,
       vm_tools::plugin_dispatcher::kListVmsMethod);
@@ -243,7 +243,7 @@ bool IsVmRegistered(scoped_refptr<dbus::Bus> bus,
                     bool* result) {
   LOG(INFO) << "Checking whether VM " << vm_id << " is registered";
 
-  std::optional<vm_tools::plugin_dispatcher::VmInfo> info;
+  base::Optional<vm_tools::plugin_dispatcher::VmInfo> info;
   if (!GetVmInfo(bus, proxy, vm_id, &info))
     return false;
 
@@ -257,7 +257,7 @@ bool IsVmShutDown(scoped_refptr<dbus::Bus> bus,
                   bool* result) {
   LOG(INFO) << "Checking whether VM " << vm_id << " is shut down";
 
-  std::optional<vm_tools::plugin_dispatcher::VmInfo> info;
+  base::Optional<vm_tools::plugin_dispatcher::VmInfo> info;
   if (!GetVmInfo(bus, proxy, vm_id, &info))
     return false;
 

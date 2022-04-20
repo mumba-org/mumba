@@ -23,7 +23,7 @@
 #ifndef LIBBRILLO_BRILLO_ANY_H_
 #define LIBBRILLO_BRILLO_ANY_H_
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <brillo/any_internal_impl.h>
 
 #include <algorithm>

@@ -14,7 +14,7 @@
 namespace vm_tools {
 namespace concierge {
 
-std::optional<base::FilePath> GetFilePathFromName(
+base::Optional<base::FilePath> GetFilePathFromName(
     const std::string& cryptohome_id,
     const std::string& vm_name,
     StorageLocation storage_location,

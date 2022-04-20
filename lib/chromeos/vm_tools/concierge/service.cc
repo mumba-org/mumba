@@ -39,8 +39,8 @@
 #include <base/bind.h>
 #include <base/callback.h>
 #include <base/callback_helpers.h>
-#include <base/check.h>
-#include <base/check_op.h>
+//#include <base/check.h>
+//#include <base/check_op.h>
 #include <base/files/file_enumerator.h>
 #include <base/files/file_path.h>
 #include <base/files/file_util.h>
@@ -691,7 +691,7 @@ VmInfo::VmType ClassifyVm(const StartVmRequest& request) {
 
 }  // namespace
 
-std::optional<int64_t> Service::GetAvailableMemory() {
+base::Optional<int64_t> Service::GetAvailableMemory() {
   dbus::MethodCall method_call(resource_manager::kResourceManagerInterface,
                                resource_manager::kGetAvailableMemoryKBMethod);
   auto dbus_response = brillo::dbus_utils::CallDBusMethod(
@@ -711,7 +711,7 @@ std::optional<int64_t> Service::GetAvailableMemory() {
   return available_kb * KIB;
 }
 
-std::optional<int64_t> Service::GetForegroundAvailableMemory() {
+base::Optional<int64_t> Service::GetForegroundAvailableMemory() {
   dbus::MethodCall method_call(
       resource_manager::kResourceManagerInterface,
       resource_manager::kGetForegroundAvailableMemoryKBMethod);
@@ -733,7 +733,7 @@ std::optional<int64_t> Service::GetForegroundAvailableMemory() {
   return available_kb * KIB;
 }
 
-std::optional<MemoryMargins> Service::GetMemoryMargins() {
+base::Optional<MemoryMargins> Service::GetMemoryMargins() {
   dbus::MethodCall method_call(resource_manager::kResourceManagerInterface,
                                resource_manager::kGetMemoryMarginsKBMethod);
   auto dbus_response = brillo::dbus_utils::CallDBusMethod(
@@ -760,7 +760,7 @@ std::optional<MemoryMargins> Service::GetMemoryMargins() {
   return margins;
 }
 
-std::optional<resource_manager::GameMode> Service::GetGameMode() {
+base::Optional<resource_manager::GameMode> Service::GetGameMode() {
   dbus::MethodCall method_call(resource_manager::kResourceManagerInterface,
                                resource_manager::kGetGameModeMethod);
   auto dbus_response = brillo::dbus_utils::CallDBusMethod(
@@ -779,7 +779,7 @@ std::optional<resource_manager::GameMode> Service::GetGameMode() {
   return static_cast<resource_manager::GameMode>(game_mode);
 }
 
-static std::optional<std::string> GameModeToForegroundVmName(
+static base::Optional<std::string> GameModeToForegroundVmName(
     resource_manager::GameMode game_mode) {
   using resource_manager::GameMode;
   if (game_mode == GameMode::BOREALIS) {
@@ -845,7 +845,7 @@ void Service::FinishBalloonPolicy(TaggedBalloonStats stats) {
   if (!game_mode.has_value()) {
     return;
   }
-  std::optional<int64_t> foreground_available_memory;
+  base::Optional<int64_t> foreground_available_memory;
   if (*game_mode != resource_manager::GameMode::OFF) {
     // foreground_available_memory is only used when the game mode is enabled.
     foreground_available_memory = GetForegroundAvailableMemory();
@@ -1447,7 +1447,7 @@ StartVmResponse Service::StartVm(StartVmRequest request,
   VmInfo* vm_info = response.mutable_vm_info();
   vm_info->set_vm_type(classification);
 
-  std::optional<base::ScopedFD> kernel_fd, rootfs_fd, initrd_fd, storage_fd,
+  base::Optional<base::ScopedFD> kernel_fd, rootfs_fd, initrd_fd, storage_fd,
       bios_fd;
   for (const auto& fdType : request.fds()) {
     base::ScopedFD fd;
@@ -1870,7 +1870,7 @@ StartVmResponse Service::StartVm(StartVmRequest request,
     }
   }
 
-  std::optional<std::string> cpu_affinity =
+  base::Optional<std::string> cpu_affinity =
       GetCpuAffinityFromClusters(cpu_clusters, cpu_capacity_groups);
   if (cpu_affinity) {
     vm_builder.AppendCustomParam("--cpu-affinity", *cpu_affinity);
@@ -2130,7 +2130,7 @@ void Service::StopAllVmsImpl(VmStopReason reason) {
   struct ThreadContext {
     base::PlatformThreadHandle handle;
     uint32_t cid;
-    std::optional<uint32_t> vm_memory_id;
+    base::Optional<uint32_t> vm_memory_id;
     VMDelegate delegate;
   };
   std::vector<ThreadContext> ctxs(vms_.size());
@@ -4163,7 +4163,7 @@ Service::VmMap::iterator Service::FindVm(const std::string& owner_id,
 base::FilePath Service::GetVmImagePath(const std::string& dlc_id,
                                        std::string* failure_reason) {
   DCHECK(failure_reason);
-  std::optional<std::string> dlc_root =
+  base::Optional<std::string> dlc_root =
       AsyncNoReject(bus_->GetDBusTaskRunner(),
                     base::BindOnce(
                         [](DlcHelper* dlc_helper, const std::string& dlc_id,
@@ -4183,10 +4183,10 @@ base::FilePath Service::GetVmImagePath(const std::string& dlc_id,
 
 Service::VMImageSpec Service::GetImageSpec(
     const vm_tools::concierge::VirtualMachineSpec& vm,
-    const std::optional<base::ScopedFD>& kernel_fd,
-    const std::optional<base::ScopedFD>& rootfs_fd,
-    const std::optional<base::ScopedFD>& initrd_fd,
-    const std::optional<base::ScopedFD>& bios_fd,
+    const base::Optional<base::ScopedFD>& kernel_fd,
+    const base::Optional<base::ScopedFD>& rootfs_fd,
+    const base::Optional<base::ScopedFD>& initrd_fd,
+    const base::Optional<base::ScopedFD>& bios_fd,
     bool is_termina,
     string* failure_reason) {
   DCHECK(failure_reason);

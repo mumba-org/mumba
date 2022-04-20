@@ -185,7 +185,7 @@ bool ExecutePvmHelper(const std::string& owner_id,
   }
 }
 
-static std::optional<base::Value> GetVmInfo(const VmId& vm_id) {
+static base::Optional<base::Value> GetVmInfo(const VmId& vm_id) {
   std::string output;
   if (!ExecutePvmHelper(vm_id.owner_id(),
                         {"list", "--info", "--json", vm_id.name()}, &output)) {

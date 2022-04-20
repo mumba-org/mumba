@@ -8,7 +8,7 @@
 #include <inttypes.h>
 #include <optional>
 
-#include <base/check.h>
+#include <base/macros.h>
 #include <base/files/file_util.h>
 #include <base/logging.h>
 #include <base/process/process_metrics.h>
@@ -20,6 +20,18 @@
 
 namespace vm_tools {
 namespace concierge {
+
+template<class T, typename Pred>
+constexpr const T& clamp( const T& val, const T& lo, const T& hi, Pred p)
+{
+     return p ( val, lo ) ? lo : p ( hi, val ) ? hi : val;
+}
+
+template<class T>
+constexpr const T& clamp( const T& val, const T& lo, const T& hi)
+{
+     return (clamp) ( val, lo, hi, std::less<T>());
+}
 
 // LMKD's minfree level for killing the lowest priority apps. See
 // mOomMinFreeHigh in Android's
@@ -91,7 +103,7 @@ int64_t BalanceAvailableBalloonPolicy::ComputeBalloonDelta(
   // We can remove this if clause
   // TODO(hikalium): Consider changing 2nd argument of clamp to
   // guest_above_critical + MAX_CRITICAL_DELTA
-  const int64_t balloon_delta_capped = std::clamp(
+  const int64_t balloon_delta_capped = clamp(
       balloon_delta, -(host_above_critical + MAX_CRITICAL_DELTA),
       guest_available - critical_guest_available_ + MAX_CRITICAL_DELTA);
 
@@ -256,7 +268,7 @@ int64_t LimitCacheBalloonPolicy::MaxFree() {
   return guest_zoneinfo_.totalreserve + MAX_OOM_MIN_FREE;
 }
 
-std::optional<uint64_t> HostZoneLowSum(bool log_on_error) {
+base::Optional<uint64_t> HostZoneLowSum(bool log_on_error) {
   constexpr char kProcZoneinfo[] = "/proc/zoneinfo";
   const base::FilePath zoneinfo_path(kProcZoneinfo);
   std::string zoneinfo;
@@ -264,46 +276,46 @@ std::optional<uint64_t> HostZoneLowSum(bool log_on_error) {
     if (log_on_error) {
       LOG(ERROR) << "Failed to read /proc/zoneinfo";
     }
-    return std::nullopt;
+    return base::nullopt;
   }
   auto stats = ParseZoneInfoStats(zoneinfo);
   if (!stats) {
-    return std::nullopt;
+    return base::nullopt;
   }
-  return std::optional<uint64_t>(stats->sum_low);
+  return base::Optional<uint64_t>(stats->sum_low);
 }
 
-std::optional<ZoneInfoStats> ParseZoneInfoStats(const std::string& zoneinfo) {
+base::Optional<ZoneInfoStats> ParseZoneInfoStats(const std::string& zoneinfo) {
   auto lines = base::SplitStringPiece(zoneinfo, "\n", base::TRIM_WHITESPACE,
                                       base::SPLIT_WANT_NONEMPTY);
   ZoneInfoStats stats = {0, 0};
   int64_t high = -1;
   for (auto line : lines) {
-    if (base::StartsWith(line, "low ")) {
+    if (base::StartsWith(line, "low ", base::CompareCase::SENSITIVE)) {
       auto cols = base::SplitStringPiece(line, " ", base::TRIM_WHITESPACE,
                                          base::SPLIT_WANT_NONEMPTY);
       int64_t low;
       if (cols.size() != 2 || !base::StringToInt64(cols[1], &low)) {
         LOG(ERROR) << "Failed to parse low watermark line \"" << line << "\"";
-        return std::nullopt;
+        return base::nullopt;
       }
       stats.sum_low += low * PAGE_BYTES;
-    } else if (base::StartsWith(line, "high ")) {
+    } else if (base::StartsWith(line, "high ", base::CompareCase::SENSITIVE)) {
       if (high != -1) {
         LOG(ERROR) << "Found zone protection before any high watermark line";
-        return std::nullopt;
+        return base::nullopt;
       }
       auto cols = base::SplitStringPiece(line, " ", base::TRIM_WHITESPACE,
                                          base::SPLIT_WANT_NONEMPTY);
       if (cols.size() != 2 || !base::StringToInt64(cols[1], &high)) {
         LOG(ERROR) << "Failed to parse high watermark line \"" << line << "\"";
-        return std::nullopt;
+        return base::nullopt;
       }
       // High is saved until we see a "protection" line.
-    } else if (base::StartsWith(line, "protection: (")) {
+    } else if (base::StartsWith(line, "protection: (", base::CompareCase::SENSITIVE)) {
       if (high == -1) {
         LOG(ERROR) << "Found zone protection before any high watermark line";
-        return std::nullopt;
+        return base::nullopt;
       }
       // NB: we only care about page counts, so to simplify indexing into
       // columns, add all the letters of "protection" to the delimiters.
@@ -316,7 +328,7 @@ std::optional<ZoneInfoStats> ParseZoneInfoStats(const std::string& zoneinfo) {
         if (!base::StringToInt64(col, &protection)) {
           LOG(ERROR) << "Failed to parse protection \"" << col
                      << "\" in line \"" << line << "\"";
-          return std::nullopt;
+          return base::nullopt;
         }
         if (max_protection < protection) {
           max_protection = protection;
@@ -331,17 +343,17 @@ std::optional<ZoneInfoStats> ParseZoneInfoStats(const std::string& zoneinfo) {
   }
   if (high != -1) {
     LOG(ERROR) << "Zone high watermark without a following protection line";
-    return std::nullopt;
+    return base::nullopt;
   }
   if (stats.sum_low == 0) {
     LOG(ERROR) << "Failed to find any non-zero zone low watermarks";
-    return std::nullopt;
+    return base::nullopt;
   }
   if (stats.totalreserve == 0) {
     LOG(ERROR) << "Failed to find any non-zero zone high watermarks";
-    return std::nullopt;
+    return base::nullopt;
   }
-  return std::optional<ZoneInfoStats>(stats);
+  return base::Optional<ZoneInfoStats>(stats);
 }
 
 }  // namespace concierge

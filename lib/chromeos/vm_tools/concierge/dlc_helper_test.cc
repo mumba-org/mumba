@@ -78,7 +78,7 @@ TEST_F(DlcHelperTest, InstalledReturnsRootPath) {
 
   DlcHelper helper(std::move(handle));
   std::string error;
-  std::optional<std::string> root_path = helper.GetRootPath("foobar", &error);
+  base::Optional<std::string> root_path = helper.GetRootPath("foobar", &error);
 
   EXPECT_TRUE(error.empty());
   EXPECT_TRUE(root_path.has_value());

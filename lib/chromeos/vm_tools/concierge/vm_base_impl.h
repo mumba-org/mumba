@@ -50,7 +50,7 @@ class VmBaseImpl : public VmInterface {
   pid_t pid() { return process_.pid(); }
 
   // VmInterface overrides.
-  std::optional<BalloonStats> GetBalloonStats() override;
+  base::Optional<BalloonStats> GetBalloonStats() override;
   void SetBalloonSize(int64_t byte_size) override;
   const std::unique_ptr<BalloonPolicyInterface>& GetBalloonPolicy(
       const MemoryMargins& margins, const std::string& vm) override;

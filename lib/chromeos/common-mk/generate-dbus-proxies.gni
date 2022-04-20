@@ -1,0 +1,54 @@
+# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+template("generate_dbus_proxies") {
+  forward_variables_from(invoker,
+                         [
+                           "dbus_service_config",
+                           "proxy_output_file",
+                           "mock_output_file",
+                           "proxy_path_in_mocks",
+                           "new_fd_bindings",
+                         ])
+  if (!defined(new_fd_bindings)) {
+    new_fd_bindings = true
+  }
+  if (!defined(proxy_output_file)) {
+    proxy_output_file = ""
+  }
+  if (!defined(proxy_path_in_mocks)) {
+    proxy_path_in_mocks = ""
+  }
+  if (!defined(mock_output_file)) {
+    mock_output_file = ""
+  }
+  if (!defined(dbus_service_config) || dbus_service_config == "") {
+    service_config = ""
+  } else {
+    service_config = rebase_path(dbus_service_config)
+  }
+
+  action(target_name) {
+    sources = invoker.sources
+    script = "//lib/chromeos/common-mk/file_generator_wrapper.py"
+    outputs = []
+    args = [ "generate-chromeos-dbus-bindings" ] +
+           rebase_path(sources, root_build_dir) +
+           [ "--service-config=${service_config}" ]
+    if (proxy_output_file != "") {
+      outputs += [ "${root_gen_dir}/${proxy_output_file}" ]
+      args += [ "--proxy=${root_gen_dir}/${proxy_output_file}" ]
+    }
+    if (mock_output_file != "") {
+      outputs += [ "${root_gen_dir}/${mock_output_file}" ]
+      args += [ "--mock=${root_gen_dir}/${mock_output_file}" ]
+    }
+    if (proxy_path_in_mocks != "") {
+      args += [ "--proxy-path-in-mocks=${proxy_path_in_mocks}" ]
+    }
+    if (new_fd_bindings) {
+      args += [ "--new-fd-bindings" ]
+    }
+  }
+}

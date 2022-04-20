@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <fuzzer/FuzzedDataProvider.h>
 
 #include "brillo/cryptohome.h"

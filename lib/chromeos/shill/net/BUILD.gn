@@ -1,0 +1,177 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//common-mk/deps.gni")
+import("//common-mk/pkg_config.gni")
+
+group("all") {
+  deps = [ ":libshill-net" ]
+  if (use.fuzzer) {
+    deps += [
+      ":arp_client_fuzzer",
+      ":ip_address_fuzzer",
+      ":netlink_attribute_list_fuzzer",
+      ":nl80211_message_fuzzer",
+      ":rtnl_handler_fuzzer",
+    ]
+  }
+  if (use.test) {
+    deps += [ ":shill_net_test" ]
+  }
+}
+
+pkg_config("target_defaults") {
+  cflags_cc = [
+    "-fno-strict-aliasing",
+    "-Woverloaded-virtual",
+    "-Wno-missing-field-initializers",  # for LAZY_INSTANCE_INITIALIZER
+  ]
+  cflags = [
+    "-Wextra",
+    "-Werror",
+    "-Wno-unused-parameter",
+  ]
+  pkg_deps = [ "libchrome" ]
+}
+
+write_deps("libshill-net_deps") {
+  pkg_deps = []
+  target = "libshill-net"
+}
+
+net_sources = [
+  "../logging.cc",
+  "../scope_logger.cc",
+  "arp_client.cc",
+  "arp_packet.cc",
+  "attribute_list.cc",
+  "byte_string.cc",
+  "control_netlink_attribute.cc",
+  "event_history.cc",
+  "generic_netlink_message.cc",
+  "ieee80211.cc",
+  "io_handler_factory.cc",
+  "io_handler_factory_container.cc",
+  "io_input_handler.cc",
+  "io_ready_handler.cc",
+  "ip_address.cc",
+  "netlink_attribute.cc",
+  "netlink_fd.cc",
+  "netlink_manager.cc",
+  "netlink_message.cc",
+  "netlink_packet.cc",
+  "netlink_sock_diag.cc",
+  "netlink_socket.cc",
+  "nl80211_attribute.cc",
+  "nl80211_message.cc",
+  "rtnl_handler.cc",
+  "rtnl_listener.cc",
+  "rtnl_message.cc",
+  "shill_time.cc",
+  "sockets.cc",
+]
+
+shared_library("libshill-net") {
+  sources = net_sources
+  configs += [ ":target_defaults" ]
+  defines = [ "SLOG_MEANS_VLOG=1" ]
+  cflags_cc = [
+    # for shill::Logging declarations
+    "-Wno-unused-variable",
+    "-Wno-unused-function",
+  ]
+  deps = [ ":${target_name}_deps" ]
+}
+
+if (use.fuzzer) {
+  pkg_config("fuzzed_data_config") {
+    pkg_deps = [ "libchrome-test" ]
+  }
+  executable("arp_client_fuzzer") {
+    sources = [ "arp_client_fuzzer.cc" ]
+    configs += [
+      "//common-mk:test",
+      "//common-mk/common_fuzzer",
+      ":fuzzed_data_config",
+      ":target_defaults",
+    ]
+    deps = [ ":libshill-net" ]
+  }
+  executable("ip_address_fuzzer") {
+    sources = [ "ip_address_fuzzer.cc" ]
+    configs += [
+      "//common-mk/common_fuzzer",
+      ":target_defaults",
+    ]
+    deps = [ ":libshill-net" ]
+  }
+  executable("netlink_attribute_list_fuzzer") {
+    sources = [ "attribute_list_fuzzer.cc" ]
+    configs += [
+      "//common-mk/common_fuzzer",
+      ":target_defaults",
+    ]
+    deps = [ ":libshill-net" ]
+  }
+  executable("nl80211_message_fuzzer") {
+    sources = [ "nl80211_message_fuzzer.cc" ]
+    configs += [
+      "//common-mk/common_fuzzer",
+      ":target_defaults",
+    ]
+    deps = [ ":libshill-net" ]
+  }
+  executable("rtnl_handler_fuzzer") {
+    sources = [ "rtnl_handler_fuzzer.cc" ]
+    configs += [
+      "//common-mk/common_fuzzer",
+      ":target_defaults",
+    ]
+    deps = [ ":libshill-net" ]
+  }
+}
+
+if (use.test) {
+  pkg_config("shill_net_test_config") {
+    pkg_deps = [
+      "libchrome-test",
+      "re2",
+    ]
+  }
+
+  executable("shill_net_test") {
+    sources = [
+      "../mock_log.cc",
+      "arp_client_test.cc",
+      "arp_packet_test.cc",
+      "attribute_list_test.cc",
+      "byte_string_test.cc",
+      "event_history_test.cc",
+      "ip_address_test.cc",
+      "netlink_attribute_test.cc",
+      "nl80211_message_test.cc",
+      "rtnl_handler_test.cc",
+      "rtnl_listener_test.cc",
+      "rtnl_message_test.cc",
+      "shill_time_test.cc",
+    ]
+    if (use.wifi) {
+      sources += [
+        "netlink_manager_test.cc",
+        "netlink_message_test.cc",
+        "netlink_packet_test.cc",
+        "netlink_socket_test.cc",
+        "nl80211_attribute_test.cc",
+      ]
+    }
+    configs += [
+      "//common-mk:test",
+      ":shill_net_test_config",
+    ]
+    deps = [
+      ":libshill-net",
+      "//common-mk/testrunner",
+    ]
+  }
+}

@@ -11,7 +11,6 @@
 #include <memory>
 #include <utility>
 
-#include <base/check.h>
 #include <base/files/file.h>
 #include <base/files/file_util.h>
 #include <base/guid.h>
@@ -42,7 +41,7 @@ DiskImageOperation::DiskImageOperation(const VmId vm_id)
       status_(DISK_STATUS_FAILED),
       source_size_(0),
       processed_size_(0) {
-  CHECK(base::IsValidGUID(uuid_));
+  DCHECK(base::IsValidGUID(uuid_));
 }
 
 void DiskImageOperation::Run(uint64_t io_limit) {
@@ -100,7 +99,7 @@ bool PluginVmCreateOperation::PrepareOutput(const base::FilePath& iso_dir) {
     return false;
   }
 
-  CHECK(output_dir_.Set(iso_dir));
+  DCHECK(output_dir_.Set(iso_dir));
 
   base::FilePath iso_path = iso_dir.Append("install.iso");
   out_fd_.reset(open(iso_path.value().c_str(), O_CREAT | O_WRONLY, 0660));
@@ -583,7 +582,7 @@ bool PluginVmImportOperation::PrepareOutput() {
     return false;
   }
 
-  CHECK(output_dir_.Set(disk_path));
+  DCHECK(output_dir_.Set(disk_path));
 
   out_ = ArchiveWriter(archive_write_disk_new());
   if (!out_) {

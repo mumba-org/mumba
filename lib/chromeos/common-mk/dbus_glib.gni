@@ -1,0 +1,38 @@
+# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Generates a GLib binding. sources must be a singleton list.
+#
+# Parameters:
+#   dbus_glib_out_dir: generated files' output directory.
+#   dbus_glib_prefix: the prefix of the functions in the generated output.
+#   dbus_glib_type (optional): "client" (default) or "server" specifying
+#       generated bindings mode.
+#   dbus_glib_header_stem: the prefix of generated file names.
+#
+template("generate_dbus_glib") {
+  forward_variables_from(invoker,
+                         [
+                           "dbus_glib_out_dir",
+                           "dbus_glib_prefix",
+                           "dbus_glib_type",
+                           "dbus_glib_header_stem",
+
+                           "all_dependent_configs",
+                         ])
+  if (!defined(dbus_glib_type)) {
+    dbus_glib_type = "client"
+  }
+  dbus_glib_output = "${root_gen_dir}/${dbus_glib_out_dir}/${dbus_glib_header_stem}.dbus${dbus_glib_type}.h"
+  action(target_name) {
+    sources = invoker.sources
+    script = "//common-mk/file_generator_wrapper.py"
+    outputs = [ "${dbus_glib_output}" ]
+    args = [ "dbus-binding-tool" ] + rebase_path(sources) + [
+             "--mode=glib-${dbus_glib_type}",
+             "--prefix=${dbus_glib_prefix}",
+             "--output=${dbus_glib_output}",
+           ]
+  }
+}

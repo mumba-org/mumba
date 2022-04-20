@@ -1,0 +1,76 @@
+# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//lib/chromeos/common-mk/pkg_config.gni")
+
+group("all") {
+  deps = [ ":generate-chromeos-dbus-bindings" ]
+}
+
+#pkg_config("target_default_pkg_deps") {
+#  pkg_deps = [
+#    "libbrillo",
+#    "libchrome",
+#  ]
+#}
+
+config("target_defaults") {
+  cflags = [
+    "-Wextra",
+    "-Wno-unused-parameter",  # for scoped_ptr.h, included indirectly
+  ]
+  cflags_cc = [
+    "-fno-strict-aliasing",
+    "-Woverloaded-virtual",
+    "-Wno-deprecated-copy"
+  ]
+  #configs = [ ":target_default_pkg_deps" ]
+}
+
+#pkg_config("libchromeos-dbus-bindings_config") {
+#  pkg_deps = [ "dbus-1" ]
+#}
+
+#pkg_config("libchromeos-dbus-bindings_config_export") {
+  #pkg_deps = [ "expat" ]
+#}
+
+static_library("libchromeos-dbus-bindings") {
+  include_dirs = [
+    "//lib/chromeos",
+    "/usr/include/dbus-1.0"
+  ]
+  sources = [
+    "adaptor_generator.cc",
+    "dbus_signature.cc",
+    "disallow_copy_and_assign.cc",
+    "header_generator.cc",
+    "indented_text.cc",
+    "method_name_generator.cc",
+    "name_parser.cc",
+    "proxy_generator.cc",
+    "xml_interface_parser.cc",
+  ]
+  configs += [
+    ":target_defaults",
+    #":libchromeos-dbus-bindings_config",
+  ]
+  #all_dependent_configs = [ ":libchromeos-dbus-bindings_config_export" ]
+}
+
+executable("generate-chromeos-dbus-bindings") {
+  sources = [ "generate_chromeos_dbus_bindings.cc" ]
+  configs += [ ":target_defaults" ]
+  include_dirs = [
+    "//lib/chromeos",
+    "//lib/chromeos/libbrillo",
+  ]
+  deps = [ 
+    ":libchromeos-dbus-bindings", 
+    "//lib/base",
+    "//buildtools/third_party/libc++",
+    "//third_party/expat",
+    "//lib/chromeos/libbrillo",
+  ]
+}

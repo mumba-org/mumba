@@ -246,32 +246,32 @@ int64_t GetVmMemoryMiB() {
   return vm_memory_mb;
 }
 
-std::optional<int32_t> ReadFileToInt32(const base::FilePath& filename) {
+base::Optional<int32_t> ReadFileToInt32(const base::FilePath& filename) {
   std::string str;
   int int_val;
   if (base::ReadFileToString(filename, &str) &&
       base::StringToInt(
           base::TrimWhitespaceASCII(str, base::TrimPositions::TRIM_TRAILING),
           &int_val)) {
-    return std::optional<int32_t>(int_val);
+    return base::Optional<int32_t>(int_val);
   }
 
   return std::nullopt;
 }
 
-std::optional<int32_t> GetCpuPackageId(int32_t cpu) {
+base::Optional<int32_t> GetCpuPackageId(int32_t cpu) {
   base::FilePath topology_path(base::StringPrintf(
       "/sys/devices/system/cpu/cpu%d/topology/physical_package_id", cpu));
   return ReadFileToInt32(topology_path);
 }
 
-std::optional<int32_t> GetCpuCapacity(int32_t cpu) {
+base::Optional<int32_t> GetCpuCapacity(int32_t cpu) {
   base::FilePath cpu_capacity_path(
       base::StringPrintf("/sys/devices/system/cpu/cpu%d/cpu_capacity", cpu));
   return ReadFileToInt32(cpu_capacity_path);
 }
 
-std::optional<std::string> GetCpuAffinityFromClusters(
+base::Optional<std::string> GetCpuAffinityFromClusters(
     const std::vector<std::vector<std::string>>& cpu_clusters,
     const std::map<int32_t, std::vector<std::string>>& cpu_capacity_groups) {
   if (cpu_clusters.size() > 1) {
@@ -412,7 +412,7 @@ void RunCrosvmCommand(std::string command, std::string socket_path) {
   RunCrosvmCommand({command, socket_path});
 }
 
-std::optional<BalloonStats> GetBalloonStats(std::string socket_path) {
+base::Optional<BalloonStats> GetBalloonStats(std::string socket_path) {
   // TODO(hikalium): Rewrite this logic to use FFI
   // after b/188858559 is done.
   brillo::ProcessImpl crosvm;
@@ -460,7 +460,7 @@ std::optional<BalloonStats> GetBalloonStats(std::string socket_path) {
   return ParseBalloonStats(*balloon_stats);
 }
 
-std::optional<BalloonStats> ParseBalloonStats(
+base::Optional<BalloonStats> ParseBalloonStats(
     const base::Value& balloon_stats) {
   auto additional_stats = balloon_stats.FindDictKey("stats");
   if (!additional_stats || !additional_stats->is_dict()) {
@@ -682,7 +682,7 @@ void CustomParametersForDev::Apply(base::StringPairs* args) {
   }
 }
 
-std::optional<const std::string> CustomParametersForDev::ObtainSpecialParameter(
+base::Optional<const std::string> CustomParametersForDev::ObtainSpecialParameter(
     const std::string& key) {
   if (!initialized_)
     return std::nullopt;

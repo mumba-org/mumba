@@ -9,7 +9,7 @@
 #include <optional>
 #include <string>
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <brillo/secure_blob.h>
 
 namespace arc {

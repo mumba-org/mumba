@@ -14,7 +14,7 @@
 #include <vector>
 
 #include <base/base64.h>
-#include <base/check_op.h>
+//#include <base/check_op.h>
 #include <base/logging.h>
 #include <keymaster/android_keymaster_utils.h>
 #include <keymaster/key_blob_utils/integrity_assured_key_blob.h>

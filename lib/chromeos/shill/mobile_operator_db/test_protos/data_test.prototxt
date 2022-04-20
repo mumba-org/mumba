@@ -1,0 +1,103 @@
+# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Test[200] MobileOperatorInfoDataTest.*
+# Test[200] MobileOperatorInfoObserverTest.*
+mno {
+  data {
+    uuid: "uuid200001"
+    country: "us"
+    localized_name {
+      name: "name200001"
+      language: "en"
+    }
+    localized_name {
+      name: "name200002"
+    }
+    requires_roaming: true
+    mtu : 1400
+    olp {
+      method: POST
+      url: "some@random.com"
+      post_data: "random_data"
+    }
+    olp {
+      olp_filter {
+        type: MCCMNC
+        regex: "200003"
+      }
+      method: POST
+      url: "olp@mccmnc"
+      post_data: "post_data"
+    }
+    olp {
+      olp_filter {
+        type: SID
+        regex: "200345"
+      }
+      method: POST
+      url: "olp@sid"
+      post_data: "post_data"
+    }
+    mccmnc: "200001"
+    mccmnc: "200002"
+    mccmnc: "200003"  # Used in FilteredOLP
+    mobile_apn {
+      apn: "test@test.com"
+      localized_name {
+        name: "name200003"
+        language: "hi"
+      }
+      username: "testuser"
+      password: "is_public_boohoohoo"
+    }
+    sid: "200123"
+    sid: "200234"
+    sid: "200345"  # Used in FilteredOLP
+    activation_code: "open sesame"
+  }
+  mvno {
+    mvno_filter {
+      type: OPERATOR_NAME
+      regex: "name200101"
+    }
+    data {
+      uuid: "uuid200101"
+      country: "ca"
+      localized_name {
+        name: "name200101"
+        language: "en"
+      }
+      localized_name {
+        name: "name200102"
+      }
+      requires_roaming: false
+      mtu : 1200
+      olp {
+        method: GET
+        url: "someother@random.com"
+      }
+      # Keep a common MCCMNC, so that it can be used to search for the MNO.
+      mccmnc: "200001"
+      mccmnc: "200102"
+      mobile_apn {
+        apn: "test2@test.com"
+        username: "testuser2"
+        password: "is_public_boohoohoo_too"
+      }
+      sid: "200345"
+      activation_code: "khul ja sim sim"
+    }
+  }
+  mvno {
+    mvno_filter {
+      type: OPERATOR_NAME
+      regex: "name200201"
+    }
+    data {
+      uuid: "uuid200201"
+      # Inherit all other information from the MNO.
+    }
+  }
+}

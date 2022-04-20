@@ -15,8 +15,8 @@
 #include <openssl/crypto.h>
 
 #include <base/callback_helpers.h>
-#include <base/check.h>
-#include <base/check_op.h>
+//#include <base/check.h>
+//#include <base/check_op.h>
 #include <base/logging.h>
 #include <brillo/brillo_export.h>
 #include <brillo/secure_string.h>

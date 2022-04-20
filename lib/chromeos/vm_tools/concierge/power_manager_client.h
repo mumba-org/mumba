@@ -15,7 +15,6 @@
 #include <dbus/bus.h>
 #include <dbus/message.h>
 #include <dbus/object_proxy.h>
-#include <gtest/gtest_prod.h>
 
 namespace vm_tools {
 namespace concierge {
@@ -57,12 +56,12 @@ class PowerManagerClient final {
 
   base::WeakPtrFactory<PowerManagerClient> weak_factory_{this};
 
-  FRIEND_TEST(PowerManagerClientTest, SuspendReadiness);
-  FRIEND_TEST(PowerManagerClientTest, SuspendImminent);
-  FRIEND_TEST(PowerManagerClientTest, SuspendDone);
-  FRIEND_TEST(PowerManagerClientTest, WrongSuspendId);
-  FRIEND_TEST(PowerManagerClientTest, MultipleSuspendImminents);
-  FRIEND_TEST(PowerManagerClientTest, NameOwnerChanged);
+  // FRIEND_TEST(PowerManagerClientTest, SuspendReadiness);
+  // FRIEND_TEST(PowerManagerClientTest, SuspendImminent);
+  // FRIEND_TEST(PowerManagerClientTest, SuspendDone);
+  // FRIEND_TEST(PowerManagerClientTest, WrongSuspendId);
+  // FRIEND_TEST(PowerManagerClientTest, MultipleSuspendImminents);
+  // FRIEND_TEST(PowerManagerClientTest, NameOwnerChanged);
 };
 
 }  // namespace concierge

@@ -43,7 +43,7 @@ struct ArcVmFeatures {
   bool use_dev_conf;
 
   // Use the LimitCacheBalloonPolicy.
-  std::optional<LimitCacheBalloonPolicy::Params> balloon_policy_params;
+  base::Optional<LimitCacheBalloonPolicy::Params> balloon_policy_params;
 };
 
 // Represents a single instance of a running termina VM.
@@ -157,7 +157,7 @@ class ArcVm final : public VmBaseImpl {
   // TODO(cwd): When we are sure what synchronization is needed to make sure the
   // host knows the correct zone sizes (which change during boot), then replace
   // this timeout.
-  std::optional<base::Time> balloon_refresh_time_ = std::nullopt;
+  base::Optional<base::Time> balloon_refresh_time_ = base::nullopt;
 };
 
 }  // namespace concierge

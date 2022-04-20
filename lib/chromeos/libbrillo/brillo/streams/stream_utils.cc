@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include <base/check_op.h>
+//#include <base/check_op.h>
 #include <brillo/streams/stream_utils.h>
 
 #include <algorithm>

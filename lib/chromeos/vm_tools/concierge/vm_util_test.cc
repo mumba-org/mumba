@@ -178,7 +178,7 @@ TEST(VMUtilTest, GetCpuAffinityFromClustersNoGroups) {
 
   auto cpu_affinity =
       GetCpuAffinityFromClusters(cpu_clusters, cpu_capacity_groups);
-  EXPECT_EQ(cpu_affinity, std::nullopt);
+  EXPECT_EQ(cpu_affinity, base::nullopt);
 }
 
 TEST(VMUtilTest, GetCpuAffinityFromClustersGroupSizesOne) {
@@ -191,7 +191,7 @@ TEST(VMUtilTest, GetCpuAffinityFromClustersGroupSizesOne) {
 
   auto cpu_affinity =
       GetCpuAffinityFromClusters(cpu_clusters, cpu_capacity_groups);
-  EXPECT_EQ(cpu_affinity, std::nullopt);
+  EXPECT_EQ(cpu_affinity, base::nullopt);
 }
 
 TEST(VMUtilTest, GetCpuAffinityFromClustersTwoClusters) {

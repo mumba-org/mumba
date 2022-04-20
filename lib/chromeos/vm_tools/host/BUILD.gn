@@ -163,7 +163,11 @@ static_library("libconcierge") {
   #  "vm_protos",
   #]
   include_dirs = [
-    "//lib/chromeos"
+    "//lib/chromeos",
+    "//lib/chromeos/libbrillo",
+    "$root_gen_dir/include",
+    "//third_party/grpc/include",
+    "//third_party/abseil-cpp",
   ]
   public_configs = [ "//build/config/linux/dbus" ]
 
@@ -172,7 +176,14 @@ static_library("libconcierge") {
   cflags_cc = [ "-Wno-error=deprecated-declarations" ]
   #deps = [ "//featured:libfeatures" ]
   deps = [
-    "//lib/dbus"
+    "//lib/dbus",
+    "//lib/chromeos/system_api:all",
+    "//lib/chromeos/chromeos-dbus-bindings:generate-chromeos-dbus-bindings",
+    "//third_party/protobuf:protobuf_lite",
+    #"//third_party/abseil-cpp/absl/synchronization",
+    "//third_party/libarchive",
+    #"//lib/chromeos/shill/client:libshill-client-headers"
+    "//lib/chromeos/shill/client:all"
   ]
 }
 

@@ -15,7 +15,7 @@
 #include <string>
 
 #include <base/at_exit.h>
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/files/scoped_file.h>
 #include <base/logging.h>
 #include <base/posix/eintr_wrapper.h>

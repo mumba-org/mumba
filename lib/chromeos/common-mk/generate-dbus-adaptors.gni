@@ -1,0 +1,75 @@
+# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+template("generate_dbus_adaptors") {
+  forward_variables_from(invoker,
+                         [
+                           "dbus_adaptors_out_dir",
+                           "dbus_service_config",
+                         ])
+  h_dir = "${root_gen_dir}/${dbus_adaptors_out_dir}"
+  h_tmp_dir = "${root_gen_dir}/dbus_tmp/${dbus_adaptors_out_dir}"
+
+  if (!defined(dbus_service_config) || dbus_service_config == "") {
+    service_config = ""
+  } else {
+    service_config = rebase_path(dbus_service_config)
+  }
+
+  # Following three actions is to ensure that the headers by the new Go
+  # dbus-binding generator are the same as those by the original C++
+  # dbus-binding generator.
+  # TODO(crbug.com/983008): Remove the action of generating bindings by C++
+  # generator and the action making diff after the migration completes.
+
+  headers_by_cpp_generator = "__${target_name}_cpp"
+  action_foreach(headers_by_cpp_generator) {
+    sources = invoker.sources
+    script = "//common-mk/file_generator_wrapper.py"
+    outputs = [ "${h_tmp_dir}/{{source_name_part}}.h" ]
+    args = [
+      "generate-chromeos-dbus-bindings",
+      "{{source}}",
+      "--service-config=${service_config}",
+      "--adaptor=${h_tmp_dir}/{{source_name_part}}.h",
+    ]
+  }
+
+  headers_by_go_generator = "__${target_name}_go"
+  action_foreach(headers_by_go_generator) {
+    sources = invoker.sources
+    script = "//common-mk/file_generator_wrapper.py"
+    outputs = [ "${h_dir}/{{source_name_part}}.h" ]
+    args = [
+      "go-generate-chromeos-dbus-bindings",
+      "-adaptor=${h_dir}/{{source_name_part}}.h",
+      "{{source}}",
+    ]
+  }
+
+  action_foreach("__${target_name}_diff") {
+    sources = invoker.sources
+    script = "//common-mk/generated_dbus_header_diff.py"
+    outputs = [ "${h_tmp_dir}/{{source_name_part}}.h.diff" ]
+    args = [
+      "--out",
+      "${h_tmp_dir}/{{source_name_part}}.h.diff",
+      "--cpp",
+      "${h_tmp_dir}/{{source_name_part}}.h",
+      "--go",
+      "${h_dir}/{{source_name_part}}.h",
+    ]
+    deps = [
+      ":${headers_by_cpp_generator}",
+      ":${headers_by_go_generator}",
+    ]
+  }
+
+  group(target_name) {
+    deps = [
+      ":${headers_by_go_generator}",
+      ":__${target_name}_diff",
+    ]
+  }
+}

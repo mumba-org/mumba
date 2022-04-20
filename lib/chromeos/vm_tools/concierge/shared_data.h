@@ -11,7 +11,7 @@
 #include <tuple>
 #include <utility>
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/logging.h>
 #include <base/system/sys_info.h>
 
@@ -39,7 +39,7 @@ constexpr char kRuntimeDir[] = "/run/vm";
 constexpr char kValidCryptoHomeCharacters[] = "abcdefABCDEF0123456789";
 
 // Gets the path to the file given the name, user id, location, and extension.
-std::optional<base::FilePath> GetFilePathFromName(
+base::Optional<base::FilePath> GetFilePathFromName(
     const std::string& cryptohome_id,
     const std::string& vm_name,
     StorageLocation storage_location,

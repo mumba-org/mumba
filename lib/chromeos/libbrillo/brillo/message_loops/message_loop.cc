@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <brillo/message_loops/message_loop.h>
 
 #include <base/lazy_instance.h>

@@ -18,7 +18,7 @@
 #include <utility>
 
 #include <base/at_exit.h>
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/command_line.h>
 #include <base/files/file_descriptor_watcher_posix.h>
 #include <base/files/file_path.h>
@@ -390,7 +390,7 @@ int StopAllVms(dbus::ObjectProxy* proxy) {
   return 0;
 }
 
-std::optional<vm_tools::concierge::VmInfo> GetVmInfoInternal(
+base::Optional<vm_tools::concierge::VmInfo> GetVmInfoInternal(
     dbus::ObjectProxy* proxy, string owner_id, string name) {
   dbus::MethodCall method_call(vm_tools::concierge::kVmConciergeInterface,
                                vm_tools::concierge::kGetVmInfoMethod);

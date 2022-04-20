@@ -31,8 +31,9 @@
 #include <base/system/sys_info.h>
 #include <base/threading/platform_thread.h>
 #include <base/time/time.h>
-#include <chromeos/constants/vm_tools.h>
-#include <vboot/crossystem.h>
+//#include <chromeos/constants/vm_tools.h>
+#include <system_api/constants/vm_tools.h>
+#include <vboot/host/include/crossystem.h>
 
 #include "vm_tools/concierge/tap_device_builder.h"
 #include "vm_tools/concierge/vm_builder.h"
@@ -46,13 +47,13 @@ namespace {
 constexpr char kCrosvmSocket[] = "arcvm.sock";
 
 // How long to wait before timing out on child process exits.
-constexpr base::TimeDelta kChildExitTimeout = base::Seconds(10);
+constexpr base::TimeDelta kChildExitTimeout = base::TimeDelta::FromSeconds(10);
 
 // How long to sleep between arc-powerctl connection attempts.
-constexpr base::TimeDelta kArcPowerctlConnectDelay = base::Milliseconds(250);
+constexpr base::TimeDelta kArcPowerctlConnectDelay = base::TimeDelta::FromMilliseconds(250);
 
 // How long to wait before giving up on connecting to arc-powerctl.
-constexpr base::TimeDelta kArcPowerctlConnectTimeout = base::Seconds(5);
+constexpr base::TimeDelta kArcPowerctlConnectTimeout = base::TimeDelta::FromSeconds(5);
 
 // Port for arc-powerctl running on the guest side.
 constexpr unsigned int kVSockPort = 4242;
@@ -105,7 +106,7 @@ constexpr char kOemEtcUgidMapTemplate[] = "0 %u 1, 5000 600 50";
 
 // The amount of time after VM creation that we should wait to refresh counters
 // bassed on the zone watermarks, since they can change during boot.
-constexpr base::TimeDelta kBalloonRefreshTime = base::Seconds(60);
+constexpr base::TimeDelta kBalloonRefreshTime = base::TimeDelta::FromSeconds(60);
 
 // ConnectVSock connects to arc-powerctl in the VM identified by |cid|. It
 // returns a pair. The first object is the connected socket if connection was
@@ -164,7 +165,7 @@ bool ShutdownArcVm(int cid) {
 
   const std::string command("poweroff");
   if (HANDLE_EINTR(write(vsock.get(), command.c_str(), command.size())) !=
-      command.size()) {
+      static_cast<long>(command.size())) {
     PLOG(WARNING) << "Failed to write to ARCVM VSOCK";
     return false;
   }
@@ -444,7 +445,7 @@ bool ArcVm::DetachUsbDevice(uint8_t port, UsbControlResponse* response) {
 
 namespace {
 
-std::optional<ZoneInfoStats> ArcVmZoneStats(uint32_t cid, bool log_on_error) {
+base::Optional<ZoneInfoStats> ArcVmZoneStats(uint32_t cid, bool log_on_error) {
   brillo::ProcessImpl vsh;
   vsh.AddArg("/usr/bin/vsh");
   vsh.AddArg(base::StringPrintf("--cid=%u", cid));
@@ -459,7 +460,7 @@ std::optional<ZoneInfoStats> ArcVmZoneStats(uint32_t cid, bool log_on_error) {
     if (log_on_error) {
       LOG(ERROR) << "Failed to run vsh: " << vsh.GetOutputString(STDERR_FILENO);
     }
-    return std::nullopt;
+    return base::nullopt;
   }
 
   std::string zoneinfo = vsh.GetOutputString(STDOUT_FILENO);

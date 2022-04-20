@@ -1,0 +1,70 @@
+// Copyright 2016 The Chromium OS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+syntax = "proto2";
+option optimize_for = LITE_RUNTIME;
+
+package patchpanel;
+
+// Best practice is to use optional fields, but since the client and server
+// are always in sync, these messages use required fields to save on
+// validation.
+
+// If |br_ifname| exists in the message, a creation or deletion event
+// occurred for the bridge interface.
+// Otherwise, the event is occurred for the physical interface
+// |dev_ifname|.
+message DeviceMessage {
+  required string dev_ifname = 1;
+  optional string br_ifname = 2;
+  optional bool teardown = 3;  // value is ignored
+  optional bool force_local_next_hop = 4;
+}
+
+message GuestMessage {
+  enum GuestType {
+    UNKNOWN_GUEST = 0;
+    ARC = 1;         // ARC++ Container (P & higher)
+    ARC_VM = 2;      // ARC VM
+    TERMINA_VM = 3;  // Crostini Termina VM
+    PLUGIN_VM = 4;   // Plugin VM
+  }
+  required GuestType type = 1;
+
+  enum GuestEvent {
+    UNKNOWN_EVENT = 0;
+    START = 1;
+    STOP = 2;
+  }
+  required GuestEvent event = 2;
+
+  // The PID of the ARC++ container.
+  optional int32 arc_pid = 3;
+
+  // The VSOCK CID of the ARCVM.
+  optional int32 arcvm_vsock_cid = 4;
+}
+
+// Messages sent by NDProxy daemon process to patchpanel main process
+// notifying ndp events and instructing adding / deleting ip address
+// and routes.
+message NDProxyMessage {
+  enum NDProxyEventType {
+    UNKNOWN = 0;
+    ADD_ROUTE = 1;  // guest ifname / guest peer addr (route to be added)
+    ADD_ADDR = 2;   // guest ifname / guest if addr (to be added)
+    DEL_ADDR = 3;   // guest ifname / guest if addr (to be deleted)
+  }
+  required NDProxyEventType type = 1;
+  required string ifname = 2;
+  optional string ip6addr = 3;
+}
+
+message IpHelperMessage {
+  oneof message_type {
+    GuestMessage guest_message = 1;
+    DeviceMessage device_message = 2;
+    NDProxyMessage ndproxy_message = 3;
+  }
+}

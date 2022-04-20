@@ -6,9 +6,9 @@
 #define VM_TOOLS_CONCIERGE_DLC_HELPER_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
+#include "base/optional.h"
 #include "base/memory/scoped_refptr.h"
 
 namespace dbus {
@@ -43,8 +43,8 @@ class DlcHelper {
   // Determine the path where the |dlc_id| DLC is located. If it is not
   // installed, or some error occurs, returns nullopt and sets |out_error|.
   // Assumes that |out_error| is valid (non-null).
-  std::string GetRootPath(const std::string& dlc_id,
-                          std::string* out_error);
+  base::Optional<std::string> GetRootPath(const std::string& dlc_id,
+                                          std::string* out_error);
 
  private:
   std::unique_ptr<org::chromium::DlcServiceInterfaceProxyInterface>

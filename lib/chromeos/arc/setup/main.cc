@@ -11,7 +11,7 @@
 #include <string>
 
 #include <base/at_exit.h>
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/command_line.h>
 #include <base/files/file_path.h>
 #include <base/timer/elapsed_timer.h>

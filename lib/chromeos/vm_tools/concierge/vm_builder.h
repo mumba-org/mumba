@@ -102,9 +102,9 @@ class VmBuilder {
   base::FilePath kernel_;
   base::FilePath initrd_;
   base::FilePath bios_;
-  std::optional<Rootfs> rootfs_;
+  base::Optional<Rootfs> rootfs_;
   int32_t cpus_ = 0;
-  std::optional<uint32_t> vsock_cid_;
+  base::Optional<uint32_t> vsock_cid_;
   std::string memory_in_mib_;
   std::string balloon_bias_mib_;
 
@@ -124,7 +124,7 @@ class VmBuilder {
   bool enable_video_decoder_ = false;
   bool enable_video_encoder_ = false;
   bool enable_battery_ = false;
-  std::optional<bool> enable_smt_ = false;
+  base::Optional<bool> enable_smt_ = false;
   bool enable_delay_rt_ = false;
   bool enable_per_vm_core_scheduling_ = false;
 
@@ -142,7 +142,7 @@ class VmBuilder {
   std::vector<std::string> shared_dirs_;
   std::vector<std::vector<int32_t>> cpu_clusters_;
 
-  std::optional<VmMemoryId> vm_memory_id_;
+  base::Optional<VmMemoryId> vm_memory_id_;
 
   base::StringPairs custom_params_;
 };

@@ -41,7 +41,6 @@
 #include <base/logging.h>
 #include <base/synchronization/lock.h>
 #include <brillo/brillo_export.h>
-#include <gtest/gtest_prod.h>
 
 namespace brillo {
 
@@ -219,7 +218,7 @@ class SafeFD {
                             bool keep_going = true) WARN_UNUSED_RESULT;
 
  private:
-  FRIEND_TEST(SafeFDTest, CopyContentsTo_PseudoFsLargeFallbackSuccess);
+  //FRIEND_TEST(SafeFDTest, CopyContentsTo_PseudoFsLargeFallbackSuccess);
 
   BRILLO_EXPORT static const char* RootPath;
 

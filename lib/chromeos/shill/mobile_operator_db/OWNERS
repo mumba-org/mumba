@@ -1,0 +1,7 @@
+# inherit the Shill owners
+# and the cellular platform team can also modify the carriers & APN database
+andrewlassalle@chromium.org
+madhavadas@google.com
+pholla@chromium.org
+srikanthkumar@google.com
+yshavit@chromium.org

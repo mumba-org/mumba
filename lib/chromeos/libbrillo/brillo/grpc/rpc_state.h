@@ -10,7 +10,7 @@
 
 #include <base/bind.h>
 #include <base/callback.h>
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/memory/weak_ptr.h>
 #include <brillo/brillo_export.h>
 #include <grpcpp/grpcpp.h>

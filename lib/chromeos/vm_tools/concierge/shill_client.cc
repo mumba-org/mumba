@@ -9,7 +9,7 @@
 #include <vector>
 
 #include <base/bind.h>
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/logging.h>
 #include <brillo/variant_dictionary.h>
 #include <chromeos/dbus/service_constants.h>
@@ -66,7 +66,7 @@ void ShillClient::OnShillServiceOwnerChange(const std::string& old_owner,
 }
 
 template <typename Proxy>
-std::optional<brillo::VariantDictionary> GetPropertiesHelper(dbus::Bus* bus,
+base::Optional<brillo::VariantDictionary> GetPropertiesHelper(dbus::Bus* bus,
                                                              Proxy* proxy) {
   bus->AssertOnOriginThread();
   brillo::VariantDictionary properties;

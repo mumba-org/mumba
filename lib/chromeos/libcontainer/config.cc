@@ -7,7 +7,7 @@
 #include <utility>
 
 #include <base/callback.h>
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/logging.h>
 
 // TODO(lhchavez): Remove this once container_config only holds a pointer to

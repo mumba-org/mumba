@@ -14,7 +14,7 @@
 #include "dlcservice/proto_bindings/dlcservice.pb.h"
 #include "dlcservice/dbus-proxies.h"  // NOLINT (build/include_alpha)
 
-#include <base/check.h>
+//#include <base/check.h>
 
 namespace vm_tools {
 namespace concierge {
@@ -29,7 +29,7 @@ DlcHelper::DlcHelper(const scoped_refptr<dbus::Bus>& bus)
 
 DlcHelper::~DlcHelper() = default;
 
-std::string DlcHelper::GetRootPath(const std::string& dlc_id,
+base::Optional<std::string> DlcHelper::GetRootPath(const std::string& dlc_id,
                                    std::string* out_error) {
   DCHECK(out_error);
   dlcservice::DlcState state;
@@ -42,15 +42,13 @@ std::string DlcHelper::GetRootPath(const std::string& dlc_id,
     } else {
       *out_error = "Error calling dlcservice: unknown";
     }
-    //return std::nullopt;
-    return std::string();
+    return base::nullopt;
   }
 
   if (state.state() != dlcservice::DlcState_State_INSTALLED) {
     *out_error = dlc_id + " was not installed, its state is: " +
                  std::to_string(state.state());
-    //return std::nullopt;
-    return std::string();
+    return base::nullopt;
   }
 
   return state.root_path();

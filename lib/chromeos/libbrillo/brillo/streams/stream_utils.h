@@ -5,7 +5,7 @@
 #ifndef LIBBRILLO_BRILLO_STREAMS_STREAM_UTILS_H_
 #define LIBBRILLO_BRILLO_STREAMS_STREAM_UTILS_H_
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/location.h>
 #include <brillo/brillo_export.h>
 #include <brillo/streams/stream.h>

@@ -11,7 +11,7 @@
 #include <typeinfo>
 #include <utility>
 
-#include <base/check.h>
+//#include <base/check.h>
 #include <base/logging.h>
 #include <brillo/dbus/data_serialization.h>
 #include <brillo/type_name_undecorate.h>
