@@ -146,7 +146,7 @@ class BRILLO_PRIVATE SecureAllocator {
     if (madvise(buffer, buffer_size, MADV_WIPEONFORK))
       return nullptr;
 
-    fail_on_allocation_error.ReplaceClosure(base::DoNothing());
+    fail_on_allocation_error.ReplaceClosure(base::Closure());
 
     // Allocation was successful.
     return buffer;

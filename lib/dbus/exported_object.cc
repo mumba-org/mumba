@@ -41,6 +41,23 @@ ExportedObject::~ExportedObject() {
   DCHECK(!object_is_registered_);
 }
 
+bool ExportedObject::UnexportMethodAndBlock(const std::string& interface_name,
+                                            const std::string& method_name) {
+  bus_->AssertOnDBusThread();
+
+  const std::string absolute_method_name =
+      GetAbsoluteMemberName(interface_name, method_name);
+  MethodTable::const_iterator iter = method_table_.find(absolute_method_name);
+  if (iter == method_table_.end()) {
+    LOG(ERROR) << absolute_method_name << " is not exported";
+    return false;
+  }
+
+  method_table_.erase(iter);
+
+  return true;
+}
+
 bool ExportedObject::ExportMethodAndBlock(
     const std::string& interface_name,
     const std::string& method_name,
@@ -67,6 +84,19 @@ bool ExportedObject::ExportMethodAndBlock(
 
   return true;
 }
+
+void ExportedObject::UnexportMethod(
+    const std::string& interface_name,
+    const std::string& method_name,
+    OnUnexportedCallback on_unexported_callback) {
+  bus_->AssertOnOriginThread();
+
+  base::OnceClosure task = base::BindOnce(
+      &ExportedObject::UnexportMethodInternal, this, interface_name,
+      method_name, std::move(on_unexported_callback));
+  bus_->GetDBusTaskRunner()->PostTask(FROM_HERE, std::move(task));
+}
+
 
 void ExportedObject::ExportMethod(const std::string& interface_name,
                                   const std::string& method_name,

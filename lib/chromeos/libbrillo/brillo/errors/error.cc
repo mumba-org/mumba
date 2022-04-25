@@ -22,7 +22,7 @@ inline void LogError(const base::Location& location,
   // This way the log will contain the actual location of the error, and not
   // as if it always comes from brillo/errors/error.cc(22).
   logging::LogMessage(location.file_name() ? location.file_name() : "unknown",
-                      location.line_number(), logging::LOGGING_ERROR)
+                      location.line_number(), logging::LOG_ERROR)
           .stream()
       << (location.function_name() ? location.function_name() : "unknown")
       << "(...): "

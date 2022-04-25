@@ -50,26 +50,29 @@ void LogLvmError(int rc, const std::string& cmd) {
 bool GetThinpoolSizeFromReportContents(const base::Value& report_contents,
                                        int64_t* size) {
   // Get thinpool size.
-  const std::string* thinpool_size = report_contents.FindStringKey("lv_size");
-  if (!thinpool_size) {
+  auto* thinpool_sizev = report_contents.FindKey("lv_size");
+  if (!thinpool_sizev) {
     LOG(ERROR) << "Failed to get thinpool size.";
     return false;
   }
 
-  if (thinpool_size->empty()) {
+  const std::string& thinpool_size = thinpool_sizev->GetString();
+  
+
+  if (thinpool_size.empty()) {
     LOG(ERROR) << "Empty thinpool size string.";
     return false;
   }
 
   // Last character for size is always "B".
-  if (thinpool_size->back() != 'B') {
+  if (thinpool_size.back() != 'B') {
     LOG(ERROR) << "Last character of thinpool size string should always be B.";
     return false;
   }
 
   // Use base::StringToInt64 to validate the returned size.
   if (!base::StringToInt64(
-          base::StringPiece(thinpool_size->data(), thinpool_size->length() - 1),
+          base::StringPiece(thinpool_size.data(), thinpool_size.length() - 1),
           size)) {
     LOG(ERROR) << "Failed to convert thinpool size to a numeric value";
     return false;
@@ -276,15 +279,16 @@ bool Thinpool::GetFreeSpace(int64_t* size) {
 
   // Get the percentage of used data from the thinpool. The value is stored as a
   // string in the json.
-  std::string* data_used_percent =
-      report_contents->FindStringKey("data_percent");
-  if (!data_used_percent) {
+  auto* data_used_percentv = report_contents->FindKey("data_percent");
+  if (!data_used_percentv) {
     LOG(ERROR) << "Failed to get percentage size of thinpool used.";
     return false;
   }
 
+  const std::string& data_used_percent = data_used_percentv->GetString();
+
   double used_percent;
-  if (!base::StringToDouble(*data_used_percent, &used_percent)) {
+  if (!base::StringToDouble(data_used_percent, &used_percent)) {
     LOG(ERROR) << "Failed to convert used percentage string to double.";
     return false;
   }
@@ -360,32 +364,33 @@ std::optional<base::Value> LvmCommandRunner::UnwrapReportContents(
     return std::nullopt;
   }
 
-  base::Value* report_list = report->FindListKey("report");
-  if (!report_list) {
+  //base::Value* report_list = report->FindListKey("report");
+  base::Value* report_listv = report->FindKey("report");
+  if (!report_listv) {
     LOG(ERROR) << "Failed to find 'report' list";
     return std::nullopt;
   }
 
-  if (report_list->GetList().size() != 1) {
-    LOG(ERROR) << "Unexpected size: " << report_list->GetList().size();
+  if (report_listv->GetList().size() != 1) {
+    LOG(ERROR) << "Unexpected size: " << report_listv->GetList().size();
     return std::nullopt;
   }
 
-  base::Value& report_dictionary = report_list->GetList()[0];
+  base::Value& report_dictionary = report_listv->GetList()[0];
   if (!report_dictionary.is_dict()) {
     LOG(ERROR) << "Failed to find 'report' dictionary";
     return std::nullopt;
   }
 
-  base::Value* key_list = report_dictionary.FindListKey(key);
-  if (!key_list) {
+  base::Value* key_listv = report_dictionary.FindKey(key);
+  if (!key_listv) {
     LOG(ERROR) << "Failed to find " << key << " list";
     return std::nullopt;
   }
 
   // If the list has just a single dictionary element, return it directly.
-  if (key_list->GetList().size() == 1) {
-    base::Value& key_dictionary = key_list->GetList()[0];
+  if (key_listv->GetList().size() == 1) {
+    base::Value& key_dictionary = key_listv->GetList()[0];
     if (!key_dictionary.is_dict()) {
       LOG(ERROR) << "Failed to get " << key << " dictionary";
       return std::nullopt;
@@ -393,7 +398,7 @@ std::optional<base::Value> LvmCommandRunner::UnwrapReportContents(
     return std::move(key_dictionary);
   }
 
-  return std::move(*key_list);
+  return std::move(*key_listv);
 }
 
 }  // namespace brillo

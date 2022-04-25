@@ -292,14 +292,14 @@ inline void CallMethodWithTimeout(
   ::dbus::MessageWriter writer(&method_call);
   DBusParamWriter::Append(&writer, params...);
 
-  auto split_error_callback =
-      base::SplitOnceCallback(std::move(error_callback));
-
+  auto wrapped_once = base::BindRepeating(std::move(error_callback));
+      
+  auto split_error_callback = std::make_pair(wrapped_once, wrapped_once);
+  
   ::dbus::ObjectProxy::ErrorCallback dbus_error_callback = base::BindOnce(
       &TranslateErrorResponse, std::move(split_error_callback.first));
   ::dbus::ObjectProxy::ResponseCallback dbus_success_callback = base::BindOnce(
-      &TranslateSuccessResponse<OutArgs...>, std::move(success_callback),
-      std::move(split_error_callback.second));
+      &TranslateSuccessResponse<OutArgs...>, std::move(success_callback), std::move(split_error_callback.second));
 
   object->CallMethodWithErrorCallback(&method_call, timeout_ms,
                                       std::move(dbus_success_callback),

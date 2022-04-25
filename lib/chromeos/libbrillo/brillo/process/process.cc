@@ -262,8 +262,9 @@ std::string ProcessImpl::GetOutputString(int child_fd) {
 
     bytes_read += count;
 
-    if (bytes_read == output.size())
+    if (bytes_read == static_cast<ssize_t>(output.size())) {
       return output;
+    }
   }
 }
 

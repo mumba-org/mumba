@@ -1,0 +1,240 @@
+#
+# Copyright (C) 2001-2004 Sistina Software, Inc. All rights reserved.
+# Copyright (C) 2004-2015 Red Hat, Inc. All rights reserved.
+#
+# This file is part of LVM2.
+#
+# This copyrighted material is made available to anyone wishing to use,
+# modify, copy, or redistribute it subject to the terms and conditions
+# of the GNU General Public License v.2.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+top_builddir = @top_builddir@
+abs_top_builddir = @abs_top_builddir@
+abs_top_srcdir = @abs_top_srcdir@
+
+SUBDIRS = conf daemons include lib libdaemon libdm man scripts tools
+
+ifeq ("@UDEV_RULES@", "yes")
+  SUBDIRS += udev
+endif
+
+ifeq ("@INTL@", "yes")
+  SUBDIRS += po
+endif
+
+ifeq ("@APPLIB@", "yes")
+  SUBDIRS += liblvm
+endif
+
+ifeq ("@PYTHON_BINDINGS@", "yes")
+  SUBDIRS += python
+endif
+
+ifeq ($(MAKECMDGOALS),clean)
+  SUBDIRS += test
+endif
+# FIXME Should use intermediate Makefiles here!
+ifeq ($(MAKECMDGOALS),distclean)
+  SUBDIRS = conf include man test scripts \
+    libdaemon lib tools daemons libdm \
+    udev po liblvm python \
+    unit-tests/datastruct unit-tests/mm unit-tests/regex
+tools.distclean: test.distclean
+endif
+DISTCLEAN_DIRS += lcov_reports*
+DISTCLEAN_TARGETS += config.cache config.log config.status make.tmpl
+
+include make.tmpl
+
+libdm: include
+libdaemon: include
+lib: libdm libdaemon
+liblvm: lib
+daemons: lib libdaemon tools
+tools: lib libdaemon device-mapper
+po: tools daemons
+scripts: liblvm libdm
+
+lib.device-mapper: include.device-mapper
+libdm.device-mapper: include.device-mapper
+liblvm.device-mapper: include.device-mapper
+daemons.device-mapper: libdm.device-mapper
+tools.device-mapper: libdm.device-mapper
+scripts.device-mapper: include.device-mapper
+device-mapper: tools.device-mapper daemons.device-mapper man.device-mapper
+
+ifeq ("@INTL@", "yes")
+lib.pofile: include.pofile
+tools.pofile: lib.pofile
+daemons.pofile: lib.pofile
+po.pofile: tools.pofile daemons.pofile
+pofile: po.pofile
+endif
+
+ifeq ("@PYTHON_BINDINGS@", "yes")
+python: liblvm
+endif
+
+ifneq ("$(CFLOW_CMD)", "")
+tools.cflow: libdm.cflow lib.cflow
+daemons.cflow: tools.cflow
+cflow: include.cflow
+endif
+
+ifneq ("@CSCOPE_CMD@", "")
+cscope.out:
+	@CSCOPE_CMD@ -b -R -s$(top_srcdir)
+all: cscope.out
+endif
+DISTCLEAN_TARGETS += cscope.out
+CLEAN_DIRS += autom4te.cache
+
+check check_system check_cluster check_local check_lvmetad check_lvmpolld unit: all
+	$(MAKE) -C test $(@)
+
+conf.generate: tools
+
+# how to use parenthesis in makefiles
+leftparen:=(
+LVM_VER := $(firstword $(subst $(leftparen), ,$(LVM_VERSION)))
+VER := LVM2.$(LVM_VER)
+# release file name
+FILE_VER := $(VER).tgz
+CLEAN_TARGETS += $(FILE_VER)
+CLEAN_DIRS += $(rpmbuilddir)
+
+dist:
+	@echo "Generating $(FILE_VER)";\
+	(cd $(top_srcdir); git ls-tree -r HEAD --name-only | xargs tar --transform "s,^,$(VER)/," -c) | gzip >$(FILE_VER)
+
+rpm: dist
+	$(RM) -r $(rpmbuilddir)/SOURCES
+	$(MKDIR_P) $(rpmbuilddir)/SOURCES
+	$(LN_S) -f $(abs_top_builddir)/$(FILE_VER) $(rpmbuilddir)/SOURCES
+	$(LN_S) -f $(abs_top_srcdir)/spec/build.inc $(rpmbuilddir)/SOURCES
+	$(LN_S) -f $(abs_top_srcdir)/spec/macros.inc $(rpmbuilddir)/SOURCES
+	$(LN_S) -f $(abs_top_srcdir)/spec/packages.inc $(rpmbuilddir)/SOURCES
+	DM_VER=$$(cut -d- -f1 $(top_srcdir)/VERSION_DM);\
+	GIT_VER=$$(cd $(top_srcdir); git describe | cut -d- --output-delimiter=. -f2,3 || echo 0);\
+	sed -e "s,\(device_mapper_version\) [0-9.]*$$,\1 $$DM_VER," \
+	    -e "s,^\(Version:[^0-9%]*\)[0-9.]*$$,\1 $(LVM_VER)," \
+	    -e "s,^\(Release:[^0-9%]*\)[0-9.]\+,\1 $$GIT_VER," \
+	    $(top_srcdir)/spec/source.inc >$(rpmbuilddir)/SOURCES/source.inc
+	rpmbuild -v --define "_topdir $(rpmbuilddir)" -ba $(top_srcdir)/spec/lvm2.spec
+
+generate: conf.generate
+	$(MAKE) -C conf generate
+
+all_man:
+	$(MAKE) -C man all_man
+
+install_system_dirs:
+	$(INSTALL_DIR) $(DESTDIR)$(DEFAULT_SYS_DIR)
+	$(INSTALL_ROOT_DIR) $(DESTDIR)$(DEFAULT_ARCHIVE_DIR)
+	$(INSTALL_ROOT_DIR) $(DESTDIR)$(DEFAULT_BACKUP_DIR)
+	$(INSTALL_ROOT_DIR) $(DESTDIR)$(DEFAULT_CACHE_DIR)
+	$(INSTALL_ROOT_DIR) $(DESTDIR)$(DEFAULT_LOCK_DIR)
+	$(INSTALL_ROOT_DIR) $(DESTDIR)$(DEFAULT_RUN_DIR)
+	$(INSTALL_ROOT_DATA) /dev/null $(DESTDIR)$(DEFAULT_CACHE_DIR)/.cache
+
+install_initscripts: 
+	$(MAKE) -C scripts install_initscripts
+
+install_systemd_generators:
+	$(MAKE) -C scripts install_systemd_generators
+	$(MAKE) -C man install_systemd_generators
+
+install_systemd_units:
+	$(MAKE) -C scripts install_systemd_units
+
+install_all_man:
+	$(MAKE) -C man install_all_man
+
+ifeq ("@PYTHON_BINDINGS@", "yes")
+install_python_bindings:
+	$(MAKE) -C liblvm/python install_python_bindings
+endif
+
+install_tmpfiles_configuration:
+	$(MAKE) -C scripts install_tmpfiles_configuration
+
+LCOV_TRACES = libdm.info lib.info liblvm.info tools.info \
+	libdaemon/client.info libdaemon/server.info \
+	daemons/clvmd.info daemons/dmeventd.info \
+	daemons/lvmetad.info
+
+CLEAN_TARGETS += $(LCOV_TRACES)
+
+ifneq ("$(LCOV)", "")
+.PHONY: lcov-reset lcov lcov-dated $(LCOV_TRACES)
+
+ifeq ($(MAKECMDGOALS),lcov-dated)
+LCOV_REPORTS_DIR := lcov_reports-$(shell date +%Y%m%d%k%M%S)
+lcov-dated: lcov
+else
+LCOV_REPORTS_DIR := lcov_reports
+endif
+
+lcov-reset:
+	$(LCOV) --zerocounters $(addprefix -d , $(basename $(LCOV_TRACES)))
+
+# maybe use subdirs processing to create tracefiles...
+$(LCOV_TRACES):
+	$(LCOV) -b $(basename $@) -d $(basename $@) \
+		--ignore-errors source -c -o - | $(SED) \
+		-e "s/\(dmeventd_lvm.[ch]\)/plugins\/lvm2\/\1/" \
+		-e "s/dmeventd_\(mirror\|snapshot\|thin\|raid\)\.c/plugins\/\1\/dmeventd_\1\.c/" \
+		>$@
+
+ifneq ("$(GENHTML)", "")
+lcov: $(LCOV_TRACES)
+	$(RM) -r $(LCOV_REPORTS_DIR)
+	$(MKDIR_P) $(LCOV_REPORTS_DIR)
+	for i in $(LCOV_TRACES); do \
+		test -s $$i -a $$(wc -w <$$i) -ge 100 && lc="$$lc $$i"; \
+	done; \
+	test -z "$$lc" || $(GENHTML) -p @abs_top_builddir@ \
+		-o $(LCOV_REPORTS_DIR) $$lc
+endif
+
+endif
+
+ifeq ("$(TESTING)", "yes")
+# testing and report generation
+RUBY=ruby1.9 -Ireport-generators/lib -Ireport-generators/test
+
+.PHONY: unit-test ruby-test test-programs
+
+# FIXME: put dependencies on libdm and liblvm
+# FIXME: Should be handled by Makefiles in subdirs, not here at top level.
+test-programs:
+	cd unit-tests/regex && $(MAKE)
+	cd unit-tests/datastruct && $(MAKE)
+	cd unit-tests/mm && $(MAKE)
+
+unit-test: test-programs
+	$(RUBY) report-generators/unit_test.rb $(shell find . -name TESTS)
+	$(RUBY) report-generators/title_page.rb
+
+memcheck: test-programs
+	$(RUBY) report-generators/memcheck.rb $(shell find . -name TESTS)
+	$(RUBY) report-generators/title_page.rb
+
+ruby-test:
+	$(RUBY) report-generators/test/ts.rb
+endif
+
+ifneq ($(shell which ctags),)
+.PHONY: tags
+tags:
+	test -z "$(shell find $(top_srcdir) -type f -name '*.[ch]' -newer tags 2>/dev/null | head -1)" || $(RM) tags
+	test -f tags || find $(top_srcdir) -maxdepth 4 -type f -name '*.[ch]' -exec ctags -a '{}' +
+
+CLEAN_TARGETS += tags
+endif

@@ -233,6 +233,10 @@ class CHROME_DBUS_EXPORT Bus : public base::RefCountedThreadSafe<Bus> {
   typedef base::Callback<void (const std::string& service_owner)>
       GetServiceOwnerCallback;
 
+  // Called when a service owner changes.
+  using ServiceOwnerChangeCallback =
+      base::RepeatingCallback<void(const std::string& service_owner)>;    
+
   // TODO(satorux): Remove the service name parameter as the caller of
   // RequestOwnership() knows the service name.
 

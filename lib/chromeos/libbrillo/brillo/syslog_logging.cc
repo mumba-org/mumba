@@ -40,19 +40,19 @@ static bool HandleMessage(int severity,
                           size_t message_start,
                           const std::string& message) {
   switch (severity) {
-    case logging::LOGGING_INFO:
+    case logging::LOG_INFO:
       severity = kSyslogInfo;
       break;
 
-    case logging::LOGGING_WARNING:
+    case logging::LOG_WARNING:
       severity = kSyslogWarning;
       break;
 
-    case logging::LOGGING_ERROR:
+    case logging::LOG_ERROR:
       severity = kSyslogError;
       break;
 
-    case logging::LOGGING_FATAL:
+    case logging::LOG_FATAL:
       severity = kSyslogCritical;
       break;
 
@@ -93,7 +93,7 @@ int GetLogFlags() {
 void InitLog(int init_flags) {
   logging::LoggingSettings settings;
   settings.logging_dest =
-      logging::LOG_TO_SYSTEM_DEBUG_LOG | logging::LOG_TO_STDERR;
+      logging::LOG_TO_SYSTEM_DEBUG_LOG; // | logging::LOG_TO_STDERR;
   logging::InitLogging(settings);
 
   const bool kOptionPID = false;

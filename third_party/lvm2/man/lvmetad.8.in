@@ -1,0 +1,114 @@
+.TH LVMETAD 8 "LVM TOOLS #VERSION#" "Red Hat Inc" \" -*- nroff -*-
+.SH NAME
+lvmetad \(em LVM metadata cache daemon
+
+.SH SYNOPSIS
+.B lvmetad
+.RB [ \-l
+.RI { all | wire | debug }]
+.RB [ \-p
+.IR pidfile_path ]
+.RB [ \-s
+.IR socket_path ]
+.RB [ \-f ]
+.RB [ \-h ]
+.RB [ \-V ]
+.RB [ \-? ]
+
+.SH DESCRIPTION
+
+The lvmetad daemon caches LVM metadata, so that LVM commands can read
+metadata without scanning disks.
+
+Metadata caching can be an advantage because scanning disks is time
+consuming and may interfere with the normal work of the system and disks.
+
+lvmetad does not read metadata from disks itself.  The 'pvscan \-\-cache'
+command scans disks, reads the LVM metadata and sends it to lvmetad.
+
+New LVM disks that appear on the system must be scanned by pvscan before
+lvmetad knows about them.  If lvmetad does not know about a disk, then LVM
+commands using lvmetad will also not know about it.  When disks are added
+or removed from the system, lvmetad must be updated.
+
+lvmetad is usually combined with event-based system services that
+automatically run pvscan \-\-cache on new disks.  This way, the lvmetad
+cache is automatically updated with metadata from new disks when they
+appear.  LVM udev rules and systemd services implement this automation.
+Automatic scanning is usually combined with automatic activation.  For
+more information, see
+.BR pvscan (8).
+
+If lvmetad is started or restarted after disks have been added to the
+system, or if the global_filter has changed, the cache must be updated by
+running 'pvscan \-\-cache'.
+
+When lvmetad is not used, LVM commands revert to scanning disks for LVM
+metadata.
+
+Use of lvmetad is enabled/disabled by:
+.br
+.BR lvm.conf (5)
+.B global/use_lvmetad
+
+For more information on this setting, see:
+.br
+.B lvmconfig \-\-withcomments global/use_lvmetad
+
+To ignore disks from LVM at the system level, e.g. lvmetad, pvscan use:
+.br
+.BR lvm.conf (5)
+.B devices/global_filter
+
+For more information on this setting, see
+.br
+.B lvmconfig \-\-withcomments devices/global_filter
+
+.SH OPTIONS
+
+To run the daemon in a test environment both the pidfile_path and the
+socket_path should be changed from the defaults.
+.TP
+.B \-f
+Don't fork, but run in the foreground.
+.TP
+.BR \-h ", " \-?
+Show help information.
+.TP
+.IR \fB\-l " {" all | wire | debug }
+Select the type of log messages to generate.
+Messages are logged by syslog.  
+Additionally, when \-f is given they are also sent to standard error.
+Since release 2.02.98, there are two classes of messages: wire and debug.
+Selecting 'all' supplies both and is equivalent to a comma-separated list
+\-l wire,debug.
+Prior to release 2.02.98, repeating \-d from 1 to 3 times, viz. \-d, \-dd, \-ddd,
+increased the detail of messages.
+.TP
+.B \-p \fIpidfile_path
+Path to the pidfile. This overrides both the built-in default
+(#DEFAULT_PID_DIR#/lvmetad.pid) and the environment variable
+\fBLVM_LVMETAD_PIDFILE\fP.  This file is used to prevent more
+than one instance of the daemon running simultaneously.
+.TP
+.B \-s \fIsocket_path
+Path to the socket file. This overrides both the built-in default
+(#DEFAULT_RUN_DIR#/lvmetad.socket) and the environment variable
+\fBLVM_LVMETAD_SOCKET\fP.  To communicate successfully with lvmetad,
+all LVM2 processes should use the same socket path.
+.TP
+.B \-V
+Display the version of lvmetad daemon.
+.SH ENVIRONMENT VARIABLES
+.TP
+.B LVM_LVMETAD_PIDFILE
+Path for the pid file.
+.TP
+.B LVM_LVMETAD_SOCKET 
+Path for the socket file.
+
+.SH SEE ALSO
+.BR lvm (8),
+.BR lvmconfig (8),
+.BR lvm.conf (5),
+.BR pvscan (8)

@@ -14,7 +14,7 @@
 #include <base/bind.h>
 #include <base/callback.h>
 #include <base/memory/ref_counted.h>
-#include <base/task/sequenced_task_runner.h>
+#include <base/sequenced_task_runner.h>
 #include <brillo/brillo_export.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/support/async_unary_call.h>

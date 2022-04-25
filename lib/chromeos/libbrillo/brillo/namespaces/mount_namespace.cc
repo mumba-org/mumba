@@ -56,7 +56,7 @@ bool MountNamespace::Create() {
       PLOG(ERROR) << "unshare(CLONE_NEWNS) failed";
       exit(1);
     }
-    base::WriteFileDescriptor(fd_unshared[1], base::StringPiece(&byte, 1));
+    base::WriteFileDescriptor(fd_unshared[1], &byte, 1);
     base::ReadFromFD(fd_mounted[0], &byte, 1);
     exit(0);
   } else {
@@ -84,7 +84,7 @@ bool MountNamespace::Create() {
                   << ", MS_BIND) failed";
       mount_success = false;
     }
-    base::WriteFileDescriptor(fd_mounted[1], base::StringPiece(&byte, 1));
+    base::WriteFileDescriptor(fd_mounted[1], &byte, 1);
 
     int status;
     if (platform_->Waitpid(pid, &status) < 0) {

@@ -22,6 +22,8 @@ namespace dbus_utils {
 
 namespace {
 
+void DoNothing() {}
+
 void SetupDefaultPropertyHandlers(DBusInterface* prop_interface,
                                   ExportedPropertySet* property_set) {
   prop_interface->AddSimpleMethodHandler(dbus::kPropertiesGetAll,
@@ -43,7 +45,7 @@ DBusInterface::DBusInterface(DBusObject* dbus_object,
                              const std::string& interface_name)
     : dbus_object_(dbus_object),
       interface_name_(interface_name),
-      release_interface_cb_(base::DoNothing()) {}
+      release_interface_cb_(base::BindOnce(&DoNothing)) {}
 
 void DBusInterface::AddProperty(const std::string& property_name,
                                 ExportedPropertyBase* prop_base) {

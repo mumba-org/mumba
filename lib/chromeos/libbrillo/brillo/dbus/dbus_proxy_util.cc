@@ -6,6 +6,9 @@
 
 #include <string>
 #include <utility>
+#include "base/bind.h"
+#include "base/callback.h"
+#include "base/task_runner.h"
 
 namespace brillo {
 namespace dbus_utils {

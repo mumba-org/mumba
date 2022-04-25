@@ -29,6 +29,7 @@
 #include <base/strings/string_number_conversions.h>
 #include <base/strings/string_split.h>
 #include <base/message_loop/message_pump_type.h>
+#include <base/message_loop/message_loop.h>
 #include <base/threading/thread_task_runner_handle.h>
 
 #include <brillo/location_logging.h>
@@ -50,16 +51,21 @@ BaseMessageLoop::BaseMessageLoop() {
   CHECK(!base::ThreadTaskRunnerHandle::IsSet())
       << "You can't create a base::SingleThreadTaskExecutor when another "
          "base::SingleThreadTaskExecutor is already created for this thread.";
-  owned_task_executor_.reset(
-      new base::SingleThreadTaskExecutor(base::MessagePumpType::IO));
-  task_runner_ = owned_task_executor_->task_runner();
-  watcher_ = std::make_unique<base::FileDescriptorWatcher>(task_runner_);
+  //owned_task_executor_.reset(
+  //    new base::SingleThreadTaskExecutor(base::MessagePumpType::IO));
+  owned_message_loop_.reset(
+      new base::MessageLoop(base::MessageLoop::TYPE_IO));
+  //task_runner_ = owned_task_executor_->task_runner();
+  task_runner_ = owned_message_loop_->task_runner();
+  base::MessageLoop* message_loop_for_io = owned_message_loop_.get();
+  watcher_ = std::make_unique<base::FileDescriptorWatcher>(static_cast<base::MessageLoopForIO*>(message_loop_for_io));
 }
 
-BaseMessageLoop::BaseMessageLoop(
-    scoped_refptr<base::SingleThreadTaskRunner> task_runner)
-    : task_runner_(task_runner),
-      watcher_(std::make_unique<base::FileDescriptorWatcher>(task_runner)) {}
+// BaseMessageLoop::BaseMessageLoop(
+//     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
+//     : task_runner_(task_runner) {
+//   watcher_ = std::make_unique<base::FileDescriptorWatcher>(task_runner->message_loop());
+// }
 
 BaseMessageLoop::~BaseMessageLoop() {
   // Note all pending canceled delayed tasks when destroying the message loop.
@@ -159,7 +165,7 @@ void BaseMessageLoop::BreakLoop() {
 
 base::RepeatingClosure BaseMessageLoop::QuitClosure() const {
   if (base_run_loop_ == nullptr)
-    return base::DoNothing();
+    return base::Closure();
   return base_run_loop_->QuitClosure();
 }
 

@@ -152,7 +152,7 @@ std::optional<std::string> GetPosixTimezone(const base::FilePath& tzif_path) {
 
   std::string time_string(tzfile.GetLength() - offset, '\0');
   if (tzfile.ReadAtCurrentPos(time_string.data(), time_string.size()) !=
-      time_string.size()) {
+      static_cast<int>(time_string.size())) {
     return std::nullopt;
   }
 

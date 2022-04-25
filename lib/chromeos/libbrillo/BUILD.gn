@@ -22,7 +22,7 @@ default_pkg_deps = [ "libchrome" ]
 
 config("target_defaults") {
   #configs = [ ":target_defaults_pkg_deps" ]
-  include_dirs = [ "../libbrillo" ]
+  include_dirs = [ "../libbrillo", "//third_party", "//third_party/lvm2/libdm", "//third_party/lvm2/tools", "//third_party/curl/include", "//third_party/grpc/include", "//third_party/abseil-cpp", "/usr/include/dbus-1.0", "/usr/lib/x86_64-linux-gnu/dbus-1.0/include", "//third_party/minijail"]
   defines = [
     #"USE_DBUS=${use.dbus}",
     "USE_DBUS=1",
@@ -47,7 +47,7 @@ libbrillo_sublibs = [
     #if (use.dbus) {
       all_dependent_pkg_deps += [ "dbus-1" ]
     #}
-    libs = [ "modp_b64" ]
+    #libs = [ "modp_b64" ]
     sources = [
       "brillo/asynchronous_signal_handler.cc",
       "brillo/backoff_entry.cc",
@@ -98,6 +98,13 @@ libbrillo_sublibs = [
         "brillo/dbus/utils.cc",
       ]
     #}
+    deps = [
+      "//lib/base",
+      "//buildtools/third_party/libc++",
+      "//third_party/modp_b64",
+      "//lib/dbus",
+      "//third_party/boringssl"
+    ]
   },
 
   {
@@ -198,6 +205,15 @@ libbrillo_sublibs = [
       "brillo/grpc/grpc_completion_queue_dispatcher.cc",
       "brillo/grpc/rpc_state.cc",
       "brillo/grpc/time_util.cc",
+    ]
+    deps = [
+      "//lib/base",
+      "//buildtools/third_party/libc++",
+      #"//third_party/grpc",
+      "//lib/rpc:gpr",
+      "//lib/rpc:grpc",
+      "//lib/rpc:rpc",
+      "//third_party/abseil-cpp:default",
     ]
   },
 ]

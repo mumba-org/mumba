@@ -23,7 +23,6 @@
 #include <base/memory/weak_ptr.h>
 #include <base/task/single_thread_task_executor.h>
 #include <base/time/time.h>
-#include <gtest/gtest_prod.h>
 
 #include <brillo/brillo_export.h>
 #include <brillo/message_loops/message_loop.h>
@@ -38,8 +37,8 @@ class BRILLO_EXPORT BaseMessageLoop : public MessageLoop {
 
   // Construct a brillo::BaseMessageLoop using the passed
   // base::SingleThreadTaskRunner instance.
-  explicit BaseMessageLoop(
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
+  // explicit BaseMessageLoop(
+  //     scoped_refptr<base::SingleThreadTaskRunner> task_runner);
   BaseMessageLoop(const BaseMessageLoop&) = delete;
   BaseMessageLoop& operator=(const BaseMessageLoop&) = delete;
 
@@ -60,7 +59,6 @@ class BRILLO_EXPORT BaseMessageLoop : public MessageLoop {
   base::RepeatingClosure QuitClosure() const;
 
  private:
-  FRIEND_TEST(BaseMessageLoopTest, ParseBinderMinor);
 
   static const int kInvalidMinor;
   static const int kUninitializedMinor;
@@ -89,8 +87,9 @@ class BRILLO_EXPORT BaseMessageLoop : public MessageLoop {
 
   // The base::SingleThreadTaskExecutor instance owned by this class, if any.
   // This is declared first in this class so it is destroyed last.
-  std::unique_ptr<base::SingleThreadTaskExecutor> owned_task_executor_;
-
+  //std::unique_ptr<base::SingleThreadTaskExecutor> owned_task_executor_;
+  std::unique_ptr<base::MessageLoop> owned_message_loop_;
+  
   // Tasks blocked on a timeout.
   std::map<MessageLoop::TaskId, DelayedTask> delayed_tasks_;
 

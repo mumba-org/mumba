@@ -14,7 +14,7 @@
 
 #include <brillo/brillo_export.h>
 #include <brillo/key_value_store.h>
-#include <gtest/gtest_prod.h>
+//#include <gtest/gtest_prod.h>
 
 namespace brillo {
 

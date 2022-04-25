@@ -18,7 +18,8 @@
 #include <base/files/file_util.h>
 #include <base/logging.h>
 #include <base/memory/ptr_util.h>
-#include <base/task/common/task_annotator.h>
+//#include <base/task/common/task_annotator.h>
+#include <base/debug/task_annotator.h>
 
 namespace brillo {
 namespace timers {
@@ -95,8 +96,10 @@ void SimpleAlarmTimer::Reset() {
   // Set up the pending task.
   base::TimeTicks desired_run_time =
       delay.is_zero() ? base::TimeTicks() : base::TimeTicks::Now() + delay;
+  //pending_task_ = std::make_unique<base::PendingTask>(
+  //    posted_from_, user_task_, base::TimeTicks::Now(), desired_run_time);
   pending_task_ = std::make_unique<base::PendingTask>(
-      posted_from_, user_task_, base::TimeTicks::Now(), desired_run_time);
+      posted_from_, user_task_, desired_run_time);
 
   // Set |alarm_fd_| to be signaled when the delay expires. If the delay is
   // zero, |alarm_fd_| will never be signaled. This overrides the previous
@@ -120,8 +123,8 @@ void SimpleAlarmTimer::Reset() {
   } else {
     // Otherwise, if the delay is not zero, generate a tracing event to indicate
     // that the task was posted and watch |alarm_fd_|.
-    base::TaskAnnotator().WillQueueTask("SimpleAlarmTimer::Reset",
-                                        pending_task_.get(), "");
+    //base::debug::TaskAnnotator().WillQueueTask("SimpleAlarmTimer::Reset", pending_task_.get(), "");
+    base::debug::TaskAnnotator().DidQueueTask("SimpleAlarmTimer::Reset", *pending_task_);
     alarm_fd_watcher_ = base::FileDescriptorWatcher::WatchReadable(
         alarm_fd_.get(),
         base::BindRepeating(&SimpleAlarmTimer::OnAlarmFdReadableWithoutBlocking,
@@ -153,7 +156,7 @@ void SimpleAlarmTimer::OnTimerFired() {
   base::WeakPtr<SimpleAlarmTimer> weak_ptr = weak_factory_.GetWeakPtr();
 
   // Run the task.
-  base::TaskAnnotator().RunTask("SimpleAlarmTimer::Reset", *pending_user_task);
+  base::debug::TaskAnnotator().RunTask("SimpleAlarmTimer::Reset", pending_user_task.get());
 
   // If the timer wasn't deleted, stopped or reset by the callback, stop it.
   if (weak_ptr)

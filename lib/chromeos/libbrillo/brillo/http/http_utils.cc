@@ -330,23 +330,29 @@ std::optional<base::Value> ParseJsonResponse(Response* response,
   }
 
   std::string json = response->ExtractDataAsString();
-  auto json_result =
-      base::JSONReader::ReadAndReturnValueWithError(json, base::JSON_PARSE_RFC);
-  if (!json_result.value) {
+
+  int error_code_out = 0;
+  std::string error_msg_out;
+
+  auto json_result_value =
+      base::JSONReader::ReadAndReturnError(json, base::JSON_PARSE_RFC, &error_code_out, &error_msg_out);
+  if (!json_result_value) {
     brillo::Error::AddToPrintf(error, FROM_HERE, brillo::errors::json::kDomain,
                                brillo::errors::json::kParseError,
                                "Error '%s' occurred parsing JSON string '%s'",
-                               json_result.error_message.c_str(), json.c_str());
+                               error_msg_out.c_str(), json.c_str());
     return std::nullopt;
   }
-  if (!json_result.value->is_dict()) {
+  if (!json_result_value->is_dict()) {
     brillo::Error::AddToPrintf(error, FROM_HERE, brillo::errors::json::kDomain,
                                brillo::errors::json::kObjectExpected,
                                "Response is not a valid dictionary: '%s'",
                                json.c_str());
     return std::nullopt;
   }
-  return std::move(json_result.value);
+  // unfortunatelly we need a copy here
+  base::Value local = base::Value::FromUniquePtrValue(std::move(json_result_value));
+  return local;
 }
 
 std::string GetCanonicalHeaderName(const std::string& name) {

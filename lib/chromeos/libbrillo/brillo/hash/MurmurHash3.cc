@@ -16,7 +16,7 @@
 // compile and run any of them on any platform, but your performance with the
 // non-native version will be less than optimal.
 
-#include "libbrillo/brillo/hash/MurmurHash3.h"
+#include "brillo/hash/MurmurHash3.h"
 
 //-----------------------------------------------------------------------------
 // Platform-specific functions and macros

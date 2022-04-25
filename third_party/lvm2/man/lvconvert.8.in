@@ -1,0 +1,653 @@
+.TH LVCONVERT 8 "LVM TOOLS #VERSION#" "Red Hat, Inc" \" -*- nroff -*-
+.SH NAME
+lvconvert \(em convert a logical volume from linear to mirror or snapshot
+.SH SYNOPSIS
+.B lvconvert
+.BR \-m | \-\-mirrors
+.I Mirrors
+.RB [ \-\-type
+.IR SegmentType ]
+.RB [ \-\-mirrorlog
+.RI { disk | core | mirrored }]
+.RB [ \-\-corelog ]
+.RB [ \-R | \-\-regionsize
+.IR MirrorLogRegionSize ]
+.RB [ \-\-stripes
+.I Stripes
+.RB [ \-I | \-\-stripesize
+.IR StripeSize ]]
+.RB [ \-A | \-\-alloc
+.IR AllocationPolicy ]
+.RB [ \-b | \-\-background ]
+.RB [ \-f | \-\-force ]
+.RB [ \-i | \-\-interval
+.IR Seconds ]
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-\-noudevsync ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-y | \-\-yes ]
+.RB [ \-\-version ]
+.IR LogicalVolume [ Path ]
+.RI [ PhysicalVolume [ Path ][ :PE [ \-PE ]]...]
+.sp
+.B lvconvert
+.BR \-\-split
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-\-noudevsync ]
+.RB [ \-v | \-\-verbose ]
+.IR SplitableLogicalVolume { Name | Path }
+.sp
+.B lvconvert
+.BR \-\-splitcache | \-\-uncache
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-\-noudevsync ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.IR CacheLogicalVolume { Name | Path }
+.sp
+.B lvconvert \-\-splitmirrors \fIImages
+.RB [ \-\-name
+.IR SplitLogicalVolumeName ]
+.RB [ \-\-trackchanges ]
+.IR MirrorLogicalVolume [ Path ]
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RI [ SplittablePhysicalVolume [ Path ][ :PE [ \-PE ]]...]
+.sp
+.B lvconvert
+.BR \-\-splitsnapshot
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-\-noudevsync ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.IR SnapshotLogicalVolume [ Path ]
+.sp
+.B lvconvert
+.BR \-s | \-\-snapshot
+.RB [ \-c | \-\-chunksize
+.IR ChunkSize [ bBsSkK ]]
+.RB [ \-Z | \-\-zero
+.RI { y | n }]
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-\-noudevsync ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.IR OriginalLogicalVolume [ Path ]
+.IR SnapshotLogicalVolume [ Path ]
+.sp
+.B lvconvert \-\-merge
+.RB [ \-b | \-\-background ]
+.RB [ \-i | \-\-interval
+.IR Seconds ]
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.IR LogicalVolume [ Path ]...
+.sp
+.B lvconvert \-\-repair
+.RB [ \-\-stripes
+.I Stripes
+.RB [ \-I | \-\-stripesize
+.IR StripeSize ]]
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.IR LogicalVolume [ Path ]
+.RI [ PhysicalVolume [ Path ]...]
+.sp
+.B lvconvert \-\-replace \fIPhysicalVolume
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.IR LogicalVolume [ Path ]
+.RI [ PhysicalVolume [ Path ]...]
+.sp
+.B lvconvert
+.B \-\-type
+.BR \fIthin [ \fI\-pool ]| \-T | \-\-thin
+.RB [ \-\-originname
+.IR NewExternalOriginVolumeName ]
+.RB [ \-\-thinpool
+.IR ThinPoolLogicalVolume { Name | Path }
+.RB [ \-c | \-\-chunksize
+.IR ChunkSize [ bBsSkKmMgG ]]
+.RB [ \-\-discards
+.RI { ignore | nopassdown | passdown }]
+.RB [ \-\-poolmetadata
+.IR ThinPoolMetadataLogicalVolume { Name | Path }
+|
+.B \-\-poolmetadatasize
+.IR ThinPoolMetadataSize [ bBsSkKmMgG ]]
+.RB [ \-r | \-\-readahead
+.RI { ReadAheadSectors | auto | none }]
+.RB [ \-\-stripes \ \fIStripes
+.RB [ \-I | \-\-stripesize \  \fIStripeSize ]]]
+.RB [ \-\-poolmetadataspare
+.RI { y | n }]
+.RB [ \-Z | \-\-zero \ { \fIy | \fIn }]]
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.RI [[ ExternalOrigin | ThinPool ] LogicalVolume { Name | Path }]
+.RI [ PhysicalVolume [ Path ][ :PE
+.RI [ \-PE ]]\ \.\|\.\|\.
+.sp
+.B lvconvert
+.B \-\-type
+.BR \fIcache [ \fI\-pool ]| \-H | \-\-cache
+.RB [ \-\-cachepool
+.IR CachePoolLogicalVolume { Name | Path }]
+.\" |
+.\" .B \-\-pooldatasize
+.\" .IR CachePoolMetadataSize [ bBsSkKmMgGtTpPeE ]]
+.RB [ \-c | \-\-chunksize
+.IR ChunkSize [ bBsSkKmMgG ]]
+.RB [ \-\-cachemode
+.RI { writeback | writethrough }]
+.RB [ \-\-cachepolicy
+.IR policy ]
+.RB [ \-\-cachesettings
+.IR key=value ]
+.RB [ \-\-poolmetadata
+.IR CachePoolMetadataLogicalVolume { Name | Path }
+|
+.B \-\-poolmetadatasize
+.IR CachePoolMetadataSize [ bBsSkKmMgG ]]
+.RB [ \-\-poolmetadataspare
+.RI { y | n }]
+.RB [ \-\-commandprofile
+.IR ProfileName ]
+.RB [ \-h | \-? | \-\-help ]
+.RB [ \-v | \-\-verbose ]
+.RB [ \-\-version ]
+.IR LogicalVolume { Name | Path }
+.RI [ PhysicalVolume [ Path ][ :PE [ \-PE ]]...]
+.sp
+
+.SH DESCRIPTION
+lvconvert is used to change the segment type (i.e. linear, mirror, etc) or
+characteristics of a logical volume.  For example, it can add or remove the
+redundant images of a logical volume, change the log type of a mirror, or
+designate a logical volume as a snapshot repository.
+.br
+If the conversion requires allocation of physical extents (for
+example, when converting from linear to mirror) and you specify
+one or more PhysicalVolumes (optionally with ranges of physical
+extents), allocation of physical extents will be restricted to
+these physical extents.  If the conversion frees physical extents
+(for example, when converting from a mirror to a linear, or reducing
+mirror legs) and you specify one or more PhysicalVolumes,
+the freed extents come first from the specified PhysicalVolumes.
+.SH OPTIONS
+See \fBlvm\fP(8) for common options.
+.br
+Exactly one of
+.BR \-\-cache ,
+.BR \-\-corelog ,
+.BR \-\-merge ,
+.BR \-\-mirrorlog ,
+.BR \-\-mirrors ,
+.BR \-\-repair ,
+.BR \-\-replace ,
+.BR \-\-snapshot ,
+.BR \-\-split ,
+.BR \-\-splitcache ,
+.BR \-\-splitsnapshot ,
+.BR \-\-splitmirrors ,
+.BR \-\-thin ,
+.BR \-\-type
+or
+.BR \-\-uncache
+arguments is required.
+.TP
+.BR \-b ", " \-\-background
+Run the daemon in the background.
+.TP
+.BR \-H ", " \-\-cache ", " \-\-type\ \fIcache
+Converts logical volume to a cached LV with the use of cache pool
+specified with \fB\-\-cachepool\fP.
+For more information on cache pool LVs and cache LVs, see \fBlvmcache\fP(7).
+.TP
+.B \-\-cachepolicy \fIpolicy
+Only applicable to cached LVs; see also \fBlvmcache(7)\fP. Sets
+the cache policy. \fImq\fP is the basic policy name. \fIsmq\fP is more advanced
+version available in newer kernels.
+.TP
+.BR \-\-cachepool " " \fICachePoolLV
+This argument is necessary when converting a logical volume to a cache LV.
+For more information on cache pool LVs and cache LVs, see \fBlvmcache\fP(7).
+.TP
+.BR \-\-cachesettings " " \fIkey=value
+Only applicable to cached LVs; see also \fBlvmcache(7)\fP. Sets
+the cache tunable settings. In most use-cases, default values should be adequate.
+Special string value \fIdefault\fP switches setting back to its default kernel value
+and removes it from the list of settings stored in lvm2 metadata.
+.TP
+.BR \-m ", " \-\-mirrors " " \fIMirrors
+Specifies the degree of the mirror you wish to create.
+For example, "\fB\-m 1\fP" would convert the original logical
+volume to a mirror volume with 2-sides; that is, a
+linear volume plus one copy.  There are two implementations of mirroring
+which correspond to the "\fIraid1\fP" and "\fImirror\fP" segment types.  The default
+mirroring segment type is "\fIraid1\fP".  If the legacy "\fImirror\fP" segment type
+is desired, the \fB\-\-type\fP argument must be used to explicitly
+select the desired type.  The \fB\-\-mirrorlog\fP and \fB\-\-corelog\fP
+options below are only relevant to the legacy "\fImirror\fP" segment type.
+.TP
+.IR \fB\-\-mirrorlog " {" disk | core | mirrored }
+Specifies the type of log to use.
+The default is \fIdisk\fP, which is persistent and requires
+a small amount of storage space, usually on a separate device
+from the data being mirrored.
+\fICore\fP may be useful for short-lived mirrors: It means the mirror is
+regenerated by copying the data from the first device again every
+time the device is activated - perhaps, for example, after every reboot.
+Using \fImirrored\fP will create a persistent log that is itself mirrored.
+.TP
+.B \-\-corelog
+The optional argument \fB\-\-corelog\fP is the same as specifying
+\fB\-\-mirrorlog\fP \fIcore\fP.
+.TP
+.BR \-R ", " \-\-regionsize " " \fIMirrorLogRegionSize
+A mirror is divided into regions of this size (in MB), and the mirror log
+uses this granularity to track which regions are in sync.
+.TP
+.B \-\-type \fISegmentType
+Used to convert a logical volume to another segment type, like
+.IR cache ,
+.IR cache-pool ,
+.IR raid1 ,
+.IR snapshot ,
+.IR thin ,
+or
+.IR thin-pool .
+When converting a logical volume to a cache LV, the
+.B \-\-cachepool
+argument is required.
+When converting a logical volume to a thin LV, the
+.B \-\-thinpool
+argument is required.
+See \fBlvmcache\fP(7) for more info about caching support
+and \fBlvmthin\fP(7) for thin provisioning support.
+.TP
+.BR \-i ", " \-\-interval " " \fISeconds
+Report progress as a percentage at regular intervals.
+.TP
+.B \-\-noudevsync
+Disables udev synchronisation. The
+process will not wait for notification from udev.
+It will continue irrespective of any possible udev processing
+in the background.  You should only use this if udev is not running
+or has rules that ignore the devices LVM2 creates.
+.TP
+.B \-\-splitmirrors \fIImages
+The number of redundant \fIImages\fP of a mirror to be split off and used
+to form a new logical volume.  A name must be supplied for the
+newly-split-off logical volume using the \fB\-\-name\fP argument, unless
+the \fB\-\-trackchanges\fP argument is given.
+.TP
+.BR \-n ", " \-\-name\  \fIName
+The name to apply to a logical volume which has been split off from
+a mirror logical volume.
+.TP
+.B \-\-trackchanges
+Used with \fB\-\-splitmirrors\fP on a raid1 device, this tracks changes so
+that the read-only detached image can be merged efficiently back into
+the mirror later. Only the regions of the detached device where
+the data changed get resynchronized.
+
+Please note that this feature is only supported with the new md-based mirror
+implementation and not with the original device-mapper mirror implementation.
+.TP
+.B \-\-split
+Separates \fISplitableLogicalVolume\fP.
+Option is agregating various split commands and tries to detect necessary split
+operation from its arguments.
+.TP
+.BR \-\-splitcache
+Separates \fICacheLogicalVolume\fP from cache pool.
+Before the logical volume becomes uncached, cache is flushed.
+The cache pool volume is then left unused and
+could be used e.g. for caching another volume.
+See also the option \fB\-\-uncache\fP for uncaching and removing
+cache pool with one command.
+.TP
+.B \-\-splitsnapshot
+Separates \fISnapshotLogicalVolume\fP from its origin.
+The volume that is split off contains the chunks that differ from the origin
+along with the metadata describing them.  This volume can be wiped and then
+destroyed with lvremove.
+The inverse of \fB\-\-snapshot\fP.
+.TP
+.BR \-s ", " \-\-snapshot ", " \-\-type\ \fIsnapshot
+Recreates a snapshot from constituent logical volumes (or copies of them) after
+having been separated using \fB\-\-splitsnapshot\fP.
+For this to work correctly, no changes may be made to the contents
+of either volume after the split.
+.TP
+.BR \-c ", " \-\-chunksize " " \fIChunkSize [ \fIbBsSkKmMgG ]
+Gives the size of chunk for snapshot, cache pool and thin pool logical volumes.
+Default unit is in kilobytes.
+.sp
+For snapshots the value must be power of 2 between 4KiB and 512KiB
+and the default value is 4.
+.sp
+For cache pools the value must be between 32KiB and 1GiB and
+the default value is 64.
+.sp
+For thin pools the value must be between 64KiB and
+1GiB and the default value starts with 64 and scales
+up to fit the pool metadata size within 128MiB,
+if the pool metadata size is not specified.
+The value must be a multiple of 64KiB.
+(Early kernel support until thin target version 1.4 required the value
+to be a power of 2.  Discards weren't supported for non-power of 2 values
+until thin target version 1.5.)
+.TP
+.BR \-\-discards " {" \fIignore | \fInopassdown | \fIpassdown }
+Specifies whether or not discards will be processed by the thin layer in the
+kernel and passed down to the Physical Volume.
+Options is currently supported only with thin pools.
+Default is \fIpassdown\fP.
+.TP
+.BR \-Z ", " \-\-zero " {" \fIy | \fIn }
+Controls zeroing of the first 4KiB of data in the snapshot.
+If the volume is read-only the snapshot will not be zeroed.
+For thin pool volumes it controls zeroing of provisioned blocks.
+Note: Provisioning of large zeroed chunks negatively impacts performance.
+.TP
+.B \-\-merge
+Merges a snapshot into its origin volume or merges a raid1 image that has
+been split from its mirror with \fB\-\-trackchanges\fP back into its mirror.
+
+To check if your kernel supports the snapshot merge feature, look
+for 'snapshot-merge' in the output
+of \fBdmsetup targets\fP.  If both the origin and snapshot volume are not
+open the merge will start immediately.  Otherwise, the merge will start
+the first time either the origin or snapshot are activated and both are closed.
+Merging a snapshot into an origin that cannot be closed, for example a root
+filesystem, is deferred until the next time the origin volume is activated.
+When merging starts, the resulting logical volume will have the origin's name,
+minor number and UUID.  While the merge is in progress, reads or writes to the
+origin appear as they were directed to the snapshot being merged.  When the
+merge finishes, the merged snapshot is removed.  Multiple snapshots may
+be specified on the commandline or a @tag may be used to specify
+multiple snapshots be merged to their respective origin.
+.TP
+.B \-\-originname \fINewExternalOriginVolumeName\fP
+The new name for original logical volume, which becomes external origin volume
+for a thin logical volume that will use given \fB\-\-thinpool\fP.
+.br
+Without this option a default name of "lvol<n>" will be generated where
+<n> is the LVM internal number of the logical volume.
+This volume will be read-only and cannot be further modified as long,
+as it is being used as the external origin.
+.TP
+.\" .IR \fB\-\-pooldatasize " " PoolDataVolumeSize [ bBsSkKmMgGtTpPeE ]
+.\" Sets the size of pool's data logical volume.
+.\" The option \fB\-\-size\fP could be still used with thin pools.
+.\" .TP
+.BR \-\-poolmetadata " " \fIPoolMetadataLogicalVolume { \fIName | \fIPath }
+Specifies cache or thin pool metadata logical volume.
+The size should be in between 2MiB and 16GiB.
+Cache pool is specified with the option
+\fB\-\-cachepool\fP.
+Thin pool is specified with the option
+\fB\-\-thinpool\fP.
+When the specified pool already exists,
+the pool's metadata volume will be swapped with the given LV.
+Pool properties (like chunk size, discards or zero)
+are preserved by default in this case.
+It can be useful for pool metadata repair or its offline resize,
+since the metadata volume is available as regular volume for a user with
+thin provisioning tools
+.BR cache_dump (8),
+.BR cache_repair (8),
+.BR cache_restore (8),
+.BR thin_dump (8),
+.BR thin_repair (8)
+and
+.BR thin_restore (8).
+.TP
+.BR \-\-poolmetadatasize " " \fIPoolMetadataSize [ \fIbBsSkKmMgG ]
+Sets the size of cache or thin pool's metadata logical volume,
+if the pool metadata volume is undefined.
+Pool is specified with the option
+\fB\-\-cachepool\fP or \fB\-\-thinpool\fP.
+For thin pool supported value is in the range between 2MiB and 16GiB.
+The default value is estimated with this formula
+(Pool_LV_size / Pool_LV_chunk_size * 64b).
+Default unit is megabytes.
+.TP
+.IR \fB\-\-poolmetadataspare " {"  y | n }
+Controls creation and maintanence of pool metadata spare logical volume
+that will be used for automated pool recovery.
+Only one such volume is maintained within a volume group
+with the size of the biggest pool metadata volume.
+Default is \fIy\fPes.
+.TP
+.IR \fB\-r ", " \fB\-\-readahead " {" ReadAheadSectors | auto | none }
+Sets read ahead sector count of thin pool metadata logical volume.
+The default value is "\fIauto\fP" which allows the kernel to choose
+a suitable value automatically.
+"\fINone\fP" is equivalent to specifying zero.
+.TP
+.B \-\-repair
+Repair a mirror after suffering a disk failure or try to fix thin pool metadata.
+
+The mirror will be brought back into a consistent state.
+By default, the original number of mirrors will be
+restored if possible.  Specify \fB\-y\fP on the command line to skip
+the prompts. Use \fB\-f\fP if you do not want any replacement.
+Additionally, you may use \fB\-\-use\-policies\fP to use the device
+replacement policy specified in \fBlvm.conf\fP(5),
+viz. activation/mirror_log_fault_policy or
+activation/mirror_device_fault_policy.
+
+Thin pool repair automates the use of \fBthin_repair\fP(8) tool.
+Only inactive thin pool volumes can be repaired.
+There is no validation of metadata between kernel and lvm2.
+This requires further manual work.
+After successfull repair the old unmodified metadata are still
+available in "<pool>_meta<n>" LV.
+.TP
+.B \-\-replace \fIPhysicalVolume
+Remove the specified device (\fIPhysicalVolume\fP) and replace it with one
+that is available in the volume group or from the specific list provided.
+This option is only available to RAID segment types
+(e.g.
+.IR raid1 ,
+.IR raid5 ,
+etc).
+.TP
+.BR \-\-stripes " " \fIStripes
+Gives the number of stripes.
+This is equal to the number of physical volumes to scatter
+the logical volume. This does not apply to existing allocated
+space, only newly allocated space can be striped.
+.TP
+.BR \-I ", " \-\-stripesize " " \fIStripeSize
+Gives the number of kilobytes for the granularity of the stripes.
+.br
+StripeSize must be 2^n (n = 2 to 9) for metadata in LVM1 format.
+For metadata in LVM2 format, the stripe size may be a larger
+power of 2 but must not exceed the physical extent size.
+.TP
+.IR \fB\-T ", " \fB\-\-thin ", " \fB\-\-type " " thin
+Converts the logical volume into a thin logical volume of the thin pool
+specified with \fB\-\-thinpool\fP. The original logical volume
+.I ExternalOriginLogicalVolume
+is renamed into a new read-only logical volume.
+For the non-default name for this volume use \fB\-\-originname\fP.
+The volume cannot be further modified as long as it is used as an
+external origin volume for unprovisioned areas of any thin logical volume.
+.TP
+.IR \fB\-\-thinpool " " ThinPoolLogicalVolume { Name | Path }
+Specifies or converts logical volume into a thin pool's data volume.
+Content of converted volume is lost.
+Thin pool's metadata logical volume can be specified with the option
+\fB\-\-poolmetadata\fP or allocated with \fB\-\-poolmetadatasize\fP.
+See \fBlvmthin\fP(7) for more info about thin provisioning support.
+.TP
+.BR \-\-uncache
+Uncaches \fICacheLogicalVolume\fP.
+Before the volume becomes uncached, cache is flushed.
+Unlike with \fB\-\-splitcache\fP the cache pool volume is removed.
+This option could be seen as an inverse of \fB\-\-cache\fP.
+
+.SH Examples
+Converts the linear logical volume "vg00/lvol1" to a two-way mirror
+logical volume:
+.sp
+.B lvconvert \-m1 vg00/lvol1
+
+Converts the linear logical volume "vg00/lvol1" to a two-way RAID1
+logical volume:
+.sp
+.B lvconvert \-\-type raid1 \-m1 vg00/lvol1
+
+Converts a mirror with a disk log to a mirror with an in-memory log:
+.sp
+.B lvconvert \-\-mirrorlog core vg00/lvol1
+
+Converts a mirror with an in-memory log to a mirror with a disk log:
+.sp
+.B lvconvert \-\-mirrorlog disk vg00/lvol1
+
+Converts a mirror logical volume to a linear logical volume:
+.sp
+.B lvconvert \-m0 vg00/lvol1
+
+Converts a mirror logical volume to a RAID1 logical volume with the same
+number of images:
+.sp
+.B lvconvert \-\-type raid1 vg00/mirror_lv
+
+Converts logical volume "vg00/lvol2" to snapshot of original volume
+"vg00/lvol1":
+.sp
+.B lvconvert \-s vg00/lvol1 vg00/lvol2
+
+Converts linear logical volume "vg00/lvol1" to a two-way mirror,
+using physical extents /dev/sda:0\-15 and /dev/sdb:0\-15 for allocation
+of new extents:
+.sp
+.B lvconvert \-m1 vg00/lvol1 /dev/sda:0\-15 /dev/sdb:0\-15
+
+Converts mirror logical volume "vg00/lvmirror1" to linear, freeing physical
+extents from /dev/sda:
+.sp
+.B lvconvert \-m0 vg00/lvmirror1 /dev/sda
+
+Merges "vg00/lvol1_snap" into its origin:
+.sp
+.B lvconvert \-\-merge vg00/lvol1_snap
+
+If "vg00/lvol1", "vg00/lvol2" and "vg00/lvol3" are all tagged with "some_tag"
+each snapshot logical volume will be merged serially,
+e.g.: "vg00/lvol1", then "vg00/lvol2", then "vg00/lvol3".
+If \-\-background were used it would start
+all snapshot logical volume merges in parallel.
+.sp
+.B lvconvert \-\-merge @some_tag
+
+Extracts one image from the mirror, making it a new logical volume named
+"lv_split".  The mirror the image is extracted from is reduced accordingly.
+If it was a 2-way mirror (created with '-m 1'), then the resulting original
+volume will be linear.
+.sp
+.B lvconvert \-\-splitmirrors 1 \-\-name lv_split vg00/lvmirror1
+
+A mirrored logical volume created with \-\-type raid1 can use the
+\-\-trackchanges argument when splitting off an image.
+Detach one image from the mirrored logical volume lv_raid1 as a separate
+read-only device and track the changes made to the mirror while it is detached.
+The split-off device has a name of the form lv_raid1_rimage_N, where N is
+a number, and it cannot be renamed.
+.sp
+.B lvconvert \-\-splitmirrors 1 \-\-trackchanges vg00/lv_raid1
+
+Merge an image that was detached temporarily from its mirror with
+the \-\-trackchanges argument back into its original mirror and
+bring its contents back up-to-date.
+.sp
+.B lvconvert \-\-merge vg00/lv_raid1_rimage_1
+
+Replaces the physical volume "/dev/sdb1" in the RAID1 logical volume "my_raid1"
+with the specified physical volume "/dev/sdf1".  Had the argument "/dev/sdf1"
+been left out, lvconvert would attempt to find a suitable device from those
+available in the volume group.
+.sp
+.B lvconvert \-\-replace /dev/sdb1 vg00/my_raid1 /dev/sdf1
+
+Convert the logical volume "vg00/lvpool" into a thin pool with chunk size 128KiB
+and convert "vg00/lv1" into a thin volume using this pool. Original "vg00/lv1"
+is used as an external read-only origin, where all writes to such volume
+are stored in the "vg00/lvpool".
+.sp
+.B lvconvert \-\-type thin \-\-thinpool vg00/lvpool \-c 128 lv1
+
+Convert the logical volume "vg00/origin" into a thin volume from the thin pool
+"vg00/lvpool". This thin volume will use "vg00/origin" as an external origin
+volume for unprovisioned areas in this volume.
+For the read-only external origin use the new name "vg00/external".
+.sp
+.B lvconvert \-T \-\-thinpool vg00/lvpool \-\-originname external vg00/origin
+
+Convert an existing logical volume to a cache pool LV using the
+given cache metadata LV.
+.sp
+.B lvconvert \-\-type cache-pool \-\-poolmetadata vg00/lvx_meta vg00/lvx_data
+.br
+.B lvrename vg00/lvx_data vg00/lvx_cachepool
+.sp
+Convert an existing logical volume to a cache LV using the given
+cache pool LV and chunk size 128KiB.
+.sp
+.B lvconvert \-\-cache \-\-cachepool vg00/lvx_cachepool -c 128 vg00/lvx
+.sp
+Detach cache pool from an existing cached logical volume "vg00/lvol1" and
+leave cache pool unused.
+.sp
+.B lvconvert \-\-splitcache vg00/lvol1
+.sp
+Drop cache pool from an existing cached logical volume "vg00/lvol1".
+.sp
+.B lvconvert \-\-uncache vg00/lvol1
+
+.SH SEE ALSO
+.BR lvm (8),
+.BR lvm.conf (5),
+.BR lvmcache (7),
+.BR lvmthin (7),
+.BR lvdisplay (8),
+.BR lvextend (8),
+.BR lvreduce (8),
+.BR lvremove (8),
+.BR lvrename (8),
+.BR lvscan (8),
+.BR vgcreate (8),
+.BR cache_dump (8),
+.BR cache_repair (8),
+.BR cache_restore (8),
+.BR thin_dump (8),
+.BR thin_repair (8),
+.BR thin_restore (8)

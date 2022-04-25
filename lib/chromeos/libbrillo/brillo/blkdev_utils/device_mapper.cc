@@ -236,19 +236,19 @@ bool DeviceMapper::WipeTable(const std::string& name) {
 }
 
 DeviceMapperVersion DeviceMapper::GetTargetVersion(const std::string& target) {
-  auto version_task = dm_task_factory_.Run(DM_DEVICE_GET_TARGET_VERSION);
+  //auto version_task = dm_task_factory_.Run(DM_DEVICE_GET_TARGET_VERSION);
 
-  if (!version_task->SetName(target)) {
-    LOG(ERROR) << "GetTargetVersion: SetName failed.";
+  //if (!version_task->SetName(target)) {
+  //  LOG(ERROR) << "GetTargetVersion: SetName failed.";
     return {0, 0, 0};
-  }
+  //}
 
-  if (!version_task->Run()) {
-    LOG(ERROR) << "GetTargetVersion: RunTask failed.";
-    return {0, 0, 0};
-  }
+  //if (!version_task->Run()) {
+  //  LOG(ERROR) << "GetTargetVersion: RunTask failed.";
+  //  return {0, 0, 0};
+  //}
 
-  return version_task->GetVersion();
+  //return version_task->GetVersion();
 }
 
 }  // namespace brillo
