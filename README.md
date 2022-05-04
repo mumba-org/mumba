@@ -283,18 +283,14 @@ Missing
 Now
 ---
  
- I'm currently working on porting ChromeOS parts related to Crostini so that Android and Linux applications can coexist
- in the system if the host is Linux.
- The idea here is to have a good development environment at first and later use other OS's VM accelerators and maybe/probably
- port the whole application to a slim containerized form.
+ I'm currently working on porting ChromeOS parts related to Crostini so that Android and Linux applications can coexist in the system if the host is Linux.
+ The idea here is to have a good development environment at first and later use other OS's VM accelerators and maybe/probably port the whole application to a slim containerized form.
 
- The goal of this was always to be a "offline first" experience where we own the data and if devs can reuse whatever
- they are using in the cloud computing world the better.
+ The goal of this was always to be a "offline first" experience where we own the data and if devs can reuse whatever they are using in the cloud computing world the better.
 
  If it's cozy to have a Amazon api exposed to service applications, theres nothing preventing this from being that..
 
- The idea is that people can create those blocks than can also be deployed in "the cloud" if there's need, and asking people to adapt
- and learn new arbitrary api's might not get us much further (at least if you are not Google)
+ The idea is that people can create those blocks than can also be deployed in "the cloud" if there's need, and asking people to adapt and learn new arbitrary api's might not get us much further (at least if you are not Google)
 
 
 Contact
