@@ -262,22 +262,15 @@ Distributing your applications
 Missing
 ---
 
- For now publishing over the torrent DHT (the hardest part) is already working, but theres a need to 
- create a proper manager of the distribution repos, as is my intention that the user will be able to
- add the distribution channels from the application developers/providers by using the address they
- use.
+ For now publishing over the torrent DHT (the hardest part) is already working, but theres a need to create a proper manager of the distribution repos, as is my intention that the user will be able to add the distribution channels from the application developers/providers by using the address they use.
 
- From there a proper initial "app store", where people are able to distribute their applications freely (without anyone in the middle)
- with the idea to give the users the ability to navigate over all the possibities that the platform can give to the users.
+ From there a proper initial "app store", where people are able to distribute their applications freely (without anyone in the middle) with the idea to give the users the ability to navigate over all the possibities that the platform can give to the users.
 
- Later: ports to other platforms as Windows, MacOS and Android (the strict regulated iOS evironment will need more work)
- Also later: More language SDK's so applications can be programmed on them: C++, Go, Rust, Python, etc
+ Later: ports to other platforms as Windows, MacOS and Android (the strict regulated iOS evironment will need more work) Also later: More language SDK's so applications can be programmed on them: C++, Go, Rust, Python, etc
 
- The real core that the Swift language is dealing with is a plain C interface, so theres nothing preventing other languages
- to access the same core as long as they have a C interface (and basically all of them do)
+ The real core that the Swift language is dealing with is a plain C interface, so theres nothing preventing other languages to access the same core as long as they have a C interface (and basically all of them do)
 
- On the web side of things, those languages will have the same access (even more to be true) as Javascript have to the web today
- which is by itself pretty cool and the first languages to do that beyond C++ which is the runtime and Javascript.
+ On the web side of things, those languages will have the same access (even more to be true) as Javascript have to the web today which is by itself pretty cool and the first languages to do that beyond C++ which is the runtime and Javascript.
 
 
 Now
