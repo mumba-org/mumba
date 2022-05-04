@@ -1,0 +1,14 @@
+static_library("minijail") {  
+  sources = [
+    "libminijail.c",
+    "syscall_filter.c",
+    "signal_handler.c",
+    "bpf.c",
+    "util.c",
+    "system.c",
+    "syscall_wrapper.c",
+    "config_parser.c",
+    #"libconstants.gen.c",
+    #"libsyscalls.gen.c"
+  ]
+}

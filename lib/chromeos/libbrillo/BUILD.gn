@@ -22,7 +22,9 @@ default_pkg_deps = [ "libchrome" ]
 
 config("target_defaults") {
   #configs = [ ":target_defaults_pkg_deps" ]
-  include_dirs = [ "../libbrillo", "//third_party", "//third_party/lvm2/libdm", "//third_party/lvm2/tools", "//third_party/curl/include", "//third_party/grpc/include", "//third_party/abseil-cpp", "/usr/include/dbus-1.0", "/usr/lib/x86_64-linux-gnu/dbus-1.0/include", "//third_party/minijail"]
+  include_dirs = [ "../libbrillo", "//third_party", "//third_party/lvm2/libdm", "//third_party/lvm2/tools", "//third_party/curl/include", "//third_party/grpc/include", "//third_party/abseil-cpp", "/usr/include/dbus-1.0", "/usr/lib/x86_64-linux-gnu/dbus-1.0/include", 
+  "//third_party/minijail",
+  "//third_party/protobuf/src"]
   defines = [
     #"USE_DBUS=${use.dbus}",
     "USE_DBUS=1",
@@ -109,10 +111,14 @@ libbrillo_sublibs = [
 
   {
     library_name = "brillo-blockdeviceutils"
-    deps = [ ":libbrillo-core" ]
+    deps = [ 
+      ":libbrillo-core", 
+      "//lib/base",
+      "//buildtools/third_party/libc++" 
+    ]
     sources = [ "brillo/blkdev_utils/loop_device.cc" ]
     #if (use.device_mapper) {
-      libs = [ "lvm2cmd" ]
+      libs = [ "lvm2cmd", "devmapper" ]
       pkg_deps = [ "devmapper" ]
       sources += [
         "brillo/blkdev_utils/device_mapper.cc",
@@ -128,6 +134,9 @@ libbrillo_sublibs = [
     deps = [
       ":libbrillo-core",
       ":libbrillo-streams",
+      "//lib/base", 
+      "//buildtools/third_party/libc++",
+      "//third_party/curl"
     ]
     all_dependent_pkg_deps = [ "libcurl" ]
     sources = [
@@ -146,7 +155,7 @@ libbrillo_sublibs = [
 
   {
     library_name = "brillo-streams"
-    deps = [ ":libbrillo-core" ]
+    deps = [ ":libbrillo-core", "//lib/base", "//buildtools/third_party/libc++", "//third_party/boringssl" ]
     all_dependent_pkg_deps = [ "openssl" ]
     sources = [
       "brillo/streams/file_stream.cc",
@@ -164,13 +173,13 @@ libbrillo_sublibs = [
   {
     library_name = "brillo-cryptohome"
     all_dependent_pkg_deps = [ "openssl" ]
-    deps = [ ":libbrillo-core" ]
+    deps = [ ":libbrillo-core", "//lib/base", "//buildtools/third_party/libc++", "//third_party/boringssl" ]
     sources = [ "brillo/cryptohome.cc" ]
   },
 
   {
     library_name = "brillo-namespaces"
-    deps = [ ":libbrillo-core" ]
+    deps = [ ":libbrillo-core", "//lib/base", "//buildtools/third_party/libc++" ]
     sources = [
       "brillo/namespaces/mount_namespace.cc",
       "brillo/namespaces/platform.cc",
@@ -182,12 +191,21 @@ libbrillo_sublibs = [
     library_name = "brillo-minijail"
     all_dependent_pkg_deps = [ "libminijail" ]
     sources = [ "brillo/minijail/minijail.cc" ]
+    deps = [ 
+      "//buildtools/third_party/libc++",
+      "//third_party/minijail"
+    ]
   },
 
   {
     library_name = "brillo-protobuf"
     all_dependent_pkg_deps = [ "protobuf" ]
     sources = [ "brillo/proto_file_io.cc" ]
+    deps = [ 
+      "//lib/base",
+      "//buildtools/third_party/libc++",
+      "//third_party/protobuf:protobuf_lite" 
+    ]
   },
 
   {
@@ -209,10 +227,12 @@ libbrillo_sublibs = [
     deps = [
       "//lib/base",
       "//buildtools/third_party/libc++",
-      #"//third_party/grpc",
-      "//lib/rpc:gpr",
-      "//lib/rpc:grpc",
-      "//lib/rpc:rpc",
+      "//third_party/grpc:gpr",
+      "//third_party/grpc:grpc",
+      "//third_party/grpc:grpc++",
+      #"//lib/rpc:gpr",
+      #"//lib/rpc:grpc",
+      #"//lib/rpc:rpc",
       "//third_party/abseil-cpp:default",
     ]
   },
@@ -230,6 +250,11 @@ libbrillo_sublibs = [
         "brillo/udev/udev_list_entry.cc",
         "brillo/udev/udev_monitor.cc",
       ]
+      deps = [
+        "//lib/base",
+        "//buildtools/third_party/libc++"
+      ]
+      libs = [ "udev" ]
     },
   ]
 #}

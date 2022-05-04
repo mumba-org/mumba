@@ -1,0 +1,20 @@
+[package]
+name = "gpu_display"
+version = "0.1.0"
+authors = ["The Chromium OS Authors"]
+edition = "2021"
+
+[features]
+x = []
+
+[dependencies]
+data_model = { path = "../common/data_model" }
+libc = "*"
+base = { path = "../base" }
+linux_input_sys = { path = "../linux_input_sys" }
+remain = "*"
+thiserror = "*"
+
+[build-dependencies]
+cc = "1.0.25"
+pkg-config = "0.3.11"

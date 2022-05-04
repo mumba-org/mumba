@@ -262,18 +262,16 @@ Distributing your applications
 Missing
 ---
 
-Im finishing the bundle automation now, and will jump to the last item before a proper launch
-that is to get the bundle distribution into a more usable state
-(for now publishing over the torrent DHT (the hardest part) is already working, but theres a need to 
+ For now publishing over the torrent DHT (the hardest part) is already working, but theres a need to 
  create a proper manager of the distribution repos, as is my intention that the user will be able to
  add the distribution channels from the application developers/providers by using the address they
- use). I hope i end this last feature by the end of the month.
+ use.
 
  From there a proper initial "app store", where people are able to distribute their applications freely (without anyone in the middle)
  with the idea to give the users the ability to navigate over all the possibities that the platform can give to the users.
 
  Later: ports to other platforms as Windows, MacOS and Android (the strict regulated iOS evironment will need more work)
- Also later: More language SDK's so applications can be programmed on them: C++, Go, Rust, Python, (Ruby?) etc
+ Also later: More language SDK's so applications can be programmed on them: C++, Go, Rust, Python, etc
 
  The real core that the Swift language is dealing with is a plain C interface, so theres nothing preventing other languages
  to access the same core as long as they have a C interface (and basically all of them do)
@@ -281,7 +279,26 @@ that is to get the bundle distribution into a more usable state
  On the web side of things, those languages will have the same access (even more to be true) as Javascript have to the web today
  which is by itself pretty cool and the first languages to do that beyond C++ which is the runtime and Javascript.
 
- Contact
- ---
 
+Now
+---
+ 
+ I'm currently working on porting ChromeOS parts related to Crostini so that Android and Linux applications can coexist
+ in the system if the host is Linux.
+ The idea here is to have a good development environment at first and later use other OS's VM accelerators and maybe/probably
+ port the whole application to a slim containerized form.
+
+ The goal of this was always to be a "offline first" experience where we own the data and if devs can reuse whatever
+ they are using in the cloud computing world the better.
+
+ If it's cozy to have a Amazon api exposed to service applications, theres nothing preventing this from being that..
+
+ The idea is that people can create those blocks than can also be deployed in "the cloud" if there's need, and asking people to adapt
+ and learn new arbitrary api's might not get us much further (at least if you are not Google)
+
+
+Contact
+---
+
+ Email: fabiokaminski@gmail.com
  Discord channel: https://discord.gg/jtDzF9nUEh

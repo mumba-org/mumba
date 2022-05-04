@@ -171,6 +171,19 @@ void ExportedObject::ExportMethodInternal(
                                                    success));
 }
 
+void ExportedObject::UnexportMethodInternal(
+    const std::string& interface_name,
+    const std::string& method_name,
+    OnUnexportedCallback on_unexported_callback) {
+  bus_->AssertOnDBusThread();
+  const bool success = UnexportMethodAndBlock(interface_name, method_name);
+  bus_->GetOriginTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&ExportedObject::OnUnexported, this,
+                                std::move(on_unexported_callback),
+                                interface_name, method_name, success));
+}
+
+
 void ExportedObject::OnExported(OnExportedCallback on_exported_callback,
                                 const std::string& interface_name,
                                 const std::string& method_name,
@@ -178,6 +191,14 @@ void ExportedObject::OnExported(OnExportedCallback on_exported_callback,
   bus_->AssertOnOriginThread();
 
   on_exported_callback.Run(interface_name, method_name, success);
+}
+
+void ExportedObject::OnUnexported(OnUnexportedCallback on_unexported_callback,
+                                  const std::string& interface_name,
+                                  const std::string& method_name,
+                                  bool success) {
+  bus_->AssertOnOriginThread();
+  std::move(on_unexported_callback).Run(interface_name, method_name, success);
 }
 
 void ExportedObject::SendSignalInternal(base::TimeTicks start_time,

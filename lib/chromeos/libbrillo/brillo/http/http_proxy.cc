@@ -16,7 +16,7 @@
 #include <base/strings/string_tokenizer.h>
 #include <base/strings/string_util.h>
 #include <brillo/http/http_transport.h>
-#include <chromeos/dbus/service_constants.h>
+#include <chromeos/system_api/dbus/service_constants.h>
 #include <dbus/bus.h>
 #include <dbus/message.h>
 #include <dbus/object_proxy.h>

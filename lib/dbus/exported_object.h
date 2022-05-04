@@ -141,11 +141,21 @@ class CHROME_DBUS_EXPORT ExportedObject
                             MethodCallCallback method_call_callback,
                             OnExportedCallback exported_callback);
 
+  void UnexportMethodInternal(
+                            const std::string& interface_name,
+                            const std::string& method_name,
+                            OnUnexportedCallback on_unexported_callback);
+
   // Called when the object is exported.
   void OnExported(OnExportedCallback on_exported_callback,
                   const std::string& interface_name,
                   const std::string& method_name,
                   bool success);
+
+  void OnUnexported(OnUnexportedCallback on_unexported_callback,
+                    const std::string& interface_name,
+                    const std::string& method_name,
+                    bool success);
 
   // Helper function for SendSignal().
   void SendSignalInternal(base::TimeTicks start_time,

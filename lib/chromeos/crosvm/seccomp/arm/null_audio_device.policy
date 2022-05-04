@@ -1,0 +1,12 @@
+# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+@include /usr/share/policy/crosvm/common_device.policy
+
+madvise: 1
+open: return ENOENT
+openat: return ENOENT
+prlimit64: 1
+setrlimit: 1
+prctl: arg0 == PR_SET_NAME

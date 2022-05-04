@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+# Copyright 2022 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Run `rustfmt` on all Rust code contained in the crosvm workspace, including
+# all commmon/* crates as well.
+#
+# Usage:
+#
+#    $ bin/fmt
+#
+# To print a diff and exit 1 if code is not formatted, but without changing any
+# files, use:
+#
+#    $ bin/fmt --check
+#
+
+from impl.common import CROSVM_ROOT, parallel, run_main, cmd, chdir
+from pathlib import Path
+
+mdformat = cmd("mdformat")
+rustfmt = cmd(cmd("rustup which rustfmt"))
+
+# How many files to check at once in each thread.
+BATCH_SIZE = 8
+
+
+def find_sources(extension: str):
+    for file in Path(".").glob(f"**/{extension}"):
+        if file.is_relative_to("third_party"):
+            continue
+        if "target" in file.parts:
+            continue
+        yield str(file)
+
+
+def main(check: bool = False):
+    chdir(CROSVM_ROOT)
+    check_arg = "--check" if check else None
+
+    print(f"{'Checking' if check else 'Formatting'}: Rust, Markdown")
+    parallel(
+        *rustfmt(check_arg).foreach(find_sources("*.rs"), batch_size=BATCH_SIZE),
+        *mdformat("--wrap 100", check_arg).foreach(find_sources("*.md"), batch_size=BATCH_SIZE),
+    ).fg()
+
+
+run_main(main)
